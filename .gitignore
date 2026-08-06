@@ -1,0 +1,108 @@
+# ============================================================
+# .gitignore - 音乐语料数据集项目
+# 核心原则：数据集、模型权重、音频、日志、密钥 绝对不提交 git
+# ============================================================
+
+# ========== 音频文件（大文件，绝对不提交） ==========
+*.wav
+*.mp3
+*.flac
+*.ogg
+*.m4a
+*.aac
+*.wma
+*.aiff
+*.opus
+
+# ========== 模型权重（大文件，绝对不提交） ==========
+*.pt
+*.pth
+*.bin
+*.safetensors
+*.ckpt
+*.h5
+*.pb
+*.onnx
+*.pkl
+*.pickle
+models/
+
+# ========== 数据目录（音频/大文件部分，不提交） ==========
+# 原始音频
+data/00_raw_collect/raw_audio/
+
+# 预处理后音频
+data/01_preprocess/processed_audio/
+data/01_preprocess/demucs_stems/
+
+# 模型推理输出缓存（大）
+data/02_preannotation/model_output_cache/
+
+# 最终数据集音频
+data/04_final_dataset/final_audio/
+
+# ========== 日志（不提交） ==========
+logs/
+*.log
+
+# ========== Jupyter 缓存 ==========
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/*
+
+# ========== Python 缓存 ==========
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+*.egg
+
+# ========== 环境、密钥（绝对不提交） ==========
+.env
+*.env
+*.local
+*.secret
+*.key
+*.pem
+*.pub
+secrets/
+
+# ========== IDE / 编辑器 ==========
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.settings/
+
+# ========== macOS 系统文件 ==========
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# ========== Conda / 虚拟环境 ==========
+*.conda
+venv/
+.venv/
+env/
+ENV/
+
+# ========== Label Studio ==========
+label_studio.sqlite3
+*.sqlite3
+*.db
+*.sqlite
+
+# ========== 压缩包 ==========
+*.zip
+*.tar.gz
+*.tar
+*.rar
+*.7z
+data/00_raw_collect/source_archive/
