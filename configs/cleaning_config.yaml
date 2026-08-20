@@ -22,6 +22,32 @@ global:
   # 日志级别
   log_level: "INFO"
 
+  # ========== 数据来源画像（决定是否跑 YAMNet）==========
+  # 两条路径：
+  # A. controlled（数据来源可控）：Bandcamp/网易云/专业音乐库
+  #    → 不跑 YAMNet，靠规则兜底（静音/时长/文件名）+ 人工抽检
+  #    → 如果发现大量非音乐内容（>5%），再切换到 mixed 跑 YAMNet
+  # B. mixed（数据来源混杂）：YouTube/播客/混合爬虫/UGC上传
+  #    → 跑 YAMNet（yamnet_env 独立环境，输出 parquet，主环境只读）
+  data_source_profile: "controlled"  # controlled / mixed
+
+  # YAMNet 配置（仅 data_source_profile=mixed 时启用）
+  yamnet:
+    # YAMNet 推理脚本路径（在 yamnet_env 环境下运行）
+    infer_script: "scripts/00.5_cleaning/yamnet_infer.py"
+    # YAMNet 输出文件（parquet，主环境只读）
+    output_parquet: "data/00.5_cleaned/reports/yamnet_output.parquet"
+    # 输入列表文件（由主环境生成，每行一个音频路径）
+    input_list: "data/00.5_cleaned/reports/yamnet_input_list.csv"
+    # 帧级置信度阈值
+    confidence_threshold: 0.3
+    # 非音乐判定阈值（is_music=False 且 has_speech=True 标记为非音乐）
+    non_music_threshold:
+      require_is_music_false: true
+      require_has_speech_true: true
+      # 人工抽检比例（controlled 模式下，随机抽取 X% 人工复核）
+      manual_sampling_ratio: 0.05
+
 # ========== Stage 1: 元数据清洗 ==========
 stage1_metadata:
   enabled: true
