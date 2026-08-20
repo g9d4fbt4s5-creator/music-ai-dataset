@@ -26,6 +26,8 @@
 *.pkl
 *.pickle
 models/
+# 允许 .gitkeep 保留目录结构
+!models/.gitkeep
 
 # ========== 数据目录（音频/大文件部分，不提交） ==========
 # 原始音频
@@ -54,6 +56,8 @@ snapshots/gpu_backup_*/
 # ========== 日志（不提交） ==========
 logs/
 *.log
+# 允许 .gitkeep 保留目录结构
+!logs/.gitkeep
 
 # ========== Jupyter 缓存 ==========
 .ipynb_checkpoints/
