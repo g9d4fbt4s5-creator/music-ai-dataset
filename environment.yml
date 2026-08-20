@@ -61,8 +61,13 @@ dependencies:
       - torchcrepe==0.0.24
 
       # 特征提取（dev 版本，本地 wheel 缓存保证复现）
+      # 下载方法：pip download essentia==2.1b6.dev1389 madmom-onnx==0.17.dev0 -d ./envs/wheel_cache
+      # 下载后替换下面的文件名为实际文件名
       - ./envs/wheel_cache/essentia-2.1b6.dev1389-cp311-cp311-macosx_10_9_x86_64.whl
       - ./envs/wheel_cache/madmom_onnx-0.17.dev0-py3-none-any.whl
+
+      # 音频处理
+      - pyloudnorm
 
       # 标注工具
       - label-studio==1.23.0
@@ -70,6 +75,13 @@ dependencies:
 
       # 云存储
       - boto3
+      - oss2
+
+      # 新架构依赖
+      - python-ulid
+
+      # HTTP 请求（ls_backup_export.py 需要）
+      - requests
 
       # 工具
       - black

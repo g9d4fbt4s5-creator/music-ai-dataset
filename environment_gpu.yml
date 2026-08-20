@@ -8,10 +8,15 @@
 # GPU 环境职责：仅负责重计算任务
 # - 音频预处理（重采样、响度归一、切片）
 # - demucs 源分离
-# - MERT / CLAP / MOSS-Music 大模型推理
+# - MERT / CLAP 大模型推理
+# - 轻量特征提取（librosa/madmom-onnx，如需要）
+#
+# 模型权重位置（GPU 本地，不需要搬到 Mac）：
+# - CLAP: /root/autodl-tmp/models/clap_fusion/
+# - MERT: /root/autodl-tmp/models/mert/ (已下载 1.6GB)
 #
 # 不包含（本地 Mac 负责）：
-# - librosa / essentia / madmom-onnx 特征提取
+# - essentia 特征提取
 # - label-studio 人工标注
 # ============================================================
 
@@ -23,10 +28,16 @@ channels:
 
 dependencies:
   # ---------- Python 基础 ----------
-  - python=3.11.13
+  - python=3.11
   - pip
   - setuptools
   - wheel
+
+  # ---------- 深度学习框架（GPU 版本） ----------
+  # AutoDL 镜像通常自带 CUDA + PyTorch，这里兜底指定版本
+  - pytorch=2.2.2
+  - torchaudio=2.2.2
+  - cudatoolkit=12.1
 
   # ---------- 数据处理 ----------
   - numpy=1.26.4
@@ -41,7 +52,7 @@ dependencies:
 
   # ---------- pip 安装的包 ----------
   - pip:
-      # 深度学习框架（GPU 版本，AutoDL 镜像通常自带，这里兜底）
+      # 深度学习框架（如果 conda 安装失败，pip 兜底）
       - torch==2.2.2
       - torchaudio==2.2.2
       - transformers==4.40.2
@@ -51,8 +62,17 @@ dependencies:
       - demucs==3.0.6
       - torchcrepe==0.0.24
 
-      # 云存储（OSS 内网读写）
+      # 音频处理（轻量特征提取，GPU 端可选）
+      - librosa
+      - madmom-onnx==0.17.dev0
+      - pyloudnorm
+
+      # 云存储
       - boto3
+      - oss2
+
+      # 新架构依赖
+      - python-ulid
 
       # 工具
       - black
