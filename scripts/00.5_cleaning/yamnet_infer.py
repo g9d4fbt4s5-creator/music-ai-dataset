@@ -339,18 +339,150 @@ def batch_inference(
     return all_track_meta
 
 
+# ===================== 并行处理（方案 B：>100 首时使用）=====================
+
+def _parallel_worker(args_tuple):
+    """
+    多进程 worker 函数：每个进程单独加载 YAMNet 模型，处理分配的音频
+
+    Args:
+        args_tuple: (tracks_chunk, confidence_threshold)
+            tracks_chunk: List[(track_id, audio_path)]
+            confidence_threshold: float
+
+    Returns:
+        List[Dict]: 处理结果列表
+    """
+    tracks_chunk, confidence_threshold = args_tuple
+
+    # 每个 worker 单独加载模型（避免跨进程共享 TF 模型的问题）
+    try:
+        model, class_names = load_yamnet_model()
+    except Exception as e:
+        logger.error(f"Worker 加载模型失败: {e}")
+        return []
+
+    results = []
+    for track_id, audio_path in tracks_chunk:
+        if not os.path.exists(audio_path):
+            logger.warning(f"文件不存在，跳过: {audio_path}")
+            continue
+
+        frame_results = run_yamnet_single(model, class_names, audio_path, track_id)
+        if frame_results is None:
+            continue
+
+        track_meta = aggregate_track_level(frame_results, confidence_threshold)
+        if track_meta:
+            results.append(track_meta)
+
+    return results
+
+
+def batch_inference_parallel(
+    input_list: str,
+    output_path: str,
+    confidence_threshold: float = 0.3,
+    num_workers: int = 4,
+):
+    """
+    并行批量 YAMNet 推理（方案 B：>100 首时使用，multiprocessing）
+
+    每个 worker 进程单独加载 YAMNet 模型，处理分配的音频分片。
+    适用于大批量处理（>100 首），小批量（<20 首）建议用串行版本。
+
+    Args:
+        input_list: 输入列表文件路径
+        output_path: 输出文件路径
+        confidence_threshold: 置信度阈值
+        num_workers: 并行进程数
+    """
+    import multiprocessing as mp
+
+    # 读取输入列表（复用 batch_inference 的读取逻辑）
+    logger.info(f"读取输入列表: {input_list}")
+    if input_list.endswith(".csv"):
+        df = pd.read_csv(input_list)
+        if "path" in df.columns and "track_id" in df.columns:
+            tracks = list(zip(df["track_id"].astype(str), df["path"].astype(str)))
+        elif "path" in df.columns:
+            tracks = [(Path(p).stem, p) for p in df["path"].astype(str)]
+        else:
+            tracks = [(Path(p).stem, p) for p in df.iloc[:, 0].astype(str)]
+    else:
+        with open(input_list, "r") as f:
+            paths = [line.strip() for line in f if line.strip()]
+        tracks = [(Path(p).stem, p) for p in paths]
+
+    logger.info(f"待处理音频: {len(tracks)} 个")
+    logger.info(f"并行进程数: {num_workers}")
+
+    if len(tracks) < num_workers:
+        num_workers = max(1, len(tracks))
+        logger.info(f"音频数少于进程数，调整为 {num_workers} 个进程")
+
+    # 分片：将 tracks 均分给 num_workers 个 worker
+    chunk_size = (len(tracks) + num_workers - 1) // num_workers
+    chunks = [tracks[i:i + chunk_size] for i in range(0, len(tracks), chunk_size)]
+    logger.info(f"分片: {len(chunks)} 个，每片约 {chunk_size} 个音频")
+
+    # 多进程处理
+    logger.info("开始并行推理...")
+    start_time = datetime.now()
+
+    with mp.Pool(processes=num_workers) as pool:
+        worker_args = [(chunk, confidence_threshold) for chunk in chunks]
+        results_list = pool.map(_parallel_worker, worker_args)
+
+    # 合并结果
+    all_track_meta = []
+    for results in results_list:
+        all_track_meta.extend(results)
+
+    elapsed = (datetime.now() - start_time).total_seconds()
+    logger.info(f"并行推理完成: 耗时 {elapsed:.1f}秒, 成功 {len(all_track_meta)}/{len(tracks)}")
+
+    # 保存结果
+    if all_track_meta:
+        result_df = pd.DataFrame(all_track_meta)
+        os.makedirs(os.path.dirname(output_path) if os.path.dirname(output_path) else ".", exist_ok=True)
+
+        if output_path.endswith(".parquet"):
+            result_df.to_parquet(output_path, index=False)
+        elif output_path.endswith(".csv"):
+            result_df.to_csv(output_path, index=False, encoding="utf-8")
+        else:
+            result_df.to_parquet(output_path + ".parquet", index=False)
+
+        logger.info(f"结果已保存: {output_path} ({len(result_df)} 条)")
+    else:
+        logger.error("没有成功处理的音频")
+
+    return all_track_meta
+
+
 def main():
     parser = argparse.ArgumentParser(description="YAMNet 音频事件检测批量推理（yamnet_env 专用）")
     parser.add_argument("--input-list", type=str, required=True, help="输入列表文件路径（CSV）")
     parser.add_argument("--output", type=str, default="yamnet_output.parquet", help="输出文件路径（parquet/csv）")
     parser.add_argument("--confidence-threshold", type=float, default=0.3, help="帧级置信度阈值")
+    parser.add_argument("--parallel", type=int, default=0, help="并行进程数（0=串行，>0启用multiprocessing并行，建议>100首时使用）")
     args = parser.parse_args()
 
-    # 加载模型和类别名称
-    model, class_names = load_yamnet_model()
-
-    # 批量推理
-    batch_inference(model, class_names, args.input_list, args.output, args.confidence_threshold)
+    if args.parallel > 0:
+        # 方案 B：并行处理（每个 worker 单独加载模型）
+        logger.info("使用并行模式（方案 B）")
+        batch_inference_parallel(
+            input_list=args.input_list,
+            output_path=args.output,
+            confidence_threshold=args.confidence_threshold,
+            num_workers=args.parallel,
+        )
+    else:
+        # 方案 A：串行处理（20 首以内直接跑）
+        logger.info("使用串行模式（方案 A）")
+        model, class_names = load_yamnet_model()
+        batch_inference(model, class_names, args.input_list, args.output, args.confidence_threshold)
 
 
 if __name__ == "__main__":
