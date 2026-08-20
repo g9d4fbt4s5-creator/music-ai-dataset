@@ -246,45 +246,72 @@ def run_stage3_quality_cleaning(df: pd.DataFrame, config: Dict, dry_run: bool = 
         logger.info("Stage 3 已禁用，跳过")
         return df
 
+    # 导入质量检查模块
+    try:
+        from quality_check import AudioQualityChecker, batch_check
+        from get_audio_physical_path import get_audio_absolute_path
+    except ImportError as e:
+        logger.error(f"无法导入质量检查模块: {e}")
+        logger.info("Stage 3 跳过")
+        return df
+
     initial_count = len(df)
-    report = {
-        "stage": "quality_cleaning",
-        "initial_count": initial_count,
-        "corrupted": 0,
-        "silent": 0,
-        "low_quality": 0,
-        "loudness_normalized": 0,
-        "final_count": 0,
-    }
 
-    # 1. 损坏检测
-    if stage_config.get("corruption_detection", {}).get("enabled", True):
-        logger.info("  [1/4] 损坏检测")
-        # TODO: 实现损坏检测（尝试解码，失败则标记为损坏）
-        # report["corrupted"] = ...
+    # 获取音频绝对路径
+    audio_paths = []
+    audio_id_map = {}
+    for _, row in df.iterrows():
+        audio_id = row["audio_id"]
+        ext = row.get("format", "wav").lower() if "format" in row else "wav"
+        abs_path = get_audio_absolute_path(audio_id, ext)
+        if abs_path.exists():
+            audio_paths.append(str(abs_path))
+            audio_id_map[str(abs_path)] = audio_id
+        else:
+            logger.warning(f"  文件不存在，跳过: {audio_id} -> {abs_path}")
 
-    # 2. 静音过滤
-    if stage_config.get("silence_filter", {}).get("enabled", True):
-        logger.info("  [2/4] 静音过滤")
-        silence_threshold = stage_config.get("silence_filter", {}).get("silence_threshold", 0.001)
-        max_silence_ratio = stage_config.get("silence_filter", {}).get("max_silence_ratio", 0.8)
-        logger.info(f"    静音阈值: {silence_threshold}, 最大静音占比: {max_silence_ratio}")
-        # TODO: 实现静音检测和过滤
+    logger.info(f"  待检查音频: {len(audio_paths)} 个")
 
-    # 3. 音质门槛
-    if stage_config.get("quality_threshold", {}).get("enabled", True):
-        logger.info("  [3/4] 音质门槛检查")
-        # TODO: 实现 SNR/削波/动态范围检测
+    if len(audio_paths) == 0:
+        logger.info("  没有可检查的音频，跳过")
+        return df
 
-    # 4. 响度归一化
-    if stage_config.get("loudness_normalization", {}).get("enabled", True):
-        logger.info("  [4/4] 响度归一化")
-        target_lufs = stage_config.get("loudness_normalization", {}).get("target_lufs", -14)
-        logger.info(f"    目标响度: {target_lufs} LUFS")
-        # TODO: 实现响度归一化（使用 pyloudnorm）
+    # 输出目录
+    output_dir = None
+    if stage_config.get("loudness_normalization", {}).get("enabled", False):
+        output_dir = str(PROJECT_ROOT / "data" / "00.5_cleaned" / "normalized_audio")
 
-    report["final_count"] = len(df)
-    logger.info(f"  Stage 3 完成: {initial_count} → {len(df)}")
+    # 报告路径
+    report_csv = str(PROJECT_ROOT / "data" / "00.5_cleaned" / "reports" / "quality_check_report.csv")
+
+    if dry_run:
+        logger.info("  [预览模式] 不实际执行质量检查")
+        logger.info(f"  Stage 3 完成: {initial_count} 个样本（预览）")
+        return df
+
+    # 批量质量检查
+    results, report_df = batch_check(
+        audio_paths,
+        config=stage_config,
+        output_dir=output_dir,
+        report_csv=report_csv
+    )
+
+    # 过滤未通过的音频
+    passed_paths = set()
+    for result in results:
+        if result.passed:
+            passed_paths.add(result.audio_path)
+
+    passed_audio_ids = set()
+    for path in passed_paths:
+        if path in audio_id_map:
+            passed_audio_ids.add(audio_id_map[path])
+
+    df = df[df["audio_id"].isin(passed_audio_ids)].reset_index(drop=True)
+
+    logger.info(f"  Stage 3 完成: {initial_count} → {len(df)} (剔除 {initial_count - len(df)})")
+    logger.info(f"  质量报告: {report_csv}")
 
     return df
 
