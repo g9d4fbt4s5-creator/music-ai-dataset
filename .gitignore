@@ -31,6 +31,9 @@ models/
 # 原始音频
 data/00_raw_collect/raw_audio/
 
+# 拒绝入库的音频
+data/00_raw_collect/rejected/
+
 # 预处理后音频
 data/01_preprocess/processed_audio/
 data/01_preprocess/demucs_stems/
@@ -38,8 +41,15 @@ data/01_preprocess/demucs_stems/
 # 模型推理输出缓存（大）
 data/02_preannotation/model_output_cache/
 
+# 人工标注备份（可能包含敏感信息）
+data/03_human_review/backups/
+
 # 最终数据集音频
 data/04_final_dataset/final_audio/
+
+# ========== GPU 快照（不提交，只保留配置） ==========
+snapshots/gpu_backup_*/
+# 注意：snapshots/snapshot_retention.toml 配置文件需要提交
 
 # ========== 日志（不提交） ==========
 logs/
