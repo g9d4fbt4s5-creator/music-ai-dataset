@@ -1,46 +1,137 @@
 {
-    "version": "v1.0",
-    "updated_at": "2026-08-06",
-    "changelog": "初始版本，适配MusicCaps，GM128乐器、VAD情绪、三级流派",
+    "version": "v2.0",
+    "updated_at": "2026-08-20",
+    "changelog": "v2.0 扩充到74个标签：乐器30+情绪16+流派15+场景8+音质3+黑名单4",
+    "total_tags": 80,
+
     "instrument_gm128_map": {
         "piano": 0,
         "electric piano": 4,
+        "organ": 19,
+        "harpsichord": 6,
         "guitar": 24,
-        "acoustic guitar":24,
+        "acoustic guitar": 24,
         "electric guitar": 27,
         "bass": 34,
+        "electric bass": 34,
         "drum kit": 117,
         "drums": 117,
+        "percussion": 118,
         "violin": 40,
+        "viola": 41,
         "cello": 42,
+        "contrabass": 43,
         "strings": 48,
-        "flute":73,
-        "saxophone":66,
-        "trumpet":56,
-        "synth lead":80,
-        "synth pad":88,
-        "percussion":118,
-        "vocals":54,
-        "male vocals":54,
-        "female vocals":54
+        "harp": 46,
+        "flute": 73,
+        "clarinet": 71,
+        "oboe": 68,
+        "saxophone": 66,
+        "trumpet": 56,
+        "trombone": 57,
+        "tuba": 58,
+        "french horn": 60,
+        "synth lead": 80,
+        "synth pad": 88,
+        "vocals": 54,
+        "male vocals": 54,
+        "female vocals": 54,
+        "choir": 52,
+        "whistle": 78
     },
+
     "emotion_vad_map": {
-        "happy": {"valence":0.85,"arousal":0.70,"dominance":0.60},
-        "sad": {"valence":0.20,"arousal":0.30,"dominance":0.30},
-        "calm": {"valence":0.60,"arousal":0.20,"dominance":0.50},
-        "energetic": {"valence":0.70,"arousal":0.88,"dominance":0.75},
-        "relaxing": {"valence":0.65,"arousal":0.22,"dominance":0.48},
-        "dark": {"valence":0.18,"arousal":0.45,"dominance":0.40},
-        "uplifting": {"valence":0.82,"arousal":0.72,"dominance":0.68},
-        "tense": {"valence":0.25,"arousal":0.80,"dominance":0.35},
-        "mellow": {"valence":0.62,"arousal":0.30,"dominance":0.50}
+        "happy": {"valence": 0.85, "arousal": 0.70, "dominance": 0.60},
+        "sad": {"valence": 0.20, "arousal": 0.30, "dominance": 0.30},
+        "calm": {"valence": 0.60, "arousal": 0.20, "dominance": 0.50},
+        "energetic": {"valence": 0.70, "arousal": 0.88, "dominance": 0.75},
+        "relaxing": {"valence": 0.65, "arousal": 0.22, "dominance": 0.48},
+        "dark": {"valence": 0.18, "arousal": 0.45, "dominance": 0.40},
+        "uplifting": {"valence": 0.82, "arousal": 0.72, "dominance": 0.68},
+        "tense": {"valence": 0.25, "arousal": 0.80, "dominance": 0.35},
+        "mellow": {"valence": 0.62, "arousal": 0.30, "dominance": 0.50},
+        "angry": {"valence": 0.15, "arousal": 0.85, "dominance": 0.70},
+        "fearful": {"valence": 0.12, "arousal": 0.78, "dominance": 0.20},
+        "surprised": {"valence": 0.70, "arousal": 0.80, "dominance": 0.55},
+        "nostalgic": {"valence": 0.45, "arousal": 0.25, "dominance": 0.40},
+        "romantic": {"valence": 0.75, "arousal": 0.40, "dominance": 0.55},
+        "mysterious": {"valence": 0.35, "arousal": 0.35, "dominance": 0.45},
+        "playful": {"valence": 0.80, "arousal": 0.65, "dominance": 0.60}
     },
-    "genre_3level_map":{
-        "pop":["流行","现代流行","主流流行"],
-        "rock":["摇滚","现代摇滚","经典摇滚"],
-        "electronic":["电子","电子音乐","synth‑pop"],
-        "jazz":["爵士","传统爵士","acoustic jazz"],
-        "classical":["古典","西洋古典","独奏古典"]
+
+    "genre_3level_map": {
+        "pop": ["流行", "现代流行", "主流流行"],
+        "rock": ["摇滚", "现代摇滚", "经典摇滚"],
+        "electronic": ["电子", "电子音乐", "synth-pop"],
+        "jazz": ["爵士", "传统爵士", "acoustic jazz"],
+        "classical": ["古典", "西洋古典", "独奏古典"],
+        "hip hop": ["嘻哈", "说唱", "rap"],
+        "R&B": ["节奏布鲁斯", "灵魂乐", "rhythm and blues"],
+        "folk": ["民谣", "民间音乐", "acoustic folk"],
+        "country": ["乡村", "乡村音乐", "modern country"],
+        "blues": ["布鲁斯", "蓝调", "delta blues"],
+        "soul": ["灵魂乐", "neo-soul", "classic soul"],
+        "funk": ["放克", "funk music", "afrobeat"],
+        "reggae": ["雷鬼", "ska", "dub"],
+        "ambient": ["氛围", "环境音乐", "drone"],
+        "experimental": ["实验", "先锋", "avant-garde"]
     },
-    "blacklist_tags": ["low quality","noisy","background noise","bad audio"]
+
+    "scene_tags": [
+        "background music",
+        "dance",
+        "meditation",
+        "workout",
+        "study",
+        "sleep",
+        "driving",
+        "party"
+    ],
+
+    "quality_tags": [
+        "lo-fi",
+        "hi-fi",
+        "live recording",
+        "studio recording"
+    ],
+
+    "blacklist_tags": [
+        "low quality",
+        "noisy",
+        "background noise",
+        "bad audio"
+    ],
+
+    "tag_categories": {
+        "instrument": {
+            "count": 33,
+            "description": "乐器标签，映射到GM128标准MIDI程序号",
+            "source": "instrument_gm128_map"
+        },
+        "emotion": {
+            "count": 16,
+            "description": "情绪标签，使用VAD三维度模型（效价/唤醒度/支配度）",
+            "source": "emotion_vad_map"
+        },
+        "genre": {
+            "count": 15,
+            "description": "流派标签，三级映射（英文→中文别名）",
+            "source": "genre_3level_map"
+        },
+        "scene": {
+            "count": 8,
+            "description": "使用场景标签",
+            "source": "scene_tags"
+        },
+        "quality": {
+            "count": 4,
+            "description": "音质/录制方式标签",
+            "source": "quality_tags"
+        },
+        "blacklist": {
+            "count": 4,
+            "description": "黑名单标签，命中则过滤掉该样本",
+            "source": "blacklist_tags"
+        }
+    }
 }
