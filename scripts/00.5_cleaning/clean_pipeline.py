@@ -610,12 +610,98 @@ def run_stage5_auxiliary_cleaning(df: pd.DataFrame, config: Dict, dry_run: bool 
     else:
         logger.info("  [1/3] PII 移除 - 已禁用")
 
-    # 2. 语言过滤（需 LID 模型，默认关闭）
+    # 2. 语言过滤（Whisper base detect_language，Mac CPU 可跑）
     lang_config = stage_config.get("language_filter", {})
     if lang_config.get("enabled", False):
-        logger.info("  [2/3] 语言过滤")
-        logger.info("    [TODO] 语言过滤需要 LID 模型（Whisper语言检测/XLS-R），待实现")
-        # TODO: 实现语言过滤
+        logger.info("  [2/3] 语言过滤（Whisper base）")
+
+        try:
+            from language_filter import LanguageFilter
+            from get_audio_physical_path import get_audio_absolute_path
+
+            # 配置
+            allowed_languages = lang_config.get("allowed_languages", ["zh", "en", "ja"])
+            model_size = lang_config.get("model_size", "base")
+            min_confidence = lang_config.get("min_confidence", 0.3)
+            max_seconds = lang_config.get("max_seconds", 30)
+            device = lang_config.get("device", "cpu")
+            filter_not_allowed = lang_config.get("filter_not_allowed", False)
+
+            logger.info(f"    允许语言: {allowed_languages}")
+            logger.info(f"    模型: {model_size} | 设备: {device}")
+            logger.info(f"    最低置信度: {min_confidence} | 最大检测时长: {max_seconds}秒")
+            logger.info(f"    自动过滤非目标语言: {'是' if filter_not_allowed else '否（只标记）'}")
+
+            if dry_run:
+                logger.info("    [预览模式] 不实际执行语言检测")
+            else:
+                # 获取音频路径
+                audio_paths = []
+                audio_id_map = {}
+                for _, row in df.iterrows():
+                    audio_id = row["audio_id"]
+                    ext = row.get("format", "wav").lower() if "format" in row else "wav"
+                    abs_path = get_audio_absolute_path(audio_id, ext)
+                    if abs_path.exists():
+                        audio_paths.append(str(abs_path))
+                        audio_id_map[str(abs_path)] = audio_id
+                    else:
+                        logger.warning(f"    文件不存在，跳过: {audio_id}")
+
+                if len(audio_paths) > 0:
+                    # 初始化语言过滤器（带缓存）
+                    cache_csv = str(PROJECT_ROOT / "data" / "00.5_cleaned" / "reports" / "language_cache.csv")
+                    report_csv = str(PROJECT_ROOT / "data" / "00.5_cleaned" / "reports" / "language_filter_report.csv")
+
+                    lang_filter = LanguageFilter(
+                        model_size=model_size,
+                        allowed_languages=allowed_languages,
+                        min_confidence=min_confidence,
+                        max_seconds=max_seconds,
+                        cache_csv=cache_csv,
+                        device=device,
+                    )
+
+                    # 批量检测
+                    results, report_df = lang_filter.filter_dataframe(
+                        pd.DataFrame({"audio_path": audio_paths}),
+                        audio_path_col="audio_path",
+                        add_columns=False,
+                        filter_not_allowed=False,  # 先不在这里过滤，后面统一处理
+                    )
+
+                    # 将检测结果写回 df
+                    lang_map = {}
+                    for result in results:
+                        audio_id = audio_id_map.get(result.audio_path, "")
+                        if audio_id:
+                            lang_map[audio_id] = result
+
+                    df = df.copy()
+                    df["lang"] = df["audio_id"].map(lambda x: lang_map.get(x).language if x in lang_map else "")
+                    df["lang_confidence"] = df["audio_id"].map(lambda x: lang_map.get(x).confidence if x in lang_map else 0.0)
+                    df["lang_allowed"] = df["audio_id"].map(lambda x: lang_map.get(x).is_allowed if x in lang_map else False)
+
+                    # 保存报告
+                    report_df.to_csv(report_csv, index=False, encoding="utf-8")
+                    logger.info(f"    语言检测报告: {report_csv}")
+
+                    # 统计
+                    lang_counts = df["lang"].value_counts().to_dict()
+                    allowed_count = df["lang_allowed"].sum()
+                    logger.info(f"    语言分布: {lang_counts}")
+                    logger.info(f"    允许语言: {allowed_count}/{len(df)}")
+
+                    # 如果配置了自动过滤
+                    if filter_not_allowed:
+                        before = len(df)
+                        df = df[df["lang_allowed"] == True].reset_index(drop=True)
+                        logger.info(f"    语言过滤: {before} → {len(df)} (剔除 {before - len(df)})")
+
+        except ImportError as e:
+            logger.warning(f"    语言过滤模块未找到: {e}，跳过")
+        except Exception as e:
+            logger.warning(f"    语言过滤失败: {e}，跳过")
     else:
         logger.info("  [2/3] 语言过滤 - 已禁用")
 

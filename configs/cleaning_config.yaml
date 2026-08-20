@@ -188,10 +188,21 @@ stage5_auxiliary:
     # 聚类数
     n_clusters: 10
   # 语言过滤
+  # 语言过滤（Whisper base detect_language，Mac CPU 可跑）
   language_filter:
     enabled: false
-    # 允许的语言
-    allowed_languages: ["zh", "en", "ja", "ko", "instrumental"]
+    # Whisper 模型大小（语言检测用 base 足够，~150MB，CPU 可跑）
+    model_size: "base"
+    # 运行设备（cpu/cuda）
+    device: "cpu"
+    # 允许的语言列表（不在列表中的标记为 lang_allowed=false）
+    allowed_languages: ["zh", "en", "ja"]
+    # 最低置信度（低于此值标记 low_confidence）
+    min_confidence: 0.3
+    # 最多检测多少秒音频（30秒足够判断语言，速度快）
+    max_seconds: 30
+    # 是否自动过滤非目标语言（false=只标记不删除，true=直接剔除）
+    filter_not_allowed: false
   # PII 移除
   pii_removal:
     enabled: false
