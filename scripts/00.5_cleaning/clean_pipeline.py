@@ -368,8 +368,67 @@ def run_stage3_quality_cleaning(df: pd.DataFrame, config: Dict, dry_run: bool = 
 
     df = df[df["audio_id"].isin(passed_audio_ids)].reset_index(drop=True)
 
-    logger.info(f"  Stage 3 完成: {initial_count} → {len(df)} (剔除 {initial_count - len(df)})")
+    logger.info(f"  质量检查完成: {initial_count} → {len(df)} (剔除 {initial_count - len(df)})")
     logger.info(f"  质量报告: {report_csv}")
+
+    # 内容过滤（非音乐/人声/安全）
+    content_filter_config = stage_config.get("content_filter", {})
+    if content_filter_config.get("enabled", False):
+        logger.info("")
+        logger.info("  [内容过滤] 非音乐/人声/安全检测")
+
+        try:
+            from content_filter import ContentFilter, batch_filter
+
+            # 重新获取当前 df 的音频路径
+            content_audio_paths = []
+            content_audio_id_map = {}
+            for _, row in df.iterrows():
+                audio_id = row["audio_id"]
+                ext = row.get("format", "wav").lower() if "format" in row else "wav"
+                abs_path = get_audio_absolute_path(audio_id, ext)
+                if abs_path.exists():
+                    content_audio_paths.append(str(abs_path))
+                    content_audio_id_map[str(abs_path)] = audio_id
+
+            if len(content_audio_paths) > 0:
+                content_report_csv = str(PROJECT_ROOT / "data" / "00.5_cleaned" / "reports" / "content_filter_report.csv")
+                content_results, content_report_df = batch_filter(
+                    content_audio_paths,
+                    config=content_filter_config,
+                    report_csv=content_report_csv
+                )
+
+                # 过滤未通过内容过滤的音频
+                content_passed_ids = set()
+                for result in content_results:
+                    # 非音乐过滤
+                    if content_filter_config.get("filter_non_music", False) and not result.is_music:
+                        continue
+                    # 纯器乐过滤
+                    if content_filter_config.get("instrumental_only", False) and not result.is_instrumental:
+                        continue
+                    # 人声占比过滤
+                    max_vocal = content_filter_config.get("max_vocal_ratio", 1.0)
+                    if result.vocal_ratio > max_vocal:
+                        continue
+                    # 内容安全过滤
+                    if content_filter_config.get("enable_safety_filter", False) and not result.is_safe:
+                        continue
+                    # 通过
+                    content_passed_ids.add(content_audio_id_map.get(result.audio_path, ""))
+
+                before_content = len(df)
+                df = df[df["audio_id"].isin(content_passed_ids)].reset_index(drop=True)
+                logger.info(f"  内容过滤完成: {before_content} → {len(df)} (剔除 {before_content - len(df)})")
+                logger.info(f"  内容过滤报告: {content_report_csv}")
+
+        except ImportError as e:
+            logger.warning(f"  内容过滤模块未找到: {e}，跳过")
+        except Exception as e:
+            logger.warning(f"  内容过滤失败: {e}，跳过")
+
+    logger.info(f"  Stage 3 完成: {initial_count} → {len(df)} (总剔除 {initial_count - len(df)})")
 
     return df
 
