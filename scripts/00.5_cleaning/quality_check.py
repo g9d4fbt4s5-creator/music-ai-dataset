@@ -141,9 +141,9 @@ class AudioQualityChecker:
         quality_cfg = config.get("quality_threshold", {})
         self.min_sample_rate = quality_cfg.get("min_sample_rate", 44100)
         self.min_bit_depth = quality_cfg.get("min_bit_depth", 16)
-        self.min_snr = quality_cfg.get("min_snr", 15)
-        self.max_clipping_ratio = quality_cfg.get("max_clipping_ratio", 0.005)
-        self.min_dynamic_range = quality_cfg.get("min_dynamic_range", 4)
+        self.min_snr = quality_cfg.get("min_snr", 20)
+        self.max_clipping_ratio = quality_cfg.get("max_clipping_ratio", 0.01)
+        self.min_dynamic_range = quality_cfg.get("min_dynamic_range", 30)
 
         # 时长过滤
         self.min_duration = quality_cfg.get("min_duration", 5)

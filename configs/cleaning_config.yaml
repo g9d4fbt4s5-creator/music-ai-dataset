@@ -92,11 +92,11 @@ stage3_quality:
     # 最低位深
     min_bit_depth: 16
     # 最低 SNR (dB)
-    min_snr: 15
+    min_snr: 20
     # 最大削波比例
-    max_clipping_ratio: 0.005
+    max_clipping_ratio: 0.01
     # 最低动态范围 (dB)
-    min_dynamic_range: 4
+    min_dynamic_range: 30
     # 时长过滤
     min_duration: 5  # 最短5秒
     max_duration: 0  # 0表示不设上限（视任务调整），如设3600则为1小时
