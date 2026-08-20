@@ -137,8 +137,10 @@ stage3_quality:
     enabled: true
     # 静音阈值（RMS < 此值视为静音）
     silence_threshold: 0.001
-    # 静音占比超过此值则拒绝（改为50%）
-    max_silence_ratio: 0.5
+    # 硬门槛：完全静音（>99%静音）直接剔除
+    complete_silence_ratio: 0.99
+    # 软标记：静音占比高只警告不剔除（有前奏/间奏的音乐可能静音占比高）
+    warning_silence_ratio: 0.7
   # 音质门槛
   quality_threshold:
     enabled: true
@@ -146,15 +148,15 @@ stage3_quality:
     min_sample_rate: 44100
     # 最低位深
     min_bit_depth: 16
-    # 最低 SNR (dB)
-    min_snr: 20
-    # 最大削波比例
-    max_clipping_ratio: 0.01
-    # 最低动态范围 (dB)
-    min_dynamic_range: 30
-    # 时长过滤
-    min_duration: 5  # 最短5秒
-    max_duration: 0  # 0表示不设上限（视任务调整），如设3600则为1小时
+    # 硬门槛：削波>5%直接剔除（原1%太严格，正常音乐偶尔有削波）
+    max_clipping_ratio: 0.05
+    # 软标记：SNR偏低只警告不剔除（压缩过的流行音乐SNR常在15-20dB）
+    warning_snr: 15
+    # 软标记：动态范围低只警告不剔除（响度战争后流行音乐DR常在10-20dB）
+    warning_dynamic_range: 10
+    # 时长过滤（硬门槛）
+    min_duration: 5  # 最短5秒，过短直接剔除
+    max_duration: 0  # 0表示不设上限（视任务调整）
   # 内容过滤
   content_filter:
     enabled: true  # 默认开启，YAMNet 作为主要检测方式（比规则兜底快12-20倍且更准）

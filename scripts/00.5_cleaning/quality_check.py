@@ -141,17 +141,28 @@ class AudioQualityChecker:
         # 静音过滤
         silence_cfg = config.get("silence_filter", {})
         self.silence_threshold = silence_cfg.get("silence_threshold", 0.001)
-        self.max_silence_ratio = silence_cfg.get("max_silence_ratio", 0.5)
+        # 硬门槛：完全静音（>99%静音）直接剔除
+        self.complete_silence_ratio = silence_cfg.get("complete_silence_ratio", 0.99)
+        # 软标记：静音占比高只警告不剔除（有前奏/间奏的音乐可能静音占比高）
+        self.warning_silence_ratio = silence_cfg.get("warning_silence_ratio", 0.7)
+        # 保留旧字段兼容
+        self.max_silence_ratio = self.complete_silence_ratio
 
         # 音质门槛
         quality_cfg = config.get("quality_threshold", {})
         self.min_sample_rate = quality_cfg.get("min_sample_rate", 44100)
         self.min_bit_depth = quality_cfg.get("min_bit_depth", 16)
-        self.min_snr = quality_cfg.get("min_snr", 20)
-        self.max_clipping_ratio = quality_cfg.get("max_clipping_ratio", 0.01)
-        self.min_dynamic_range = quality_cfg.get("min_dynamic_range", 30)
+        # 硬门槛：削波>5%直接剔除（原1%太严格，正常音乐偶尔有削波）
+        self.max_clipping_ratio = quality_cfg.get("max_clipping_ratio", 0.05)
+        # 软标记：SNR偏低只警告不剔除（压缩过的流行音乐SNR常在15-20dB）
+        self.warning_snr = quality_cfg.get("warning_snr", 15)
+        # 软标记：动态范围低只警告不剔除（响度战争后流行音乐DR常在10-20dB）
+        self.warning_dynamic_range = quality_cfg.get("warning_dynamic_range", 10)
+        # 保留旧字段兼容（设为软标记阈值，避免旧代码误判）
+        self.min_snr = self.warning_snr
+        self.min_dynamic_range = self.warning_dynamic_range
 
-        # 时长过滤
+        # 时长过滤（硬门槛）
         self.min_duration = quality_cfg.get("min_duration", 5)
         self.max_duration = quality_cfg.get("max_duration", 0)  # 0表示不设上限
 
@@ -163,14 +174,19 @@ class AudioQualityChecker:
         self.loudness_tolerance = loudness_cfg.get("tolerance", 0.5)
 
         logger.info(f"音频质量检查器初始化完成")
+        logger.info(f"  === 硬门槛（直接剔除）===")
+        logger.info(f"  文件损坏: 剔除")
+        logger.info(f"  时长过短: < {self.min_duration}s 剔除")
+        logger.info(f"  削波过高: > {self.max_clipping_ratio * 100}% 剔除")
+        logger.info(f"  完全静音: > {self.complete_silence_ratio * 100}% 剔除")
+        logger.info(f"  === 软标记（只警告不剔除，人工审核）===")
+        logger.info(f"  SNR偏低: < {self.warning_snr}dB 警告")
+        logger.info(f"  静音占比高: > {self.warning_silence_ratio * 100}% 警告")
+        logger.info(f"  动态范围低: < {self.warning_dynamic_range}dB 警告")
+        logger.info(f"  === 其他 ===")
         logger.info(f"  最小采样率: {self.min_sample_rate} Hz")
         logger.info(f"  最小位深: {self.min_bit_depth}-bit")
-        logger.info(f"  最大静音占比: {self.max_silence_ratio * 100}%")
-        logger.info(f"  最大削波比例: {self.max_clipping_ratio * 100}%")
-        logger.info(f"  最小SNR: {self.min_snr} dB")
-        logger.info(f"  最小动态范围: {self.min_dynamic_range} dB")
         logger.info(f"  目标响度: {self.target_lufs} LUFS")
-        logger.info(f"  时长范围: {self.min_duration}s - {self.max_duration}s")
 
     def check(self, audio_path: str, output_path: Optional[str] = None) -> QualityResult:
         """
@@ -300,7 +316,7 @@ class AudioQualityChecker:
             result.add_warning(f"位深较低: {result.bit_depth}-bit < {self.min_bit_depth}-bit")
 
     def _check_silence(self, y: np.ndarray, sr: int, result: QualityResult):
-        """检测静音占比"""
+        """检测静音占比（硬门槛：完全静音剔除；软标记：静音占比高只警告）"""
         try:
             # 使用 librosa.effects.split 检测非静音段
             non_silent = librosa.effects.split(
@@ -315,10 +331,17 @@ class AudioQualityChecker:
                 )
                 result.silence_ratio = 1.0 - (non_silent_duration / result.duration)
 
-            if result.silence_ratio > self.max_silence_ratio:
+            # 硬门槛：完全静音（>99%）直接剔除
+            if result.silence_ratio >= self.complete_silence_ratio:
                 result.high_silence = True
                 result.add_reason(
-                    f"静音占比过高: {result.silence_ratio * 100:.1f}% > {self.max_silence_ratio * 100}%"
+                    f"完全静音: {result.silence_ratio * 100:.1f}% >= {self.complete_silence_ratio * 100}%"
+                )
+            # 软标记：静音占比高只警告不剔除（有前奏/间奏的音乐可能静音占比高）
+            elif result.silence_ratio > self.warning_silence_ratio:
+                result.high_silence = True
+                result.add_warning(
+                    f"静音占比较高: {result.silence_ratio * 100:.1f}% > {self.warning_silence_ratio * 100}% (有前奏/间奏，不淘汰，人工审核)"
                 )
         except Exception as e:
             result.add_warning(f"静音检测失败: {str(e)}")
@@ -374,9 +397,9 @@ class AudioQualityChecker:
             else:
                 result.snr_db = float('inf')
 
-            if result.snr_db < self.min_snr:
+            if result.snr_db < self.warning_snr:
                 result.low_snr = True
-                result.add_reason(f"SNR过低: {result.snr_db:.1f}dB < {self.min_snr}dB")
+                result.add_warning(f"SNR偏低: {result.snr_db:.1f}dB < {self.warning_snr}dB (压缩过的音乐常见，不淘汰，人工审核)")
         except Exception as e:
             result.add_warning(f"SNR估算失败: {str(e)}")
 
@@ -411,10 +434,10 @@ class AudioQualityChecker:
             else:
                 result.dynamic_range_db = float('inf')
 
-            if result.dynamic_range_db < self.min_dynamic_range:
+            if result.dynamic_range_db < self.warning_dynamic_range:
                 result.low_dynamic_range = True
-                result.add_reason(
-                    f"动态范围过低: {result.dynamic_range_db:.1f}dB < {self.min_dynamic_range}dB"
+                result.add_warning(
+                    f"动态范围较低: {result.dynamic_range_db:.1f}dB < {self.warning_dynamic_range}dB (响度战争后流行音乐常见，不淘汰，人工审核)"
                 )
         except Exception as e:
             result.add_warning(f"动态范围评估失败: {str(e)}")
