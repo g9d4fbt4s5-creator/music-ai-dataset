@@ -739,18 +739,80 @@ def run_stage6_preprocess_output(df: pd.DataFrame, config: Dict, dry_run: bool =
     # 1. 重采样
     if stage_config.get("resample", {}).get("enabled", True):
         logger.info("  [1/3] 重采样 & 声道处理")
-        # TODO: 实现重采样（已在 extract_features.py 中部分实现）
+        # 重采样在切片时一并处理（AudioChunker 支持 target_sample_rate/target_channels）
+        resample_cfg = stage_config.get("resample", {})
+        logger.info(f"    目标采样率: {resample_cfg.get('target_sample_rate', 44100)}Hz")
+        logger.info(f"    目标声道: {resample_cfg.get('target_channels', 2)}")
 
     # 2. 分块
-    if stage_config.get("chunking", {}).get("enabled", False):
-        logger.info("  [2/3] 分块")
-        # TODO: 实现分块
+    chunking_cfg = stage_config.get("chunking", {})
+    if chunking_cfg.get("enabled", False):
+        logger.info("  [2/3] 分块（切片）")
+
+        try:
+            from audio_chunker import AudioChunker
+            from get_audio_physical_path import get_audio_absolute_path
+
+            chunk_size = chunking_cfg.get("chunk_size", 30)
+            overlap = chunking_cfg.get("overlap_ratio", 0.5)
+            min_chunk_length = chunking_cfg.get("min_chunk_length", 5)
+            target_sr = stage_config.get("resample", {}).get("target_sample_rate", 44100)
+            target_ch = stage_config.get("resample", {}).get("target_channels", 2)
+
+            logger.info(f"    切片长度: {chunk_size}秒 | 重叠: {overlap*100:.0f}% | 最小长度: {min_chunk_length}秒")
+
+            if dry_run:
+                logger.info("    [预览模式] 不实际执行切片")
+            else:
+                # 获取音频路径
+                audio_paths = []
+                audio_ids = []
+                for _, row in df.iterrows():
+                    audio_id = row["audio_id"]
+                    ext = row.get("format", "wav").lower() if "format" in row else "wav"
+                    abs_path = get_audio_absolute_path(audio_id, ext)
+                    if abs_path.exists():
+                        audio_paths.append(str(abs_path))
+                        audio_ids.append(audio_id)
+
+                if len(audio_paths) > 0:
+                    output_dir = str(PROJECT_ROOT / "data" / "00.5_cleaned" / "chunks")
+                    manifest_csv = str(PROJECT_ROOT / "data" / "00.5_cleaned" / "reports" / "chunk_manifest.csv")
+
+                    chunker = AudioChunker(
+                        chunk_size=chunk_size,
+                        overlap=overlap,
+                        min_chunk_length=min_chunk_length,
+                        target_sample_rate=target_sr,
+                        target_channels=target_ch,
+                    )
+
+                    all_chunks, chunk_df = chunker.batch_chunk(
+                        audio_paths,
+                        output_dir,
+                        audio_ids=audio_ids,
+                        manifest_csv=manifest_csv,
+                    )
+
+                    logger.info(f"    生成 {len(all_chunks)} 个切片 -> {output_dir}")
+                    logger.info(f"    切片元数据: {manifest_csv}")
+                else:
+                    logger.info("    没有可切片的音频，跳过")
+
+        except ImportError as e:
+            logger.warning(f"    切片模块未找到: {e}，跳过")
+        except Exception as e:
+            logger.warning(f"    切片失败: {e}，跳过")
+    else:
+        logger.info("  [2/3] 分块 - 已禁用")
 
     # 3. 特征提取
     if stage_config.get("feature_extraction", {}).get("enabled", False):
         logger.info("  [3/3] 特征提取")
         # 使用独立的 extract_features.py
         logger.info("    建议使用独立的 scripts/01_preprocess/extract_features.py")
+    else:
+        logger.info("  [3/3] 特征提取 - 已禁用")
 
     logger.info(f"  Stage 6 完成: {len(df)} 个样本")
 

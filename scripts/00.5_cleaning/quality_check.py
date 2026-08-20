@@ -75,6 +75,10 @@ class QualityResult:
     low_dynamic_range: bool = False
     loudness_normalized: bool = False
 
+    # 降噪候选（方案B：标记+人工审核，不自动降噪）
+    noise_candidate: bool = False
+    noise_candidate_reason: str = ""
+
     def add_reason(self, reason: str):
         """添加未通过原因"""
         self.passed = False
@@ -112,6 +116,8 @@ class QualityResult:
             "low_snr": self.low_snr,
             "low_dynamic_range": self.low_dynamic_range,
             "loudness_normalized": self.loudness_normalized,
+            "noise_candidate": self.noise_candidate,
+            "noise_candidate_reason": self.noise_candidate_reason,
         }
 
 
@@ -219,6 +225,9 @@ class AudioQualityChecker:
         # 9. 响度测量与归一化
         if self.normalize_loudness:
             self._measure_and_normalize_loudness(audio_path, y_mono, sr, result, output_path)
+
+        # 10. 降噪候选标记（方案B：标记+人工审核，不自动降噪）
+        self._mark_noise_candidate(y_mono, sr, result)
 
         return result
 
@@ -409,6 +418,39 @@ class AudioQualityChecker:
                 )
         except Exception as e:
             result.add_warning(f"动态范围评估失败: {str(e)}")
+
+    def _mark_noise_candidate(self, y: np.ndarray, sr: int, result: QualityResult):
+        """
+        标记降噪候选（方案B：标记+人工审核，不自动降噪）
+
+        判断条件（满足任一即标记）：
+        1. SNR < 15dB（信噪比较低，可能有背景噪声）—— 主要条件
+        2. 频谱平坦度 > 0.5（持续噪声，如空调声、电流声、底噪异常）—— 辅助条件
+        """
+        try:
+            reasons = []
+
+            # 条件1: SNR < 15dB（主要条件）
+            noise_candidate_snr = 15.0
+            if result.snr_db > 0 and result.snr_db < noise_candidate_snr:
+                reasons.append(f"SNR={result.snr_db:.1f}dB<{noise_candidate_snr}dB")
+
+            # 条件2: 频谱平坦度 > 0.5（持续噪声/底噪异常）
+            try:
+                S = np.abs(librosa.stft(y))
+                spectral_flatness = float(np.mean(librosa.feature.spectral_flatness(S=S)))
+                if spectral_flatness > 0.5:
+                    reasons.append(f"spectral_flatness={spectral_flatness:.3f}>0.5")
+            except Exception:
+                pass
+
+            if reasons:
+                result.noise_candidate = True
+                result.noise_candidate_reason = "; ".join(reasons)
+                result.add_warning(f"降噪候选: {result.noise_candidate_reason}")
+
+        except Exception as e:
+            result.add_warning(f"降噪候选标记失败: {str(e)}")
 
     def _measure_and_normalize_loudness(
         self, audio_path: str, y: np.ndarray, sr: int,
@@ -723,6 +765,17 @@ def batch_check(
         os.makedirs(os.path.dirname(report_csv), exist_ok=True)
         report_df.to_csv(report_csv, index=False, encoding="utf-8")
         logger.info(f"质量检查报告已保存: {report_csv}")
+
+    # 生成降噪候选 CSV（方案B：标记+人工审核）
+    noise_candidates = [r for r in results if r.noise_candidate]
+    if noise_candidates:
+        noise_df = pd.DataFrame([r.to_dict() for r in noise_candidates])
+        noise_csv = report_csv.replace(".csv", "_noise_candidates.csv") if report_csv else None
+        if noise_csv:
+            noise_df.to_csv(noise_csv, index=False, encoding="utf-8")
+            logger.info(f"降噪候选列表已保存: {noise_csv} ({len(noise_candidates)} 个)")
+    else:
+        logger.info("无降噪候选")
 
     # 统计
     passed = sum(1 for r in results if r.passed)

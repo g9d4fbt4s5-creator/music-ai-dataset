@@ -158,12 +158,16 @@ class ContentFilter:
             self._extract_basic_features(y, sr, result)
 
             # 音乐性评分
-            if self.music_method == "librosa":
-                self._score_music_librosa(y, sr, result)
-            elif self.music_method == "yamnet":
-                self._score_music_yamnet(y, sr, result)
-            elif self.music_method == "panns":
-                self._score_music_panns(y, sr, result)
+            # 先运行规则兜底检测（YAMNet 替代方案，P0 先用规则）
+            rule_non_music = self._rule_based_non_music_detection(y, sr, audio_path, result)
+
+            if not rule_non_music:
+                if self.music_method == "librosa":
+                    self._score_music_librosa(y, sr, result)
+                elif self.music_method == "yamnet":
+                    self._score_music_yamnet(y, sr, result)
+                elif self.music_method == "panns":
+                    self._score_music_panns(y, sr, result)
 
             # 人声占比检测
             if self.vocal_method == "librosa":
@@ -218,6 +222,85 @@ class ContentFilter:
         except Exception:
             result.harmonic_energy_ratio = 0.0
             result.percussive_energy_ratio = 0.0
+
+    def _rule_based_non_music_detection(self, y: np.ndarray, sr: int, audio_path: str, result: ContentAnalysisResult) -> bool:
+        """
+        基于规则的非音乐检测（YAMNet 兜底方案，P0 先用规则）
+
+        规则：
+        1. 静音占比 > 70%（几乎全静音，可能不是音乐）
+        2. 时长 < 3秒（太短，可能不是音乐）
+        3. 文件名关键词（speech/interview/podcast/lecture/语音/访谈/播客等）
+        4. 频谱平坦度 > 0.5（持续噪声/环境音，如空调声、电流声）
+
+        Returns:
+            bool: True 表示规则判定为非音乐，False 表示需要进一步分析
+        """
+        try:
+            duration = len(y) / sr
+            filename = Path(audio_path).name.lower()
+
+            # 计算静音占比
+            try:
+                non_silent = librosa.effects.split(y, top_db=30)
+                if len(non_silent) > 0:
+                    non_silent_duration = sum(end - start for start, end in non_silent) / sr
+                    silence_ratio = 1.0 - (non_silent_duration / duration)
+                else:
+                    silence_ratio = 1.0
+            except Exception:
+                silence_ratio = 0.0
+
+            # 规则1: 静音占比 > 70%
+            if silence_ratio > 0.7:
+                result.music_score = 0.1
+                result.music_confidence = 0.8
+                result.method_used = "rule_based"
+                logger.info(f"    规则判定非音乐: 静音占比 {silence_ratio*100:.1f}% > 70%")
+                return True
+
+            # 规则2: 时长 < 3秒
+            if duration < 3.0:
+                result.music_score = 0.2
+                result.music_confidence = 0.7
+                result.method_used = "rule_based"
+                logger.info(f"    规则判定非音乐: 时长 {duration:.1f}s < 3s")
+                return True
+
+            # 规则3: 文件名关键词
+            non_music_keywords = [
+                "speech", "interview", "podcast", "lecture", "seminar",
+                "presentation", "meeting", "conversation", "dialogue",
+                "语音", "访谈", "播客", "讲座", "演讲", "会议", "对话",
+                "noise", "silence", "ambient", "environment", "field_recording",
+                "噪声", "静音", "环境音", "现场录音",
+            ]
+            for kw in non_music_keywords:
+                if kw in filename:
+                    result.music_score = 0.15
+                    result.music_confidence = 0.75
+                    result.method_used = "rule_based"
+                    logger.info(f"    规则判定非音乐: 文件名含关键词 '{kw}'")
+                    return True
+
+            # 规则4: 频谱平坦度 > 0.5（持续噪声/环境音）
+            try:
+                S = np.abs(librosa.stft(y))
+                spectral_flatness = float(np.mean(librosa.feature.spectral_flatness(S=S)))
+                if spectral_flatness > 0.5:
+                    result.music_score = 0.2
+                    result.music_confidence = 0.6
+                    result.method_used = "rule_based"
+                    logger.info(f"    规则判定非音乐: 频谱平坦度 {spectral_flatness:.3f} > 0.5")
+                    return True
+            except Exception:
+                pass
+
+            return False
+
+        except Exception as e:
+            logger.warning(f"    规则检测失败: {e}")
+            return False
 
     def _score_music_librosa(self, y: np.ndarray, sr: int, result: ContentAnalysisResult):
         """
