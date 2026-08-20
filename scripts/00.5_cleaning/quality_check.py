@@ -464,6 +464,7 @@ class AudioRepairer:
     - 采样率转换：低采样率 → 目标采样率（上采样）
     - 位深转换：统一为 16-bit 或 24-bit
     - 声道转换：单声道 → 立体声（或反之）
+    - 降噪：noisereduce 谱减法降噪（可选）
 
     不可修复的问题（直接淘汰）：
     - 文件损坏
@@ -487,11 +488,21 @@ class AudioRepairer:
             "allowed_source_formats", ["wav", "flac", "mp3", "ogg", "m4a"]
         )
 
+        # 降噪配置
+        noise_reduction_cfg = config.get("noise_reduction", {})
+        self.enable_noise_reduction = noise_reduction_cfg.get("enabled", False)
+        self.noise_reduction_strength = noise_reduction_cfg.get("strength", 0.5)  # 0.0-1.0
+        self.noise_reduction_stationary = noise_reduction_cfg.get("stationary", True)
+
         logger.info("音频修复器初始化完成")
         logger.info(f"  目标格式: {self.target_format}")
         logger.info(f"  目标采样率: {self.target_sample_rate} Hz")
         logger.info(f"  目标位深: {self.target_bit_depth}-bit")
         logger.info(f"  目标声道: {self.target_channels}")
+        logger.info(f"  降噪: {'开启' if self.enable_noise_reduction else '关闭'}")
+        if self.enable_noise_reduction:
+            logger.info(f"    强度: {self.noise_reduction_strength}")
+            logger.info(f"    稳态噪声: {self.noise_reduction_stationary}")
 
     def needs_repair(self, audio_path: str) -> Tuple[bool, List[str]]:
         """
@@ -565,6 +576,37 @@ class AudioRepairer:
                 else:
                     y = librosa.resample(y, orig_sr=sr, target_sr=self.target_sample_rate)
                 sr = self.target_sample_rate
+
+            # 降噪（可选）
+            if self.enable_noise_reduction:
+                try:
+                    import noisereduce as nr
+                    logger.info(f"    应用降噪 (强度: {self.noise_reduction_strength})")
+
+                    if y.ndim > 1:
+                        # 多通道分别降噪
+                        y_denoised = []
+                        for ch in range(y.shape[0]):
+                            y_ch = nr.reduce_noise(
+                                y=y[ch],
+                                sr=sr,
+                                stationary=self.noise_reduction_stationary,
+                                prop_decrease=self.noise_reduction_strength
+                            )
+                            y_denoised.append(y_ch)
+                        y = np.array(y_denoised)
+                    else:
+                        y = nr.reduce_noise(
+                            y=y,
+                            sr=sr,
+                            stationary=self.noise_reduction_stationary,
+                            prop_decrease=self.noise_reduction_strength
+                        )
+                    issues.append("noise_reduction:applied")
+                except ImportError:
+                    logger.warning("    noisereduce 未安装，跳过降噪")
+                except Exception as e:
+                    logger.warning(f"    降噪失败: {str(e)}")
 
             # 确定位深的 subtype
             if self.target_bit_depth == 16:

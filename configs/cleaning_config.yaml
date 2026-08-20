@@ -68,6 +68,11 @@ stage2_format:
   allowed_source_formats: ["wav", "flac", "mp3", "ogg", "m4a"]
   # 不支持的格式直接拒绝
   reject_unsupported: true
+  # 降噪配置（可选，默认关闭）
+  noise_reduction:
+    enabled: false  # 是否启用降噪
+    strength: 0.5   # 降噪强度 0.0-1.0，0.5为中等
+    stationary: true  # 是否为稳态噪声（持续的背景噪声）
 
 # ========== Stage 3: 音频质量清洗 ==========
 stage3_quality:
