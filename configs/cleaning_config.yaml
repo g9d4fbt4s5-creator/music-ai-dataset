@@ -172,10 +172,29 @@ stage5_auxiliary:
   # PII 移除
   pii_removal:
     enabled: false
-    # 移除元数据中的 PII
-    remove_metadata_pii: true
-    # 移除音频中的人声 PII（需要语音识别）
-    remove_audio_pii: false
+    # 需要清理 PII 的文本列（只清理实际存在的列）
+    text_columns:
+      - "description"
+      - "lyrics"
+      - "comments"
+      - "notes"
+      - "title"
+      - "artist"
+    # 启用的 PII 类型
+    enabled_types:
+      - "phone"           # 手机号
+      - "id_card"         # 身份证
+      - "email"           # 邮箱
+      - "bank_card"       # 银行卡
+      - "landline"        # 固定电话
+      - "ip_address"      # IP地址
+      - "url"             # URL
+      - "mac_address"     # MAC地址
+      - "chinese_address" # 中文地址
+    # 姓名检测（误报率高，默认关闭）
+    enable_name_detection: false
+    # 替换符
+    replacement: "[REDACTED]"
 
 # ========== Stage 6: 预处理输出 ==========
 stage6_output:

@@ -513,9 +513,9 @@ def run_stage5_auxiliary_cleaning(df: pd.DataFrame, config: Dict, dry_run: bool 
     """
     Stage 5: 辅助清洗
 
-    - 风格一致性聚类
-    - 语言过滤
-    - PII 移除
+    - 风格一致性聚类（需模型，默认关闭）
+    - 语言过滤（需 LID 模型，默认关闭）
+    - PII 移除（正则实现，已完成）
     """
     logger.info("=" * 60)
     logger.info("Stage 5: 辅助清洗")
@@ -526,9 +526,66 @@ def run_stage5_auxiliary_cleaning(df: pd.DataFrame, config: Dict, dry_run: bool 
         logger.info("Stage 5 已禁用，跳过")
         return df
 
-    # TODO: 实现辅助清洗
-    logger.info("  [TODO] 辅助清洗功能待实现")
-    logger.info(f"  Stage 5 完成: {len(df)} 个样本")
+    initial_count = len(df)
+
+    # 1. PII 移除（正则实现，已完成）
+    pii_config = stage_config.get("pii_removal", {})
+    if pii_config.get("enabled", False):
+        logger.info("  [1/3] PII 移除")
+
+        try:
+            from pii_remover import PIIRemover, batch_pii_removal
+
+            # 需要清理的列
+            text_columns = pii_config.get("text_columns", [
+                "description", "lyrics", "comments", "notes", "title", "artist"
+            ])
+            # 只保留实际存在的列
+            existing_columns = [col for col in text_columns if col in df.columns]
+            logger.info(f"    待清理列: {existing_columns}")
+
+            if existing_columns and not dry_run:
+                report_csv = str(PROJECT_ROOT / "data" / "00.5_cleaned" / "reports" / "pii_removal_report.csv")
+                df, pii_report_df = batch_pii_removal(
+                    df,
+                    columns=existing_columns,
+                    config=pii_config,
+                    report_csv=report_csv
+                )
+                total_removed = pii_report_df["total_removed"].sum()
+                logger.info(f"    PII 移除完成: 共移除 {total_removed} 个")
+                logger.info(f"    报告: {report_csv}")
+            elif dry_run:
+                logger.info("    [预览模式] 不实际执行 PII 移除")
+            else:
+                logger.info("    没有可清理的文本列，跳过")
+
+        except ImportError as e:
+            logger.warning(f"    PII 移除模块未找到: {e}，跳过")
+        except Exception as e:
+            logger.warning(f"    PII 移除失败: {e}，跳过")
+    else:
+        logger.info("  [1/3] PII 移除 - 已禁用")
+
+    # 2. 语言过滤（需 LID 模型，默认关闭）
+    lang_config = stage_config.get("language_filter", {})
+    if lang_config.get("enabled", False):
+        logger.info("  [2/3] 语言过滤")
+        logger.info("    [TODO] 语言过滤需要 LID 模型（Whisper语言检测/XLS-R），待实现")
+        # TODO: 实现语言过滤
+    else:
+        logger.info("  [2/3] 语言过滤 - 已禁用")
+
+    # 3. 风格一致性聚类（需嵌入模型，默认关闭）
+    style_config = stage_config.get("style_clustering", {})
+    if style_config.get("enabled", False):
+        logger.info("  [3/3] 风格一致性聚类")
+        logger.info("    [TODO] 风格聚类需要嵌入模型（MAESTRO-BERT等），待实现")
+        # TODO: 实现风格一致性聚类
+    else:
+        logger.info("  [3/3] 风格一致性聚类 - 已禁用")
+
+    logger.info(f"  Stage 5 完成: {initial_count} 个样本")
 
     return df
 
