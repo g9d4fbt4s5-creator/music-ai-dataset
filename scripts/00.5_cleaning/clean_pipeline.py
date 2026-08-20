@@ -129,19 +129,77 @@ def run_stage1_metadata_cleaning(df: pd.DataFrame, config: Dict, dry_run: bool =
         "final_count": 0,
     }
 
-    # 1. 字段标准化
-    if stage_config.get("field_standardization", {}).get("instrument_standardization", True):
-        logger.info("  [1/4] 乐器字段标准化 (GM128)")
-        # TODO: 实现 GM128 标准化
-        report["standardized"] += len(df)
+    # 1. 字段标准化（复用 label_mapping_dict.json）
+    try:
+        from field_standardizer import FieldStandardizer
+        standardizer = FieldStandardizer()
 
-    if stage_config.get("field_standardization", {}).get("emotion_standardization", True):
-        logger.info("  [2/4] 情绪字段标准化 (VAD)")
-        # TODO: 实现 VAD 标准化
+        # 乐器标准化
+        if stage_config.get("field_standardization", {}).get("instrument_standardization", True):
+            instrument_col = stage_config.get("field_standardization", {}).get("instrument_col", "instrument")
+            if instrument_col in df.columns:
+                logger.info(f"  [1/4] 乐器字段标准化 (GM128), 列名: {instrument_col}")
+                standardized_count = 0
+                for idx, row in df.iterrows():
+                    if pd.notna(row[instrument_col]):
+                        result = standardizer.standardize_instrument(row[instrument_col])
+                        df.at[idx, f"{instrument_col}_standard"] = result["standard_name"]
+                        df.at[idx, f"{instrument_col}_gm128_id"] = result["gm128_id"]
+                        df.at[idx, f"{instrument_col}_matched"] = result["matched"]
+                        if result["matched"]:
+                            standardized_count += 1
+                report["standardized"] += standardized_count
+                logger.info(f"    匹配成功: {standardized_count}/{len(df)}")
+            else:
+                logger.info(f"  [1/4] 乐器字段标准化 - 列 {instrument_col} 不存在，跳过")
 
-    if stage_config.get("field_standardization", {}).get("genre_standardization", True):
-        logger.info("  [3/4] 流派字段标准化 (三级流派)")
-        # TODO: 实现三级流派标准化
+        # 情绪标准化
+        if stage_config.get("field_standardization", {}).get("emotion_standardization", True):
+            emotion_col = stage_config.get("field_standardization", {}).get("emotion_col", "emotion")
+            if emotion_col in df.columns:
+                logger.info(f"  [2/4] 情绪字段标准化 (VAD), 列名: {emotion_col}")
+                standardized_count = 0
+                for idx, row in df.iterrows():
+                    if pd.notna(row[emotion_col]):
+                        result = standardizer.standardize_emotion(row[emotion_col])
+                        df.at[idx, f"{emotion_col}_standard"] = result["standard_name"]
+                        if result["vad"]:
+                            df.at[idx, f"{emotion_col}_valence"] = result["vad"]["valence"]
+                            df.at[idx, f"{emotion_col}_arousal"] = result["vad"]["arousal"]
+                            df.at[idx, f"{emotion_col}_dominance"] = result["vad"]["dominance"]
+                        df.at[idx, f"{emotion_col}_matched"] = result["matched"]
+                        if result["matched"]:
+                            standardized_count += 1
+                report["standardized"] += standardized_count
+                logger.info(f"    匹配成功: {standardized_count}/{len(df)}")
+            else:
+                logger.info(f"  [2/4] 情绪字段标准化 - 列 {emotion_col} 不存在，跳过")
+
+        # 流派标准化
+        if stage_config.get("field_standardization", {}).get("genre_standardization", True):
+            genre_col = stage_config.get("field_standardization", {}).get("genre_col", "genre")
+            if genre_col in df.columns:
+                logger.info(f"  [3/4] 流派字段标准化 (三级流派), 列名: {genre_col}")
+                standardized_count = 0
+                for idx, row in df.iterrows():
+                    if pd.notna(row[genre_col]):
+                        result = standardizer.standardize_genre(row[genre_col])
+                        df.at[idx, f"{genre_col}_standard"] = result["standard_name"]
+                        df.at[idx, f"{genre_col}_level1"] = result["level1"]
+                        df.at[idx, f"{genre_col}_level2"] = result["level2"]
+                        df.at[idx, f"{genre_col}_level3"] = result["level3"]
+                        df.at[idx, f"{genre_col}_matched"] = result["matched"]
+                        if result["matched"]:
+                            standardized_count += 1
+                report["standardized"] += standardized_count
+                logger.info(f"    匹配成功: {standardized_count}/{len(df)}")
+            else:
+                logger.info(f"  [3/4] 流派字段标准化 - 列 {genre_col} 不存在，跳过")
+
+    except ImportError:
+        logger.warning("  field_standardizer 模块未找到，跳过字段标准化")
+    except Exception as e:
+        logger.warning(f"  字段标准化失败: {str(e)}")
 
     # 2. 缺失值处理
     missing_config = stage_config.get("missing_value", {})
