@@ -1,0 +1,193 @@
+# ============================================================
+# cleaning_config.yaml - 数据清洗配置
+# ============================================================
+# 6阶段数据清洗流水线配置
+# 采集(00) → 数据清洗(00.5) → 预处理(01)
+# ============================================================
+
+# ========== 全局配置 ==========
+global:
+  # 输入目录（原始音频，散列存储）
+  input_dir: "data/00_raw_collect/raw_audio"
+  # 输出目录（清洗后音频）
+  output_dir: "data/00.5_cleaned/cleaned_audio"
+  # 拒绝目录（不合格音频）
+  rejected_dir: "data/00.5_cleaned/rejected"
+  # 报告目录（清洗报告）
+  report_dir: "data/00.5_cleaned/reports"
+  # 音频清单
+  manifest_csv: "data/00_raw_collect/audio_manifest.csv"
+  # 并行处理数
+  num_workers: 4
+  # 日志级别
+  log_level: "INFO"
+
+# ========== Stage 1: 元数据清洗 ==========
+stage1_metadata:
+  enabled: true
+  # 字段标准化
+  field_standardization:
+    # GM128 乐器标准化
+    instrument_standardization: true
+    # VAD 情绪标准化
+    emotion_standardization: true
+    # 三级流派标准化
+    genre_standardization: true
+  # 缺失值处理
+  missing_value:
+    # 策略：skip / fill_default / flag
+    strategy: "flag"
+    # 默认填充值
+    defaults:
+      instrument: "unknown"
+      emotion: "unknown"
+      genre: "unknown"
+  # 冲突消解
+  conflict_resolution:
+    # 策略：first / last / majority / manual
+    strategy: "first"
+  # 无效样本剔除
+  invalid_filter:
+    # 缺少必填字段的样本是否剔除
+    remove_missing_required: false
+    # 必填字段
+    required_fields: ["audio_id", "file_relative_path"]
+
+# ========== Stage 2: 格式标准化 ==========
+stage2_format:
+  enabled: true
+  # 目标格式
+  target_format: "wav"  # wav / flac
+  # 目标采样率
+  target_sample_rate: 44100  # 44100 / 48000
+  # 目标位深
+  target_bit_depth: 16  # 16 / 24
+  # 目标声道
+  target_channels: 2  # 1=mono, 2=stereo
+  # 允许的源格式
+  allowed_source_formats: ["wav", "flac", "mp3", "ogg", "m4a"]
+  # 不支持的格式直接拒绝
+  reject_unsupported: true
+
+# ========== Stage 3: 音频质量清洗 ==========
+stage3_quality:
+  enabled: true
+  # 损坏检测
+  corruption_detection:
+    enabled: true
+    # 无法解码的文件直接拒绝
+    reject_corrupted: true
+  # 静音过滤
+  silence_filter:
+    enabled: true
+    # 静音阈值（RMS < 此值视为静音）
+    silence_threshold: 0.001
+    # 静音占比超过此值则拒绝
+    max_silence_ratio: 0.8
+  # 音质门槛
+  quality_threshold:
+    enabled: true
+    # 最低采样率
+    min_sample_rate: 44100
+    # 最低位深
+    min_bit_depth: 16
+    # 最低 SNR (dB)
+    min_snr: 20
+    # 最大削波比例
+    max_clipping_ratio: 0.01
+    # 最低动态范围 (dB)
+    min_dynamic_range: 30
+  # 内容过滤
+  content_filter:
+    enabled: false  # 需要模型支持，默认关闭
+    # 非音乐内容过滤
+    filter_non_music: false
+    # 人声占比过滤
+    max_vocal_ratio: 1.0
+  # 响度归一化
+  loudness_normalization:
+    enabled: true
+    # 目标响度 (LUFS)
+    target_lufs: -14
+    # 真峰值上限 (dBTP)
+    true_peak_max: -1
+    # 允许的偏差 (LU)
+    tolerance: 0.5
+
+# ========== Stage 4: 多级去重 ==========
+stage4_dedup:
+  enabled: true
+  # 精确去重
+  exact_dedup:
+    enabled: true
+    # 使用 checksum 文件
+    use_checksum: true
+    # checksum 文件路径
+    checksum_csv: "data/00_raw_collect/raw_audio_checksums.csv"
+    # 策略：keep_first / keep_last / keep_highest_quality
+    strategy: "keep_first"
+  # 近似去重
+  approximate_dedup:
+    enabled: false  # 需要 Chromaprint/fpcalc，默认关闭
+    # 相似度阈值
+    similarity_threshold: 0.9
+    # 方法：chromaprint / chroma_cosine
+    method: "chromaprint"
+  # 片段级去重
+  segment_dedup:
+    enabled: false
+    # 滑动窗口大小 (秒)
+    window_size: 10
+    # 步长 (秒)
+    hop_size: 5
+  # 跨集泄露防控
+  cross_set_leakage:
+    enabled: false
+    # 数据集划分文件
+    split_csv: ""
+
+# ========== Stage 5: 辅助清洗 ==========
+stage5_auxiliary:
+  enabled: false  # 高级功能，默认关闭
+  # 风格一致性聚类
+  style_clustering:
+    enabled: false
+    # 聚类方法：kmeans / dbscan
+    method: "kmeans"
+    # 聚类数
+    n_clusters: 10
+  # 语言过滤
+  language_filter:
+    enabled: false
+    # 允许的语言
+    allowed_languages: ["zh", "en", "ja", "ko", "instrumental"]
+  # PII 移除
+  pii_removal:
+    enabled: false
+    # 移除元数据中的 PII
+    remove_metadata_pii: true
+    # 移除音频中的人声 PII（需要语音识别）
+    remove_audio_pii: false
+
+# ========== Stage 6: 预处理输出 ==========
+stage6_output:
+  enabled: true
+  # 重采样 & 声道处理
+  resample:
+    enabled: true
+    target_sample_rate: 44100
+    target_channels: 2
+  # 分块
+  chunking:
+    enabled: false  # 默认不开启，按需开启
+    # 块大小 (秒)
+    chunk_size: 30
+    # 重叠比例 (0-1)
+    overlap_ratio: 0.5
+    # 最小块长度 (秒)
+    min_chunk_length: 5
+  # 特征提取
+  feature_extraction:
+    enabled: false  # 使用独立的 extract_features.py
+    # 特征类型
+    features: ["mel", "cqt", "chroma", "mfcc"]
