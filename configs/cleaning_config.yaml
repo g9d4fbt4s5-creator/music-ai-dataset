@@ -22,31 +22,55 @@ global:
   # 日志级别
   log_level: "INFO"
 
-  # ========== 数据来源画像（决定是否跑 YAMNet）==========
-  # 两条路径：
-  # A. controlled（数据来源可控）：Bandcamp/网易云/专业音乐库
-  #    → 不跑 YAMNet，靠规则兜底（静音/时长/文件名）+ 人工抽检
-  #    → 如果发现大量非音乐内容（>5%），再切换到 mixed 跑 YAMNet
-  # B. mixed（数据来源混杂）：YouTube/播客/混合爬虫/UGC上传
-  #    → 跑 YAMNet（yamnet_env 独立环境，输出 parquet，主环境只读）
-  data_source_profile: "controlled"  # controlled / mixed
-
-  # YAMNet 配置（仅 data_source_profile=mixed 时启用）
+  # ========== YAMNet 音频事件检测（默认开启，比规则兜底快12-20倍且更准）==========
+  # YAMNet 在独立 conda 环境 yamnet_env 中运行，主环境通过 subprocess 调用
+  # 输出 CSV/Parquet，主环境只读结果，不 import tensorflow
   yamnet:
-    # YAMNet 推理脚本路径（在 yamnet_env 环境下运行）
+    enabled: true  # 默认开启，全都跑 YAMNet
+    # yamnet_env conda 环境名
+    conda_env: "yamnet_env"
+    # conda 初始化脚本路径（Mac miniconda）
+    conda_init_script: "/opt/miniconda3/etc/profile.d/conda.sh"
+    # YAMNet 推理脚本路径
     infer_script: "scripts/00.5_cleaning/yamnet_infer.py"
-    # YAMNet 输出文件（parquet，主环境只读）
-    output_parquet: "data/00.5_cleaned/reports/yamnet_output.parquet"
-    # 输入列表文件（由主环境生成，每行一个音频路径）
+    # 输入列表文件（由主环境生成，每行 track_id,path）
     input_list: "data/00.5_cleaned/reports/yamnet_input_list.csv"
+    # 输出文件（CSV 或 Parquet，主环境只读）
+    output_file: "data/00.5_cleaned/reports/yamnet_output.csv"
     # 帧级置信度阈值
     confidence_threshold: 0.3
-    # 非音乐判定阈值（is_music=False 且 has_speech=True 标记为非音乐）
-    non_music_threshold:
-      require_is_music_false: true
-      require_has_speech_true: true
-      # 人工抽检比例（controlled 模式下，随机抽取 X% 人工复核）
-      manual_sampling_ratio: 0.05
+    # 非音乐判定逻辑
+    non_music_detection:
+      # YAMNet is_music=False 且 has_speech=True → 非音乐（语音/播客）
+      reject_speech: true
+      # YAMNet is_music=False 且 has_noise=True → 非音乐（环境音/噪声）
+      reject_noise: true
+      # 人声占比阈值（vocals_ratio_estimate > 此值标记为有人声，用于后续 Demucs 决策）
+      vocal_threshold: 0.1
+
+  # ========== 规则兜底（可选快速预筛选，默认关闭）==========
+  # 规则兜底比 YAMNet 慢且准确率低，仅用于快速预筛选明显非音乐
+  # 如<3秒短音频、全静音等，减少 YAMNet 处理量
+  rule_based_filter:
+    enabled: false  # 默认关闭，全都跑 YAMNet
+    # 静音占比 > 此值标记为非音乐
+    max_silence_ratio: 0.7
+    # 时长 < 此值（秒）标记为非音乐
+    min_duration: 3.0
+    # 文件名含非音乐关键词标记为非音乐
+    non_music_keywords:
+      - "speech"
+      - "interview"
+      - "podcast"
+      - "lecture"
+      - "语音"
+      - "访谈"
+      - "播客"
+      - "噪声"
+      - "静音"
+      - "环境音"
+    # 频谱平坦度 > 此值标记为非音乐（持续噪声/环境音）
+    max_spectral_flatness: 0.5
 
 # ========== Stage 1: 元数据清洗 ==========
 stage1_metadata:
@@ -133,9 +157,9 @@ stage3_quality:
     max_duration: 0  # 0表示不设上限（视任务调整），如设3600则为1小时
   # 内容过滤
   content_filter:
-    enabled: false  # 需要模型支持，默认关闭
-    # 非音乐内容过滤
-    filter_non_music: false
+    enabled: true  # 默认开启，YAMNet 作为主要检测方式（比规则兜底快12-20倍且更准）
+    # 非音乐内容过滤（YAMNet is_music=False 且 has_speech/has_noise=True 时剔除）
+    filter_non_music: true
     # 人声占比过滤
     max_vocal_ratio: 1.0
     # 文本安全检测（关键词/NLP，对元数据文本字段，不需要ASR）

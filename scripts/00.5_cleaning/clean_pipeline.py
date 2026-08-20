@@ -286,6 +286,144 @@ def run_stage2_format_normalization(df: pd.DataFrame, config: Dict, dry_run: boo
     return df
 
 
+def run_yamnet_detection(df: pd.DataFrame, config: Dict, dry_run: bool = False) -> Optional[pd.DataFrame]:
+    """
+    运行 YAMNet 音频事件检测（通过 subprocess 调用 yamnet_env 独立环境）
+
+    YAMNet 在独立 conda 环境 yamnet_env 中运行，主环境不 import tensorflow。
+    输出 CSV/Parquet，主环境只读结果。
+
+    Args:
+        df: 音频清单 DataFrame（需包含 audio_id, format 列）
+        config: 全局配置（含 global.yamnet 配置段）
+        dry_run: 预览模式
+
+    Returns:
+        Optional[pd.DataFrame]: YAMNet 检测结果，失败返回 None
+            列: track_id, yamnet_top_tags, is_music, has_speech, has_noise,
+                vocals_ratio_estimate, total_frames, high_confidence_frames
+    """
+    yamnet_config = config.get("global", {}).get("yamnet", {})
+    if not yamnet_config.get("enabled", False):
+        logger.info("  YAMNet 已禁用，跳过")
+        return None
+
+    logger.info("")
+    logger.info("  [YAMNet] 音频事件检测（yamnet_env 独立环境）")
+
+    try:
+        from get_audio_physical_path import get_audio_absolute_path
+    except ImportError as e:
+        logger.error(f"  无法导入 get_audio_physical_path: {e}")
+        return None
+
+    # 1. 生成输入列表 CSV
+    input_list_path = PROJECT_ROOT / yamnet_config.get("input_list", "data/00.5_cleaned/reports/yamnet_input_list.csv")
+    input_list_path.parent.mkdir(parents=True, exist_ok=True)
+
+    rows = []
+    for _, row in df.iterrows():
+        audio_id = row["audio_id"]
+        ext = row.get("format", "wav").lower() if "format" in row else "wav"
+        abs_path = get_audio_absolute_path(audio_id, ext)
+        if abs_path.exists():
+            rows.append({"track_id": audio_id, "path": str(abs_path)})
+        else:
+            logger.warning(f"    文件不存在，跳过 YAMNet: {audio_id}")
+
+    if len(rows) == 0:
+        logger.info("    没有可检测的音频，跳过")
+        return None
+
+    input_df = pd.DataFrame(rows)
+    input_df.to_csv(input_list_path, index=False)
+    logger.info(f"    生成输入列表: {len(input_df)} 个音频 -> {input_list_path}")
+
+    if dry_run:
+        logger.info("    [预览模式] 不实际运行 YAMNet")
+        return None
+
+    # 2. 通过 subprocess 调用 yamnet_env 运行 yamnet_infer.py
+    output_file = PROJECT_ROOT / yamnet_config.get("output_file", "data/00.5_cleaned/reports/yamnet_output.csv")
+    conda_init = yamnet_config.get("conda_init_script", "/opt/miniconda3/etc/profile.d/conda.sh")
+    conda_env = yamnet_config.get("conda_env", "yamnet_env")
+    infer_script = PROJECT_ROOT / yamnet_config.get("infer_script", "scripts/00.5_cleaning/yamnet_infer.py")
+    confidence_threshold = yamnet_config.get("confidence_threshold", 0.3)
+
+    if not infer_script.exists():
+        logger.error(f"    YAMNet 推理脚本不存在: {infer_script}")
+        return None
+
+    # 构造命令：source conda.sh && conda activate yamnet_env && python3 yamnet_infer.py
+    cmd = (
+        f"source {conda_init} && "
+        f"conda activate {conda_env} && "
+        f"python3 {infer_script} "
+        f"--input-list {input_list_path} "
+        f"--output {output_file} "
+        f"--confidence-threshold {confidence_threshold}"
+    )
+
+    logger.info(f"    调用 yamnet_env 运行 YAMNet...")
+    logger.info(f"    命令: {cmd[:100]}...")
+
+    import subprocess
+    try:
+        result = subprocess.run(
+            cmd,
+            shell=True,
+            capture_output=True,
+            text=True,
+            timeout=3600,  # 1小时超时
+            cwd=str(PROJECT_ROOT)
+        )
+
+        if result.returncode != 0:
+            logger.error(f"    YAMNet 运行失败 (exit code {result.returncode})")
+            logger.error(f"    stderr: {result.stderr[-500:]}")
+            return None
+
+        logger.info(f"    YAMNet 运行成功")
+        if result.stdout:
+            # 打印最后几行输出
+            lines = result.stdout.strip().split("\n")
+            for line in lines[-5:]:
+                logger.info(f"      {line}")
+
+    except subprocess.TimeoutExpired:
+        logger.error("    YAMNet 运行超时（>1小时）")
+        return None
+    except Exception as e:
+        logger.error(f"    YAMNet 调用失败: {e}")
+        return None
+
+    # 3. 读取 YAMNet 输出
+    if not output_file.exists():
+        logger.error(f"    YAMNet 输出文件不存在: {output_file}")
+        return None
+
+    try:
+        if str(output_file).endswith(".parquet"):
+            yamnet_df = pd.read_parquet(output_file)
+        else:
+            yamnet_df = pd.read_csv(output_file)
+
+        logger.info(f"    读取 YAMNet 结果: {len(yamnet_df)} 条")
+        logger.info(f"    输出文件: {output_file}")
+
+        # 统计
+        if "is_music" in yamnet_df.columns:
+            music_count = yamnet_df["is_music"].sum()
+            non_music_count = len(yamnet_df) - music_count
+            logger.info(f"    音乐: {music_count}, 非音乐: {non_music_count}")
+
+        return yamnet_df
+
+    except Exception as e:
+        logger.error(f"    读取 YAMNet 输出失败: {e}")
+        return None
+
+
 def run_stage3_quality_cleaning(df: pd.DataFrame, config: Dict, dry_run: bool = False) -> pd.DataFrame:
     """
     Stage 3: 音频质量清洗
@@ -420,6 +558,82 @@ def run_stage3_quality_cleaning(df: pd.DataFrame, config: Dict, dry_run: bool = 
         logger.info("")
         logger.info("  [内容过滤] 非音乐/人声/安全检测")
 
+        # ========== YAMNet 音频事件检测（主要检测方式，比规则兜底快12-20倍）==========
+        yamnet_df = run_yamnet_detection(df, config, dry_run)
+
+        # 根据 YAMNet 结果过滤非音乐
+        if yamnet_df is not None and len(yamnet_df) > 0:
+            yamnet_non_music_config = config.get("global", {}).get("yamnet", {}).get("non_music_detection", {})
+            reject_speech = yamnet_non_music_config.get("reject_speech", True)
+            reject_noise = yamnet_non_music_config.get("reject_noise", True)
+
+            # 判定非音乐：is_music=False 且 (has_speech=True 或 has_noise=True)
+            non_music_ids = set()
+            for _, row in yamnet_df.iterrows():
+                track_id = row["track_id"]
+                is_music = row.get("is_music", True)
+                has_speech = row.get("has_speech", False)
+                has_noise = row.get("has_noise", False)
+
+                if not is_music:
+                    if reject_speech and has_speech:
+                        non_music_ids.add(track_id)
+                        logger.info(f"    YAMNet 判定非音乐(语音): {track_id[:20]}...")
+                    elif reject_noise and has_noise:
+                        non_music_ids.add(track_id)
+                        logger.info(f"    YAMNet 判定非音乐(噪声): {track_id[:20]}...")
+
+            if non_music_ids:
+                before_yamnet = len(df)
+                df = df[~df["audio_id"].isin(non_music_ids)].reset_index(drop=True)
+                logger.info(f"    YAMNet 非音乐过滤: {before_yamnet} → {len(df)} (剔除 {before_yamnet - len(df)})")
+
+            # 将 YAMNet 结果合并到 df（供后续使用，如 vocals_ratio 用于 Demucs 决策）
+            if "vocals_ratio_estimate" in yamnet_df.columns:
+                yamnet_vocals = yamnet_df[["track_id", "vocals_ratio_estimate", "has_speech", "yamnet_top_tags"]].copy()
+                yamnet_vocals = yamnet_vocals.rename(columns={"track_id": "audio_id"})
+                df = df.merge(yamnet_vocals, on="audio_id", how="left")
+                logger.info(f"    YAMNet 结果已合并到 df (vocals_ratio/has_speech/top_tags)")
+
+        # ========== 规则兜底（可选快速预筛选，默认关闭）==========
+        rule_based_config = config.get("global", {}).get("rule_based_filter", {})
+        if rule_based_config.get("enabled", False):
+            logger.info("    [规则兜底] 快速预筛选明显非音乐")
+            # 规则兜底逻辑（静音/时长/文件名/频谱平坦度）
+            # 这里调用 content_filter 的规则检测方法
+            try:
+                from content_filter import ContentFilter
+
+                # 重新获取当前 df 的音频路径
+                rule_audio_paths = []
+                rule_audio_id_map = {}
+                for _, row in df.iterrows():
+                    audio_id = row["audio_id"]
+                    ext = row.get("format", "wav").lower() if "format" in row else "wav"
+                    abs_path = get_audio_absolute_path(audio_id, ext)
+                    if abs_path.exists():
+                        rule_audio_paths.append(str(abs_path))
+                        rule_audio_id_map[str(abs_path)] = audio_id
+
+                cf = ContentFilter(rule_based_config)
+                rule_non_music_ids = set()
+                for path in rule_audio_paths:
+                    result = cf.analyze(path)
+                    if not result.is_music:
+                        audio_id = rule_audio_id_map.get(path, "")
+                        if audio_id:
+                            rule_non_music_ids.add(audio_id)
+                            logger.info(f"      规则判定非音乐: {audio_id[:20]}... (score={result.music_score:.3f})")
+
+                if rule_non_music_ids:
+                    before_rule = len(df)
+                    df = df[~df["audio_id"].isin(rule_non_music_ids)].reset_index(drop=True)
+                    logger.info(f"    规则兜底过滤: {before_rule} → {len(df)} (剔除 {before_rule - len(df)})")
+
+            except Exception as e:
+                logger.warning(f"    规则兜底检测失败: {e}，跳过")
+
+        # ========== 原有内容过滤（librosa 特征+人声检测，作为补充）==========
         try:
             from content_filter import ContentFilter, batch_filter
 
@@ -463,7 +677,7 @@ def run_stage3_quality_cleaning(df: pd.DataFrame, config: Dict, dry_run: bool = 
 
                 before_content = len(df)
                 df = df[df["audio_id"].isin(content_passed_ids)].reset_index(drop=True)
-                logger.info(f"  内容过滤完成: {before_content} → {len(df)} (剔除 {before_content - len(df)})")
+                logger.info(f"  内容过滤(librosa)完成: {before_content} → {len(df)} (剔除 {before_content - len(df)})")
                 logger.info(f"  内容过滤报告: {content_report_csv}")
 
         except ImportError as e:
