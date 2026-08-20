@@ -1,0 +1,55 @@
+{
+  "generated_at": "2026-08-20T11:27:23.768227+08:00",
+  "snapshot": "gpu_backup_20260820_173500",
+  "total_tracks": 20,
+  "total_features": 32,
+  "feature_columns": [
+    "track",
+    "status",
+    "lufs",
+    "bpm",
+    "n_beats",
+    "clap_dim",
+    "n_f0_frames",
+    "f0_conf_mean",
+    "rms_mean",
+    "centroid_mean",
+    "zcr_mean",
+    "mfcc1_mean",
+    "chroma_mean",
+    "dur_s",
+    "secs",
+    "n_beats_detailed",
+    "beat_interval_mean",
+    "beat_interval_std",
+    "beat_interval_min",
+    "beat_interval_max",
+    "first_beat_time",
+    "last_beat_time",
+    "n_f0_frames_detailed",
+    "f0_hz_mean",
+    "f0_hz_std",
+    "f0_hz_min",
+    "f0_hz_max",
+    "f0_hz_median",
+    "f0_confidence_mean",
+    "f0_confidence_std",
+    "f0_high_conf_ratio",
+    "f0_vocal_ratio"
+  ],
+  "status_distribution": {
+    "ok": 20
+  },
+  "duration_stats": {
+    "mean": 314.2585,
+    "std": 138.3111409781736,
+    "min": 134.89,
+    "max": 688.4
+  },
+  "bpm_stats": {
+    "mean": 117.73949999999999,
+    "std": 30.50633816369796,
+    "min": 69.77,
+    "max": 181.82
+  }
+}
