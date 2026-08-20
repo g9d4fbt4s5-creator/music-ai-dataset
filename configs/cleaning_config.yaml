@@ -112,6 +112,29 @@ stage3_quality:
     filter_non_music: false
     # 人声占比过滤
     max_vocal_ratio: 1.0
+    # 文本安全检测（关键词/NLP，对元数据文本字段，不需要ASR）
+    text_safety:
+      enabled: false  # 默认关闭，需要时开启
+      # 需要检测的文本列（只检测实际存在的列）
+      text_columns:
+        - "description"
+        - "lyrics"
+        - "comments"
+        - "notes"
+        - "title"
+        - "artist"
+      # 风险阈值，超过此值判定为不安全
+      risk_threshold: 0.5
+      # 是否自动过滤不安全样本（默认只标记不删除）
+      filter_unsafe: false
+      # 关键词分类（可自定义覆盖默认）
+      # keyword_categories:
+      #   violence:
+      #     weight: 0.8
+      #     keywords: ["暴力", "血腥", "自残"]
+      #   drugs:
+      #     weight: 0.9
+      #     keywords: ["毒品", "吸毒"]
   # 响度归一化
   loudness_normalization:
     enabled: true

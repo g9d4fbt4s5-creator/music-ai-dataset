@@ -315,6 +315,49 @@ def run_stage3_quality_cleaning(df: pd.DataFrame, config: Dict, dry_run: bool = 
 
     initial_count = len(df)
 
+    # 文本安全检测（关键词/NLP，对元数据文本字段，不需要ASR/音频文件）
+    text_safety_config = stage_config.get("content_filter", {}).get("text_safety", {})
+    if text_safety_config.get("enabled", False):
+        logger.info("  [文本安全检测] 元数据关键词/NLP检测")
+
+        try:
+            from content_filter import TextSafetyFilter, batch_text_safety_check
+
+            # 需要检测的文本列
+            text_columns = text_safety_config.get("text_columns", [
+                "description", "lyrics", "comments", "notes", "title", "artist"
+            ])
+            existing_columns = [col for col in text_columns if col in df.columns]
+            logger.info(f"    待检测列: {existing_columns}")
+
+            if existing_columns and not dry_run:
+                report_csv = str(PROJECT_ROOT / "data" / "00.5_cleaned" / "reports" / "text_safety_report.csv")
+                df, safety_report_df = batch_text_safety_check(
+                    df,
+                    columns=existing_columns,
+                    config=text_safety_config,
+                    report_csv=report_csv
+                )
+
+                # 如果配置了自动过滤不安全样本
+                if text_safety_config.get("filter_unsafe", False):
+                    before = len(df)
+                    df = df[df["_text_safe"] == True].reset_index(drop=True)
+                    logger.info(f"    文本安全过滤: {before} → {len(df)} (剔除 {before - len(df)})")
+
+                unsafe_count = (safety_report_df["is_safe"] == False).sum()
+                logger.info(f"    文本安全检测完成: 不安全 {unsafe_count}/{len(df)}")
+                logger.info(f"    报告: {report_csv}")
+            elif dry_run:
+                logger.info("    [预览模式] 不实际执行文本安全检测")
+            else:
+                logger.info("    没有可检测的文本列，跳过")
+
+        except ImportError as e:
+            logger.warning(f"    文本安全检测模块未找到: {e}，跳过")
+        except Exception as e:
+            logger.warning(f"    文本安全检测失败: {e}，跳过")
+
     # 获取音频绝对路径
     audio_paths = []
     audio_id_map = {}

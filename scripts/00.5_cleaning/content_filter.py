@@ -25,6 +25,7 @@ content_filter.py
 """
 import os
 import sys
+import re
 import logging
 import numpy as np
 import pandas as pd
@@ -571,6 +572,264 @@ def batch_filter(
     logger.info(f"批量过滤完成: 音乐 {passed}/{len(results)}")
 
     return results, report_df
+
+
+# ===================== 文本安全检测（关键词/NLP，不需要ASR） =====================
+
+@dataclass
+class TextSafetyResult:
+    """文本安全检测结果"""
+    text: str
+    is_safe: bool = True
+    matched_keywords: List[Tuple[str, str]] = field(default_factory=list)  # (category, keyword)
+    matched_regex: List[Tuple[str, str]] = field(default_factory=list)  # (pattern_name, matched_text)
+    risk_score: float = 0.0  # 0.0-1.0，越高越危险
+    risk_level: str = "safe"  # safe / low / medium / high
+
+    def to_dict(self) -> Dict:
+        return {
+            "is_safe": self.is_safe,
+            "risk_score": round(self.risk_score, 4),
+            "risk_level": self.risk_level,
+            "matched_keywords": "; ".join(f"[{c}]{k}" for c, k in self.matched_keywords[:20]),
+            "matched_regex": "; ".join(f"[{n}]{t}" for n, t in self.matched_regex[:20]),
+            "total_matches": len(self.matched_keywords) + len(self.matched_regex),
+        }
+
+
+class TextSafetyFilter:
+    """
+    文本安全过滤器（关键词/NLP检测）
+
+    对元数据文本字段（description/lyrics/notes/title）做敏感内容检测，
+    不需要 ASR，直接对已有文本生效。
+
+    检测维度：
+    1. 关键词匹配：可配置的敏感关键词列表（按类别分组）
+    2. 正则匹配：可配置的正则模式（如敏感联系方式、特定格式）
+    3. 风险评分：根据匹配数量和类别权重计算风险分
+    """
+
+    # 默认关键词分类（可通过配置覆盖）
+    DEFAULT_KEYWORD_CATEGORIES = {
+        "violence": {
+            "weight": 0.8,
+            "keywords": ["暴力", "血腥", "殴打", "杀人", "谋杀", "恐怖", "袭击", "自残", "自杀"],
+        },
+        "drugs": {
+            "weight": 0.9,
+            "keywords": ["毒品", "吸毒", "贩毒", "海洛因", "可卡因", "大麻", "冰毒", "摇头丸"],
+        },
+        "political_sensitive": {
+            "weight": 1.0,
+            "keywords": [],  # 由用户配置，默认空
+        },
+        "pornography": {
+            "weight": 0.7,
+            "keywords": ["色情", "淫秽", "成人", "三级", "裸体"],
+        },
+        "gambling": {
+            "weight": 0.6,
+            "keywords": ["赌博", "赌场", "博彩", "下注", "赌球"],
+        },
+        "fraud": {
+            "weight": 0.7,
+            "keywords": ["诈骗", "传销", "非法集资", "骗局", "欺诈"],
+        },
+        "hate_speech": {
+            "weight": 0.8,
+            "keywords": ["歧视", "种族主义", "仇恨", "排外", "性别歧视"],
+        },
+    }
+
+    # 默认正则模式
+    DEFAULT_REGEX_PATTERNS = {
+        "phone_number": {
+            "weight": 0.3,
+            "pattern": r"1[3-9]\d{9}",
+        },
+        "id_card": {
+            "weight": 0.5,
+            "pattern": r"\d{17}[\dXx]",
+        },
+        "bank_card": {
+            "weight": 0.4,
+            "pattern": r"\d{16,19}",
+        },
+        "url": {
+            "weight": 0.2,
+            "pattern": r"https?://[^\s<>\"]+",
+        },
+    }
+
+    def __init__(self, config: Optional[Dict] = None):
+        """
+        初始化文本安全过滤器
+
+        Args:
+            config: 文本安全配置（来自 cleaning_config.yaml 的 stage3_quality.content_filter.text_safety）
+        """
+        if config is None:
+            config = {}
+
+        self.enabled = config.get("enabled", False)
+        self.keyword_categories = config.get("keyword_categories", self.DEFAULT_KEYWORD_CATEGORIES)
+        self.regex_patterns = config.get("regex_patterns", self.DEFAULT_REGEX_PATTERNS)
+        self.risk_threshold = config.get("risk_threshold", 0.5)  # 超过此阈值判定为不安全
+        self.case_sensitive = config.get("case_sensitive", False)
+
+        # 预编译正则
+        self._compiled_regex = {}
+        for name, pat_config in self.regex_patterns.items():
+            flags = 0 if self.case_sensitive else re.IGNORECASE
+            self._compiled_regex[name] = (
+                re.compile(pat_config["pattern"], flags),
+                pat_config.get("weight", 0.5),
+            )
+
+        logger.info("文本安全过滤器初始化完成")
+        logger.info(f"  启用: {'是' if self.enabled else '否'}")
+        logger.info(f"  关键词分类: {len(self.keyword_categories)} 个")
+        logger.info(f"  正则模式: {len(self.regex_patterns)} 个")
+        logger.info(f"  风险阈值: {self.risk_threshold}")
+
+    def check(self, text: str) -> TextSafetyResult:
+        """
+        检测文本安全性
+
+        Args:
+            text: 待检测文本
+
+        Returns:
+            TextSafetyResult: 检测结果
+        """
+        result = TextSafetyResult(text=text)
+
+        if not text or not isinstance(text, str) or not self.enabled:
+            return result
+
+        text_lower = text if self.case_sensitive else text.lower()
+
+        # 1. 关键词匹配
+        for category, cat_config in self.keyword_categories.items():
+            weight = cat_config.get("weight", 0.5)
+            keywords = cat_config.get("keywords", [])
+            for kw in keywords:
+                kw_lower = kw if self.case_sensitive else kw.lower()
+                if kw_lower in text_lower:
+                    result.matched_keywords.append((category, kw))
+                    result.risk_score += weight * 0.2  # 每个关键词贡献权重*0.2
+
+        # 2. 正则匹配
+        for name, (pattern, weight) in self._compiled_regex.items():
+            matches = pattern.findall(text)
+            for match in matches:
+                match_text = match if isinstance(match, str) else str(match)
+                result.matched_regex.append((name, match_text[:50]))
+                result.risk_score += weight * 0.15  # 每个正则匹配贡献权重*0.15
+
+        # 3. 风险评分归一化
+        result.risk_score = min(1.0, result.risk_score)
+
+        # 4. 风险等级
+        if result.risk_score == 0:
+            result.risk_level = "safe"
+        elif result.risk_score < 0.3:
+            result.risk_level = "low"
+        elif result.risk_score < 0.6:
+            result.risk_level = "medium"
+        else:
+            result.risk_level = "high"
+
+        # 5. 是否安全
+        result.is_safe = result.risk_score < self.risk_threshold
+
+        if not result.is_safe:
+            logger.warning(f"文本安全警告: risk={result.risk_score:.3f}, level={result.risk_level}, "
+                          f"keywords={len(result.matched_keywords)}, regex={len(result.matched_regex)}")
+
+        return result
+
+    def check_dataframe(
+        self,
+        df: pd.DataFrame,
+        columns: List[str],
+        add_report_columns: bool = True,
+    ) -> Tuple[pd.DataFrame, pd.DataFrame]:
+        """
+        批量检测 DataFrame 中的文本列
+
+        Args:
+            df: 输入 DataFrame
+            columns: 需要检测的列名列表
+            add_report_columns: 是否添加报告列
+
+        Returns:
+            (checked_df, report_df)
+        """
+        checked_df = df.copy()
+        report_rows = []
+
+        for idx, row in df.iterrows():
+            row_report = {"row_index": idx}
+            max_risk = 0.0
+            all_matches = 0
+            unsafe_columns = []
+
+            for col in columns:
+                if col not in df.columns:
+                    continue
+                text = row[col]
+                if pd.isna(text) or not isinstance(text, str):
+                    continue
+
+                result = self.check(text)
+                all_matches += len(result.matched_keywords) + len(result.matched_regex)
+                if result.risk_score > max_risk:
+                    max_risk = result.risk_score
+                if not result.is_safe:
+                    unsafe_columns.append(col)
+                    row_report[f"{col}_risk"] = result.risk_score
+                    row_report[f"{col}_level"] = result.risk_level
+                    row_report[f"{col}_matches"] = result.to_dict()["matched_keywords"]
+
+            row_report["max_risk_score"] = max_risk
+            row_report["total_matches"] = all_matches
+            row_report["unsafe_columns"] = "; ".join(unsafe_columns)
+            row_report["is_safe"] = max_risk < self.risk_threshold
+            report_rows.append(row_report)
+
+        report_df = pd.DataFrame(report_rows)
+
+        if add_report_columns:
+            checked_df["_text_safety_risk"] = report_df["max_risk_score"].values
+            checked_df["_text_safety_level"] = report_df["max_risk_score"].apply(
+                lambda x: "safe" if x == 0 else "low" if x < 0.3 else "medium" if x < 0.6 else "high"
+            ).values
+            checked_df["_text_safe"] = report_df["is_safe"].values
+
+        unsafe_count = sum(1 for r in report_rows if not r["is_safe"])
+        logger.info(f"文本安全检测完成: {len(df)} 行, 不安全 {unsafe_count} 行, 总匹配 {sum(r['total_matches'] for r in report_rows)}")
+
+        return checked_df, report_df
+
+
+def batch_text_safety_check(
+    df: pd.DataFrame,
+    columns: List[str],
+    config: Optional[Dict] = None,
+    report_csv: Optional[str] = None,
+) -> Tuple[pd.DataFrame, pd.DataFrame]:
+    """批量文本安全检测（便捷函数）"""
+    safety_filter = TextSafetyFilter(config)
+    checked_df, report_df = safety_filter.check_dataframe(df, columns)
+
+    if report_csv:
+        os.makedirs(os.path.dirname(report_csv), exist_ok=True)
+        report_df.to_csv(report_csv, index=False, encoding="utf-8")
+        logger.info(f"文本安全检测报告已保存: {report_csv}")
+
+    return checked_df, report_df
 
 
 if __name__ == "__main__":
