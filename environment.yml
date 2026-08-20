@@ -1,0 +1,76 @@
+# ============================================================
+# environment.yml - 本地 Mac 环境（music-corpus-local）
+# ============================================================
+# 用法：
+#   conda env create -f environment.yml
+#   conda activate music-corpus-local
+#
+# 包含：完整音频处理栈 + 标注工具 + 特征提取
+# - librosa / essentia / madmom-onnx 特征提取
+# - label-studio 人工标注
+# - demucs / CLAP / MERT 模型推理（CPU 模式）
+# ============================================================
+
+name: music-corpus-local
+
+channels:
+  - conda-forge
+  - defaults
+
+dependencies:
+  # ---------- Python 基础 ----------
+  - python=3.11.13
+  - pip
+  - setuptools
+  - wheel
+
+  # ---------- 数据处理 ----------
+  - numpy=1.26.4
+  - scipy=1.13.0
+  - scikit-learn=1.9.0
+  - pandas
+  - pyyaml
+  - tqdm
+
+  # ---------- 音频处理 ----------
+  - librosa=0.11.0
+  - ffmpeg=4.3.2
+  - pysoundfile
+  - audioread
+
+  # ---------- 可视化 ----------
+  - matplotlib
+  - pillow
+
+  # ---------- Jupyter ----------
+  - jupyter
+  - jupyterlab
+  - ipython
+  - ipykernel
+
+  # ---------- pip 安装的包 ----------
+  - pip:
+      # 深度学习框架（CPU 版本）
+      - torch==2.2.2
+      - torchaudio==2.2.2
+      - transformers==4.40.2
+
+      # 音频模型
+      - laion_clap==1.1.7
+      - demucs==3.0.6
+      - torchcrepe==0.0.24
+
+      # 特征提取（dev 版本，本地 wheel 缓存保证复现）
+      - ./envs/wheel_cache/essentia-2.1b6.dev1389-cp311-cp311-macosx_10_9_x86_64.whl
+      - ./envs/wheel_cache/madmom_onnx-0.17.dev0-py3-none-any.whl
+
+      # 标注工具
+      - label-studio==1.23.0
+      - label-studio-sdk==2.0.18
+
+      # 云存储
+      - boto3
+
+      # 工具
+      - black
+      - isort

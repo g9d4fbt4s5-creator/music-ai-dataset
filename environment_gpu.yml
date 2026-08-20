@@ -1,0 +1,59 @@
+# ============================================================
+# environment_gpu.yml - AutoDL GPU 服务器环境（music-corpus-gpu）
+# ============================================================
+# 用法：
+#   conda env create -f environment_gpu.yml
+#   conda activate music-corpus-gpu
+#
+# GPU 环境职责：仅负责重计算任务
+# - 音频预处理（重采样、响度归一、切片）
+# - demucs 源分离
+# - MERT / CLAP / MOSS-Music 大模型推理
+#
+# 不包含（本地 Mac 负责）：
+# - librosa / essentia / madmom-onnx 特征提取
+# - label-studio 人工标注
+# ============================================================
+
+name: music-corpus-gpu
+
+channels:
+  - conda-forge
+  - defaults
+
+dependencies:
+  # ---------- Python 基础 ----------
+  - python=3.11.13
+  - pip
+  - setuptools
+  - wheel
+
+  # ---------- 数据处理 ----------
+  - numpy=1.26.4
+  - scipy=1.13.0
+  - scikit-learn=1.9.0
+  - pandas
+  - pyyaml
+  - tqdm
+
+  # ---------- 音频处理基础 ----------
+  - ffmpeg=4.3.2
+
+  # ---------- pip 安装的包 ----------
+  - pip:
+      # 深度学习框架（GPU 版本，AutoDL 镜像通常自带，这里兜底）
+      - torch==2.2.2
+      - torchaudio==2.2.2
+      - transformers==4.40.2
+
+      # 音频模型
+      - laion_clap==1.1.7
+      - demucs==3.0.6
+      - torchcrepe==0.0.24
+
+      # 云存储（OSS 内网读写）
+      - boto3
+
+      # 工具
+      - black
+      - isort

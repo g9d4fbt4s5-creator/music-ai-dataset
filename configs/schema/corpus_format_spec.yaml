@@ -1,0 +1,90 @@
+# ============================================================
+# corpus_format_spec.yaml
+# 入库音频格式标准
+#
+# 采集入库脚本 import_audio.py 在入库前强制校验：
+# - 符合规格的：生成 checksum、写入 manifest、存入散列目录
+# - 不符合规格的：拒绝入库，移至 rejected/ 并记录原因
+# ============================================================
+
+# 允许的音频格式
+allowed_formats:
+  - wav
+  - flac
+  - mp3
+  - m4a
+  - ogg
+
+# 采样率要求
+sample_rate:
+  min: 44100          # 最低 44.1kHz
+  recommended: 48000   # 推荐 48kHz
+  note: "低于 44100Hz 的音频标记为 low_quality，但仍可入库"
+
+# 位深要求
+bit_depth:
+  allowed:
+    - 16
+    - 24
+    - 32
+  note: "8bit 音频拒绝入库"
+
+# 声道要求
+channels:
+  allowed:
+    - 1    # mono
+    - 2    # stereo
+  note: "多声道(>2)音频需要先下混为 stereo"
+
+# 时长要求
+duration:
+  min_seconds: 1       # 最短 1 秒
+  max_seconds: 600     # 最长 10 分钟
+  note: "超过 10 分钟的音频需要先切片"
+
+# 文件大小限制
+file_size:
+  max_mb: 200          # 最大 200MB
+  note: "超过 200MB 的文件需要检查是否为未压缩的长音频"
+
+# 完整性校验
+integrity:
+  checksum_algorithm: sha256
+  manifest_file: audio_manifest.csv
+  checksum_file: raw_audio_checksums.csv
+  note: "入库时生成 sha256，存入 raw_audio_checksums.csv，永不修改"
+
+# 拒绝入库的情况
+rejection_rules:
+  - condition: "格式不在 allowed_formats 列表中"
+    action: "reject"
+    reason: "unsupported_format"
+  - condition: "位深为 8bit"
+    action: "reject"
+    reason: "unsupported_bit_depth"
+  - condition: "文件损坏无法读取"
+    action: "reject"
+    reason: "corrupted_file"
+  - condition: "时长 < 1秒"
+    action: "reject"
+    reason: "too_short"
+  - condition: "文件大小 > 200MB"
+    action: "reject"
+    reason: "too_large"
+  - condition: "audio_id 冲突"
+    action: "reject"
+    reason: "duplicate_id"
+
+# 标记为低质量但仍可入库的情况
+low_quality_rules:
+  - condition: "采样率 < 44100Hz"
+    tag: "low_sample_rate"
+  - condition: "单声道(mono)"
+    tag: "mono_audio"
+  - condition: "mp3 格式（有损压缩）"
+    tag: "lossy_format"
+
+# rejected 目录说明
+rejected_directory:
+  path: "data/00_raw_collect/rejected/"
+  note: "临时存放，不进入 manifest；需要业务定期人工清理，否则磁盘持续膨胀"

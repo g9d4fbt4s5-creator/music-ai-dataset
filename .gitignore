@@ -106,3 +106,8 @@ label_studio.sqlite3
 *.rar
 *.7z
 data/00_raw_collect/source_archive/
+
+# ========== dev 版本 wheel 缓存（必须提交，保证复现） ==========
+# essentia / madmom-onnx 是 dev 预览版，PyPI 随时可能移除
+# 下载到本地 wheel_cache 并提交 git，保证环境可复现
+!envs/wheel_cache/**

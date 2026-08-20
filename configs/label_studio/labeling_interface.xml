@@ -1,0 +1,23 @@
+<View>
+  <Header value="音乐语料人工校验标注"/>
+  <Audio name="audio_player" value="$audio_url" height="120"/>
+
+  <Text name="field_yturl" value="【YouTube链接】: $yt_url"/>
+  <Text name="field_segment" value="【片段时间】: $segment_time"/>
+  <Text name="field_caption" value="【文本描述】: $full_caption"/>
+  <Text name="field_rawtags" value="【原始标签】: $raw_aspect_tags"/>
+  <Text name="field_unmapped" value="【未映射标签】: $unmapped_tags"/>
+  <Text name="field_gmcode" value="【GM乐器编码】: $gm128_instrument_codes"/>
+  <Text name="field_gmname" value="【乐器名称】: $gm128_instrument_text"/>
+  <Text name="field_genre" value="【三级流派】: $three_level_genre_text"/>
+  <Text name="field_vad" value="【VAD数值】: $vad_value"/>
+  <Text name="field_emotion" value="【对应情绪】: $vad_emotion_text"/>
+
+  <Choices name="quality_check" toName="audio_player" choice="single" showInLine="true">
+    <Choice value="数据正常"/>
+    <Choice value="音频损坏/静音"/>
+    <Choice value="标签错误需要修正"/>
+    <Choice value="样本丢弃"/>
+  </Choices>
+  <TextArea name="human_note" toName="audio_player" rows="2" placeholder="人工修正备注，填写修正后的标签"/>
+</View>

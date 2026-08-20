@@ -1,0 +1,39 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Audio ID Schema",
+  "description": "音频唯一标识符规范，强制使用 ULID，冲突拒绝入库",
+  "type": "object",
+  "properties": {
+    "audio_id": {
+      "type": "string",
+      "description": "ULID 格式唯一标识符，26个字符，大写字母和数字",
+      "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$",
+      "examples": ["01ARZ3NDEKTSV4RRFFQ69G5FAV"]
+    }
+  },
+  "required": ["audio_id"],
+  "rules": {
+    "id_format": "ULID (Universally Unique Lexicographically Sortable Identifier)",
+    "id_length": 26,
+    "charset": "0123456789ABCDEFGHJKMNPQRSTVWXYZ (Crockford's Base32, 排除 I,L,O,U)",
+    "case_sensitive": false,
+    "storage_case": "uppercase",
+    "conflict_policy": "reject",
+    "conflict_note": "audio_id 冲突时拒绝入库，记录到 rejected/ 目录，不覆盖已有文件"
+  },
+  "directory_hashing": {
+    "algorithm": "md5",
+    "hash_input": "audio_id (完整字符串)",
+    "hash_length_used": 4,
+    "directory_structure": "raw_audio/{hash[0:2]}/{hash[2:4]}/",
+    "filename_format": "{hash_full}_{audio_id}.{ext}",
+    "example": {
+      "audio_id": "01ARZ3NDEKTSV4RRFFQ69G5FAV",
+      "md5_hash": "a1b2c3d4e5f6...",
+      "directory": "raw_audio/a1/b2/",
+      "filename": "a1b2c3d4e5f6..._01ARZ3NDEKTSV4RRFFQ69G5FAV.mp3",
+      "full_path": "raw_audio/a1/b2/a1b2c3d4e5f6..._01ARZ3NDEKTSV4RRFFQ69G5FAV.mp3"
+    },
+    "note": "文件名前缀带上 hash 片段只是方便人工排查，业务代码不要解析文件名拿 hash，必须通过元数据表读取相对路径"
+  }
+}

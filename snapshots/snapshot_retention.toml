@@ -1,0 +1,62 @@
+# ============================================================
+# snapshot_retention.toml
+# 快照轮转与磁盘管控配置
+# ============================================================
+
+# ---------- 磁盘水位告警 ----------
+[disk_alert]
+# 磁盘使用率超过此百分比时告警
+warning_threshold = 80
+# 磁盘使用率超过此百分比时严重告警，自动触发清理
+critical_threshold = 90
+# 检查间隔（秒），cron 定期执行时使用
+check_interval = 3600
+
+# ---------- 快照轮转 ----------
+[snapshot_retention]
+# 本地保留的快照数量（超过此数量的旧快照将被清理）
+# 注意：清理前必须确认 .oss_verified 标记存在
+local_snapshot_count = 5
+# 快照目录路径（相对于项目根目录）
+snapshot_dir = "snapshots"
+# 快照目录前缀（用于识别 GPU 备份快照）
+snapshot_prefix = "gpu_backup_"
+# 保留最新的 N 个，删除更早的
+keep_latest = true
+
+# ---------- 缓存清理 ----------
+[cache_cleanup]
+# model_output_cache 保留天数（超过此天数且已备份到 OSS 的缓存将被清理）
+model_output_cache_days = 7
+# 预处理音频缓存保留天数
+processed_audio_days = 30
+# demucs 分轨缓存保留天数
+demucs_stems_days = 30
+# 日志保留天数
+logs_days = 90
+
+# ---------- 清理前置条件 ----------
+[cleanup_prerequisites]
+# 清理快照前必须检查的标记文件
+required_marker = ".oss_verified"
+# 清理缓存前必须确认已上传到 OSS
+require_oss_backup = true
+# 未确认备份的缓存/快照，禁止删除
+protect_unverified = true
+
+# ---------- OSS 备份配置 ----------
+[oss_backup]
+# OSS bucket 名称（从环境变量读取，这里只是备注）
+# OSS_BUCKET_NAME = "your-bucket-name"
+# OSS_REGION = "cn-hangzhou"
+# 快照在 OSS 上的前缀
+snapshot_oss_prefix = "snapshots/"
+# 缓存在 OSS 上的前缀
+cache_oss_prefix = "model_output_cache/"
+
+# ---------- 清理日志 ----------
+[cleanup_log]
+# 清理日志文件路径（相对于项目根目录）
+log_file = "logs/disk_guard_cleanup.log"
+# 日志保留天数
+log_retention_days = 180
