@@ -1,24 +1,22 @@
 <View>
   <Header value="音乐语料人工校验标注"/>
 
-  <!-- ========== 音频质量检测模块（最开头，只读警告，供人工审核） ========== -->
-  <View style="background: #f8f9fa; padding: 12px; border-radius: 6px; margin-bottom: 12px; border-left: 4px solid #ffc107;">
-    <Header value="⚠️ 音频质量检测（自动检测结果，仅供人工参考）" style="font-size: 14px; margin-bottom: 8px;"/>
-    <Text name="q_duration" value="【时长】: $duration 秒"/>
-    <Text name="q_sample_rate" value="【采样率】: $sample_rate Hz"/>
-    <Text name="q_bit_depth" value="【位深】: $bit_depth bit"/>
-    <Text name="q_snr" value="【信噪比 SNR】: $snr_db dB"/>
-    <Text name="q_silence" value="【静音占比】: $silence_ratio"/>
-    <Text name="q_dynamic_range" value="【动态范围】: $dynamic_range_db dB"/>
-    <Text name="q_clipping" value="【削波比例】: $clipping_ratio"/>
-    <Text name="q_loudness" value="【响度】: $loudness_lufs LUFS"/>
-    <Text name="q_true_peak" value="【True Peak】: $true_peak_db dBTP"/>
-    <Text name="q_noise_candidate" value="【降噪候选】: $noise_candidate"/>
-    <Text name="q_yamnet_music" value="【YAMNet-是否音乐】: $yamnet_is_music"/>
-    <Text name="q_yamnet_vocals" value="【YAMNet-人声占比估算】: $yamnet_vocals_ratio"/>
-    <Text name="q_yamnet_top_tags" value="【YAMNet-Top标签】: $yamnet_top_tags"/>
-    <Text name="q_warnings" value="【⚠️ 软标记警告】: $quality_warnings"/>
+  <!-- ========== 最开头：音质差警告 ========== -->
+  <View style="background: #fff3cd; padding: 12px; border-radius: 6px; margin-bottom: 12px; border-left: 4px solid #ffc107;">
+    <Header value="⚠️ 音质差警告，是否剔除？" style="font-size: 16px; color: #856404;"/>
+    <Choices name="poor_quality_reject" toName="audio_player" choice="single" showInLine="true">
+      <Choice value="是，剔除"/>
+      <Choice value="否，保留"/>
+    </Choices>
   </View>
+
+  <!-- ========== 质量检查选项（移到开头） ========== -->
+  <Choices name="quality_check" toName="audio_player" choice="single" showInLine="true">
+    <Choice value="数据正常"/>
+    <Choice value="音频损坏/静音"/>
+    <Choice value="标签错误需要修正"/>
+    <Choice value="样本丢弃"/>
+  </Choices>
 
   <Audio name="audio_player" value="$audio_url" height="120"/>
 
@@ -33,11 +31,5 @@
   <Text name="field_vad" value="【VAD数值】: $vad_value"/>
   <Text name="field_emotion" value="【对应情绪】: $vad_emotion_text"/>
 
-  <Choices name="quality_check" toName="audio_player" choice="single" showInLine="true">
-    <Choice value="数据正常"/>
-    <Choice value="音频损坏/静音"/>
-    <Choice value="标签错误需要修正"/>
-    <Choice value="样本丢弃"/>
-  </Choices>
   <TextArea name="human_note" toName="audio_player" rows="2" placeholder="人工修正备注，填写修正后的标签"/>
 </View>
