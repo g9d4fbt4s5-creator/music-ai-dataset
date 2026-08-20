@@ -135,7 +135,7 @@ class AudioQualityChecker:
         # 静音过滤
         silence_cfg = config.get("silence_filter", {})
         self.silence_threshold = silence_cfg.get("silence_threshold", 0.001)
-        self.max_silence_ratio = silence_cfg.get("max_silence_ratio", 0.3)
+        self.max_silence_ratio = silence_cfg.get("max_silence_ratio", 0.5)
 
         # 音质门槛
         quality_cfg = config.get("quality_threshold", {})
@@ -147,7 +147,7 @@ class AudioQualityChecker:
 
         # 时长过滤
         self.min_duration = quality_cfg.get("min_duration", 5)
-        self.max_duration = quality_cfg.get("max_duration", 600)
+        self.max_duration = quality_cfg.get("max_duration", 0)  # 0表示不设上限
 
         # 响度归一化
         loudness_cfg = config.get("loudness_normalization", {})
@@ -276,9 +276,9 @@ class AudioQualityChecker:
         if result.duration < self.min_duration:
             result.too_short = True
             result.add_reason(f"时长过短: {result.duration:.1f}s < {self.min_duration}s")
-        elif result.duration > self.max_duration:
+        elif self.max_duration > 0 and result.duration > self.max_duration:
             result.too_long = True
-            result.add_reason(f"时长过长: {result.duration:.1f}s > {self.max_duration}s")
+            result.add_warning(f"时长较长: {result.duration:.1f}s > {self.max_duration}s (视任务调整，不淘汰)")
 
     def _check_format(self, result: QualityResult):
         """检查采样率和位深"""
@@ -455,20 +455,157 @@ class AudioQualityChecker:
             result.add_warning(f"响度测量失败: {str(e)}")
 
 
+class AudioRepairer:
+    """
+    音频修复器
+
+    可修复的问题：
+    - 格式转换：mp3/ogg/m4a → wav/flac
+    - 采样率转换：低采样率 → 目标采样率（上采样）
+    - 位深转换：统一为 16-bit 或 24-bit
+    - 声道转换：单声道 → 立体声（或反之）
+
+    不可修复的问题（直接淘汰）：
+    - 文件损坏
+    - 静音占比过高
+    - SNR 过低
+    - 动态范围过低
+    """
+
+    def __init__(self, config: Optional[Dict] = None):
+        if config is None:
+            config = {}
+
+        # 目标格式
+        self.target_format = config.get("target_format", "wav")
+        self.target_sample_rate = config.get("target_sample_rate", 44100)
+        self.target_bit_depth = config.get("target_bit_depth", 16)
+        self.target_channels = config.get("target_channels", 2)
+
+        # 允许的源格式
+        self.allowed_source_formats = config.get(
+            "allowed_source_formats", ["wav", "flac", "mp3", "ogg", "m4a"]
+        )
+
+        logger.info("音频修复器初始化完成")
+        logger.info(f"  目标格式: {self.target_format}")
+        logger.info(f"  目标采样率: {self.target_sample_rate} Hz")
+        logger.info(f"  目标位深: {self.target_bit_depth}-bit")
+        logger.info(f"  目标声道: {self.target_channels}")
+
+    def needs_repair(self, audio_path: str) -> Tuple[bool, List[str]]:
+        """
+        检查音频是否需要修复
+
+        Returns:
+            (needs_repair, issues): 是否需要修复，问题列表
+        """
+        issues = []
+        path = Path(audio_path)
+        ext = path.suffix.lower().lstrip(".")
+
+        # 检查格式
+        if ext != self.target_format and ext in self.allowed_source_formats:
+            issues.append(f"format:{ext}→{self.target_format}")
+
+        # 检查采样率和位深（需要加载音频）
+        try:
+            info = sf.info(audio_path)
+            if info.samplerate != self.target_sample_rate:
+                issues.append(f"sample_rate:{info.samplerate}→{self.target_sample_rate}")
+            if info.channels != self.target_channels:
+                issues.append(f"channels:{info.channels}→{self.target_channels}")
+        except Exception:
+            pass
+
+        return len(issues) > 0, issues
+
+    def repair(self, audio_path: str, output_path: str) -> Tuple[bool, List[str]]:
+        """
+        修复音频
+
+        Args:
+            audio_path: 输入音频路径
+            output_path: 输出音频路径
+
+        Returns:
+            (success, issues): 是否成功，修复的问题列表
+        """
+        needs_repair, issues = self.needs_repair(audio_path)
+        if not needs_repair:
+            return True, []
+
+        logger.info(f"  修复音频: {audio_path}")
+        logger.info(f"    问题: {issues}")
+
+        try:
+            # 加载音频
+            y, sr = librosa.load(audio_path, sr=None, mono=False)
+
+            # 声道处理
+            if y.ndim > 1:
+                if self.target_channels == 1:
+                    y = librosa.to_mono(y)
+                elif y.shape[0] == 1 and self.target_channels == 2:
+                    # 单声道转立体声（复制通道）
+                    y = np.vstack([y, y])
+            elif self.target_channels == 2:
+                # 单声道转立体声
+                y = np.vstack([y, y])
+
+            # 采样率转换
+            if sr != self.target_sample_rate:
+                if y.ndim > 1:
+                    # 多通道分别重采样
+                    y_resampled = []
+                    for ch in range(y.shape[0]):
+                        y_ch = librosa.resample(y[ch], orig_sr=sr, target_sr=self.target_sample_rate)
+                        y_resampled.append(y_ch)
+                    y = np.array(y_resampled)
+                else:
+                    y = librosa.resample(y, orig_sr=sr, target_sr=self.target_sample_rate)
+                sr = self.target_sample_rate
+
+            # 确定位深的 subtype
+            if self.target_bit_depth == 16:
+                subtype = "PCM_16"
+            elif self.target_bit_depth == 24:
+                subtype = "PCM_24"
+            elif self.target_bit_depth == 32:
+                subtype = "PCM_32"
+            else:
+                subtype = "PCM_16"
+
+            # 保存
+            os.makedirs(os.path.dirname(output_path), exist_ok=True)
+            sf.write(output_path, y.T if y.ndim > 1 else y, sr, subtype=subtype)
+
+            logger.info(f"    修复完成: {output_path}")
+            return True, issues
+
+        except Exception as e:
+            logger.error(f"    修复失败: {str(e)}")
+            return False, issues
+
+
 def batch_check(
     audio_paths: List[str],
     config: Optional[Dict] = None,
     output_dir: Optional[str] = None,
     report_csv: Optional[str] = None,
+    auto_repair: bool = True,
+    repair_config: Optional[Dict] = None,
 ) -> Tuple[List[QualityResult], pd.DataFrame]:
     """
-    批量音频质量检查
+    批量音频质量检查（支持自动修复）
 
     Args:
         audio_paths: 音频文件路径列表
         config: 质量检查配置
         output_dir: 响度归一化输出目录（如果为 None 则不输出）
         report_csv: 检查报告 CSV 输出路径
+        auto_repair: 是否自动修复可修复的问题（格式/采样率/位深/声道）
+        repair_config: 修复配置（来自 cleaning_config.yaml 的 stage2_format）
 
     Returns:
         (results, report_df): 检查结果列表和报告 DataFrame
@@ -476,21 +613,58 @@ def batch_check(
     checker = AudioQualityChecker(config)
     results = []
 
+    # 初始化修复器
+    repairer = None
+    repaired_dir = None
+    if auto_repair:
+        if repair_config is None:
+            repair_config = {}
+        repairer = AudioRepairer(repair_config)
+        repaired_dir = PROJECT_ROOT / "data" / "00.5_cleaned" / "repaired_audio"
+        repaired_dir.mkdir(parents=True, exist_ok=True)
+        logger.info(f"自动修复已启用，修复后输出到: {repaired_dir}")
+
     logger.info(f"开始批量质量检查: {len(audio_paths)} 个文件")
 
     for i, audio_path in enumerate(audio_paths):
         logger.info(f"[{i+1}/{len(audio_paths)}] 检查: {audio_path}")
 
+        # 自动修复
+        check_path = audio_path
+        repaired = False
+        repair_issues = []
+        if repairer and repaired_dir:
+            needs_repair, issues = repairer.needs_repair(audio_path)
+            if needs_repair:
+                filename = Path(audio_path).stem + "_repaired.wav"
+                repaired_path = str(repaired_dir / filename)
+                success, repair_issues = repairer.repair(audio_path, repaired_path)
+                if success:
+                    check_path = repaired_path
+                    repaired = True
+                    logger.info(f"  🔧 已修复: {repair_issues}")
+                else:
+                    logger.warning(f"  ⚠️ 修复失败，使用原文件检查")
+
+        # 响度归一化输出路径
         output_path = None
         if output_dir:
-            filename = Path(audio_path).stem + "_normalized.wav"
+            filename = Path(check_path).stem + "_normalized.wav"
             output_path = str(Path(output_dir) / filename)
 
-        result = checker.check(audio_path, output_path)
+        # 质量检查
+        result = checker.check(check_path, output_path)
+
+        # 如果是修复后的文件，记录原始路径
+        if repaired:
+            result.audio_path = audio_path
+            result.add_warning(f"已修复后检查: {repair_issues}")
+
         results.append(result)
 
         status = "✅ 通过" if result.passed else "❌ 未通过"
-        logger.info(f"  {status} | 时长:{result.duration:.1f}s | "
+        repair_tag = " 🔧修复后" if repaired else ""
+        logger.info(f"  {status}{repair_tag} | 时长:{result.duration:.1f}s | "
                     f"SR:{result.sample_rate} | 静音:{result.silence_ratio*100:.1f}% | "
                     f"削波:{result.clipping_ratio*100:.3f}% | SNR:{result.snr_db:.1f}dB | "
                     f"DR:{result.dynamic_range_db:.1f}dB | LUFS:{result.loudness_lufs:.1f}")
@@ -511,7 +685,8 @@ def batch_check(
     # 统计
     passed = sum(1 for r in results if r.passed)
     failed = len(results) - passed
-    logger.info(f"批量检查完成: 通过 {passed}/{len(results)}, 未通过 {failed}")
+    repaired_count = sum(1 for r in results if any("已修复" in w for w in r.warnings))
+    logger.info(f"批量检查完成: 通过 {passed}/{len(results)}, 未通过 {failed}, 修复 {repaired_count}")
 
     return results, report_df
 

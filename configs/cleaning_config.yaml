@@ -82,8 +82,8 @@ stage3_quality:
     enabled: true
     # 静音阈值（RMS < 此值视为静音）
     silence_threshold: 0.001
-    # 静音占比超过此值则拒绝
-    max_silence_ratio: 0.8
+    # 静音占比超过此值则拒绝（改为50%）
+    max_silence_ratio: 0.5
   # 音质门槛
   quality_threshold:
     enabled: true
@@ -92,11 +92,14 @@ stage3_quality:
     # 最低位深
     min_bit_depth: 16
     # 最低 SNR (dB)
-    min_snr: 20
+    min_snr: 15
     # 最大削波比例
-    max_clipping_ratio: 0.01
+    max_clipping_ratio: 0.005
     # 最低动态范围 (dB)
-    min_dynamic_range: 30
+    min_dynamic_range: 4
+    # 时长过滤
+    min_duration: 5  # 最短5秒
+    max_duration: 0  # 0表示不设上限（视任务调整），如设3600则为1小时
   # 内容过滤
   content_filter:
     enabled: false  # 需要模型支持，默认关闭
