@@ -7,6 +7,7 @@ split_dataset.py
 - 支持分层抽样（按流派、语言、人声/纯器乐）
 - 支持时间隔离（Temporal Split：测试集用较晚作品，验证泛化能力）
 - 支持组合策略（时间隔离 + 分层/隔离抽样）
+- 支持来源隔离（--test-from / --holdout-from：从独立数据池导入，防止迭代污染）
 - 严格隔离：同一艺术家的不同版本不跨集
 - 输出划分清单（只存 audio_id，不存音频）
 - 生成划分统计报告
@@ -15,6 +16,28 @@ split_dataset.py
 1. 艺术家隔离（Artist Split）：同一艺术家的曲目不能同时出现在训练集和测试集
 2. 时间隔离（Temporal Split）：测试集包含训练集时间范围之后的作品（验证泛化能力）
 3. 流派分层抽样（Stratified Split）：确保各流派在子集中比例一致
+
+集合语义说明（重要）：
+- train：训练集，用于模型训练
+- val：验证集，用于调参、选模型，可以随版本迭代微调
+- test：普通测试集，用于开发期间评估模型，可看指标辅助判断
+  - 标准做法：一旦划分完成，test 集合固定冻结，不再新增、修改、删除样本
+  - 后续新入库音频只进 train/val，绝不混入 test
+- holdout：最终锁死的离线"发表用"测试集，全程只跑一次最终报告，绝不调参
+  - 完全冻结，调参阶段禁止读取，仅论文最终结果使用
+  - 用于跨版本模型对比，长期固定
+
+来源隔离（Source Isolation）：
+- 问题：全部样本放同一个 main_pool，再随机切 train/val/test，后续新增数据会
+  导致 test 集合混入新样本，破坏 holdout 冻结原则（迭代污染）
+- 解决方案：
+  - main_pool：只用于 train + val，后续可以持续追加新数据
+  - test_pool、holdout_pool：完全独立的采集池，不参与 main_pool 迭代
+  - --test-from / --holdout-from：从独立 manifest 导入，全部样本直接进入对应集合
+- 硬性保护：
+  1. test-from/holdout-from 样本禁止混入 train/val（坑1）
+  2. audio_id 全局跨池唯一性校验，main/test/holdout 之间不能重复（坑2）
+  3. --train/--val 比例仅针对 main_pool 计算，不包含 test-from/holdout-from 样本（坑5）
 
 用法：
     # 默认划分（80% train / 10% val / 10% test / 1% holdout）
@@ -37,6 +60,15 @@ split_dataset.py
 
     # 组合策略：时间隔离 + 艺术家隔离
     python split_dataset.py --temporal-by release_date --temporal-then-stratified --isolate-by artist_id
+
+    # 来源隔离：从独立数据池导入 test/holdout（推荐工业级做法）
+    # 注意：--train 0.85 --val 0.15 只作用于 main_pool（train+val 池）
+    # test-from/holdout-from 的样本全部直接进入对应集合，不参与比例分配
+    python split_dataset.py \
+      --input main_pool_manifest.csv \
+      --train 0.85 --val 0.15 \
+      --test-from test_pool_manifest.csv \
+      --holdout-from holdout_pool_manifest.csv
 
     # 指定输出目录
     python split_dataset.py --output data/04_final_dataset/v20260821_143000/
@@ -605,7 +637,11 @@ def main():
             split_method = "random"
 
     # 来源隔离：用独立采集的数据池替换 test/holdout（防止迭代污染和分布漂移）
+    # 坑1保护：test-from/holdout-from 样本全部直接进入对应集合，绝对不混入 train/val
+    # 坑2保护：audio_id 全局跨池唯一性校验，main/test/holdout 之间不能出现相同 audio_id
     source_isolation = {"test": None, "holdout": None}
+    overlap_audio_ids = []
+
     if args.test_from:
         test_from_path = Path(args.test_from)
         if not test_from_path.is_absolute():
@@ -614,11 +650,22 @@ def main():
             logger.info(f"来源隔离：从独立数据池导入测试集: {test_from_path}")
             external_test_df = load_manifest(test_from_path)
             logger.info(f"  独立测试集: {len(external_test_df)} 首")
-            # 从原划分中移除 test，用独立数据池替换
+
+            # 坑1：原 test 样本（来自 main_pool）并入 train，不丢弃
+            # 这样 train/val 只包含 main_pool 样本，test 只包含 test_pool 样本
+            if "audio_id" in test_df.columns and "audio_id" in train_df.columns:
+                original_test_ids = set(test_df["audio_id"].tolist())
+                train_ids = set(train_df["audio_id"].tolist())
+                # 把原 test 中不在 train 的样本并入 train
+                test_to_train = test_df[~test_df["audio_id"].isin(train_ids)]
+                if len(test_to_train) > 0:
+                    train_df = pd.concat([train_df, test_to_train], ignore_index=True)
+                    logger.info(f"  坑1保护：原 test 集 {len(test_to_train)} 首并入 train（main_pool 样本不丢弃）")
+
+            # 用独立数据池替换 test（全部样本直接进入 test，不参与 train/val 划分）
             test_df = external_test_df
             source_isolation["test"] = str(test_from_path)
-            # 调整 train/val 比例（原 test 比例分配给 train）
-            logger.info(f"  原 test 集已替换为独立数据池，原 test 样本并入 train")
+            logger.info(f"  坑1保护：test_pool 全部 {len(test_df)} 首直接进入 test 集，不混入 train/val")
         else:
             logger.warning(f"  ⚠️  独立测试集路径不存在: {test_from_path}，使用原划分")
 
@@ -630,10 +677,50 @@ def main():
             logger.info(f"来源隔离：从独立数据池导入holdout集: {holdout_from_path}")
             external_holdout_df = load_manifest(holdout_from_path)
             logger.info(f"  独立holdout集: {len(external_holdout_df)} 首")
+
+            # 坑1：原 holdout 样本（来自 main_pool）并入 train
+            if "audio_id" in holdout_df.columns and "audio_id" in train_df.columns:
+                original_holdout_ids = set(holdout_df["audio_id"].tolist())
+                train_ids = set(train_df["audio_id"].tolist())
+                holdout_to_train = holdout_df[~holdout_df["audio_id"].isin(train_ids)]
+                if len(holdout_to_train) > 0:
+                    train_df = pd.concat([train_df, holdout_to_train], ignore_index=True)
+                    logger.info(f"  坑1保护：原 holdout 集 {len(holdout_to_train)} 首并入 train（main_pool 样本不丢弃）")
+
             holdout_df = external_holdout_df
             source_isolation["holdout"] = str(holdout_from_path)
+            logger.info(f"  坑1保护：holdout_pool 全部 {len(holdout_df)} 首直接进入 holdout 集，不混入 train/val")
         else:
             logger.warning(f"  ⚠️  独立holdout集路径不存在: {holdout_from_path}，使用原划分")
+
+    # 坑2：audio_id 全局跨池唯一性校验
+    # main_pool (train/val)、test_pool、holdout_pool 之间不能出现相同 audio_id
+    logger.info("坑2保护：校验 audio_id 全局跨池唯一性...")
+    all_id_sets = {}
+    for split_name, split_df in [("train", train_df), ("val", val_df), ("test", test_df), ("holdout", holdout_df)]:
+        if "audio_id" in split_df.columns:
+            all_id_sets[split_name] = set(split_df["audio_id"].tolist())
+        else:
+            all_id_sets[split_name] = set()
+
+    # 检查任意两个集合之间的重叠
+    split_names = list(all_id_sets.keys())
+    for i in range(len(split_names)):
+        for j in range(i+1, len(split_names)):
+            name1, name2 = split_names[i], split_names[j]
+            overlap = all_id_sets[name1] & all_id_sets[name2]
+            if overlap:
+                overlap_audio_ids.extend([
+                    {"split_1": name1, "split_2": name2, "audio_id": aid}
+                    for aid in list(overlap)[:10]  # 只记录前10个
+                ])
+                logger.error(f"  ❌ 坑2校验失败：{name1} ↔ {name2} 有 {len(overlap)} 个重复 audio_id")
+                logger.error(f"     前5个: {list(overlap)[:5]}")
+
+    if not overlap_audio_ids:
+        logger.info("  ✅ 坑2校验通过：audio_id 全局跨池无重复")
+    else:
+        logger.warning(f"  ⚠️  坑2校验发现 {len(overlap_audio_ids)} 个跨池重复（详见 lineage.json）")
 
     # 生成统计
     stats = generate_split_stats(train_df, val_df, test_df, holdout_df, args.stratify_by)
@@ -648,6 +735,21 @@ def main():
     if source_isolation["holdout"]:
         stats["holdout_source_isolation"] = source_isolation["holdout"]
         logger.info(f"  ✅ holdout集来源隔离: {source_isolation['holdout']}")
+
+    # 坑2：记录跨池重复 audio_id（如果有）
+    if overlap_audio_ids:
+        stats["overlap_audio_ids"] = overlap_audio_ids
+        stats["source_isolation_passed"] = False
+    else:
+        stats["overlap_audio_ids"] = []
+        stats["source_isolation_passed"] = True
+
+    # 坑4：记录完整血缘字段
+    stats["main_pool_manifest"] = str(input_path)
+    stats["test_pool_manifest"] = source_isolation["test"]
+    stats["holdout_pool_manifest"] = source_isolation["holdout"]
+    stats["train_val_split_ratio"] = {"train": args.train, "val": args.val}
+    stats["source_isolation_enabled"] = bool(source_isolation["test"] or source_isolation["holdout"])
 
     # 输出目录
     if args.output:
