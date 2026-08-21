@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>ETL 流水线报告 - 2026-08-21 19:54:06</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; margin: 20px; background: #f5f5f5; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        h1 { color: #333; border-bottom: 2px solid #1f77b4; padding-bottom: 10px; }
+        h2 { color: #555; margin-top: 30px; }
+        .card { background: white; border-radius: 8px; padding: 20px; margin: 20px 0; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .stats { display: flex; flex-wrap: wrap; gap: 15px; }
+        .stat-item { background: #f0f7ff; border-radius: 8px; padding: 15px; min-width: 150px; text-align: center; }
+        .stat-value { font-size: 24px; font-weight: bold; color: #1f77b4; }
+        .stat-label { font-size: 12px; color: #666; margin-top: 5px; }
+        iframe { width: 100%; border: none; border-radius: 8px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>ETL 流水线报告</h1>
+    <p>生成时间: 2026-08-21 19:54:06</p>
+
+    <div class="card">
+        <h2>阶段统计</h2>
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-value">7</div>
+                <div class="stat-label">采集入库</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">2</div>
+                <div class="stat-label">元数据清洗</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">0</div>
+                <div class="stat-label">格式标准化</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">2</div>
+                <div class="stat-label">音频质量清洗</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">2</div>
+                <div class="stat-label">多级去重</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">2</div>
+                <div class="stat-label">辅助清洗</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">0</div>
+                <div class="stat-label">预处理输出</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">0</div>
+                <div class="stat-label">预标注</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">0</div>
+                <div class="stat-label">数据集划分</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>各阶段样本数变化（漏斗图）</h2>
+        <iframe src="01_stage_funnel.html" height="550"></iframe>
+    </div>
+    <div class="card">
+        <h2>各阶段样本留存率</h2>
+        <iframe src="02_retention_rate.html" height="550"></iframe>
+    </div>
+    <div class="card">
+        <h2>质量指标分布</h2>
+        <iframe src="03_quality_distribution.html" height="650"></iframe>
+    </div>
+    <div class="card">
+        <h2>YAMNet 内容过滤结果</h2>
+        <iframe src="04_yamnet_results.html" height="550"></iframe>
+    </div>
+    <div class="card">
+        <h2>数据集划分</h2>
+        <iframe src="05_dataset_split.html" height="550"></iframe>
+    </div>
+</div>
+</body>
+</html>
