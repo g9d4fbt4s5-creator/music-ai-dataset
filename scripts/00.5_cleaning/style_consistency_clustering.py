@@ -511,6 +511,142 @@ def classify_outliers(
     return df
 
 
+def verify_outliers_with_clap(
+    outlier_df: pd.DataFrame,
+    audio_dir: str,
+    yamnet_df: Optional[pd.DataFrame] = None,
+    clap_threshold: float = 0.3,
+) -> pd.DataFrame:
+    """
+    CLAP 辅助验证：对 MERT 聚类发现的异常点，用 CLAP 计算音频与标签文本的相似度。
+
+    CLAP 的角色：辅助验证，不是主决策。
+    - 高相似度 → 标签-音频匹配，异常点可能是风格独特的合法样本
+    - 低相似度 → 标签-音频不匹配，建议人工复核
+
+    Args:
+        outlier_df: 异常点DataFrame（包含track_id列）
+        audio_dir: 音频文件目录
+        yamnet_df: YAMNet结果DataFrame（用于获取标签文本）
+        clap_threshold: CLAP相似度阈值，低于此值标记为标签-音频不匹配
+
+    Returns:
+        pd.DataFrame: 包含CLAP相似度的异常点验证结果
+    """
+    import torch
+    import laion_clap
+    from sklearn.metrics.pairwise import cosine_similarity
+
+    if outlier_df.empty:
+        logger.info("没有异常点，跳过CLAP验证")
+        return outlier_df
+
+    logger.info(f"加载 CLAP 模型 (HTSAT-base)...")
+    model = laion_clap.CLAP_Module(enable_fusion=False)
+    model.load_ckpt()
+    model.eval()
+    if torch.cuda.is_available():
+        model.cuda()
+        logger.info("使用 GPU 加速")
+
+    # 查找音频文件
+    audio_extensions = {".mp3", ".wav", ".flac", ".m4a", ".ogg"}
+    audio_files_map = {}
+    for root, dirs, files in os.walk(audio_dir):
+        for f in files:
+            if os.path.splitext(f)[1].lower() in audio_extensions:
+                track_id = os.path.splitext(f)[0]
+                audio_files_map[track_id] = os.path.join(root, f)
+
+    results = []
+    for _, row in outlier_df.iterrows():
+        track_id = row["track_id"]
+
+        # 查找音频文件
+        audio_path = audio_files_map.get(track_id)
+        if not audio_path:
+            # 模糊匹配
+            matches = [p for tid, p in audio_files_map.items() if track_id in tid or tid in track_id]
+            if matches:
+                audio_path = matches[0]
+
+        if not audio_path or not os.path.exists(audio_path):
+            logger.warning(f"  未找到音频文件: {track_id}")
+            results.append({
+                **row.to_dict(),
+                "clap_similarity": None,
+                "clap_label_text": "",
+                "clap_verdict": "audio_not_found",
+            })
+            continue
+
+        # 获取标签文本（来自YAMNet top_tags）
+        label_text = "music"
+        if yamnet_df is not None and track_id in yamnet_df["track_id"].values:
+            yamnet_row = yamnet_df[yamnet_df["track_id"] == track_id].iloc[0]
+            top_tags = str(yamnet_row.get("yamnet_top_tags", ""))
+            # 解析 top_tags 格式，取前3个标签
+            if top_tags:
+                try:
+                    import ast
+                    tags_list = ast.literal_eval(top_tags)
+                    if isinstance(tags_list, list) and tags_list:
+                        label_text = ", ".join([t[0] if isinstance(t, tuple) else str(t) for t in tags_list[:3]])
+                except Exception:
+                    label_text = top_tags[:50]
+
+        try:
+            # CLAP 音频嵌入
+            audio_embed = model.get_audio_embedding_from_filelist([audio_path])
+            # CLAP 文本嵌入
+            text_embed = model.get_text_embedding([label_text])
+            # 余弦相似度
+            similarity = float(cosine_similarity(audio_embed, text_embed)[0][0])
+
+            # 判定
+            if similarity < clap_threshold:
+                verdict = "label_audio_mismatch"
+                reason_clap = f"CLAP相似度{similarity:.3f}<{clap_threshold}，标签-音频可能不匹配，建议人工复核"
+            else:
+                verdict = "label_audio_match"
+                reason_clap = f"CLAP相似度{similarity:.3f}>={clap_threshold}，标签-音频匹配"
+
+            logger.info(f"  {track_id}: CLAP相似度={similarity:.3f} → {verdict}")
+
+            results.append({
+                **row.to_dict(),
+                "clap_similarity": round(similarity, 4),
+                "clap_label_text": label_text,
+                "clap_verdict": verdict,
+                "clap_reason": reason_clap,
+            })
+
+        except Exception as e:
+            logger.error(f"  CLAP验证失败 {track_id}: {e}")
+            results.append({
+                **row.to_dict(),
+                "clap_similarity": None,
+                "clap_label_text": label_text,
+                "clap_verdict": "clap_error",
+                "clap_reason": str(e)[:100],
+            })
+
+    # 释放显存
+    del model
+    if torch.cuda.is_available():
+        torch.cuda.empty_cache()
+
+    df = pd.DataFrame(results)
+    logger.info(f"CLAP辅助验证完成: {len(df)} 个异常点")
+    if not df.empty and "clap_verdict" in df.columns:
+        logger.info(f"  验证结果分布:\n{df['clap_verdict'].value_counts()}")
+        mismatch_count = (df["clap_verdict"] == "label_audio_mismatch").sum()
+        if mismatch_count > 0:
+            logger.warning(f"  ⚠️ {mismatch_count} 个异常点标签-音频可能不匹配，建议人工复核")
+
+    return df
+
+
 def visualize_tsne(
     embeddings: np.ndarray,
     labels: np.ndarray,
@@ -618,9 +754,15 @@ def main():
     parser.add_argument("--metric", type=str, default="cosine", choices=["cosine", "euclidean"], help="距离度量")
     parser.add_argument("--no-visualize", action="store_true", help="跳过 t-SNE 可视化")
     parser.add_argument("--yamnet-results", type=str, default=None,
-                        help="YAMNet结果CSV路径（用于异常点分级处理）")
+                        help="YAMNet结果CSV路径（用于异常点分级处理和CLAP验证的标签文本）")
     parser.add_argument("--classify-outliers", action="store_true",
                         help="对异常点进行分级处理（不直接删除，输出分级报告）")
+    parser.add_argument("--verify-with-clap", action="store_true",
+                        help="用CLAP辅助验证异常点（计算音频与标签文本的相似度，低相似度→标签-音频不匹配）")
+    parser.add_argument("--audio-dir", type=str, default=None,
+                        help="音频文件目录（CLAP验证时需要）")
+    parser.add_argument("--clap-threshold", type=float, default=0.3,
+                        help="CLAP相似度阈值，低于此值标记为标签-音频不匹配")
     # 通用参数
     parser.add_argument("--output", type=str, help="输出文件路径（extract模式）")
     parser.add_argument("--limit", type=int, default=None, help="只处理前 N 个音频")
@@ -721,6 +863,25 @@ def main():
                 logger.info("")
                 logger.info("=== 异常点分级汇总 ===")
                 logger.info(outlier_classification[["outlier_class", "action", "flag_for_review"]].to_string(index=False))
+
+                # CLAP 辅助验证（可选）
+                if args.verify_with_clap:
+                    if not args.audio_dir:
+                        logger.warning("--verify-with-clap 需要 --audio-dir，跳过CLAP验证")
+                    else:
+                        logger.info("")
+                        logger.info("=== CLAP 辅助验证 ===")
+                        logger.info(f"CLAP相似度阈值: {args.clap_threshold}")
+                        clap_verification = verify_outliers_with_clap(
+                            outlier_classification,
+                            args.audio_dir,
+                            yamnet_df,
+                            args.clap_threshold,
+                        )
+                        if not clap_verification.empty:
+                            clap_verify_path = output_dir / "outlier_clap_verification.csv"
+                            clap_verification.to_csv(clap_verify_path, index=False, encoding="utf-8")
+                            logger.info(f"CLAP验证报告已保存: {clap_verify_path}")
 
         # 打印汇总
         logger.info("")
