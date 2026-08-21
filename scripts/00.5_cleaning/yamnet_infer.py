@@ -31,6 +31,7 @@ import argparse
 import logging
 from pathlib import Path
 from collections import Counter
+from datetime import datetime
 from typing import List, Dict, Optional
 
 import numpy as np
@@ -52,6 +53,7 @@ FRAME_HOP = 0.48  # YAMNet 每帧跳步 0.48s
 FRAME_DURATION = 0.96  # YAMNet 每帧时长 0.96s
 
 # YAMNet 类别分组（用于曲目级聚合）
+# 修正版：移除 Silence 从 NOISE_TAGS，拆分 SPEECH/VOCALS，新增 SILENCE_TAGS
 MUSIC_TAGS = {
     "Music", "Musical instrument", "Singing", "Male singing", "Female singing",
     "Choir", "Orchestra", "Piano", "Guitar", "Drum", "Bass guitar",
@@ -59,6 +61,7 @@ MUSIC_TAGS = {
     "Jazz", "Classical music", "Country music", "Reggae", "Blues", "R&B",
     "Folk music", "World music", "Latin music", "Funk", "Disco", "Techno",
     "House music", "Trance", "Dubstep", "Ambient music", "New age music",
+    "Vocalization", "Hum", "Beatboxing", "Rapping",
 }
 
 SPEECH_TAGS = {
@@ -68,18 +71,23 @@ SPEECH_TAGS = {
     "Infant cry", "Cough", "Sneeze", "Throat clearing",
 }
 
+# 演唱标签（人声乐，区别于说话）
+VOCALS_TAGS = {
+    "Singing", "Male singing", "Female singing", "Choir",
+    "Vocalization", "Hum", "Beatboxing", "Rapping",
+}
+
+# 噪声标签（修正：移除 Silence！）
 NOISE_TAGS = {
-    "Environmental noise", "Silence", "White noise", "Pink noise",
+    "Environmental noise", "White noise", "Pink noise",
     "Throbbing", "Static", "Distortion", "Sound effect",
     "Traffic noise", "Aircraft noise", "Engine noise", "Wind noise",
     "Rain", "Thunder", "Water", "Waves", "Bird", "Insect",
     "Dog", "Cat", "Horse", "Cow", "Frog", "Cricket",
 }
 
-VOCALS_TAGS = {
-    "Singing", "Male singing", "Female singing", "Choir",
-    "Vocalization", "Hum", "Beatboxing", "Rapping",
-}
+# 静音标签（单独处理，不算噪声，音乐结构的一部分）
+SILENCE_TAGS = {"Silence"}
 
 logging.basicConfig(
     level=logging.INFO,
@@ -142,6 +150,14 @@ def load_audio_for_yamnet(audio_path: str, target_sr: int = 16000) -> tuple:
                 from scipy.signal import resample
                 new_length = int(len(y) * target_sr / orig_sr)
                 y = resample(y, new_length).astype(np.float32)
+
+        # 峰值归一化（解决低音量音频被 YAMNet 误判为静音的问题）
+        # 逻辑：如果最大振幅 < 0.3（音量偏小），归一化到 0.9（约 -0.9dB）
+        # 这样 track_0048594 这种低音量录音，YAMNet 也能正确识别为音乐
+        max_val = np.max(np.abs(y))
+        if max_val > 0 and max_val < 0.3:
+            y = y * (0.9 / max_val)
+            logger.debug(f"峰值归一化: max={max_val:.4f} → 0.9 (放大 {0.9/max_val:.1f}x)")
 
         # 确保范围 [-1, 1]
         max_val = np.max(np.abs(y))
@@ -210,7 +226,13 @@ def aggregate_track_level(
     confidence_threshold: float = 0.3,
 ) -> Optional[Dict]:
     """
-    聚合帧级结果为曲目级标签
+    聚合帧级结果为曲目级标签（修正版：占比阈值判定）
+
+    修正内容：
+    - 从 top-10 判定改为占比阈值判定
+    - NOISE_TAGS 移除 Silence，新增 SILENCE_TAGS
+    - 拆分 has_speech（说话）和 has_vocals（演唱）为独立指标
+    - 新增各类占比字段，用于人工校验阈值
 
     Args:
         frame_results: 帧级结果列表
@@ -224,23 +246,37 @@ def aggregate_track_level(
 
     track_id = frame_results[0]["track_id"]
 
-    # 统计高置信度帧的类别
-    classes = [r["class_name"] for r in frame_results if r["confidence"] > confidence_threshold]
-    if not classes:
-        # 如果没有高置信度帧，用所有帧
-        classes = [r["class_name"] for r in frame_results]
+    # 1. 过滤低置信度帧
+    high_conf = [r for r in frame_results if r["confidence"] > confidence_threshold]
+    if not high_conf:
+        # 兜底：如果没有高置信度帧，用所有帧
+        high_conf = frame_results
 
-    counter = Counter(classes)
-    total = len(classes)
+    total = len(high_conf)
+    counter = Counter(r["class_name"] for r in high_conf)
 
-    # 判断是否音乐、语音、噪声
-    is_music = any(c in MUSIC_TAGS for c, _ in counter.most_common(10))
-    has_speech = any(c in SPEECH_TAGS for c, _ in counter.most_common(10))
-    has_noise = any(c in NOISE_TAGS for c, _ in counter.most_common(10))
+    # 2. 计算各类占比（替代 top-10 判定）
+    def calc_ratio(tag_set):
+        """计算某组标签的帧数占比"""
+        return sum(counter[c] for c in tag_set if c in counter) / total if total else 0.0
 
-    # 人声占比估算
-    vocals_count = sum(count for c, count in counter.items() if c in VOCALS_TAGS)
-    vocals_ratio = vocals_count / total if total > 0 else 0.0
+    music_ratio = calc_ratio(MUSIC_TAGS)
+    speech_ratio = calc_ratio(SPEECH_TAGS)
+    vocals_ratio = calc_ratio(VOCALS_TAGS)
+    noise_ratio = calc_ratio(NOISE_TAGS)
+    silence_ratio = calc_ratio(SILENCE_TAGS)
+
+    # 3. 阈值判定（经验值，可人工校验后调整）
+    # - is_music: 音乐帧 >30%（一首3分钟歌至少54秒被识别为音乐）
+    # - has_speech: 说话帧 >5%（约9秒，可能是电台采样/采访）
+    # - has_vocals: 演唱帧 >5%（约9秒，有人声演唱）
+    # - has_noise: 噪声帧 >5%（真实的底噪/环境声，不含静音）
+    # - has_silence: 静音帧 >15%（音乐结构，不剔除）
+    is_music = music_ratio > 0.30
+    has_speech = speech_ratio > 0.05
+    has_vocals = vocals_ratio > 0.05
+    has_noise = noise_ratio > 0.05
+    has_silence = silence_ratio > 0.15
 
     # top5 标签
     top5 = counter.most_common(5)
@@ -249,12 +285,23 @@ def aggregate_track_level(
     return {
         "track_id": track_id,
         "yamnet_top_tags": top5_str,
+        # 核心布尔判定
         "is_music": is_music,
         "has_speech": has_speech,
+        "has_vocals": has_vocals,
         "has_noise": has_noise,
+        "has_silence": has_silence,
+        # 占比数值（用于人工校验阈值）
+        "music_ratio": round(music_ratio, 4),
+        "speech_ratio": round(speech_ratio, 4),
+        "vocals_ratio": round(vocals_ratio, 4),
+        "noise_ratio": round(noise_ratio, 4),
+        "silence_ratio": round(silence_ratio, 4),
+        # 兼容旧字段名
         "vocals_ratio_estimate": round(vocals_ratio, 4),
+        # 帧统计
         "total_frames": len(frame_results),
-        "high_confidence_frames": len(classes),
+        "high_confidence_frames": total,
     }
 
 

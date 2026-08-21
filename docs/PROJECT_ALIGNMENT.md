@@ -247,6 +247,41 @@ music_corpus_project/
 - **语言检测**：Whisper base detect_language()（轻量，<1GB显存）
 - **歌词转写输入**：必须是 Demucs vocals stem（不是原曲），实测WER从60%降到25%
 
+### 5.7 传输路径：音频只走 Mac↔GPU，不走 OSS（08-21决策）
+- **核心原则**：音频只走 Mac ↔ GPU（scp/rsync），代码/元数据走 GitHub，OSS 是冷库灾难恢复时才人工下载
+- **Mac → GPU**：原始音频（MP3/FLAC），scp/rsync 上传
+- **GPU → Mac**：segments（切片）+ demucs_stems（分轨）+ 元数据，rsync 回传
+- **OSS**：仅异步备份原始音频，业务绝不从 OSS 读取音频
+- **速度基准**：GPU→Mac scp ~7MB/s，rsync -avz ~5MB/s（含压缩）；500首全量4 stems约100GB，5MB/s约5.5小时可通宵跑
+
+### 5.8 Demucs stems 保留策略：不删除，回传 Mac 永久存（08-21决策）
+- **核心原则**：stems 是"不可再生资产"，分离一次10-30s，必须永久保存，不删除
+- **保存范围**：至少存 vocals + other（other 含钢琴/吉他/合成器，对乐器标注和多轨生成最有价值），drums + bass 按需
+- **目录结构**：`demucs_stems/{track_id}/vocals.wav`、`drums.wav`、`bass.wav`、`other.wav`（按track_id分目录，不是按stem类型）
+- **Mac 存储**：`data/01_preprocess/demucs_stems/`，Mac有600GB+可用，500首stems约100GB存得下
+- **GPU 处理**：分离后立刻用 vocals.wav 跑 ASR、用 stems 跑需要分轨的预标注，然后打包 rsync 回 Mac
+- **回传脚本**：`scripts/utils/rsync_stems_to_mac.sh`（批量回传，支持增量）
+
+### 5.9 YAMNet 判定逻辑修正（08-21）
+- **修正前问题**：①has_noise 85%+误判（NOISE_TAGS含Silence，音乐间奏静音被算噪声）；②vocals_ratio=0但has_speech=True（SPEECH含说话，VOCALS只有演唱，两者混为一谈）；③top-10判定过松（375帧里3帧出现在top-10就触发）
+- **修正方案**：
+  - 标签分组重构：MUSIC_TAGS增加4个演唱相关标签，NOISE_TAGS移除Silence，新增SILENCE_TAGS单独处理
+  - 判定逻辑从top-10改为占比阈值：is_music>30%，has_speech>5%，has_vocals>5%（新增），has_noise>5%（不含Silence），has_silence>15%（不剔除）
+  - 峰值归一化：YAMNet推理前，如果最大振幅<0.3（音量偏小），归一化到0.9，解决低音量录音被误判为静音的问题
+- **修正效果（500首Jazz）**：has_noise从84%→0.2%，has_speech从19%→2%，has_vocals=0（Jazz纯器乐正常）
+- **人工验证**：7首抽检判定全部准确，track_0048594低音量录音通过峰值归一化解决
+
+### 5.10 歌词转写流水线策略（08-21）
+- **场景A（有歌词文本，工业标准）**：不搞ASR听写，直接从音乐平台抓歌词（LRCLIB/Genius/NetEase API），然后用 Montreal Forced Aligner (MFA) 做歌词-音频时间对齐（精度±0.05s）
+- **场景B（无歌词文本，冷门/自采）**：Demucs分离vocals → FunASR（中文）/faster-whisper（非中文）ASR转写 → 人工校对
+- **当前项目**：500首Jazz来自MTG-Jamendo，可能无歌词文本，采用场景B
+- **流水线**：原始音频 → Demucs分离 → vocals.wav → FunASR/faster-whisper转写 → 保存文本 → wav回传Mac → 删除GPU上的vocals.wav
+- **ASR工具清单**：
+  - 中文歌唱：FunASR paraformer-zh（⭐⭐⭐可用，比Whisper好，仍有丢字需人工校）
+  - 英文歌唱：Whisper small/medium + Demucs（⭐⭐凑合，WER 30-50%需大量人工后处理）
+  - 多语言：Qwen-Audio/SALMONN（⭐⭐⭐实验性，速度慢成本高不稳定）
+  - 英文特殊建议：UVR5（比Demucs更激进的人声分离）+ Whisper，或微调Wav2Vec 2.0
+
 ---
 
 ## 六、数据产物清单
