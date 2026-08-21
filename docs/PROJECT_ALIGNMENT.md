@@ -353,7 +353,7 @@ Mac（本地）
 | 生成模型（Suno/Udio/MusicGen） | 44.1kHz 或 48kHz | 16bit | 立体声 | 全频带，高动态范围 |
 | 理解模型（MERT/CLAP/MOSS） | 24kHz | 16bit | 单声道 | 轻量，足够理解任务 |
 | 原始归档 | 48kHz | 24bit | 立体声 FLAC | 最高质量，永不修改 |
-| 标注用（Label Studio） | 16kHz | 16bit | 单声道 MP3/WAV | 文件小，加载快 |
+| 标注用（Label Studio） | 22.05kHz | 16bit | 单声道 MP3（~128kbps） | 16kHz 对精细标注不够（乐器识别/调性/和弦需要22.05kHz+），16kHz只留给Whisper ASR |
 
 **一源多副本**：同一份原始音频生成多个规格副本，元数据记录各规格路径，训练脚本读对应规格。
 

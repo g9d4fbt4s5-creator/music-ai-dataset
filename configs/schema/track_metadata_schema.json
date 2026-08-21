@@ -3,13 +3,19 @@
   "title": "Track Metadata Schema",
   "description": "音乐语料库单条音频元数据标准（对齐工业界 Suno/Udio/Meta 内部 Schema）",
   "type": "object",
-  "required": ["track_id", "audio_path", "duration_sec", "sample_rate", "bit_depth", "channels"],
+  "required": ["audio_id", "audio_path", "duration_sec", "sample_rate", "bit_depth", "channels"],
   "properties": {
-    "track_id": {
+    "audio_id": {
       "type": "string",
-      "description": "全局唯一音频 ID，使用 ULID 格式",
+      "description": "全局唯一音频 ID，使用 ULID 格式（主键，工业标准）",
       "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$",
       "examples": ["01M0E9X162CTB4D15WZQ5D8FVX"]
+    },
+    "track_slug": {
+      "type": ["string", "null"],
+      "description": "人类可读标识（仅展示，不做关联，不做索引）。格式：{来源缩写}_{日期}_{6位随机码}，如 yt_20260821_a3f7k2。可选字段。",
+      "pattern": "^[a-z]{2}_[0-9]{8}_[a-z0-9]{6}$",
+      "examples": ["yt_20260821_a3f7k2", "bc_20260820_b8m1n3", "mt_20260819_x7k9p2"]
     },
     "audio_path": {
       "type": "string",
@@ -47,8 +53,14 @@
     },
     "license_type": {
       "type": "string",
-      "description": "许可证类型",
+      "description": "许可证类型。允许 unknown 作为初始值，不阻塞入库，后续补全。",
       "enum": ["commercial", "non_commercial", "public_domain", "creative_commons", "royalty_free", "unknown"]
+    },
+    "license_flag": {
+      "type": "string",
+      "description": "许可证审核状态。当 license_type=unknown 时，标记为 pending_review，后续人工/自动补全。",
+      "enum": ["verified", "pending_review", "rejected"],
+      "default": "pending_review"
     },
     "license_tier": {
       "type": "string",
