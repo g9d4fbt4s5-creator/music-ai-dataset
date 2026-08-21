@@ -118,6 +118,107 @@ safe_delete() {
     fi
 }
 
+# ===================== 分层清理：原始音频 =====================
+# GPU数据生命周期优化：母版FLAC生成并校验后即可删除原始音频
+# 原始音频已备份在 Mac + OSS，所有下游产物都从母版FLAC生成
+cleanup_raw() {
+    local batch_id="$1"
+    local dry_run="${2:-false}"
+
+    echo -e "${BLUE}========================================${NC}"
+    echo -e "${BLUE}分层清理：删除原始音频（母版FLAC已生成）${NC}"
+    echo -e "${BLUE}========================================${NC}"
+
+    # 并发安全：严格验证批次目录路径
+    local batch_in=$(validate_batch_dir "$batch_id" "in")
+
+    echo -e "${CYAN}  验证通过:${NC}"
+    echo -e "     输入目录: $batch_in"
+    echo ""
+
+    # 删除原始音频输入目录
+    safe_delete "$batch_in" "原始音频（已备份在Mac+OSS，母版FLAC已生成）" "$dry_run"
+
+    echo ""
+    echo -e "${GREEN}✅ 原始音频清理完成${NC}"
+    echo ""
+
+    # 显示磁盘使用情况
+    echo -e "${BLUE}磁盘使用情况:${NC}"
+    df -h "$GPU_TMP" | tail -1
+    echo ""
+}
+
+# ===================== 分层清理：母版FLAC =====================
+# GPU数据生命周期优化：stems+segments+嵌入向量全部生成并校验后即可删除母版FLAC
+# 母版FLAC的使命已完成，所有下游产物（stems/segments/嵌入）都已生成
+cleanup_master() {
+    local batch_id="$1"
+    local dry_run="${2:-false}"
+
+    echo -e "${BLUE}========================================${NC}"
+    echo -e "${BLUE}分层清理：删除母版FLAC（stems/segments/嵌入已生成）${NC}"
+    echo -e "${BLUE}========================================${NC}"
+
+    # 并发安全：严格验证批次目录路径
+    local batch_out=$(validate_batch_dir "$batch_id" "out")
+
+    echo -e "${CYAN}  验证通过:${NC}"
+    echo -e "     输出目录: $batch_out"
+    echo ""
+
+    # 安全检查：确认 stems/segments/嵌入目录非空（母版FLAC的下游产物已生成）
+    local stems_ready=false
+    local segments_ready=false
+    local embeddings_ready=false
+
+    # 检查 stems（可能在 demucs_stems/ 或 stems/ 目录）
+    if [[ -d "${batch_out}/demucs_stems" ]] && [[ -n "$(ls -A ${batch_out}/demucs_stems 2>/dev/null)" ]]; then
+        stems_ready=true
+    elif [[ -d "${batch_out}/stems" ]] && [[ -n "$(ls -A ${batch_out}/stems 2>/dev/null)" ]]; then
+        stems_ready=true
+    fi
+
+    # 检查 segments
+    if [[ -d "${batch_out}/segments" ]] && [[ -n "$(ls -A ${batch_out}/segments 2>/dev/null)" ]]; then
+        segments_ready=true
+    fi
+
+    # 检查嵌入/特征（可能在 features/ 或 model_output_cache/ 目录）
+    if [[ -d "${batch_out}/features" ]] && [[ -n "$(ls -A ${batch_out}/features 2>/dev/null)" ]]; then
+        embeddings_ready=true
+    elif [[ -d "${batch_out}/model_output_cache" ]] && [[ -n "$(ls -A ${batch_out}/model_output_cache 2>/dev/null)" ]]; then
+        embeddings_ready=true
+    fi
+
+    echo -e "${CYAN}  下游产物检查:${NC}"
+    echo -e "     stems:      $([[ "$stems_ready" == "true" ]] && echo '✅ 已生成' || echo '❌ 未生成')"
+    echo -e "     segments:   $([[ "$segments_ready" == "true" ]] && echo '✅ 已生成' || echo '❌ 未生成')"
+    echo -e "     embeddings: $([[ "$embeddings_ready" == "true" ]] && echo '✅ 已生成' || echo '❌ 未生成')"
+    echo ""
+
+    # 安全检查：至少需要 stems 或 segments 或 embeddings 其中之一已生成
+    # （不同任务可能不需要全部，但至少需要一个下游产物，否则母版FLAC可能还在用）
+    if [[ "$stems_ready" == "false" ]] && [[ "$segments_ready" == "false" ]] && [[ "$embeddings_ready" == "false" ]]; then
+        echo -e "${RED}❌ 安全拦截: stems/segments/embeddings 均未生成，母版FLAC可能还在使用中，拒绝删除${NC}"
+        echo -e "${RED}   请确认下游产物已生成后再执行母版FLAC清理${NC}"
+        exit 1
+    fi
+
+    # 删除母版FLAC
+    safe_delete "${batch_out}/master" "母版FLAC（stems/segments/嵌入已生成）" "$dry_run"
+    safe_delete "${batch_out}/processed_master" "母版FLAC(备用路径)" "$dry_run"
+
+    echo ""
+    echo -e "${GREEN}✅ 母版FLAC清理完成${NC}"
+    echo ""
+
+    # 显示磁盘使用情况
+    echo -e "${BLUE}磁盘使用情况:${NC}"
+    df -h "$GPU_TMP" | tail -1
+    echo ""
+}
+
 # ===================== 清理单个批次 =====================
 cleanup_batch() {
     local batch_id="$1"
@@ -227,6 +328,7 @@ cleanup_all() {
 main() {
     local dry_run="false"
     local target=""
+    local cleanup_mode="all"  # all / raw / master
 
     # 解析参数
     while [[ $# -gt 0 ]]; do
@@ -239,14 +341,29 @@ main() {
                 target="all"
                 shift
                 ;;
+            --raw-only)
+                cleanup_mode="raw"
+                shift
+                ;;
+            --master-only)
+                cleanup_mode="master"
+                shift
+                ;;
             -h|--help)
-                echo "用法: bash gpu_cleanup.sh <batch_id> [--dry-run]"
+                echo "用法: bash gpu_cleanup.sh <batch_id> [--dry-run] [--raw-only|--master-only]"
                 echo "      bash gpu_cleanup.sh --all [--dry-run]"
                 echo ""
+                echo "分层清理模式:"
+                echo "  --raw-only      只删除原始音频（母版FLAC已生成后调用）"
+                echo "  --master-only   只删除母版FLAC（stems/segments/嵌入已生成后调用）"
+                echo "  (默认)          全量清理（预标注完成并回传后调用）"
+                echo ""
                 echo "示例:"
-                echo "  bash gpu_cleanup.sh batch_000           # 清理batch_000"
-                echo "  bash gpu_cleanup.sh --all                # 清理所有批次"
-                echo "  bash gpu_cleanup.sh batch_000 --dry-run # 预览，不实际删除"
+                echo "  bash gpu_cleanup.sh batch_000 --raw-only      # 删原始音频"
+                echo "  bash gpu_cleanup.sh batch_000 --master-only   # 删母版FLAC"
+                echo "  bash gpu_cleanup.sh batch_000                  # 全量清理"
+                echo "  bash gpu_cleanup.sh --all                       # 清理所有批次"
+                echo "  bash gpu_cleanup.sh batch_000 --dry-run        # 预览，不实际删除"
                 exit 0
                 ;;
             *)
@@ -258,7 +375,7 @@ main() {
 
     if [[ -z "$target" ]]; then
         echo -e "${RED}❌ 错误: 请指定批次ID或使用 --all${NC}"
-        echo "用法: bash gpu_cleanup.sh <batch_id> [--dry-run]"
+        echo "用法: bash gpu_cleanup.sh <batch_id> [--dry-run] [--raw-only|--master-only]"
         echo "      bash gpu_cleanup.sh --all [--dry-run]"
         exit 1
     fi
@@ -268,8 +385,16 @@ main() {
         echo ""
     fi
 
+    # 根据清理模式执行
     if [[ "$target" == "all" ]]; then
+        if [[ "$cleanup_mode" != "all" ]]; then
+            echo -e "${YELLOW}⚠️  --all 模式下忽略 --raw-only/--master-only，执行全量清理${NC}"
+        fi
         cleanup_all "$dry_run"
+    elif [[ "$cleanup_mode" == "raw" ]]; then
+        cleanup_raw "$target" "$dry_run"
+    elif [[ "$cleanup_mode" == "master" ]]; then
+        cleanup_master "$target" "$dry_run"
     else
         cleanup_batch "$target" "$dry_run"
     fi

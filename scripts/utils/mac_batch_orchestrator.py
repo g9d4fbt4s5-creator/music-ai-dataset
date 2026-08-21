@@ -559,7 +559,21 @@ def run_full_pipeline(
                 logger.warning(f"批次 {batch_idx:03d} 预标注超时，继续后续流程（可能需要手动检查）")
                 update_batch_status(batch_idx, "preannotation_timeout")
 
-        # Step 5: 回传产物
+        # Step 4.6: 分层清理1 - 删除原始音频（母版FLAC已生成，原始音频已备份在Mac+OSS）
+        # GPU数据生命周期优化：及时删除大文件，节省磁盘空间
+        if not dry_run:
+            logger.info(f"分层清理1: 删除原始音频（母版FLAC已生成）")
+            cleanup_script = f"{REMOTE_PROJECT}/scripts/utils/gpu_cleanup.sh"
+            ssh_run(f"bash {cleanup_script} batch_{batch_idx:03d} --raw-only", check=False)
+            update_batch_status(batch_idx, "raw_cleaned")
+
+        # Step 4.7: 分层清理2 - 删除母版FLAC（stems/segments/嵌入已生成）
+        if not dry_run:
+            logger.info(f"分层清理2: 删除母版FLAC（stems/segments/嵌入已生成）")
+            ssh_run(f"bash {cleanup_script} batch_{batch_idx:03d} --master-only", check=False)
+            update_batch_status(batch_idx, "master_cleaned")
+
+        # Step 5: 回传产物（此时原始音频和母版FLAC已删除，只回传stems/segments/嵌入/预标注结果）
         local_out = download_batch_output(batch_idx, dry_run)
         update_batch_status(batch_idx, "fetched")
 
