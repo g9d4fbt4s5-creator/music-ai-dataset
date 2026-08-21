@@ -1144,6 +1144,7 @@ def main():
 
         # === 生成 cleaning_rules.json（本次用了哪些规则/阈值） ===
         cleaning_rules = {
+            "ruleset_version": "v2.1",  # P2: 规则版本号，方便A/B对比不同清洗策略
             "version": version_str,
             "timestamp": datetime.now(TZ).isoformat(),
             "stages_run": stages_to_run,

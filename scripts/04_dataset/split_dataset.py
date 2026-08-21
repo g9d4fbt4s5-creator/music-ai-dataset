@@ -83,6 +83,91 @@ def load_manifest(input_path: Path) -> pd.DataFrame:
     return df
 
 
+def verify_checksums(df: pd.DataFrame, fail_on_mismatch: bool = False) -> Dict:
+    """
+    划分前校验音频文件完整性（checksum校验）
+
+    防止"文件存在但已损坏"的静默错误。
+    如果 manifest 中有 sha256 列，校验实际文件的sha256是否一致。
+
+    Args:
+        df: 输入 DataFrame（需包含 audio_id 和可选的 sha256/file_relative_path 列）
+        fail_on_mismatch: 校验失败时是否报错退出（False则只警告）
+
+    Returns:
+        校验结果字典
+    """
+    import hashlib
+
+    logger.info("校验音频文件完整性（checksum）...")
+
+    result = {
+        "total": len(df),
+        "verified": 0,
+        "missing": 0,
+        "mismatch": 0,
+        "no_checksum_in_manifest": 0,
+        "mismatch_ids": [],
+        "missing_ids": [],
+    }
+
+    # 检查是否有sha256列
+    if "sha256" not in df.columns:
+        logger.warning("manifest 中无 sha256 列，跳过checksum校验")
+        result["no_checksum_in_manifest"] = len(df)
+        return result
+
+    for _, row in df.iterrows():
+        audio_id = row.get("audio_id", "unknown")
+        expected_hash = row.get("sha256", "")
+
+        # 跳过无hash的记录
+        if pd.isna(expected_hash) or not expected_hash:
+            result["no_checksum_in_manifest"] += 1
+            continue
+
+        # 查找文件路径
+        file_path = None
+        if "file_relative_path" in df.columns and pd.notna(row.get("file_relative_path", "")):
+            file_path = PROJECT_ROOT / "data" / "00_raw_collect" / row["file_relative_path"]
+        elif "master_path" in df.columns and pd.notna(row.get("master_path", "")):
+            file_path = Path(row["master_path"])
+
+        if file_path is None or not file_path.exists():
+            result["missing"] += 1
+            result["missing_ids"].append(audio_id)
+            logger.warning(f"  文件缺失: {audio_id}")
+            continue
+
+        # 计算实际文件的sha256
+        try:
+            sha256_hash = hashlib.sha256()
+            with open(file_path, "rb") as f:
+                for byte_block in iter(lambda: f.read(4096), b""):
+                    sha256_hash.update(byte_block)
+            actual_hash = sha256_hash.hexdigest()
+
+            if actual_hash == expected_hash:
+                result["verified"] += 1
+            else:
+                result["mismatch"] += 1
+                result["mismatch_ids"].append(audio_id)
+                logger.warning(f"  Checksum不匹配: {audio_id}")
+                if fail_on_mismatch:
+                    logger.error(f"Checksum校验失败: {audio_id}，文件可能已损坏")
+                    raise ValueError(f"Checksum mismatch for {audio_id}")
+        except Exception as e:
+            result["missing"] += 1
+            result["missing_ids"].append(audio_id)
+            logger.warning(f"  读取失败: {audio_id}, {e}")
+
+    logger.info(f"Checksum校验完成: 验证通过={result['verified']}, "
+                f"缺失={result['missing']}, 不匹配={result['mismatch']}, "
+                f"无hash={result['no_checksum_in_manifest']}")
+
+    return result
+
+
 def temporal_split(
     df: pd.DataFrame,
     time_column: str = "release_date",
@@ -359,8 +444,13 @@ def save_splits(
     holdout_df: pd.DataFrame,
     output_dir: Path,
     stats: Dict,
+    checksum_result: Optional[Dict] = None,
+    random_state: Optional[int] = None,
+    input_manifest_path: Optional[Path] = None,
+    upstream_lineage: Optional[str] = None,
 ):
     """保存划分结果"""
+    import hashlib
     output_dir.mkdir(parents=True, exist_ok=True)
 
     # 只保存 audio_id 列（不存音频）
@@ -383,14 +473,33 @@ def save_splits(
         json.dump(stats, f, ensure_ascii=False, indent=2)
     logger.info(f"划分统计已保存: {stats_dir / 'split_distribution.json'}")
 
-    # 保存 lineage.json
+    # 建议2: 生成 manifest_ref.json（记录该版本依赖的manifest路径和checksum）
+    if input_manifest_path and input_manifest_path.exists():
+        manifest_sha256 = hashlib.sha256(input_manifest_path.read_bytes()).hexdigest()
+        manifest_ref = {
+            "manifest_path": str(input_manifest_path),
+            "manifest_sha256": manifest_sha256,
+            "manifest_size_bytes": input_manifest_path.stat().st_size,
+            "manifest_mtime": datetime.fromtimestamp(input_manifest_path.stat().st_mtime, TZ).isoformat(),
+            "note": "训练脚本读取时，通过audio_id到此manifest查找实际路径；如果manifest被更新或移动，需重新生成此版本",
+        }
+        with open(output_dir / "manifest_ref.json", "w", encoding="utf-8") as f:
+            json.dump(manifest_ref, f, ensure_ascii=False, indent=2)
+        logger.info(f"manifest引用已保存: {output_dir / 'manifest_ref.json'}")
+
+    # 保存 lineage.json（建议1: 包含并引用清洗阶段的lineage，形成一条链）
     lineage = {
         "version": output_dir.name,
         "timestamp": datetime.now(TZ).isoformat(),
-        "split_method": "stratified_random" if stats.get("stratify_by") else "random",
+        "split_method": stats.get("split_method", "random"),
         "stratify_by": stats.get("stratify_by"),
+        "isolate_by": stats.get("isolate_by"),
+        "temporal_by": stats.get("temporal_by"),
+        "random_seed": random_state,  # P2: 记录随机种子，完全可复现
         "splits": stats["splits"],
         "total_samples": stats["total"],
+        "checksum_verification": checksum_result,  # P0: checksum校验结果
+        "upstream": upstream_lineage,  # 建议1: 引用清洗阶段的lineage
     }
     with open(output_dir / "lineage.json", "w", encoding="utf-8") as f:
         json.dump(lineage, f, ensure_ascii=False, indent=2)
@@ -419,6 +528,10 @@ def main():
                         help="时间隔离字段（如 release_date, import_timestamp），测试集用较晚作品")
     parser.add_argument("--temporal-then-stratified", action="store_true",
                         help="组合策略：先时间隔离划分窗口，再在窗口内分层/隔离抽样")
+    parser.add_argument("--verify-checksum", action="store_true",
+                        help="划分前校验音频文件checksum完整性（防止文件存在但已损坏）")
+    parser.add_argument("--fail-on-checksum-mismatch", action="store_true",
+                        help="checksum不匹配时报错退出（默认只警告）")
     parser.add_argument("--random-state", type=int, default=42, help="随机种子")
     args = parser.parse_args()
 
@@ -429,6 +542,11 @@ def main():
     # 加载数据
     input_path = Path(args.input)
     df = load_manifest(input_path)
+
+    # P0: 划分前校验音频文件checksum完整性（防止文件存在但已损坏）
+    checksum_result = None
+    if args.verify_checksum:
+        checksum_result = verify_checksums(df, fail_on_mismatch=args.fail_on_checksum_mismatch)
 
     # 划分（根据参数选择策略）
     split_method = "random"
@@ -497,8 +615,26 @@ def main():
         version_str = datetime.now(TZ).strftime("%Y%m%d_%H%M%S")
         output_dir = PROJECT_ROOT / "data" / "04_final_dataset" / f"v{version_str}"
 
+    # 建议1: 查找最近的清洗阶段lineage.json，形成血缘链
+    upstream_lineage = None
+    cleaned_reports_dir = PROJECT_ROOT / "data" / "00.5_cleaned" / "reports"
+    if cleaned_reports_dir.exists():
+        report_dirs = sorted([d for d in cleaned_reports_dir.iterdir() if d.is_dir()], reverse=True)
+        for report_dir in report_dirs:
+            lineage_file = report_dir / "lineage.json"
+            if lineage_file.exists():
+                upstream_lineage = str(lineage_file)
+                logger.info(f"上游血缘: {upstream_lineage}")
+                break
+
     # 保存
-    save_splits(train_df, val_df, test_df, holdout_df, output_dir, stats)
+    save_splits(
+        train_df, val_df, test_df, holdout_df, output_dir, stats,
+        checksum_result=checksum_result,
+        random_state=args.random_state,
+        input_manifest_path=input_path,
+        upstream_lineage=upstream_lineage,
+    )
 
     logger.info("")
     logger.info("=" * 60)
