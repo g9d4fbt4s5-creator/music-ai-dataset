@@ -101,11 +101,11 @@ def extract_mert_embeddings(audio_dir: str, output_path: str, model_name: str = 
         logger.info(f"[{i+1}/{len(audio_files)}] {track_id}")
 
         try:
-            # 加载音频（MERT 需要 16kHz 单声道）
-            y, sr = librosa.load(audio_path, sr=16000, mono=True)
+            # 加载音频（MERT 需要 24kHz 单声道）
+            y, sr = librosa.load(audio_path, sr=24000, mono=True)
 
             # 特征提取
-            inputs = feature_extractor(y, sampling_rate=16000, return_tensors="pt")
+            inputs = feature_extractor(y, sampling_rate=24000, return_tensors="pt")
             if torch.cuda.is_available():
                 inputs = {k: v.cuda() for k, v in inputs.items()}
 
