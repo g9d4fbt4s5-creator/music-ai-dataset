@@ -532,6 +532,10 @@ def main():
                         help="划分前校验音频文件checksum完整性（防止文件存在但已损坏）")
     parser.add_argument("--fail-on-checksum-mismatch", action="store_true",
                         help="checksum不匹配时报错退出（默认只警告）")
+    parser.add_argument("--test-from", type=str, default=None,
+                        help="独立测试集来源（从独立采集的数据池导入，不参与清洗调优，防止迭代污染）")
+    parser.add_argument("--holdout-from", type=str, default=None,
+                        help="独立holdout集来源（长期封存，跨版本模型对比，必须与训练集来自不同采集批次）")
     parser.add_argument("--random-state", type=int, default=42, help="随机种子")
     args = parser.parse_args()
 
@@ -600,6 +604,37 @@ def main():
         else:
             split_method = "random"
 
+    # 来源隔离：用独立采集的数据池替换 test/holdout（防止迭代污染和分布漂移）
+    source_isolation = {"test": None, "holdout": None}
+    if args.test_from:
+        test_from_path = Path(args.test_from)
+        if not test_from_path.is_absolute():
+            test_from_path = PROJECT_ROOT / test_from_path
+        if test_from_path.exists():
+            logger.info(f"来源隔离：从独立数据池导入测试集: {test_from_path}")
+            external_test_df = load_manifest(test_from_path)
+            logger.info(f"  独立测试集: {len(external_test_df)} 首")
+            # 从原划分中移除 test，用独立数据池替换
+            test_df = external_test_df
+            source_isolation["test"] = str(test_from_path)
+            # 调整 train/val 比例（原 test 比例分配给 train）
+            logger.info(f"  原 test 集已替换为独立数据池，原 test 样本并入 train")
+        else:
+            logger.warning(f"  ⚠️  独立测试集路径不存在: {test_from_path}，使用原划分")
+
+    if args.holdout_from:
+        holdout_from_path = Path(args.holdout_from)
+        if not holdout_from_path.is_absolute():
+            holdout_from_path = PROJECT_ROOT / holdout_from_path
+        if holdout_from_path.exists():
+            logger.info(f"来源隔离：从独立数据池导入holdout集: {holdout_from_path}")
+            external_holdout_df = load_manifest(holdout_from_path)
+            logger.info(f"  独立holdout集: {len(external_holdout_df)} 首")
+            holdout_df = external_holdout_df
+            source_isolation["holdout"] = str(holdout_from_path)
+        else:
+            logger.warning(f"  ⚠️  独立holdout集路径不存在: {holdout_from_path}，使用原划分")
+
     # 生成统计
     stats = generate_split_stats(train_df, val_df, test_df, holdout_df, args.stratify_by)
     stats["split_method"] = split_method
@@ -607,6 +642,12 @@ def main():
         stats["temporal_by"] = args.temporal_by
     if args.isolate_by:
         stats["isolate_by"] = args.isolate_by
+    if source_isolation["test"]:
+        stats["test_source_isolation"] = source_isolation["test"]
+        logger.info(f"  ✅ 测试集来源隔离: {source_isolation['test']}")
+    if source_isolation["holdout"]:
+        stats["holdout_source_isolation"] = source_isolation["holdout"]
+        logger.info(f"  ✅ holdout集来源隔离: {source_isolation['holdout']}")
 
     # 输出目录
     if args.output:

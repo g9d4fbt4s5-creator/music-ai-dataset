@@ -64,6 +64,37 @@ safety_check() {
     fi
 }
 
+# ===================== 批次目录验证（并发安全） =====================
+validate_batch_dir() {
+    local batch_id="$1"
+    local dir_type="$2"  # "in" 或 "out"
+
+    # 构造完整路径
+    local batch_dir="${GPU_TMP}/batch_${batch_id}_${dir_type}"
+
+    # 严格验证路径格式：必须是 /root/autodl-tmp/batch_XXX_in 或 batch_XXX_out
+    # 拒绝通配符、相对路径、父目录遍历
+    if [[ ! "$batch_dir" =~ ^${GPU_TMP}/batch_[0-9]+_(in|out)$ ]]; then
+        echo -e "${RED}❌ 安全拦截: 无效的批次目录路径: $batch_dir${NC}"
+        echo -e "${RED}   必须符合格式: ${GPU_TMP}/batch_XXX_in 或 batch_XXX_out${NC}"
+        exit 1
+    fi
+
+    # 拒绝包含通配符的路径
+    if [[ "$batch_dir" == *"*"* || "$batch_dir" == *"?"* || "$batch_dir" == *"["* ]]; then
+        echo -e "${RED}❌ 安全拦截: 路径包含通配符: $batch_dir${NC}"
+        exit 1
+    fi
+
+    # 拒绝父目录遍历
+    if [[ "$batch_dir" == *".."* ]]; then
+        echo -e "${RED}❌ 安全拦截: 路径包含父目录遍历: $batch_dir${NC}"
+        exit 1
+    fi
+
+    echo "$batch_dir"
+}
+
 # ===================== 安全删除函数 =====================
 safe_delete() {
     local target="$1"
@@ -96,8 +127,14 @@ cleanup_batch() {
     echo -e "${BLUE}清理批次: $batch_id${NC}"
     echo -e "${BLUE}========================================${NC}"
 
-    local batch_in="${GPU_TMP}/${batch_id}_in"
-    local batch_out="${GPU_TMP}/${batch_id}_out"
+    # 并发安全：严格验证批次目录路径，拒绝通配符和无效路径
+    local batch_in=$(validate_batch_dir "$batch_id" "in")
+    local batch_out=$(validate_batch_dir "$batch_id" "out")
+
+    echo -e "${CYAN}  验证通过:${NC}"
+    echo -e "     输入目录: $batch_in"
+    echo -e "     输出目录: $batch_out"
+    echo ""
 
     # 1. 删除原始音频输入
     safe_delete "$batch_in" "原始音频输入" "$dry_run"

@@ -68,6 +68,24 @@ GPU_PORT = "43107"
 REMOTE_TMP = "/root/autodl-tmp"
 REMOTE_PROJECT = "/root/music_corpus_project"
 
+# 批次状态文件（幂等恢复机制）
+BATCH_STATE_DIR = PROJECT_ROOT / "data" / "gpu_batches" / ".state"
+BATCH_STATE_FILE = BATCH_STATE_DIR / "batch_states.json"
+
+# 批次状态定义
+BATCH_STATUSES = [
+    "pending",       # 待处理
+    "prepared",      # 已准备（音频已复制到批次目录）
+    "uploaded",      # 已上传到GPU
+    "processing",    # GPU处理中
+    "completed",     # GPU处理完成
+    "fetched",       # 产物已回传Mac
+    "verified",      # 回传完整性已校验
+    "merged",        # 已合并到全局
+    "cleaned",       # GPU已清理
+    "failed",        # 失败
+]
+
 # 本地目录
 BATCHES_DIR = PROJECT_ROOT / "data" / "gpu_batches"
 GPU_OUTPUT_DIR = PROJECT_ROOT / "data" / "01_preprocess" / "gpu_batches"
@@ -90,6 +108,55 @@ def ssh_run(cmd: str, check: bool = True) -> subprocess.CompletedProcess:
     """通过 SSH 在 GPU 上运行命令"""
     ssh_cmd = ["ssh", "-p", GPU_PORT, GPU_HOST, cmd]
     return run_command(ssh_cmd, check=check)
+
+
+# ===================== 批次状态管理（幂等恢复） =====================
+def load_batch_state() -> Dict:
+    """加载批次状态文件"""
+    if BATCH_STATE_FILE.exists():
+        with open(BATCH_STATE_FILE, "r", encoding="utf-8") as f:
+            return json.load(f)
+    return {}
+
+
+def save_batch_state(state: Dict) -> None:
+    """保存批次状态文件"""
+    BATCH_STATE_DIR.mkdir(parents=True, exist_ok=True)
+    with open(BATCH_STATE_FILE, "w", encoding="utf-8") as f:
+        json.dump(state, f, ensure_ascii=False, indent=2)
+
+
+def update_batch_status(batch_id: int, status: str, **kwargs) -> None:
+    """
+    更新批次状态
+
+    Args:
+        batch_id: 批次ID
+        status: 状态（必须在 BATCH_STATUSES 中）
+        **kwargs: 额外信息（如 gpu_pid, verified, error 等）
+    """
+    if status not in BATCH_STATUSES:
+        logger.warning(f"未知状态: {status}（允许但未在预定义列表中）")
+
+    state = load_batch_state()
+    batch_key = f"batch_{batch_id:03d}"
+
+    if batch_key not in state:
+        state[batch_key] = {}
+
+    state[batch_key]["status"] = status
+    state[batch_key]["updated_at"] = datetime.now().isoformat()
+    for k, v in kwargs.items():
+        state[batch_key][k] = v
+
+    save_batch_state(state)
+    logger.info(f"  📝 状态更新: {batch_key} → {status}")
+
+
+def get_batch_status(batch_id: int) -> Optional[Dict]:
+    """获取批次状态"""
+    state = load_batch_state()
+    return state.get(f"batch_{batch_id:03d}")
 
 
 def rsync_upload(local_dir: Path, remote_dir: str) -> None:
@@ -179,13 +246,21 @@ def prepare_batch(batch_id: int, track_ids: List[str], manifest_df: pd.DataFrame
 
 # ===================== GPU 处理触发 =====================
 def trigger_gpu_processing(batch_id: int, dry_run: bool = False) -> str:
-    """触发 GPU 处理（tmux 后台）"""
+    """
+    触发 GPU 处理（tmux 后台）
+
+    加固：GPU 端处理完成后写原子完成标记 .done 文件，
+    Mac 端轮询 .done 文件而不是 tmux session（tmux 可能因 SSH 断开/重启而消失）。
+    """
     session_name = f"batch_{batch_id:03d}"
     remote_in = f"{REMOTE_TMP}/batch_{batch_id:03d}_in"
     remote_out = f"{REMOTE_TMP}/batch_{batch_id:03d}_out"
+    done_file = f"{remote_out}/.done"
 
-    # GPU 端处理命令
+    # GPU 端处理命令（完成后写 .done 原子标记）
     gpu_cmd = (
+        f"mkdir -p {remote_out} && "
+        f"rm -f {done_file} && "
         f"source /opt/miniconda3/etc/profile.d/conda.sh && "
         f"conda activate labelstudio-env && "
         f"cd {REMOTE_PROJECT} && "
@@ -193,6 +268,8 @@ def trigger_gpu_processing(batch_id: int, dry_run: bool = False) -> str:
         f"--input {remote_in}/ "
         f"--output {remote_out}/ "
         f"--stages 2,3,5,6 && "
+        f"echo '{{\"status\":\"completed\",\"batch_id\":\"{batch_id:03d}\","
+        f"\"timestamp\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"}}' > {done_file} && "
         f"echo 'BATCH_{batch_id:03d}_DONE' >> {remote_out}/processing_status.log"
     )
 
@@ -208,28 +285,49 @@ def trigger_gpu_processing(batch_id: int, dry_run: bool = False) -> str:
 
     logger.info(f"触发 GPU 处理: session={session_name}")
     ssh_run(tmux_cmd)
-    logger.info("GPU 处理已启动（tmux 后台）")
+    logger.info("GPU 处理已启动（tmux 后台，完成后写 .done 标记）")
 
     return session_name
 
 
 def wait_for_gpu_completion(batch_id: int, session_name: str, poll_interval: int = POLL_INTERVAL) -> bool:
-    """轮询等待 GPU 处理完成"""
-    logger.info(f"等待 GPU 处理完成: session={session_name}（每 {poll_interval}s 轮询）")
+    """
+    轮询等待 GPU 处理完成
+
+    加固：检查 .done 原子完成标记，而不是 tmux session。
+    tmux session 可能因 SSH 断开、GPU 重启、手动误操作而消失，但处理可能只跑了一半。
+    """
+    remote_out = f"{REMOTE_TMP}/batch_{batch_id:03d}_out"
+    done_file = f"{remote_out}/.done"
+
+    logger.info(f"等待 GPU 处理完成: batch_{batch_id:03d}（轮询 .done 标记，每 {poll_interval}s）")
 
     start_time = time.time()
     while True:
-        # 检查 tmux session 是否存在
-        result = ssh_run(f"tmux has-session -t {session_name} 2>/dev/null; echo $?", check=False)
-        session_exists = result.stdout.strip() == "0"
+        # 检查 .done 原子完成标记（比 tmux session 更可靠）
+        result = ssh_run(f"test -f {done_file} && echo 'DONE' || echo 'PENDING'", check=False)
+        is_done = result.stdout.strip() == "DONE"
 
-        if not session_exists:
+        if is_done:
             elapsed = time.time() - start_time
-            logger.info(f"GPU 处理完成: session={session_name}, 耗时 {elapsed/60:.1f} 分钟")
+            logger.info(f"GPU 处理完成: batch_{batch_id:03d}, 耗时 {elapsed/60:.1f} 分钟（.done 标记确认）")
             return True
 
+        # 辅助检查：tmux session 是否还在（如果不在但 .done 也不在，可能异常退出）
+        tmux_result = ssh_run(f"tmux has-session -t {session_name} 2>/dev/null; echo $?", check=False)
+        session_exists = tmux_result.stdout.strip() == "0"
+
         elapsed = time.time() - start_time
-        logger.info(f"  处理中... 已耗时 {elapsed/60:.1f} 分钟")
+        if not session_exists and not is_done:
+            logger.warning(f"  ⚠️  tmux session 已消失但 .done 标记不存在，可能异常退出！已耗时 {elapsed/60:.1f} 分钟")
+            logger.warning(f"     检查 GPU 日志: {remote_out}/processing.log")
+            # 继续等待一段时间，可能是 tmux 崩溃但进程还在跑
+            if elapsed > 3600:  # 超过1小时还没完成，报错
+                logger.error(f"  ❌ 超时：1小时未完成，可能需要手动检查")
+                return False
+        else:
+            logger.info(f"  处理中... 已耗时 {elapsed/60:.1f} 分钟")
+
         time.sleep(poll_interval)
 
 
@@ -379,32 +477,58 @@ def run_full_pipeline(
 
         # Step 1: 准备批次
         batch_dir = prepare_batch(batch_idx, batch_tracks, manifest_df, dry_run)
+        update_batch_status(batch_idx, "prepared", track_count=len(batch_tracks))
 
         # Step 2: 上传到 GPU
         remote_in = f"{REMOTE_TMP}/batch_{batch_idx:03d}_in"
         if not dry_run:
             rsync_upload(batch_dir, remote_in)
+        update_batch_status(batch_idx, "uploaded")
 
         # Step 3: 触发 GPU 处理
         session_name = trigger_gpu_processing(batch_idx, dry_run)
+        update_batch_status(batch_idx, "processing", session_name=session_name)
 
-        # Step 4: 等待完成
+        # Step 4: 等待完成（轮询 .done 标记）
         if not dry_run:
             wait_for_gpu_completion(batch_idx, session_name)
+        update_batch_status(batch_idx, "completed")
 
         # Step 5: 回传产物
         local_out = download_batch_output(batch_idx, dry_run)
+        update_batch_status(batch_idx, "fetched")
+
+        # Step 5.5: 回传完整性校验（只有校验通过才触发清理）
+        if not dry_run:
+            gpu_out = f"{REMOTE_TMP}/batch_{batch_idx:03d}_out"
+            # 注意：verify_batch_transfer 需要本地访问GPU目录，这里通过SSH生成清单后校验
+            # 简化版：检查关键文件是否存在
+            logger.info(f"  校验回传完整性: {local_out}")
+            key_files = ["meta", "segments", "features"]
+            missing = [f for f in key_files if not (local_out / f).exists()]
+            if missing:
+                logger.warning(f"  ⚠️  回传不完整，缺少: {missing}")
+                logger.warning(f"     跳过GPU清理，请手动检查后重新回传")
+                update_batch_status(batch_idx, "failed", error=f"missing files: {missing}")
+                continue
+            else:
+                logger.info(f"  ✅ 回传完整性校验通过")
+                update_batch_status(batch_idx, "verified")
 
         # Step 6: 合并到全局
         if not dry_run:
             merge_batch_to_global(batch_idx, local_out)
+        update_batch_status(batch_idx, "merged")
 
-        # Step 7: 清理GPU批次（回传完成后安全清理，只删音频/产物，保留模型/代码/环境）
+        # Step 7: 清理GPU批次（回传完成且校验通过后安全清理，只删音频/产物，保留模型/代码/环境）
         if auto_cleanup:
             if not dry_run:
                 cleanup_success = cleanup_gpu_batch(batch_idx, dry_run)
-                if not cleanup_success:
+                if cleanup_success:
+                    update_batch_status(batch_idx, "cleaned")
+                else:
                     logger.warning(f"批次 {batch_idx:03d} GPU清理失败，需手动清理")
+                    update_batch_status(batch_idx, "failed", error="gpu cleanup failed")
             else:
                 cleanup_gpu_batch(batch_idx, dry_run)
 

@@ -140,6 +140,68 @@ def check_cross_set_leakage(splits: Dict[str, pd.DataFrame]) -> Dict:
     return result
 
 
+def check_source_isolation(version_dir: Path) -> Dict:
+    """
+    检查来源隔离（test/holdout 是否来自独立采集批次）
+
+    工业级要求：
+    - test 集应该来自独立采集的数据池，不参与清洗调优（防止迭代污染）
+    - holdout 集应该长期封存，跨版本模型对比（必须与训练集来自不同采集批次）
+    - 如果 test/holdout 与 train 来自同一 manifest，存在分布一致和迭代污染风险
+    """
+    logger.info("检查来源隔离（test/holdout 是否来自独立采集批次）...")
+    result = {
+        "passed": True,
+        "test_isolated": False,
+        "holdout_isolated": False,
+        "test_source": None,
+        "holdout_source": None,
+        "warnings": [],
+    }
+
+    # 读取 lineage.json 获取来源隔离信息
+    lineage_file = version_dir / "lineage.json"
+    if lineage_file.exists():
+        with open(lineage_file, "r", encoding="utf-8") as f:
+            lineage = json.load(f)
+
+        # 检查 stats 中的来源隔离信息
+        stats = lineage.get("stats", {})
+        test_source = stats.get("test_source_isolation")
+        holdout_source = stats.get("holdout_source_isolation")
+
+        if test_source:
+            result["test_isolated"] = True
+            result["test_source"] = test_source
+            logger.info(f"  ✅ 测试集来源隔离: {test_source}")
+        else:
+            result["test_isolated"] = False
+            result["warnings"].append(
+                "测试集未使用来源隔离（与训练集来自同一manifest），存在迭代污染风险"
+            )
+            logger.warning(f"  ⚠️  测试集未使用来源隔离（建议使用 --test-from 参数指定独立数据池）")
+
+        if holdout_source:
+            result["holdout_isolated"] = True
+            result["holdout_source"] = holdout_source
+            logger.info(f"  ✅ holdout集来源隔离: {holdout_source}")
+        else:
+            result["holdout_isolated"] = False
+            result["warnings"].append(
+                "holdout集未使用来源隔离（与训练集来自同一manifest），跨版本对比可能失效"
+            )
+            logger.warning(f"  ⚠️  holdout集未使用来源隔离（建议使用 --holdout-from 参数指定独立数据池）")
+
+        # 如果都没有隔离，总体不通过（但只是警告，不阻塞）
+        if not result["test_isolated"] and not result["holdout_isolated"]:
+            result["passed"] = False  # 标记为不通过，但调用方可决定是否阻塞
+    else:
+        logger.warning(f"  ⚠️  lineage.json 不存在，跳过来源隔离检查")
+        result["warnings"].append("lineage.json 不存在，无法检查来源隔离")
+
+    return result
+
+
 def check_audio_exists(splits: Dict[str, pd.DataFrame], audio_base_dir: Path) -> Dict:
     """检查音频文件是否存在"""
     logger.info("检查音频文件存在性...")
@@ -224,6 +286,7 @@ def generate_report(
     dataset_info: Dict,
     completeness: Dict,
     leakage: Dict,
+    source_isolation: Dict,
     audio_exists: Dict,
     checksums: Dict,
     output_path: Path,
@@ -235,6 +298,7 @@ def generate_report(
         "checks": {
             "completeness": completeness,
             "cross_set_leakage": leakage,
+            "source_isolation": source_isolation,
             "audio_exists": audio_exists,
             "checksums": checksums,
         },
@@ -287,6 +351,9 @@ def main():
     # 检查跨集泄露
     leakage = check_cross_set_leakage(dataset_info["splits"])
 
+    # 检查来源隔离（test/holdout 是否来自独立采集批次）
+    source_isolation = check_source_isolation(version_dir)
+
     # 检查音频存在性
     audio_exists = {"passed": True, "missing": [], "total_checked": 0}
     if args.check_audio_exists:
@@ -302,7 +369,7 @@ def main():
         output_path = Path(args.output)
     else:
         output_path = version_dir / "verification_report.json"
-    report = generate_report(dataset_info, completeness, leakage, audio_exists, checksums, output_path)
+    report = generate_report(dataset_info, completeness, leakage, source_isolation, audio_exists, checksums, output_path)
 
     # 输出结果
     logger.info("")
@@ -311,6 +378,9 @@ def main():
     logger.info("=" * 60)
     logger.info(f"  划分完整性: {'✅ 通过' if completeness['passed'] else '❌ 失败'}")
     logger.info(f"  跨集泄露: {'✅ 无泄露' if leakage['passed'] else '❌ 有泄露'}")
+    test_iso = "✅ 已隔离" if source_isolation.get("test_isolated") else "⚠️ 未隔离"
+    holdout_iso = "✅ 已隔离" if source_isolation.get("holdout_isolated") else "⚠️ 未隔离"
+    logger.info(f"  来源隔离: test={test_iso}, holdout={holdout_iso}")
     missing_count = len(audio_exists.get("missing", []))
     logger.info(f"  音频存在性: {'✅ 全部存在' if audio_exists['passed'] else f'❌ 缺失{missing_count}个'}")
     mismatch_count = len(checksums.get("mismatched", []))
