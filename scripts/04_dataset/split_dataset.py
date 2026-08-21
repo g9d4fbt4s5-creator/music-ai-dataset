@@ -520,7 +520,9 @@ def save_splits(
         logger.info(f"manifest引用已保存: {output_dir / 'manifest_ref.json'}")
 
     # 保存 lineage.json（建议1: 包含并引用清洗阶段的lineage，形成一条链）
+    # 补强1: 添加 schema_version 字段，为后续格式演进留余地
     lineage = {
+        "schema_version": "1.0",  # lineage.json schema 版本，后续格式升级时递增
         "version": output_dir.name,
         "timestamp": datetime.now(TZ).isoformat(),
         "split_method": stats.get("split_method", "random"),
@@ -532,6 +534,14 @@ def save_splits(
         "total_samples": stats["total"],
         "checksum_verification": checksum_result,  # P0: checksum校验结果
         "upstream": upstream_lineage,  # 建议1: 引用清洗阶段的lineage
+        # 补强4: 完整血缘字段（来源隔离）
+        "main_pool_manifest": stats.get("main_pool_manifest"),
+        "test_pool_manifest": stats.get("test_pool_manifest"),
+        "holdout_pool_manifest": stats.get("holdout_pool_manifest"),
+        "train_val_split_ratio": stats.get("train_val_split_ratio"),
+        "source_isolation_enabled": stats.get("source_isolation_enabled", False),
+        "source_isolation_passed": stats.get("source_isolation_passed", True),
+        "overlap_audio_ids": stats.get("overlap_audio_ids", []),
     }
     with open(output_dir / "lineage.json", "w", encoding="utf-8") as f:
         json.dump(lineage, f, ensure_ascii=False, indent=2)
@@ -568,6 +578,8 @@ def main():
                         help="独立测试集来源（从独立采集的数据池导入，不参与清洗调优，防止迭代污染）")
     parser.add_argument("--holdout-from", type=str, default=None,
                         help="独立holdout集来源（长期封存，跨版本模型对比，必须与训练集来自不同采集批次）")
+    parser.add_argument("--strict", action="store_true",
+                        help="严格模式：发现跨池重复 audio_id 时直接报错终止（默认只警告）")
     parser.add_argument("--random-state", type=int, default=42, help="随机种子")
     args = parser.parse_args()
 
@@ -721,6 +733,14 @@ def main():
         logger.info("  ✅ 坑2校验通过：audio_id 全局跨池无重复")
     else:
         logger.warning(f"  ⚠️  坑2校验发现 {len(overlap_audio_ids)} 个跨池重复（详见 lineage.json）")
+        # 补强2: 严格模式下直接抛异常终止
+        if args.strict:
+            logger.error("  ❌ 严格模式：跨池重复 audio_id 意味着来源隔离已失效，继续生成数据集会有泄露风险")
+            logger.error(f"     前5个重复: {[item['audio_id'] for item in overlap_audio_ids[:5]]}")
+            raise ValueError(
+                f"Source isolation violated: {len(overlap_audio_ids)} audio_ids overlap across pools. "
+                f"Use --strict=False to override (not recommended)."
+            )
 
     # 生成统计
     stats = generate_split_stats(train_df, val_df, test_df, holdout_df, args.stratify_by)

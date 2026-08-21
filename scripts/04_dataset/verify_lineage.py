@@ -140,7 +140,7 @@ def check_cross_set_leakage(splits: Dict[str, pd.DataFrame]) -> Dict:
     return result
 
 
-def check_source_isolation(version_dir: Path) -> Dict:
+def check_source_isolation(version_dir: Path, splits: Dict[str, pd.DataFrame] = None) -> Dict:
     """
     检查来源隔离（test/holdout 是否来自独立采集批次）
 
@@ -148,6 +148,9 @@ def check_source_isolation(version_dir: Path) -> Dict:
     - test 集应该来自独立采集的数据池，不参与清洗调优（防止迭代污染）
     - holdout 集应该长期封存，跨版本模型对比（必须与训练集来自不同采集批次）
     - 如果 test/holdout 与 train 来自同一 manifest，存在分布一致和迭代污染风险
+
+    补强3: 如果 manifest 中包含 source_batch 字段，检查 train/val 和 test/holdout 的
+    采集批次是否不重叠（语义层面的隔离，不只是 audio_id 不重复）
     """
     logger.info("检查来源隔离（test/holdout 是否来自独立采集批次）...")
     result = {
@@ -156,6 +159,7 @@ def check_source_isolation(version_dir: Path) -> Dict:
         "holdout_isolated": False,
         "test_source": None,
         "holdout_source": None,
+        "source_batch_check": None,  # 补强3: source_batch 检查结果
         "warnings": [],
     }
 
@@ -165,10 +169,16 @@ def check_source_isolation(version_dir: Path) -> Dict:
         with open(lineage_file, "r", encoding="utf-8") as f:
             lineage = json.load(f)
 
-        # 检查 stats 中的来源隔离信息
-        stats = lineage.get("stats", {})
-        test_source = stats.get("test_source_isolation")
-        holdout_source = stats.get("holdout_source_isolation")
+        # 检查 schema_version（补强1）
+        schema_version = lineage.get("schema_version")
+        if schema_version:
+            logger.info(f"  lineage schema_version: {schema_version}")
+        else:
+            logger.warning(f"  ⚠️  lineage.json 缺少 schema_version 字段（建议添加）")
+
+        # 检查来源隔离信息（兼容新旧格式）
+        test_source = lineage.get("test_pool_manifest") or lineage.get("stats", {}).get("test_source_isolation")
+        holdout_source = lineage.get("holdout_pool_manifest") or lineage.get("stats", {}).get("holdout_source_isolation")
 
         if test_source:
             result["test_isolated"] = True
@@ -192,9 +202,69 @@ def check_source_isolation(version_dir: Path) -> Dict:
             )
             logger.warning(f"  ⚠️  holdout集未使用来源隔离（建议使用 --holdout-from 参数指定独立数据池）")
 
+        # 补强3: source_batch 采集批次隔离检查
+        # 如果 splits 数据存在且 manifest 中包含 source_batch 字段，检查采集批次是否不重叠
+        if splits and "audio_id" in list(splits.values())[0].columns:
+            # 加载全局 manifest 获取 source_batch 字段
+            manifest_path = PROJECT_ROOT / "data" / "00_raw_collect" / "audio_manifest.csv"
+            if manifest_path.exists():
+                manifest = pd.read_csv(manifest_path)
+                if "source_batch" in manifest.columns:
+                    logger.info("  补强3: 检查 source_batch 采集批次隔离...")
+                    source_batch_map = dict(zip(manifest["audio_id"], manifest["source_batch"]))
+
+                    # 收集各集合的 source_batch
+                    split_batches = {}
+                    for split_name, split_df in splits.items():
+                        if "audio_id" in split_df.columns:
+                            batches = set()
+                            for aid in split_df["audio_id"].tolist():
+                                batch = source_batch_map.get(aid)
+                                if batch:
+                                    batches.add(batch)
+                            split_batches[split_name] = batches
+
+                    # 检查 train/val 和 test/holdout 的 source_batch 是否不重叠
+                    train_val_batches = split_batches.get("train", set()) | split_batches.get("val", set())
+                    test_batches = split_batches.get("test", set())
+                    holdout_batches = split_batches.get("holdout_gold", set())
+
+                    test_overlap = train_val_batches & test_batches
+                    holdout_overlap = train_val_batches & holdout_batches
+
+                    source_batch_result = {
+                        "enabled": True,
+                        "train_val_batches": sorted(list(train_val_batches)),
+                        "test_batches": sorted(list(test_batches)),
+                        "holdout_batches": sorted(list(holdout_batches)),
+                        "test_batch_overlap": sorted(list(test_overlap)),
+                        "holdout_batch_overlap": sorted(list(holdout_overlap)),
+                        "passed": len(test_overlap) == 0 and len(holdout_overlap) == 0,
+                    }
+                    result["source_batch_check"] = source_batch_result
+
+                    if test_overlap:
+                        logger.warning(f"  ⚠️  补强3: test 与 train/val 有 {len(test_overlap)} 个重叠采集批次: {sorted(list(test_overlap))[:5]}")
+                        result["warnings"].append(f"test 与 train/val 采集批次重叠: {sorted(list(test_overlap))}")
+                    else:
+                        logger.info(f"  ✅ 补强3: test 与 train/val 采集批次无重叠")
+
+                    if holdout_overlap:
+                        logger.warning(f"  ⚠️  补强3: holdout 与 train/val 有 {len(holdout_overlap)} 个重叠采集批次: {sorted(list(holdout_overlap))[:5]}")
+                        result["warnings"].append(f"holdout 与 train/val 采集批次重叠: {sorted(list(holdout_overlap))}")
+                    else:
+                        logger.info(f"  ✅ 补强3: holdout 与 train/val 采集批次无重叠")
+                else:
+                    logger.info("  补强3: manifest 中无 source_batch 字段，跳过采集批次隔离检查（建议在采集端添加此字段）")
+                    result["source_batch_check"] = {"enabled": False, "reason": "manifest 中无 source_batch 字段"}
+
         # 如果都没有隔离，总体不通过（但只是警告，不阻塞）
         if not result["test_isolated"] and not result["holdout_isolated"]:
             result["passed"] = False  # 标记为不通过，但调用方可决定是否阻塞
+
+        # 补强3: 如果 source_batch 检查失败，也标记为不通过
+        if result.get("source_batch_check", {}).get("enabled") and not result["source_batch_check"].get("passed", True):
+            result["passed"] = False
     else:
         logger.warning(f"  ⚠️  lineage.json 不存在，跳过来源隔离检查")
         result["warnings"].append("lineage.json 不存在，无法检查来源隔离")
@@ -352,7 +422,7 @@ def main():
     leakage = check_cross_set_leakage(dataset_info["splits"])
 
     # 检查来源隔离（test/holdout 是否来自独立采集批次）
-    source_isolation = check_source_isolation(version_dir)
+    source_isolation = check_source_isolation(version_dir, dataset_info["splits"])
 
     # 检查音频存在性
     audio_exists = {"passed": True, "missing": [], "total_checked": 0}
