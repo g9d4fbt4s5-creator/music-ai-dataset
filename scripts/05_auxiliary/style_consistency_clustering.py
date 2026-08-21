@@ -404,6 +404,113 @@ def compute_cluster_stats(
     return results_df, outliers_df, summary_df
 
 
+def classify_outliers(
+    embeddings: np.ndarray,
+    labels: np.ndarray,
+    track_ids: List[str],
+    yamnet_df: Optional[pd.DataFrame] = None,
+) -> pd.DataFrame:
+    """
+    异常点分级处理（工业级策略，不直接删除）
+
+    DBSCAN 的 -1（离群点）≠ 坏数据。在音乐领域，它更可能代表
+    "风格独特的合法样本"。直接删除会损失数据多样性。
+
+    分级策略：
+    - distance < 0.6: 轻微偏离 → substyle_variant，保留
+    - distance < 0.8: 明显偏离但YAMNet仍判为音乐 → substyle_outlier，保留+flag_for_review
+    - distance >= 0.8: 严重偏离 → 检查YAMNet标签，有Speech/Noise则reject，否则extreme_variant保留
+
+    Args:
+        embeddings: 嵌入向量（已归一化）
+        labels: DBSCAN聚类标签
+        track_ids: 音频ID列表
+        yamnet_df: YAMNet结果DataFrame（可选，用于辅助判断）
+
+    Returns:
+        pd.DataFrame: 异常点分级结果
+    """
+    # 计算每个聚类的质心
+    unique_labels = set(labels)
+    centroids = {}
+    for label in unique_labels:
+        if label == -1:
+            continue
+        mask = labels == label
+        centroids[label] = np.mean(embeddings[mask], axis=0)
+
+    if not centroids:
+        logger.warning("没有有效聚类，无法计算异常点距离")
+        return pd.DataFrame()
+
+    # 异常点索引
+    outlier_indices = np.where(labels == -1)[0]
+
+    results = []
+    for idx in outlier_indices:
+        track_id = track_ids[idx]
+        embedding = embeddings[idx]
+
+        # 计算到最近质心的距离
+        min_distance = min(
+            np.linalg.norm(embedding - centroid)
+            for centroid in centroids.values()
+        )
+
+        # 分级判断
+        if min_distance < 0.6:
+            outlier_class = "substyle_variant"
+            action = "keep"
+            flag_for_review = False
+            reason = "轻微偏离，风格独特但合法"
+        elif min_distance < 0.8:
+            outlier_class = "substyle_outlier"
+            action = "keep"
+            flag_for_review = True
+            reason = "明显偏离，建议人工抽检"
+        else:
+            # 严重偏离，检查YAMNet标签
+            yamnet_top = ""
+            is_non_music = False
+            if yamnet_df is not None and track_id in yamnet_df["track_id"].values:
+                row = yamnet_df[yamnet_df["track_id"] == track_id].iloc[0]
+                yamnet_top = str(row.get("yamnet_top_tags", ""))
+                is_music = row.get("is_music", True)
+                has_speech = row.get("has_speech", False)
+                has_noise = row.get("has_noise", False)
+
+                if not is_music or has_speech or has_noise:
+                    is_non_music = True
+
+            if is_non_music:
+                outlier_class = "non_music_outlier"
+                action = "reject"
+                flag_for_review = True
+                reason = f"严重偏离且YAMNet判为非音乐/语音/噪声，建议剔除"
+            else:
+                outlier_class = "extreme_style_variant"
+                action = "keep"
+                flag_for_review = True
+                reason = "严重偏离但YAMNet仍判为音乐，可能是极端风格变体"
+
+        results.append({
+            "track_id": track_id,
+            "distance_to_nearest_centroid": round(min_distance, 4),
+            "outlier_class": outlier_class,
+            "action": action,
+            "flag_for_review": flag_for_review,
+            "reason": reason,
+        })
+
+    df = pd.DataFrame(results)
+    logger.info(f"异常点分级完成: {len(df)} 个异常点")
+    if not df.empty:
+        logger.info(f"  分级分布:\n{df['outlier_class'].value_counts()}")
+        logger.info(f"  操作分布:\n{df['action'].value_counts()}")
+
+    return df
+
+
 def visualize_tsne(
     embeddings: np.ndarray,
     labels: np.ndarray,
@@ -510,6 +617,10 @@ def main():
     parser.add_argument("--min-samples", type=int, default=5, help="DBSCAN min_samples")
     parser.add_argument("--metric", type=str, default="cosine", choices=["cosine", "euclidean"], help="距离度量")
     parser.add_argument("--no-visualize", action="store_true", help="跳过 t-SNE 可视化")
+    parser.add_argument("--yamnet-results", type=str, default=None,
+                        help="YAMNet结果CSV路径（用于异常点分级处理）")
+    parser.add_argument("--classify-outliers", action="store_true",
+                        help="对异常点进行分级处理（不直接删除，输出分级报告）")
     # 通用参数
     parser.add_argument("--output", type=str, help="输出文件路径（extract模式）")
     parser.add_argument("--limit", type=int, default=None, help="只处理前 N 个音频")
@@ -589,6 +700,27 @@ def main():
         logger.info(f"聚类结果已保存: {results_path}")
         logger.info(f"异常点列表已保存: {outliers_path}")
         logger.info(f"聚类汇总已保存: {summary_path}")
+
+        # 异常点分级处理（工业级策略，不直接删除）
+        if args.classify_outliers and np.sum(labels == -1) > 0:
+            logger.info("")
+            logger.info("=== 异常点分级处理 ===")
+            yamnet_df = None
+            if args.yamnet_results:
+                yamnet_df = pd.read_csv(args.yamnet_results)
+                logger.info(f"加载YAMNet结果: {args.yamnet_results} ({len(yamnet_df)} 条)")
+
+            outlier_classification = classify_outliers(
+                embeddings_normalized, labels, track_ids, yamnet_df
+            )
+
+            if not outlier_classification.empty:
+                outlier_class_path = output_dir / "outlier_classification.csv"
+                outlier_classification.to_csv(outlier_class_path, index=False, encoding="utf-8")
+                logger.info(f"异常点分级报告已保存: {outlier_class_path}")
+                logger.info("")
+                logger.info("=== 异常点分级汇总 ===")
+                logger.info(outlier_classification[["outlier_class", "action", "flag_for_review"]].to_string(index=False))
 
         # 打印汇总
         logger.info("")

@@ -21,6 +21,7 @@ language_filter.py
         # 非目标语言，标记过滤
 """
 import os
+import sys
 import logging
 import numpy as np
 import pandas as pd
@@ -29,6 +30,7 @@ from typing import Dict, Optional, List, Tuple
 from dataclasses import dataclass, field
 
 import whisper
+import torch
 
 logger = logging.getLogger(__name__)
 
@@ -341,17 +343,85 @@ def batch_language_detection(
 
 
 if __name__ == "__main__":
-    # 测试
-    logging.basicConfig(level=logging.INFO, format="%(levelname)s | %(message)s")
+    import argparse
 
-    test_audio = "/path/to/test.wav"
-    if os.path.exists(test_audio):
-        lang_filter = LanguageFilter(allowed_languages=["zh", "en", "ja"])
-        result = lang_filter.detect(test_audio)
-        print(f"语言: {result.language}")
-        print(f"置信度: {result.confidence}")
-        print(f"允许: {result.is_allowed}")
-        print(f"Top5: {result.top5_languages}")
-    else:
-        print("测试文件不存在")
-        print("用法: from language_filter import LanguageFilter")
+    parser = argparse.ArgumentParser(description="Stage 5.1 语言过滤（Whisper base）")
+    parser.add_argument("--file-list", type=str, help="音频文件列表路径")
+    parser.add_argument("--input-dir", type=str, help="输入音频目录")
+    parser.add_argument("--yamnet-results", type=str, default=None,
+                        help="YAMNet结果CSV路径（用于--vocals-only过滤）")
+    parser.add_argument("--vocals-only", action="store_true",
+                        help="只对 has_vocals=True 的样本跑语言过滤（纯器乐跳过，节省时间）")
+    parser.add_argument("--output", type=str, required=True, help="输出CSV路径")
+    parser.add_argument("--model", type=str, default="base", help="Whisper模型大小")
+    parser.add_argument("--allowed-languages", type=str, default=None,
+                        help="允许的语言（逗号分隔，如 zh,en,ja）")
+    parser.add_argument("--limit", type=int, default=None, help="只处理前N个")
+    args = parser.parse_args()
+
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s | %(levelname)s | %(message)s")
+
+    # 收集音频文件
+    audio_files = []
+    if args.file_list:
+        with open(args.file_list) as f:
+            audio_files = [line.strip() for line in f if line.strip()]
+    elif args.input_dir:
+        audio_extensions = {".mp3", ".wav", ".flac", ".m4a", ".ogg"}
+        for root, dirs, files in os.walk(args.input_dir):
+            for f in files:
+                if os.path.splitext(f)[1].lower() in audio_extensions:
+                    audio_files.append(os.path.join(root, f))
+        audio_files = sorted(audio_files)
+
+    if args.limit:
+        audio_files = audio_files[:args.limit]
+        logger.info(f"限制前 {args.limit} 个音频")
+
+    # YAMNet过滤：只对 has_vocals=True 的样本跑语言过滤
+    if args.vocals_only and args.yamnet_results:
+        yamnet_df = pd.read_csv(args.yamnet_results)
+        vocals_track_ids = set(yamnet_df[yamnet_df["has_vocals"] == True]["track_id"])
+        original_count = len(audio_files)
+        audio_files = [f for f in audio_files if Path(f).stem in vocals_track_ids]
+        logger.info(f"YAMNet过滤：{original_count} → {len(audio_files)}（只处理 has_vocals=True）")
+        if not audio_files:
+            logger.warning("没有 has_vocals=True 的样本，跳过语言过滤")
+            # 输出空结果
+            pd.DataFrame(columns=["track_id", "lang", "lang_confidence", "lang_allowed", "lang_top5", "lang_error"]).to_csv(args.output, index=False)
+            sys.exit(0)
+    elif args.vocals_only and not args.yamnet_results:
+        logger.warning("--vocals-only 需要 --yamnet-results，忽略过滤")
+
+    logger.info(f"开始语言检测：{len(audio_files)} 首，模型={args.model}")
+
+    allowed_languages = args.allowed_languages.split(",") if args.allowed_languages else None
+
+    # 批量检测
+    lang_filter = LanguageFilter(
+        model_size=args.model,
+        allowed_languages=allowed_languages,
+        device="cuda" if torch.cuda.is_available() else "cpu",
+    )
+
+    results = []
+    for i, audio_path in enumerate(audio_files):
+        track_id = Path(audio_path).stem
+        logger.info(f"[{i+1}/{len(audio_files)}] {track_id}")
+        result = lang_filter.detect(audio_path)
+        result_dict = result.to_dict()
+        result_dict["track_id"] = track_id
+        result_dict["audio_path"] = audio_path
+        results.append(result_dict)
+
+    # 保存
+    df = pd.DataFrame(results)
+    os.makedirs(os.path.dirname(args.output), exist_ok=True)
+    df.to_csv(args.output, index=False, encoding="utf-8")
+    logger.info(f"语言检测完成：{len(results)} 首，结果已保存: {args.output}")
+
+    # 统计
+    if "lang" in df.columns:
+        logger.info(f"语言分布:\n{df['lang'].value_counts()}")
+        if "lang_confidence" in df.columns:
+            logger.info(f"置信度均值: {df['lang_confidence'].mean():.2%}")
