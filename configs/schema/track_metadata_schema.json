@@ -1,0 +1,270 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Track Metadata Schema",
+  "description": "音乐语料库单条音频元数据标准（对齐工业界 Suno/Udio/Meta 内部 Schema）",
+  "type": "object",
+  "required": ["track_id", "audio_path", "duration_sec", "sample_rate", "bit_depth", "channels"],
+  "properties": {
+    "track_id": {
+      "type": "string",
+      "description": "全局唯一音频 ID，使用 ULID 格式",
+      "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$",
+      "examples": ["01M0E9X162CTB4D15WZQ5D8FVX"]
+    },
+    "audio_path": {
+      "type": "string",
+      "description": "音频文件相对路径（散列目录）",
+      "examples": ["raw_audio/f0/b8/f0b8fba5717578aecd96cb0114ff8ad7_01M0E9X162CTB4D15WZQ5D8FVX.wav"]
+    },
+    "duration_sec": {
+      "type": "number",
+      "description": "音频时长（秒）",
+      "minimum": 0
+    },
+    "sample_rate": {
+      "type": "integer",
+      "description": "采样率（Hz）",
+      "enum": [16000, 22050, 24000, 44100, 48000],
+      "note": "生成模型用 44100/48000，理解模型用 24000"
+    },
+    "bit_depth": {
+      "type": "integer",
+      "description": "位深",
+      "enum": [16, 24, 32]
+    },
+    "channels": {
+      "type": "integer",
+      "description": "声道数",
+      "enum": [1, 2],
+      "note": "1=mono(理解模型), 2=stereo(生成模型)"
+    },
+
+    "source": {
+      "type": "string",
+      "description": "音频来源",
+      "enum": ["licensed_catalog", "user_upload", "web_crawl", "public_domain", "creative_commons", "mtg_jamendo", "bandcamp", "netease_cloud", "youtube", "podcast", "other"],
+      "note": "版权是工业红线，必须记录来源"
+    },
+    "license_type": {
+      "type": "string",
+      "description": "许可证类型",
+      "enum": ["commercial", "non_commercial", "public_domain", "creative_commons", "royalty_free", "unknown"]
+    },
+    "license_tier": {
+      "type": "string",
+      "description": "许可证等级",
+      "enum": ["premium", "standard", "free", "unknown"]
+    },
+    "copyright_holder": {
+      "type": "string",
+      "description": "版权持有人"
+    },
+    "collection_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "采集日期"
+    },
+
+    "content_tags": {
+      "type": "object",
+      "description": "内容标签",
+      "properties": {
+        "genre": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "流派标签（三级分类体系）",
+          "examples": [["jazz", "bebop"]]
+        },
+        "mood": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "情绪标签（VAD 三维情绪模型）",
+          "examples": [["melancholic", "introspective"]]
+        },
+        "vocals": {
+          "type": "boolean",
+          "description": "是否有人声演唱"
+        },
+        "vocals_ratio": {
+          "type": "number",
+          "description": "人声占比（YAMNet 输出，0-1）",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "language": {
+          "type": ["string", "null"],
+          "description": "语言代码（ISO 639-1），纯器乐为 null",
+          "examples": ["zh", "en", "ja", null]
+        },
+        "instrumentation": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "乐器列表（GM128 标准乐器编码）",
+          "examples": [["saxophone", "piano", "double_bass", "drums"]]
+        },
+        "bpm": {
+          "type": ["number", "null"],
+          "description": "节拍速度（BPM）",
+          "minimum": 0
+        },
+        "key": {
+          "type": ["string", "null"],
+          "description": "调性",
+          "examples": ["Bb minor", "C major"]
+        }
+      }
+    },
+
+    "quality_signals": {
+      "type": "object",
+      "description": "质量信号（YAMNet + 硬门槛/软标记）",
+      "properties": {
+        "is_music": {
+          "type": "boolean",
+          "description": "是否为音乐（YAMNet music_ratio > 0.30）"
+        },
+        "music_ratio": {
+          "type": "number",
+          "description": "音乐帧占比（YAMNet 输出）",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "has_speech": {
+          "type": "boolean",
+          "description": "是否有说话（YAMNet speech_ratio > 0.05）"
+        },
+        "speech_ratio": {
+          "type": "number",
+          "description": "说话帧占比（YAMNet 输出）",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "has_noise": {
+          "type": "boolean",
+          "description": "是否有噪声（YAMNet noise_ratio > 0.05，不含静音）"
+        },
+        "noise_ratio": {
+          "type": "number",
+          "description": "噪声帧占比（YAMNet 输出）",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "has_silence": {
+          "type": "boolean",
+          "description": "是否有大量静音（YAMNet silence_ratio > 0.15，不剔除）"
+        },
+        "silence_ratio": {
+          "type": "number",
+          "description": "静音帧占比（YAMNet 输出）",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "dynamic_range_db": {
+          "type": ["number", "null"],
+          "description": "动态范围（dB）"
+        },
+        "lufs": {
+          "type": ["number", "null"],
+          "description": "综合响度（LUFS，目标 -14）"
+        },
+        "snr_db": {
+          "type": ["number", "null"],
+          "description": "信噪比（dB）"
+        },
+        "clipping_ratio": {
+          "type": ["number", "null"],
+          "description": "削波比例（%，硬门槛 >5% 剔除）"
+        },
+        "quality_status": {
+          "type": "string",
+          "description": "质量状态",
+          "enum": ["passed", "rejected", "flagged_low_quality", "flagged_noise_candidate"]
+        }
+      }
+    },
+
+    "text_annotations": {
+      "type": "object",
+      "description": "文本标注",
+      "properties": {
+        "caption": {
+          "type": ["string", "null"],
+          "description": "音频描述文本（MusicCaps 格式）"
+        },
+        "lyrics": {
+          "type": ["string", "null"],
+          "description": "歌词文本（ASR 转写或平台抓取）"
+        },
+        "lyrics_source": {
+          "type": ["string", "null"],
+          "description": "歌词来源",
+          "enum": ["funasr_singing", "faster_whisper", "lrclib_api", "genius_api", "netease_api", "manual", null]
+        },
+        "lyrics_timestamps": {
+          "type": ["array", "null"],
+          "description": "歌词时间戳（MFA 对齐结果）",
+          "items": {
+            "type": "object",
+            "properties": {
+              "start": {"type": "number"},
+              "end": {"type": "number"},
+              "text": {"type": "string"}
+            }
+          }
+        },
+        "user_prompt": {
+          "type": ["string", "null"],
+          "description": "用户生成提示词（如有）"
+        }
+      }
+    },
+
+    "splits": {
+      "type": "object",
+      "description": "数据集划分",
+      "properties": {
+        "train": {"type": "boolean", "description": "是否在训练集"},
+        "val": {"type": "boolean", "description": "是否在验证集"},
+        "test": {"type": "boolean", "description": "是否在测试集"},
+        "holdout": {"type": "boolean", "description": "是否在 holdout 黄金集（不参与训练调参）"}
+      }
+    },
+
+    "processing_status": {
+      "type": "object",
+      "description": "处理状态追踪",
+      "properties": {
+        "stage_1_metadata_cleaned": {"type": "boolean"},
+        "stage_2_format_normalized": {"type": "boolean"},
+        "stage_3_quality_checked": {"type": "boolean"},
+        "stage_4_deduplicated": {"type": "boolean"},
+        "stage_5_language_detected": {"type": "boolean"},
+        "stage_5_lyrics_transcribed": {"type": "boolean"},
+        "stage_5_style_clustered": {"type": "boolean"},
+        "stage_6_chunked": {"type": "boolean"},
+        "stage_6_features_extracted": {"type": "boolean"},
+        "demucs_separated": {"type": "boolean"},
+        "label_studio_annotated": {"type": "boolean"}
+      }
+    },
+
+    "master_info": {
+      "type": "object",
+      "description": "母版信息（统一规格副本）",
+      "properties": {
+        "master_path": {
+          "type": ["string", "null"],
+          "description": "母版 FLAC 路径（48kHz/24bit/stereo）"
+        },
+        "master_md5": {
+          "type": ["string", "null"],
+          "description": "母版文件 MD5"
+        },
+        "master_status": {
+          "type": "string",
+          "enum": ["success", "failed", "pending", "skipped"]
+        }
+      }
+    }
+  }
+}

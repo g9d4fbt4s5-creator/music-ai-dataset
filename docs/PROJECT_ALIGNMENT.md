@@ -345,6 +345,34 @@ Mac（本地）
   └── Label Studio 标注（读取本地音频）
 ```
 
+### 5.12 元数据 Schema 标准（对齐工业界，08-21）
+
+**音频规格标准**：
+| 用途 | 采样率 | 位深 | 声道 | 说明 |
+|------|--------|------|------|------|
+| 生成模型（Suno/Udio/MusicGen） | 44.1kHz 或 48kHz | 16bit | 立体声 | 全频带，高动态范围 |
+| 理解模型（MERT/CLAP/MOSS） | 24kHz | 16bit | 单声道 | 轻量，足够理解任务 |
+| 原始归档 | 48kHz | 24bit | 立体声 FLAC | 最高质量，永不修改 |
+| 标注用（Label Studio） | 16kHz | 16bit | 单声道 MP3/WAV | 文件小，加载快 |
+
+**一源多副本**：同一份原始音频生成多个规格副本，元数据记录各规格路径，训练脚本读对应规格。
+
+**工业界通用字段（Suno/Udio/Meta 内部）**：
+| 字段组 | 字段 | 我们项目状态 |
+|--------|------|-------------|
+| 基础信息 | track_id(ULID), audio_path, duration, sample_rate, bit_depth, channels | ✅ 已实现 |
+| 来源与版权 | source, license_type, license_tier, copyright_holder | ⚠️ 待补充（版权是工业红线） |
+| 内容标签 | genre, mood, vocals, language, instrumentation, bpm, key | ✅ 已实现（GM128/VAD/三级流派，比开源更细） |
+| 质量信号 | is_music, has_speech, has_noise, dynamic_range, lufs, snr | ✅ 已实现（YAMNet + 硬门槛/软标记） |
+| 文本标注 | caption, lyrics, lyrics_source, lyrics_timestamps, user_prompt | ✅ 已实现（ASR 歌词 + MusicCaps 映射） |
+| 数据集划分 | train, val, test, holdout | ✅ 已实现 |
+| 处理状态 | 各阶段完成状态追踪 | ✅ 已实现（processing_status） |
+| 母版信息 | master_path, master_md5, master_status | ✅ 已实现 |
+
+**Schema 文件位置**：`configs/schema/track_metadata_schema.json`（JSON Schema 格式，可用于校验）
+
+**待补充**：source/license 字段，建议在 import_audio.py 入库时强制填写，版权是工业红线。
+
 ---
 
 ## 六、数据产物清单
