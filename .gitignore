@@ -138,6 +138,18 @@ label_studio.sqlite3
 *.7z
 data/00_raw_collect/source_archive/
 
+# ========== 可视化报告（HTML 可重新生成，不提交大文件） ==========
+# 手动生成的可视化（可能很大，如23MB音频特征图）
+reports/manual/*.html
+reports/manual/**/*.html
+# ETL 流水线自动生成的报告（版本化，通常较小，可保留）
+# 如需忽略，取消下面两行注释
+# reports/etl_report_*/*.html
+# reports/etl_report_*/**/*.html
+# 允许 .gitkeep 保留目录结构
+!reports/manual/.gitkeep
+!reports/.gitkeep
+
 # ========== dev 版本 wheel 缓存（必须提交，保证复现） ==========
 # essentia / madmom-onnx 是 dev 预览版，PyPI 随时可能移除
 # 下载到本地 wheel_cache 并提交 git，保证环境可复现
