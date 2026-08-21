@@ -11,22 +11,22 @@ visualize_dataset.py
 
 用法：
     # 聚类可视化（MERT嵌入）
-    python visualize_dataset.py --type cluster --input data/02_preannotation/model_output_cache/mert_embeddings/ --output visualizations/cluster.html
+    python visualize_dataset.py --type cluster --input data/02_preannotation/model_output_cache/mert_embeddings/ --output reports/manual/cluster.html
 
     # 特征分布可视化
-    python visualize_dataset.py --type feature-dist --input data/00.5_cleaned/reports/quality_check_report.csv --output visualizations/feature_dist.html
+    python visualize_dataset.py --type feature-dist --input data/00.5_cleaned/reports/quality_check_report.csv --output reports/manual/feature_dist.html
 
     # 数据集统计可视化
-    python visualize_dataset.py --type stats --input data/00_raw_collect/audio_manifest.csv --output visualizations/stats.html
+    python visualize_dataset.py --type stats --input data/00_raw_collect/audio_manifest.csv --output reports/manual/stats.html
 
     # 音频特征可视化（单首）
-    python visualize_dataset.py --type audio --input path/to/audio.wav --output visualizations/audio_features.html
+    python visualize_dataset.py --type audio --input path/to/audio.wav --output reports/manual/audio_features.html
 
     # YAMNet结果可视化
-    python visualize_dataset.py --type yamnet --input data/00.5_cleaned/reports/yamnet_output.csv --output visualizations/yamnet.html
+    python visualize_dataset.py --type yamnet --input data/00.5_cleaned/reports/yamnet_output.csv --output reports/manual/yamnet.html
 
     # 全部可视化
-    python visualize_dataset.py --type all --output-dir visualizations/
+    python visualize_dataset.py --type all --output-dir reports/manual/
 """
 import os
 import sys
@@ -584,7 +584,7 @@ def main():
         input_path = PROJECT_ROOT / input_path
 
     if args.type == "all":
-        output_dir = Path(args.output_dir) if args.output_dir else PROJECT_ROOT / "visualizations"
+        output_dir = Path(args.output_dir) if args.output_dir else PROJECT_ROOT / "reports" / "manual"
         output_dir.mkdir(parents=True, exist_ok=True)
 
         # 聚类可视化
@@ -613,7 +613,7 @@ def main():
         if args.output:
             output_path = Path(args.output)
         else:
-            output_dir = PROJECT_ROOT / "visualizations"
+            output_dir = PROJECT_ROOT / "reports" / "manual"
             output_dir.mkdir(parents=True, exist_ok=True)
             output_path = output_dir / f"{args.type}.html"
 
