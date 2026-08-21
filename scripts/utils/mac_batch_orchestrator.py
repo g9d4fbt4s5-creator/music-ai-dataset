@@ -1,0 +1,435 @@
+"""
+mac_batch_orchestrator.py
+Mac端批次编排脚本 — 自动化 Mac↔GPU 批次处理流水线
+
+功能：
+1. 读取待处理清单（prefilter_passed.csv 或 audio_manifest.csv）
+2. 按 batch_size 分组（默认100首/批）
+3. 准备批次目录（复制音频到 data/gpu_batches/batch_XXX/）
+4. rsync 上传到 GPU
+5. SSH 触发 GPU 处理（tmux 后台运行）
+6. 轮询等待完成（检查 tmux session 是否存在）
+7. rsync 回传产物到 Mac
+8. Mac 本地合并（元数据/segments/features）
+9. 循环直到所有批次完成
+
+用法：
+    # 完整流水线（从清单到合并）
+    python mac_batch_orchestrator.py --input prefilter_passed.csv --batch-size 100
+
+    # 只准备批次（不上传）
+    python mac_batch_orchestrator.py --input prefilter_passed.csv --prepare-only
+
+    # 只上传指定批次
+    python mac_batch_orchestrator.py --upload-only --batch-id 0
+
+    # 只回传指定批次
+    python mac_batch_orchestrator.py --download-only --batch-id 0
+
+    # 从指定批次开始（断点续跑）
+    python mac_batch_orchestrator.py --input prefilter_passed.csv --start-from 3
+
+    # 预览模式（不实际执行）
+    python mac_batch_orchestrator.py --input prefilter_passed.csv --dry-run
+"""
+import os
+import sys
+import json
+import time
+import argparse
+import logging
+import subprocess
+import shutil
+from datetime import datetime
+from pathlib import Path
+from typing import List, Dict, Optional, Tuple
+
+import pandas as pd
+
+# ===================== 配置 =====================
+PROJECT_ROOT = Path(__file__).parent.parent.parent
+LOG_DIR = PROJECT_ROOT / "logs"
+os.makedirs(LOG_DIR, exist_ok=True)
+time_str = datetime.now().strftime("%Y%m%d_%H%M%S")
+log_file = LOG_DIR / f"mac_batch_orchestrator_{time_str}.log"
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s | %(levelname)s | %(message)s",
+    handlers=[
+        logging.FileHandler(log_file, encoding="utf-8"),
+        logging.StreamHandler()
+    ]
+)
+logger = logging.getLogger(__name__)
+
+# GPU 连接配置
+GPU_HOST = "root@connect.westb.seetacloud.com"
+GPU_PORT = "43107"
+REMOTE_TMP = "/root/autodl-tmp"
+REMOTE_PROJECT = "/root/music_corpus_project"
+
+# 本地目录
+BATCHES_DIR = PROJECT_ROOT / "data" / "gpu_batches"
+GPU_OUTPUT_DIR = PROJECT_ROOT / "data" / "01_preprocess" / "gpu_batches"
+MANIFEST_PATH = PROJECT_ROOT / "data" / "00_raw_collect" / "audio_manifest.csv"
+
+# 默认参数
+DEFAULT_BATCH_SIZE = 100
+POLL_INTERVAL = 60  # 轮询间隔（秒）
+
+
+# ===================== 工具函数 =====================
+def run_command(cmd: List[str], check: bool = True, capture: bool = False) -> subprocess.CompletedProcess:
+    """运行 shell 命令"""
+    logger.debug(f"运行命令: {' '.join(cmd)}")
+    result = subprocess.run(cmd, check=check, capture_output=capture, text=True)
+    return result
+
+
+def ssh_run(cmd: str, check: bool = True) -> subprocess.CompletedProcess:
+    """通过 SSH 在 GPU 上运行命令"""
+    ssh_cmd = ["ssh", "-p", GPU_PORT, GPU_HOST, cmd]
+    return run_command(ssh_cmd, check=check)
+
+
+def rsync_upload(local_dir: Path, remote_dir: str) -> None:
+    """rsync 上传到 GPU"""
+    logger.info(f"上传: {local_dir} → {GPU_HOST}:{remote_dir}")
+    cmd = [
+        "rsync", "-avz", "--progress",
+        "-e", f"ssh -p {GPU_PORT}",
+        f"{local_dir}/",
+        f"{GPU_HOST}:{remote_dir}/"
+    ]
+    run_command(cmd)
+    logger.info("上传完成")
+
+
+def rsync_download(remote_dir: str, local_dir: Path) -> None:
+    """rsync 从 GPU 回传"""
+    logger.info(f"回传: {GPU_HOST}:{remote_dir} → {local_dir}")
+    local_dir.mkdir(parents=True, exist_ok=True)
+    cmd = [
+        "rsync", "-avz", "--progress",
+        "-e", f"ssh -p {GPU_PORT}",
+        f"{GPU_HOST}:{remote_dir}/",
+        f"{local_dir}/"
+    ]
+    run_command(cmd)
+    logger.info("回传完成")
+
+
+def get_audio_path(audio_id: str, manifest_df: pd.DataFrame) -> Optional[Path]:
+    """从 manifest 获取音频绝对路径"""
+    row = manifest_df[manifest_df["audio_id"] == audio_id]
+    if row.empty:
+        logger.warning(f"未找到 audio_id={audio_id}")
+        return None
+
+    file_relative_path = row.iloc[0].get("file_relative_path", "")
+    if pd.isna(file_relative_path) or not file_relative_path:
+        logger.warning(f"audio_id={audio_id} 无 file_relative_path")
+        return None
+
+    abs_path = PROJECT_ROOT / "data" / "00_raw_collect" / file_relative_path
+    if not abs_path.exists():
+        logger.warning(f"音频文件不存在: {abs_path}")
+        return None
+
+    return abs_path
+
+
+# ===================== 批次准备 =====================
+def prepare_batch(batch_id: int, track_ids: List[str], manifest_df: pd.DataFrame, dry_run: bool = False) -> Path:
+    """准备批次目录（复制音频）"""
+    batch_dir = BATCHES_DIR / f"batch_{batch_id:03d}"
+    batch_dir.mkdir(parents=True, exist_ok=True)
+
+    logger.info(f"准备批次 {batch_id:03d}: {len(track_ids)} 首音频")
+
+    manifest_rows = []
+    copied = 0
+    skipped = 0
+
+    for audio_id in track_ids:
+        src_path = get_audio_path(audio_id, manifest_df)
+        if src_path is None:
+            skipped += 1
+            continue
+
+        dst_path = batch_dir / src_path.name
+        if not dst_path.exists():
+            if dry_run:
+                logger.debug(f"[预览] 将复制: {src_path.name}")
+            else:
+                shutil.copy2(src_path, dst_path)
+        copied += 1
+
+        # 记录到批次 manifest
+        row = manifest_df[manifest_df["audio_id"] == audio_id].iloc[0].to_dict()
+        manifest_rows.append(row)
+
+    # 保存批次 manifest
+    batch_manifest = pd.DataFrame(manifest_rows)
+    batch_manifest.to_csv(batch_dir / "batch_manifest.csv", index=False)
+
+    logger.info(f"批次 {batch_id:03d} 准备完成: 复制 {copied} 首, 跳过 {skipped} 首")
+    return batch_dir
+
+
+# ===================== GPU 处理触发 =====================
+def trigger_gpu_processing(batch_id: int, dry_run: bool = False) -> str:
+    """触发 GPU 处理（tmux 后台）"""
+    session_name = f"batch_{batch_id:03d}"
+    remote_in = f"{REMOTE_TMP}/batch_{batch_id:03d}_in"
+    remote_out = f"{REMOTE_TMP}/batch_{batch_id:03d}_out"
+
+    # GPU 端处理命令
+    gpu_cmd = (
+        f"source /opt/miniconda3/etc/profile.d/conda.sh && "
+        f"conda activate labelstudio-env && "
+        f"cd {REMOTE_PROJECT} && "
+        f"python scripts/00.5_cleaning/clean_pipeline.py "
+        f"--input {remote_in}/ "
+        f"--output {remote_out}/ "
+        f"--stages 2,3,5,6 && "
+        f"echo 'BATCH_{batch_id:03d}_DONE' >> {remote_out}/processing_status.log"
+    )
+
+    # tmux 命令
+    tmux_cmd = (
+        f"tmux new-session -d -s {session_name} "
+        f"\"bash -c '{gpu_cmd} 2>&1 | tee {remote_out}/processing.log'\""
+    )
+
+    if dry_run:
+        logger.info(f"[预览] 将在 GPU 触发处理: session={session_name}")
+        return session_name
+
+    logger.info(f"触发 GPU 处理: session={session_name}")
+    ssh_run(tmux_cmd)
+    logger.info("GPU 处理已启动（tmux 后台）")
+
+    return session_name
+
+
+def wait_for_gpu_completion(batch_id: int, session_name: str, poll_interval: int = POLL_INTERVAL) -> bool:
+    """轮询等待 GPU 处理完成"""
+    logger.info(f"等待 GPU 处理完成: session={session_name}（每 {poll_interval}s 轮询）")
+
+    start_time = time.time()
+    while True:
+        # 检查 tmux session 是否存在
+        result = ssh_run(f"tmux has-session -t {session_name} 2>/dev/null; echo $?", check=False)
+        session_exists = result.stdout.strip() == "0"
+
+        if not session_exists:
+            elapsed = time.time() - start_time
+            logger.info(f"GPU 处理完成: session={session_name}, 耗时 {elapsed/60:.1f} 分钟")
+            return True
+
+        elapsed = time.time() - start_time
+        logger.info(f"  处理中... 已耗时 {elapsed/60:.1f} 分钟")
+        time.sleep(poll_interval)
+
+
+# ===================== 回传与合并 =====================
+def download_batch_output(batch_id: int, dry_run: bool = False) -> Path:
+    """回传 GPU 产物到 Mac"""
+    remote_out = f"{REMOTE_TMP}/batch_{batch_id:03d}_out"
+    local_out = GPU_OUTPUT_DIR / f"batch_{batch_id:03d}"
+
+    if dry_run:
+        logger.info(f"[预览] 将回传: {remote_out} → {local_out}")
+        return local_out
+
+    rsync_download(remote_out, local_out)
+    return local_out
+
+
+def merge_batch_to_global(batch_id: int, local_out: Path) -> None:
+    """Mac 本地合并批次产物到全局"""
+    logger.info(f"合并批次 {batch_id:03d} 到全局")
+
+    # 1. 合并 segments
+    segments_dir = local_out / "segments"
+    if segments_dir.exists():
+        global_segments = PROJECT_ROOT / "data" / "01_preprocess" / "segments"
+        global_segments.mkdir(parents=True, exist_ok=True)
+        for seg_file in segments_dir.glob("*"):
+            dst = global_segments / seg_file.name
+            if not dst.exists():
+                shutil.copy2(seg_file, dst)
+        logger.info(f"  合并 segments: {len(list(segments_dir.glob('*')))} 个")
+
+    # 2. 合并 features
+    features_dir = local_out / "features"
+    if features_dir.exists():
+        global_features = PROJECT_ROOT / "data" / "01_preprocess" / "features"
+        global_features.mkdir(parents=True, exist_ok=True)
+        for feat_file in features_dir.glob("*"):
+            dst = global_features / feat_file.name
+            if not dst.exists():
+                shutil.copy2(feat_file, dst)
+        logger.info(f"  合并 features: {len(list(features_dir.glob('*')))} 个")
+
+    # 3. 合并元数据
+    meta_dir = local_out / "meta"
+    if meta_dir.exists():
+        global_meta = PROJECT_ROOT / "data" / "00.5_cleaned" / "reports"
+        global_meta.mkdir(parents=True, exist_ok=True)
+        for meta_file in meta_dir.glob("*"):
+            dst = global_meta / f"batch_{batch_id:03d}_{meta_file.name}"
+            if not dst.exists():
+                shutil.copy2(meta_file, dst)
+        logger.info(f"  合并 meta: {len(list(meta_dir.glob('*')))} 个")
+
+    # 4. 合并 demucs_vocals
+    vocals_dir = local_out / "demucs_vocals"
+    if vocals_dir.exists():
+        global_vocals = PROJECT_ROOT / "data" / "01_preprocess" / "demucs_stems"
+        global_vocals.mkdir(parents=True, exist_ok=True)
+        for vocal_dir in vocals_dir.iterdir():
+            if vocal_dir.is_dir():
+                dst = global_vocals / vocal_dir.name
+                if not dst.exists():
+                    shutil.copytree(vocal_dir, dst)
+        logger.info(f"  合并 demucs_vocals: {len(list(vocals_dir.iterdir()))} 个")
+
+    logger.info(f"批次 {batch_id:03d} 合并完成")
+
+
+# ===================== 主流水线 =====================
+def run_full_pipeline(
+    input_csv: Path,
+    batch_size: int = DEFAULT_BATCH_SIZE,
+    start_from: int = 0,
+    dry_run: bool = False,
+) -> None:
+    """完整流水线"""
+    logger.info("=" * 60)
+    logger.info("Mac↔GPU 批次编排流水线")
+    logger.info("=" * 60)
+
+    # 1. 读取待处理清单
+    logger.info(f"读取待处理清单: {input_csv}")
+    df = pd.read_csv(input_csv)
+    logger.info(f"共 {len(df)} 首待处理")
+
+    # 读取全局 manifest（用于获取音频路径）
+    manifest_df = pd.read_csv(MANIFEST_PATH)
+
+    # 2. 分批
+    track_ids = df["audio_id"].tolist() if "audio_id" in df.columns else df.iloc[:, 0].tolist()
+    total_batches = (len(track_ids) + batch_size - 1) // batch_size
+    logger.info(f"分批: {len(track_ids)} 首 / {batch_size} 首/批 = {total_batches} 批")
+
+    # 3. 逐批处理
+    for batch_idx in range(start_from, total_batches):
+        start = batch_idx * batch_size
+        end = min(start + batch_size, len(track_ids))
+        batch_tracks = track_ids[start:end]
+
+        logger.info("")
+        logger.info("=" * 60)
+        logger.info(f"批次 {batch_idx:03d}/{total_batches - 1:03d}: {len(batch_tracks)} 首")
+        logger.info("=" * 60)
+
+        # Step 1: 准备批次
+        batch_dir = prepare_batch(batch_idx, batch_tracks, manifest_df, dry_run)
+
+        # Step 2: 上传到 GPU
+        remote_in = f"{REMOTE_TMP}/batch_{batch_idx:03d}_in"
+        if not dry_run:
+            rsync_upload(batch_dir, remote_in)
+
+        # Step 3: 触发 GPU 处理
+        session_name = trigger_gpu_processing(batch_idx, dry_run)
+
+        # Step 4: 等待完成
+        if not dry_run:
+            wait_for_gpu_completion(batch_idx, session_name)
+
+        # Step 5: 回传产物
+        local_out = download_batch_output(batch_idx, dry_run)
+
+        # Step 6: 合并到全局
+        if not dry_run:
+            merge_batch_to_global(batch_idx, local_out)
+
+        logger.info(f"批次 {batch_idx:03d} 完成！")
+
+    logger.info("")
+    logger.info("=" * 60)
+    logger.info(f"✅ 全部 {total_batches} 批处理完成！")
+    logger.info("=" * 60)
+
+
+# ===================== 主函数 =====================
+def main():
+    parser = argparse.ArgumentParser(
+        description="Mac↔GPU 批次编排脚本",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
+    parser.add_argument("--input", type=str, help="待处理清单 CSV（audio_id 列）")
+    parser.add_argument("--batch-size", type=int, default=DEFAULT_BATCH_SIZE, help="每批音频数量（默认100）")
+    parser.add_argument("--start-from", type=int, default=0, help="从指定批次开始（断点续跑）")
+    parser.add_argument("--batch-id", type=int, help="指定批次ID（用于 --upload-only/--download-only）")
+    parser.add_argument("--prepare-only", action="store_true", help="只准备批次，不上传")
+    parser.add_argument("--upload-only", action="store_true", help="只上传指定批次")
+    parser.add_argument("--download-only", action="store_true", help="只回传指定批次")
+    parser.add_argument("--dry-run", action="store_true", help="预览模式，不实际执行")
+    args = parser.parse_args()
+
+    if args.prepare_only:
+        if not args.input:
+            logger.error("--prepare-only 需要 --input 参数")
+            sys.exit(1)
+        df = pd.read_csv(args.input)
+        manifest_df = pd.read_csv(MANIFEST_PATH)
+        track_ids = df["audio_id"].tolist() if "audio_id" in df.columns else df.iloc[:, 0].tolist()
+        total_batches = (len(track_ids) + args.batch_size - 1) // args.batch_size
+        for i in range(total_batches):
+            start = i * args.batch_size
+            end = min(start + args.batch_size, len(track_ids))
+            prepare_batch(i, track_ids[start:end], manifest_df, args.dry_run)
+        logger.info("所有批次准备完成")
+        return
+
+    if args.upload_only:
+        if args.batch_id is None:
+            logger.error("--upload-only 需要 --batch-id 参数")
+            sys.exit(1)
+        batch_dir = BATCHES_DIR / f"batch_{args.batch_id:03d}"
+        if not batch_dir.exists():
+            logger.error(f"批次目录不存在: {batch_dir}")
+            sys.exit(1)
+        remote_in = f"{REMOTE_TMP}/batch_{args.batch_id:03d}_in"
+        rsync_upload(batch_dir, remote_in)
+        return
+
+    if args.download_only:
+        if args.batch_id is None:
+            logger.error("--download-only 需要 --batch-id 参数")
+            sys.exit(1)
+        local_out = download_batch_output(args.batch_id, args.dry_run)
+        if not args.dry_run:
+            merge_batch_to_global(args.batch_id, local_out)
+        return
+
+    # 默认：完整流水线
+    if not args.input:
+        logger.error("完整流水线需要 --input 参数")
+        parser.print_help()
+        sys.exit(1)
+
+    run_full_pipeline(
+        input_csv=Path(args.input),
+        batch_size=args.batch_size,
+        start_from=args.start_from,
+        dry_run=args.dry_run,
+    )
+
+
+if __name__ == "__main__":
+    main()
