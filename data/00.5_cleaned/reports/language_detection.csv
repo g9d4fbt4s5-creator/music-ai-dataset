@@ -1,0 +1,4 @@
+audio_path,lang,lang_confidence,lang_allowed,lang_top5,lang_error,track_id
+/Users/m.jian/music_corpus_project/data/00_raw_collect/raw_audio/0e/5b/0e5bed0b45b606bc1d1b7678bc07bc70_01M0E9X19DMAXGT6QD167G1YJX.wav,en,0.9366,True,en:0.937; haw:0.029; la:0.015; cy:0.007; mi:0.004,,0e5bed0b45b606bc1d1b7678bc07bc70_01M0E9X19DMAXGT6QD167G1YJX
+/Users/m.jian/music_corpus_project/data/00_raw_collect/raw_audio/e8/fb/e8fb173150cd26420e155e6959acf3f5_01M0E9X1BHAGVNQYTXE4CMNJV0.wav,en,0.939,True,en:0.939; haw:0.023; la:0.019; cy:0.006; mi:0.002,,e8fb173150cd26420e155e6959acf3f5_01M0E9X1BHAGVNQYTXE4CMNJV0
+/Users/m.jian/music_corpus_project/data/00_raw_collect/raw_audio/de/34/de3496908c92f8421727d3e527103b57_01M0E9X1D5FB4ZND9B13XSD71K.mp3,zh,0.9911,True,zh:0.991; en:0.003; ko:0.001; ja:0.001; ru:0.001,,de3496908c92f8421727d3e527103b57_01M0E9X1D5FB4ZND9B13XSD71K

@@ -1,3 +1,4 @@
 audio_path,is_music,music_score,music_confidence,vocal_ratio,is_instrumental,vocal_confidence,is_safe,safety_warnings,tempo,spectral_centroid,zero_crossing_rate,harmonic_energy_ratio,percussive_energy_ratio,rhythm_regularity,method_used
 /Users/m.jian/music_corpus_project/data/00_raw_collect/raw_audio/0e/5b/0e5bed0b45b606bc1d1b7678bc07bc70_01M0E9X19DMAXGT6QD167G1YJX.wav,True,0.4674,0.5,0.6205,False,0.5,True,,120.19,4337.04,0.1278,0.8048,0.1952,0.1185,librosa_basic
-/Users/m.jian/music_corpus_project/data/00_raw_collect/raw_audio/13/b9/13b90e65b754067abdde582a4439ff52_01M0E9X1AGP5JXX7YEA7NAV25V.wav,True,0.4599,0.5,0.6379,False,0.5,True,,79.51,3943.04,0.1025,0.8447,0.1553,0.2,librosa_basic
+/Users/m.jian/music_corpus_project/data/00_raw_collect/raw_audio/e8/fb/e8fb173150cd26420e155e6959acf3f5_01M0E9X1BHAGVNQYTXE4CMNJV0.wav,True,0.4796,0.5,0.6213,False,0.5,True,,120.19,4213.74,0.1243,0.8373,0.1627,0.2353,librosa_basic
+/Users/m.jian/music_corpus_project/data/00_raw_collect/raw_audio/de/34/de3496908c92f8421727d3e527103b57_01M0E9X1D5FB4ZND9B13XSD71K.mp3,True,0.4217,0.5,0.5562,False,0.5,True,,120.19,3683.86,0.0743,0.8454,0.1546,0.2,librosa_basic

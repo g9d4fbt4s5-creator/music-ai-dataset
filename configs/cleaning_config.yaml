@@ -231,10 +231,10 @@ stage4_dedup:
 
 # ========== Stage 5: 辅助清洗 ==========
 stage5_auxiliary:
-  enabled: false  # 高级功能，默认关闭
+  enabled: true  # 高级功能，默认关闭
   # 风格一致性聚类
   style_clustering:
-    enabled: false
+    enabled: false  # 需要MERT，Mac本地内存不足，用GPU跑
     # 聚类方法：kmeans / dbscan
     method: "kmeans"
     # 聚类数
@@ -242,7 +242,7 @@ stage5_auxiliary:
   # 语言过滤
   # 语言过滤（Whisper base detect_language，Mac CPU 可跑）
   language_filter:
-    enabled: false
+    enabled: true
     # Whisper 模型大小（语言检测用 base 足够，~150MB，CPU 可跑）
     model_size: "base"
     # 运行设备（cpu/cuda）
@@ -257,7 +257,7 @@ stage5_auxiliary:
     filter_not_allowed: false
   # PII 移除
   pii_removal:
-    enabled: false
+    enabled: true
     # 需要清理 PII 的文本列（只清理实际存在的列）
     text_columns:
       - "description"
@@ -292,7 +292,7 @@ stage6_output:
     target_channels: 2
   # 分块
   chunking:
-    enabled: false  # 默认不开启，按需开启
+    enabled: true  # 默认不开启，按需开启
     # 块大小 (秒)
     chunk_size: 30
     # 重叠比例 (0-1)
@@ -301,6 +301,6 @@ stage6_output:
     min_chunk_length: 5
   # 特征提取
   feature_extraction:
-    enabled: false  # 使用独立的 extract_features.py
+    enabled: true  # 使用独立的 extract_features.py
     # 特征类型
     features: ["mel", "cqt", "chroma", "mfcc"]
