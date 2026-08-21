@@ -90,6 +90,48 @@ def detect_language(whisper_model, audio_path):
         return "en", 0.0
 
 
+def detect_vocal_ratio_librosa(audio_path):
+    """
+    librosa 粗筛人声占比（轻量，秒级，用于决定是否跑 Demucs）
+
+    方法：
+    1. HPSS 分离谐波成分（人声/旋律）+ 打击成分（鼓/节奏）
+    2. 人声频率带（100-3000Hz）能量加权
+    3. 综合估算人声占比
+
+    返回：0.0-1.0 的人声占比估算
+    """
+    import librosa
+
+    try:
+        y, sr = librosa.load(audio_path, sr=22050, mono=True)
+
+        # HPSS 分离
+        y_harmonic, y_percussive = librosa.effects.hpss(y)
+        harmonic_energy = np.sum(y_harmonic ** 2)
+        total_energy = np.sum(y ** 2) + 1e-10
+        harmonic_ratio = harmonic_energy / total_energy
+
+        # 人声频率带能量
+        S = np.abs(librosa.stft(y, n_fft=2048, hop_length=512))
+        freqs = librosa.fft_frequencies(sr=sr, n_fft=2048)
+        vocal_band_mask = (freqs >= 100) & (freqs <= 3000)
+        vocal_band_energy = np.sum(S[vocal_band_mask, :] ** 2)
+        total_spectral_energy = np.sum(S ** 2) + 1e-10
+        vocal_band_ratio = vocal_band_energy / total_spectral_energy
+
+        # 综合估算
+        vocal_ratio = 0.6 * harmonic_ratio + 0.4 * vocal_band_ratio
+        vocal_ratio = min(1.0, max(0.0, vocal_ratio))
+
+        logger.info(f"  librosa粗筛人声占比: {vocal_ratio:.1%} (谐波={harmonic_ratio:.1%}, 人声频段={vocal_band_ratio:.1%})")
+        return float(vocal_ratio)
+
+    except Exception as e:
+        logger.warning(f"  librosa粗筛失败: {e}，默认 0.5（继续处理）")
+        return 0.5
+
+
 def separate_vocals_demucs(audio_path, output_dir, track_id):
     track_output_dir = Path(output_dir) / track_id
     vocals_path = track_output_dir / "vocals.wav"
@@ -305,6 +347,20 @@ def main():
                 result["status"] = "skipped_language"
                 results.append(result)
                 continue
+
+            # Step 1.5: librosa 粗筛人声占比（>10% 才跑 Demucs，避免纯器乐浪费时间）
+            logger.info(f"  Step 1.5: librosa 粗筛人声占比")
+            vocal_ratio = detect_vocal_ratio_librosa(audio_path)
+            result["vocal_ratio_estimate"] = vocal_ratio
+
+            if vocal_ratio <= 0.10:
+                logger.info(f"  人声占比 {vocal_ratio:.1%} <= 10%，判定为纯器乐，跳过 Demucs 和 ASR")
+                result["status"] = "skipped_instrumental"
+                result["error"] = f"人声占比 {vocal_ratio:.1%} <= 10%，纯器乐"
+                results.append(result)
+                continue
+
+            logger.info(f"  人声占比 {vocal_ratio:.1%} > 10%，继续 Demucs 分离")
 
             if args.skip_demucs:
                 vocals_path = str(Path(args.stems_dir) / track_id / "vocals.wav")

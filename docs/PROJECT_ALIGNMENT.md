@@ -241,11 +241,17 @@ music_corpus_project/
 - **非音乐判定**：is_music=False 且 (has_speech=True 或 has_noise=True) → 剔除
 - **并行处理**：20首以内串行，>100首用 `--parallel N` multiprocessing
 
-### 5.6 ASR 双轨制
-- **中文歌唱**：FunASR 歌唱版（paraformer-zh）
-- **非中文/口语**：faster-whisper small
-- **语言检测**：Whisper base detect_language()（轻量，<1GB显存）
-- **歌词转写输入**：必须是 Demucs vocals stem（不是原曲），实测WER从60%降到25%
+### 5.6 ASR 双轨制与人声检测策略（08-21更新）
+- **ASR 双轨制**：Whisper base（语言检测 + 口语）+ FunASR 歌唱版（中文歌词）
+- **Whisper 版本选择**：
+  - 语言检测：Whisper base（轻量，<1GB显存，99种语言）
+  - 口语转写：faster-whisper small（非中文/口语）
+  - 中文歌唱：FunASR paraformer-zh（比 Whisper 好，仍有丢字需人工校）
+  - ❌ 不用 Whisper large-v3（太重且歌唱不行）
+- **YAMNet 人声判断验证**：不用 Demucs 验证（太慢，10首需10分钟），改用 **Whisper base 语言检测 + librosa 粗筛人声占比**（轻量，秒级）
+- **Demucs 触发策略**：先 librosa 粗筛人声占比，**>10% 才跑 Demucs**，分离结果缓存（避免重复分离）
+- **歌词转写必须先过 Demucs**：分离人声后再 ASR，准确率提升 20-40%（实测中文流行歌 WER 从60%降到25%）
+- **GPU ASR 工具链**：Whisper 20250625 / FunASR 1.4.2 / faster-whisper 1.2.1 / jiwer / noisereduce 全部就绪
 
 ### 5.7 传输路径：音频只走 Mac↔GPU，不走 OSS（08-21决策）
 - **核心原则**：音频只走 Mac ↔ GPU（scp/rsync），代码/元数据走 GitHub，OSS 是冷库灾难恢复时才人工下载
