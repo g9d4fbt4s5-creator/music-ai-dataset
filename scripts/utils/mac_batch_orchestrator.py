@@ -331,6 +331,46 @@ def wait_for_gpu_completion(batch_id: int, session_name: str, poll_interval: int
         time.sleep(poll_interval)
 
 
+def wait_for_preannotation_completion(batch_id: int, poll_interval: int = POLL_INTERVAL, timeout: int = 3600) -> bool:
+    """
+    轮询等待 GPU 预标注完成（.preannotation_done 标记）
+
+    GPU 清理时机延后：预标注完成后才清理，因为 MOSS 等预标注模型需要 stems。
+    如果预标注不需要 stems（如 CLAP），可以跳过此等待，直接清理。
+
+    Args:
+        batch_id: 批次ID
+        poll_interval: 轮询间隔（秒）
+        timeout: 超时时间（秒），默认1小时
+
+    Returns:
+        是否完成
+    """
+    remote_out = f"{REMOTE_TMP}/batch_{batch_id:03d}_out"
+    preannotation_done_file = f"{remote_out}/.preannotation_done"
+
+    logger.info(f"等待 GPU 预标注完成: batch_{batch_id:03d}（轮询 .preannotation_done 标记，每 {poll_interval}s，超时 {timeout}s）")
+
+    start_time = time.time()
+    while True:
+        # 检查 .preannotation_done 原子完成标记
+        result = ssh_run(f"test -f {preannotation_done_file} && echo 'DONE' || echo 'PENDING'", check=False)
+        is_done = result.stdout.strip() == "DONE"
+
+        if is_done:
+            elapsed = time.time() - start_time
+            logger.info(f"GPU 预标注完成: batch_{batch_id:03d}, 耗时 {elapsed/60:.1f} 分钟（.preannotation_done 标记确认）")
+            return True
+
+        elapsed = time.time() - start_time
+        if elapsed > timeout:
+            logger.error(f"  ❌ 超时：{timeout/3600:.1f}小时未完成预标注，可能需要手动检查")
+            return False
+
+        logger.info(f"  预标注中... 已耗时 {elapsed/60:.1f} 分钟")
+        time.sleep(poll_interval)
+
+
 # ===================== 回传与合并 =====================
 def download_batch_output(batch_id: int, dry_run: bool = False) -> Path:
     """回传 GPU 产物到 Mac"""
@@ -444,11 +484,25 @@ def run_full_pipeline(
     start_from: int = 0,
     dry_run: bool = False,
     auto_cleanup: bool = True,
+    wait_preannotation: bool = False,
 ) -> None:
-    """完整流水线"""
+    """
+    完整流水线
+
+    Args:
+        input_csv: 待处理清单 CSV
+        batch_size: 每批音频数量
+        start_from: 从指定批次开始（断点续跑）
+        dry_run: 预览模式
+        auto_cleanup: 是否自动清理GPU
+        wait_preannotation: 是否等待预标注完成后再清理（MOSS等需要stems的预标注模型）
+            - True: 等待 .preannotation_done 标记，预标注完成后才清理
+            - False: 不等待预标注，处理完成后即可清理（CLAP等不需要stems的模型）
+    """
     logger.info("=" * 60)
     logger.info("Mac↔GPU 批次编排流水线")
     logger.info(f"自动清理: {'开启' if auto_cleanup else '关闭'}（回传完成后清理GPU音频/产物）")
+    logger.info(f"等待预标注: {'开启' if wait_preannotation else '关闭'}（{'预标注完成后才清理' if wait_preannotation else '处理完成后即可清理'}）")
     logger.info("=" * 60)
 
     # 1. 读取待处理清单
@@ -493,6 +547,17 @@ def run_full_pipeline(
         if not dry_run:
             wait_for_gpu_completion(batch_idx, session_name)
         update_batch_status(batch_idx, "completed")
+
+        # Step 4.5: 可选等待预标注完成（MOSS等需要stems的预标注模型）
+        # GPU清理时机延后：预标注完成后才清理，因为MOSS等预标注模型需要stems
+        # 如果预标注不需要stems（如CLAP），可以跳过此等待，直接清理
+        if wait_preannotation and not dry_run:
+            preannotation_success = wait_for_preannotation_completion(batch_idx)
+            if preannotation_success:
+                update_batch_status(batch_idx, "preannotation_completed")
+            else:
+                logger.warning(f"批次 {batch_idx:03d} 预标注超时，继续后续流程（可能需要手动检查）")
+                update_batch_status(batch_idx, "preannotation_timeout")
 
         # Step 5: 回传产物
         local_out = download_batch_output(batch_idx, dry_run)
@@ -555,6 +620,8 @@ def main():
     parser.add_argument("--download-only", action="store_true", help="只回传指定批次")
     parser.add_argument("--no-cleanup", action="store_true",
                         help="关闭自动清理（默认回传完成后自动清理GPU音频/产物）")
+    parser.add_argument("--wait-preannotation", action="store_true",
+                        help="等待预标注完成后再清理（MOSS等需要stems的预标注模型；CLAP等不需要stems的模型不用开）")
     parser.add_argument("--dry-run", action="store_true", help="预览模式，不实际执行")
     args = parser.parse_args()
 
@@ -606,6 +673,7 @@ def main():
         start_from=args.start_from,
         dry_run=args.dry_run,
         auto_cleanup=not args.no_cleanup,
+        wait_preannotation=args.wait_preannotation,
     )
 
 
