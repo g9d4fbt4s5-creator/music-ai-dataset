@@ -1,17 +1,51 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "Audio ID Schema",
-  "description": "音频唯一标识符规范，强制使用 ULID，冲突拒绝入库",
+  "description": "音频唯一标识符规范，工业标准：ULID 作主键 + track_slug 作可读标识",
   "type": "object",
   "properties": {
     "audio_id": {
       "type": "string",
-      "description": "ULID 格式唯一标识符，26个字符，大写字母和数字",
+      "description": "ULID 格式唯一标识符（主键），26个字符，大写字母和数字。全局唯一、时间有序、长度固定、无语义。",
       "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$",
       "examples": ["01ARZ3NDEKTSV4RRFFQ69G5FAV"]
+    },
+    "track_slug": {
+      "type": ["string", "null"],
+      "description": "人类可读标识（仅展示，不做关联，不做索引）。格式：{来源缩写}_{日期}_{6位随机码}，如 yt_20260821_a3f7k2。可选字段。",
+      "pattern": "^[a-z]{2}_[0-9]{8}_[a-z0-9]{6}$",
+      "examples": ["yt_20260821_a3f7k2", "bc_20260820_b8m1n3", "mt_20260819_x7k9p2"]
     }
   },
   "required": ["audio_id"],
+  "industrial_standard": {
+    "note": "工业界全部用 ULID/UUIDv7/内部 hash 作主键，自定义可读字符串只作展示名",
+    "platforms": {
+      "Spotify": "内部 62 进制 ID（类似 ULID），外部 URI: spotify:track:4uLU6h...",
+      "Suno": "ULID / UUIDv7 作主键，suno_2024_xxx 作展示名",
+      "Udio": "UUIDv7 作主键，用户可见的生成编号作展示",
+      "Meta (MusicGen)": "内部 hash（MD5/SHA256）作主键，无外部展示名",
+      "AWS S3 最佳实践": "客户自定义 key，建议随机/hash 前缀，避免单目录热点"
+    },
+    "core_principles": [
+      "机器层：全局唯一、时间有序、长度固定 → ULID / UUIDv7 / 内部 hash",
+      "人类层：可读 slug，仅展示，不做关联",
+      "存储层：hash(id)[:2]/hash(id)[2:4]/id.ext，与 ID 语义完全解耦"
+    ],
+    "why_not_custom_id": {
+      "problem_1": "同一天内无序：yt_20260821_a3f7k2 和 yt_20260821_b8m1n3 无法按时间排序",
+      "problem_2": "来源前缀割裂排序：bc_20260821_xxx 和 yt_20260821_xxx 不连续",
+      "problem_3": "碰撞必须重试：6位 base36 = 21亿组合，10万条时碰撞概率约0.01%，分布式写入需加锁",
+      "problem_4": "长度不固定：uk_20260821_abc（15字符）vs youtube_20260821_abcdef（更长），数据库索引效率下降",
+      "problem_5": "包含语义信息：来源、日期都在ID里，来源变更时ID语义过时，不能改"
+    },
+    "ulid_solves_all": [
+      "前10字符是毫秒时间戳，天然按时间排序",
+      "后16字符随机，全局唯一，无碰撞",
+      "固定26字符，数据库索引友好",
+      "无语义，来源/日期/格式变化不影响ID"
+    ]
+  },
   "rules": {
     "id_format": "ULID (Universally Unique Lexicographically Sortable Identifier)",
     "id_length": 26,
@@ -19,7 +53,9 @@
     "case_sensitive": false,
     "storage_case": "uppercase",
     "conflict_policy": "reject",
-    "conflict_note": "audio_id 冲突时拒绝入库，记录到 rejected/ 目录，不覆盖已有文件"
+    "conflict_note": "audio_id 冲突时拒绝入库，记录到 rejected/ 目录，不覆盖已有文件",
+    "track_slug_policy": "optional",
+    "track_slug_note": "track_slug 仅用于日志展示和人类可读，不做数据库关联，不做存储路径，不做索引"
   },
   "directory_hashing": {
     "algorithm": "md5",
@@ -35,5 +71,15 @@
       "full_path": "raw_audio/a1/b2/a1b2c3d4e5f6..._01ARZ3NDEKTSV4RRFFQ69G5FAV.mp3"
     },
     "note": "文件名前缀带上 hash 片段只是方便人工排查，业务代码不要解析文件名拿 hash，必须通过元数据表读取相对路径"
+  },
+  "oss_key_design": {
+    "format": "raw_audio/{hash_prefix}/{audio_id}.{ext}",
+    "example": "raw_audio/9f/8e/01arz3ndektsv4rrffq69g5fav.flac",
+    "why_hash_prefix": "OSS/S3 按 key 前缀分片，如果前缀是 yt_20260821，同一天所有文件会落在同一个存储分片上，造成热点。用 hash(audio_id) 前缀均匀分布。",
+    "why_not_track_slug": "track_slug 包含来源和日期，用作 OSS key 会造成热点，且来源变更时 key 语义过时"
+  },
+  "migration": {
+    "if_old_data_exists": "运行迁移脚本：把旧格式的 audio_id 移到 track_slug，新生成 ULID 作为 audio_id",
+    "current_status": "✅ 项目当前 7 条记录全部为 ULID 格式，无需迁移"
   }
 }
