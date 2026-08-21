@@ -65,7 +65,7 @@ logger = logging.getLogger(__name__)
 
 
 # ===================== 阶段1：嵌入提取（GPU） =====================
-def extract_mert_embeddings(audio_dir: str, output_path: str, model_name: str = "mert-v1-95M"):
+def extract_mert_embeddings(audio_dir: str, output_path: str, model_name: str = "mert-v1-95M", limit: int = None):
     """
     用 MERT 提取音频嵌入
 
@@ -91,6 +91,12 @@ def extract_mert_embeddings(audio_dir: str, output_path: str, model_name: str = 
             if os.path.splitext(f)[1].lower() in audio_extensions:
                 audio_files.append(os.path.join(root, f))
     audio_files = sorted(audio_files)
+
+    # 应用 limit（在扫描后立即切片，避免处理全部文件）
+    if limit:
+        audio_files = audio_files[:limit]
+        logger.info(f"限制前 {limit} 个音频文件")
+
     logger.info(f"找到 {len(audio_files)} 个音频文件")
 
     embeddings = []
@@ -103,25 +109,56 @@ def extract_mert_embeddings(audio_dir: str, output_path: str, model_name: str = 
         try:
             # 加载音频（MERT 需要 24kHz 单声道）
             y, sr = librosa.load(audio_path, sr=24000, mono=True)
+            duration_sec = len(y) / sr
 
-            # 特征提取
-            inputs = feature_extractor(y, sampling_rate=24000, return_tensors="pt")
-            if torch.cuda.is_available():
-                inputs = {k: v.cuda() for k, v in inputs.items()}
+            # MERT 计算分块（Stage 5.3 专用，避免 OOM）
+            # - 30秒固定长度（适配 MERT 最大序列长度）
+            # - 0%重叠（不重叠，取代表性片段）
+            # - 不保存文件，内存中计算完即丢弃
+            # - 产出曲目级嵌入向量 [768]（所有分块嵌入取平均）
+            # 注意：这与 Stage 6 的训练切片不同，Stage 6 保存物理文件
+            CHUNK_SEC = 30
+            chunk_samples = CHUNK_SEC * sr  # 720000
 
-            # 推理
-            with torch.no_grad():
-                outputs = model(**inputs)
+            if len(y) <= chunk_samples:
+                # 短音频：直接处理
+                chunks = [y]
+            else:
+                # 长音频：30秒分块，0%重叠
+                num_chunks = (len(y) + chunk_samples - 1) // chunk_samples
+                chunks = []
+                for c in range(num_chunks):
+                    start = c * chunk_samples
+                    end = min(start + chunk_samples, len(y))
+                    chunks.append(y[start:end])
+                logger.info(f"  长音频 {duration_sec:.1f}s，分 {num_chunks} 块处理（每块{CHUNK_SEC}s）")
 
-            # 取 <[BOS_never_used_51bce0c785ca2f68081bfa7d91973934]>  token 的嵌入（768维）
-            # MERT 输出 last_hidden_state: [batch, seq_len, 768]
-            # 取全局平均池化作为曲目级嵌入
-            hidden_states = outputs.last_hidden_state.cpu().numpy()[0]  # [seq_len, 768]
-            embedding = np.mean(hidden_states, axis=0)  # [768]
+            # 逐块推理，嵌入取平均
+            chunk_embeddings = []
+            for chunk_idx, chunk_y in enumerate(chunks):
+                inputs = feature_extractor(chunk_y, sampling_rate=24000, return_tensors="pt")
+                if torch.cuda.is_available():
+                    inputs = {k: v.cuda() for k, v in inputs.items()}
+
+                with torch.no_grad():
+                    outputs = model(**inputs)
+
+                # 取全局平均池化作为块级嵌入
+                hidden_states = outputs.last_hidden_state.cpu().numpy()[0]  # [seq_len, 768]
+                chunk_emb = np.mean(hidden_states, axis=0)  # [768]
+                chunk_embeddings.append(chunk_emb)
+
+                # 释放 GPU 显存
+                del inputs, outputs, hidden_states
+                if torch.cuda.is_available():
+                    torch.cuda.empty_cache()
+
+            # 所有分块嵌入取平均作为曲目级嵌入
+            embedding = np.mean(chunk_embeddings, axis=0)  # [768]
 
             embeddings.append(embedding)
             track_ids.append(track_id)
-            logger.info(f"  嵌入维度: {embedding.shape}")
+            logger.info(f"  嵌入维度: {embedding.shape}（{len(chunk_embeddings)}块平均）")
 
         except Exception as e:
             logger.error(f"  提取失败: {e}")
@@ -137,7 +174,7 @@ def extract_mert_embeddings(audio_dir: str, output_path: str, model_name: str = 
     return df
 
 
-def extract_clap_embeddings(audio_dir: str, output_path: str):
+def extract_clap_embeddings(audio_dir: str, output_path: str, limit: int = None):
     """
     用 LAION CLAP 提取音频嵌入
 
@@ -163,6 +200,12 @@ def extract_clap_embeddings(audio_dir: str, output_path: str):
             if os.path.splitext(f)[1].lower() in audio_extensions:
                 audio_files.append(os.path.join(root, f))
     audio_files = sorted(audio_files)
+
+    # 应用 limit
+    if limit:
+        audio_files = audio_files[:limit]
+        logger.info(f"限制前 {limit} 个音频文件")
+
     logger.info(f"找到 {len(audio_files)} 个音频文件")
 
     embeddings = []
@@ -497,9 +540,9 @@ def main():
             return
 
         if args.model == "mert":
-            extract_mert_embeddings(args.input_dir, args.output, args.mert_model)
+            extract_mert_embeddings(args.input_dir, args.output, args.mert_model, limit=args.limit)
         elif args.model == "clap":
-            extract_clap_embeddings(args.input_dir, args.output)
+            extract_clap_embeddings(args.input_dir, args.output, limit=args.limit)
 
     elif args.mode == "cluster":
         # 阶段2：DBSCAN 聚类（Mac本地）
