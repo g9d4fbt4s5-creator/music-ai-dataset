@@ -248,30 +248,18 @@ music_corpus_project/
   - 口语转写：faster-whisper small（非中文/口语）
   - 中文歌唱：FunASR paraformer-zh（比 Whisper 好，仍有丢字需人工校）
   - ❌ 不用 Whisper large-v3（太重且歌唱不行）
-- **Demucs 触发策略（两级关卡，YAMNet 是唯一决策依据）**：
-  ```
-  音频进入 lyrics 流水线
-      │
-      ├── 【关卡 A】YAMNet 内容过滤（已跑完，零成本）
-      │       ├── is_music=False → 剔除（非音乐）
-      │       ├── has_vocals=False → 纯器乐，保留音频，但跳过 Demucs + ASR
-      │       └── has_vocals=True → 有人声演唱，进入关卡 B
-      │       （应急降级：无 YAMNet 结果时，用 librosa 粗筛，准确率低）
-      │
-      ├── 【关卡 B】Whisper 语言检测（轻量，CPU 秒级）
-      │       ├── 非目标语言 → 剔除（或保留但不跑 ASR）
-      │       └── 目标语言（zh/en/ja...）→ 跑 Demucs
-      │
-      └── 【关卡 C】Demucs 分离
-              └── vocals.wav → ASR
-                      ├── lang=zh → FunASR
-                      └── lang≠zh → faster-whisper
-  ```
-  | 关卡 | 工具 | 决策什么 | 是否决定 Demucs |
-  |------|------|---------|----------------|
-  | A | YAMNet | 是否有人声演唱 | ✅ 唯一决策 |
-  | B | Whisper base | 什么语言 | ❌ 只决定 ASR 路由 |
-  | C | Demucs | 分离人声 | 执行层，不决策 |
+- **Demucs 触发策略（双阈值 + 不确定区兜底，YAMNet 概率值决策）**：
+  - 使用 YAMNet 的 `vocals_ratio` 概率值（0-1），而不是二值化的 `has_vocals`
+  - 设置两个阈值：
+    - `vocals_ratio > 0.7`（高阈值）：明确有人声 → 运行 Demucs
+    - `vocals_ratio < 0.3`（低阈值）：明确无人声 → 跳过 Demucs + ASR
+    - `0.3 ≤ vocals_ratio ≤ 0.7`（不确定区）：进入兜底验证
+  - 不确定区兜底策略（`--uncertain-strategy`）：
+    - `run`（默认）：保守运行 Demucs（宁可多跑，不可漏掉）
+    - `librosa`：用 librosa 粗筛二次确认（HPSS + 人声频段能量）
+    - `skip`：跳过不确定区（可能漏掉有人声的样本）
+    - `mark`：标记为不确定，不跑 Demucs，输出到不确定区清单
+  - 应急降级：无 YAMNet 结果时，用 librosa 粗筛（准确率低，Jazz 场景会把萨克斯/钢琴误判为人声）
 - **各工具正确定位**：
   - YAMNet：Demucs 的唯一开关（has_vocals），不应和 librosa 串联重复判断
   - librosa 粗筛：应急降级（当 YAMNet 未跑且不想装 TF 时），不应和 YAMNet 同时存在

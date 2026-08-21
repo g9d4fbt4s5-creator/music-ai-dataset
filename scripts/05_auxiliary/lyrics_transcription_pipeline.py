@@ -258,8 +258,17 @@ def main():
     parser.add_argument("--skip-demucs", action="store_true", help="跳过 Demucs 分离")
     parser.add_argument("--yamnet-results", type=str, default=None,
                         help="YAMNet 输出 CSV 路径，用于按 has_vocals 字段决定是否处理（上游开关）")
-    parser.add_argument("--vocals-threshold", type=float, default=0.05,
-                        help="YAMNet vocals_ratio 阈值，低于此值跳过（默认0.05，即5%）")
+    parser.add_argument("--vocals-high-threshold", type=float, default=0.7,
+                        help="YAMNet vocals_ratio 高阈值，高于此值明确有人声（默认0.7）")
+    parser.add_argument("--vocals-low-threshold", type=float, default=0.3,
+                        help="YAMNet vocals_ratio 低阈值，低于此值明确无人声（默认0.3）")
+    parser.add_argument("--uncertain-strategy", type=str, default="run",
+                        choices=["run", "librosa", "skip", "mark"],
+                        help="不确定区（低阈值≤vocals_ratio≤高阈值）的处理策略："
+                             "run=保守运行Demucs（默认，宁可多跑不可漏掉）；"
+                             "librosa=用librosa粗筛二次确认；"
+                             "skip=跳过不确定区（可能漏掉有人声）；"
+                             "mark=标记为不确定，不跑Demucs")
     args = parser.parse_args()
 
     logger.info("=" * 60)
@@ -318,8 +327,10 @@ def main():
             yamnet_vocals_map[tid] = (has_vocals, vocals_ratio)
         logger.info(f"YAMNet 结果加载完成: {len(yamnet_vocals_map)} 条记录")
         logger.info(f"  其中 has_vocals=True: {sum(1 for v in yamnet_vocals_map.values() if v[0])} 条")
+        logger.info(f"  双阈值: 高={args.vocals_high_threshold:.0%}, 低={args.vocals_low_threshold:.0%}")
+        logger.info(f"  不确定区策略: {args.uncertain_strategy}")
     else:
-        logger.info("未提供 YAMNet 结果，将对所有音频执行 librosa 粗筛")
+        logger.info("未提供 YAMNet 结果，将对所有音频执行 librosa 粗筛（应急降级）")
 
     whisper_model = load_whisper_model(args.whisper_model)
 
@@ -361,23 +372,59 @@ def main():
             yamnet_info = yamnet_vocals_map.get(track_id) if yamnet_vocals_map else None
 
             if yamnet_info:
-                # 有 YAMNet 结果：直接用 has_vocals 决策
+                # 有 YAMNet 结果：用 vocals_ratio 概率值双阈值决策（比二值化更稳健）
                 has_vocals, vocals_ratio = yamnet_info
                 result["yamnet_has_vocals"] = has_vocals
                 result["yamnet_vocals_ratio"] = vocals_ratio
 
-                if not has_vocals:
-                    logger.info(f"  关卡A [YAMNet]: has_vocals=False → 纯器乐，跳过 Demucs + ASR")
-                    result["status"] = "skipped_instrumental_yamnet"
-                    result["error"] = f"YAMNet has_vocals=False, vocals_ratio={vocals_ratio:.1%}"
+                if vocals_ratio > args.vocals_high_threshold:
+                    # 高置信度有人声 → 直接继续
+                    logger.info(f"  关卡A [YAMNet]: vocals_ratio={vocals_ratio:.1%} > {args.vocals_high_threshold:.0%} → 明确有人声，继续")
+                    result["yamnet_decision"] = "high_confidence_vocals"
+                elif vocals_ratio < args.vocals_low_threshold:
+                    # 高置信度无人声 → 跳过
+                    logger.info(f"  关卡A [YAMNet]: vocals_ratio={vocals_ratio:.1%} < {args.vocals_low_threshold:.0%} → 明确无人声，跳过 Demucs + ASR")
+                    result["status"] = "skipped_no_vocals_high_confidence"
+                    result["error"] = f"YAMNet vocals_ratio={vocals_ratio:.1%} < {args.vocals_low_threshold:.0%}"
+                    result["yamnet_decision"] = "high_confidence_no_vocals"
                     results.append(result)
                     continue
-                logger.info(f"  关卡A [YAMNet]: has_vocals=True, vocals_ratio={vocals_ratio:.1%} → 继续")
+                else:
+                    # 不确定区（低阈值 ≤ vocals_ratio ≤ 高阈值）→ 按策略兜底
+                    result["yamnet_decision"] = "uncertain"
+                    logger.info(f"  关卡A [YAMNet]: vocals_ratio={vocals_ratio:.1%} 在不确定区 [{args.vocals_low_threshold:.0%}, {args.vocals_high_threshold:.0%}] → 兜底策略: {args.uncertain_strategy}")
+
+                    if args.uncertain_strategy == "skip":
+                        logger.info(f"    → 跳过不确定区（可能漏掉有人声）")
+                        result["status"] = "skipped_uncertain_zone"
+                        result["error"] = f"YAMNet vocals_ratio={vocals_ratio:.1%} 在不确定区，策略=skip"
+                        results.append(result)
+                        continue
+                    elif args.uncertain_strategy == "mark":
+                        logger.info(f"    → 标记为不确定，不跑 Demucs")
+                        result["status"] = "marked_uncertain"
+                        result["error"] = f"YAMNet vocals_ratio={vocals_ratio:.1%} 在不确定区，策略=mark"
+                        results.append(result)
+                        continue
+                    elif args.uncertain_strategy == "librosa":
+                        logger.info(f"    → 用 librosa 粗筛二次确认")
+                        vocal_ratio = _fallback_vocal_ratio_librosa(audio_path)
+                        result["fallback_vocal_ratio"] = vocal_ratio
+                        if vocal_ratio <= 0.10:
+                            logger.info(f"    → librosa 人声占比 {vocal_ratio:.1%} <= 10% → 跳过")
+                            result["status"] = "skipped_uncertain_librosa_no_vocals"
+                            result["error"] = f"不确定区 + librosa vocal_ratio={vocal_ratio:.1%} <= 10%"
+                            results.append(result)
+                            continue
+                        logger.info(f"    → librosa 人声占比 {vocal_ratio:.1%} > 10% → 继续")
+                    else:  # run（默认）：保守运行 Demucs
+                        logger.info(f"    → 保守运行 Demucs（宁可多跑，不可漏掉）")
             else:
                 # 无 YAMNet 结果：应急降级，用 librosa 粗筛
                 logger.warning(f"  关卡A [应急]: 无 YAMNet 结果，使用 librosa 粗筛（准确率低）")
                 vocal_ratio = _fallback_vocal_ratio_librosa(audio_path)
                 result["fallback_vocal_ratio"] = vocal_ratio
+                result["yamnet_decision"] = "fallback_librosa"
 
                 if vocal_ratio <= 0.10:
                     logger.info(f"  关卡A [应急]: librosa人声占比 {vocal_ratio:.1%} <= 10% → 跳过")
