@@ -300,6 +300,48 @@ music_corpus_project/
   - 多语言：Qwen-Audio/SALMONN（⭐⭐⭐实验性，速度慢成本高不稳定）
   - 英文特殊建议：UVR5（比Demucs更激进的人声分离）+ Whisper，或微调Wav2Vec 2.0
 
+### 5.11 Mac/GPU 分工执行指南（08-21）
+
+**核心原则**：神经网络推理/批量计算放 GPU，元数据操作/聚类/标注放 Mac。
+
+| Stage | 内容 | Mac 本地 | GPU (AutoDL) | 理由 |
+|-------|------|---------|-------------|------|
+| **Stage 1** | 元数据清洗 | ✅ 全量 | ❌ | 字段标准化、冲突消解是 DataFrame 操作，Mac 秒级完成 |
+| **Stage 2** | 格式标准化（ffmpeg） | ❌ | ✅ 全量 | 批量转码 48k/24bit/FLAC，GPU 磁盘够批次处理 |
+| **Stage 3** | YAMNet 内容过滤 | ❌ | ✅ 全量 | 已验证：500首 5分27秒，CPU跑不抢显存 |
+| **Stage 3** | 音质质检（SNR/削波/DR） | ⚠️ 抽检 | ✅ 全量 | 批量 FFT 分析，GPU 的 CPU 更强；Mac 只抽检复核 |
+| **Stage 4** | 精确去重（MD5） | ✅ 全量 | ❌ | 文件级哈希，Mac 本地算，不碰音频内容 |
+| **Stage 4** | 近似/片段/跨集去重 | ⚠️ 悬置 | ⚠️ 悬置 | 待重启决策 |
+| **Stage 5.1** | 语言过滤（Whisper base） | ❌ | ✅ 全量 | 已装，批量跑 |
+| **Stage 5.2** | Demucs + ASR（FunASR/faster-whisper） | ❌ | ✅ 按需 | 有人声（`has_vocals>0`）才触发；纯器乐跳过 |
+| **Stage 5.3** | MERT/CLAP 嵌入提取 | ❌ | ✅ 全量 | 神经网络推理，GPU 比 Mac Intel 快 10-50 倍 |
+| **Stage 5.3** | DBSCAN 聚类 | ✅ | ❌ | 矩阵运算量极小，Mac 秒级；离群点结果直接进 Label Studio |
+| **Stage 6** | 切片（chunking） | ❌ | ✅ 全量 | 从母版切 segments，产出传回 Mac |
+| **Stage 6** | 特征提取（Mel/CQT/Chroma） | ❌ | ✅ 全量 | 批量 librosa/torchaudio，GPU CPU 更快 |
+| **划分** | train/val/test/holdout | ✅ | ❌ | 元数据操作，按 track_id 分层抽样 |
+| **标注** | Label Studio | ✅ | ❌ | Mac 本地有 GUI，音频在本地 |
+| **API** | Gemini/GPT 辅助标注 | ✅ | ❌ | Mac 科学上网，GPU 无此能力 |
+
+**数据流向**：
+```
+Mac（原始音频 + 元数据）
+  ↓ scp/rsync 上传原始音频
+GPU（AutoDL）
+  ├── Stage 2: 格式标准化 → processed_master/
+  ├── Stage 3: YAMNet + 音质质检 → reports/
+  ├── Stage 5.1: 语言过滤 → language_detection.csv
+  ├── Stage 5.2: Demucs + ASR（按需）→ demucs_stems/ + lyrics/
+  ├── Stage 5.3: MERT/CLAP 嵌入 → embeddings.parquet
+  └── Stage 6: 切片 + 特征提取 → segments/ + features/
+  ↓ rsync 回传产物（segments + stems + 元数据 + 嵌入）
+Mac（本地）
+  ├── Stage 1: 元数据清洗
+  ├── Stage 4: 精确去重
+  ├── Stage 5.3: DBSCAN 聚类（读取嵌入）
+  ├── 划分 train/val/test/holdout
+  └── Label Studio 标注（读取本地音频）
+```
+
 ---
 
 ## 六、数据产物清单
