@@ -1,0 +1,94 @@
+{
+  "recipe_version": "1.0",
+  "generated_at": "2026-08-21T11:56:46.793140+08:00",
+  "dataset": {
+    "version": "v20260821_115630",
+    "path": "/Users/m.jian/music_corpus_project/data/04_final_dataset/v20260821_115630",
+    "splits": {
+      "train": {
+        "count": 1
+      },
+      "val": {
+        "count": 0
+      },
+      "test": {
+        "count": 0
+      },
+      "holdout_gold": {
+        "count": 1
+      }
+    },
+    "total_samples": 2
+  },
+  "audio": {
+    "format": "flac",
+    "sample_rate": 44100,
+    "bit_depth": 24,
+    "channels": 2,
+    "chunk_size_sec": 30,
+    "overlap_ratio": 0.5
+  },
+  "features": {
+    "types": [
+      "mel",
+      "cqt",
+      "chroma",
+      "mfcc"
+    ],
+    "n_mels": 128,
+    "n_cqt": 84,
+    "n_chroma": 12,
+    "n_mfcc": 20
+  },
+  "training": {
+    "batch_size": 16,
+    "learning_rate": 5e-05,
+    "epochs": 100,
+    "optimizer": "adamw",
+    "scheduler": "cosine",
+    "warmup_steps": 1000,
+    "weight_decay": 0.01,
+    "gradient_clip": 1.0
+  },
+  "labels": {
+    "mapping_path": null,
+    "num_labels": null
+  },
+  "data_mixing": {
+    "enabled": false,
+    "ratios": {}
+  },
+  "augmentation": {
+    "time_stretch": {
+      "enabled": true,
+      "min_rate": 0.8,
+      "max_rate": 1.2
+    },
+    "pitch_shift": {
+      "enabled": true,
+      "min_semitones": -2,
+      "max_semitones": 2
+    },
+    "add_noise": {
+      "enabled": false,
+      "snr_db": 20
+    },
+    "random_crop": {
+      "enabled": true,
+      "crop_sec": 30
+    }
+  },
+  "preprocessing": {
+    "normalize_loudness": {
+      "enabled": true,
+      "target_lufs": -14
+    },
+    "resample": {
+      "enabled": true,
+      "target_sr": 44100
+    },
+    "mono_convert": {
+      "enabled": false
+    }
+  }
+}
