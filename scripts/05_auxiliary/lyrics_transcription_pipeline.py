@@ -90,14 +90,15 @@ def detect_language(whisper_model, audio_path):
         return "en", 0.0
 
 
-def detect_vocal_ratio_librosa(audio_path):
+def _fallback_vocal_ratio_librosa(audio_path):
     """
-    librosa 粗筛人声占比（轻量，秒级，用于决定是否跑 Demucs）
+    [应急降级] librosa 粗筛人声占比（仅在没有 YAMNet 结果时使用）
 
-    方法：
-    1. HPSS 分离谐波成分（人声/旋律）+ 打击成分（鼓/节奏）
-    2. 人声频率带（100-3000Hz）能量加权
-    3. 综合估算人声占比
+    ⚠️ 重要：正常流程下 YAMNet 的 has_vocals 是唯一 Demucs 触发器。
+    此函数仅用于 YAMNet 未跑、且不想装 TF 环境的应急场景。
+
+    方法：HPSS 谐波分离 + 100-3000Hz 人声频段能量加权
+    注意：Jazz 场景下会把萨克斯/钢琴误判为人声，准确率低于 YAMNet
 
     返回：0.0-1.0 的人声占比估算
     """
@@ -105,30 +106,23 @@ def detect_vocal_ratio_librosa(audio_path):
 
     try:
         y, sr = librosa.load(audio_path, sr=22050, mono=True)
-
-        # HPSS 分离
+        # HPSS
         y_harmonic, y_percussive = librosa.effects.hpss(y)
-        harmonic_energy = np.sum(y_harmonic ** 2)
-        total_energy = np.sum(y ** 2) + 1e-10
-        harmonic_ratio = harmonic_energy / total_energy
-
-        # 人声频率带能量
+        harmonic_ratio = np.sum(y_harmonic ** 2) / (np.sum(y ** 2) + 1e-10)
+        # 100-3000Hz 频段能量
         S = np.abs(librosa.stft(y, n_fft=2048, hop_length=512))
         freqs = librosa.fft_frequencies(sr=sr, n_fft=2048)
         vocal_band_mask = (freqs >= 100) & (freqs <= 3000)
         vocal_band_energy = np.sum(S[vocal_band_mask, :] ** 2)
         total_spectral_energy = np.sum(S ** 2) + 1e-10
         vocal_band_ratio = vocal_band_energy / total_spectral_energy
-
         # 综合估算
         vocal_ratio = 0.6 * harmonic_ratio + 0.4 * vocal_band_ratio
         vocal_ratio = min(1.0, max(0.0, vocal_ratio))
-
-        logger.info(f"  librosa粗筛人声占比: {vocal_ratio:.1%} (谐波={harmonic_ratio:.1%}, 人声频段={vocal_band_ratio:.1%})")
+        logger.info(f"  [应急] librosa粗筛人声占比: {vocal_ratio:.1%}")
         return float(vocal_ratio)
-
     except Exception as e:
-        logger.warning(f"  librosa粗筛失败: {e}，默认 0.5（继续处理）")
+        logger.warning(f"  [应急] librosa粗筛失败: {e}，默认 0.5（继续处理）")
         return 0.5
 
 
@@ -358,58 +352,68 @@ def main():
         }
 
         try:
-            # Step 0: YAMNet 上游开关（按 has_vocals 字段决定是否处理）
-            if yamnet_vocals_map:
-                yamnet_info = yamnet_vocals_map.get(track_id)
-                if yamnet_info:
-                    has_vocals, vocals_ratio = yamnet_info
-                    result["yamnet_has_vocals"] = has_vocals
-                    result["yamnet_vocals_ratio"] = vocals_ratio
+            # ============================================================
+            # 关卡 A：YAMNet（唯一 Demucs 触发器）
+            # ============================================================
+            # 正常流程：YAMNet 的 has_vocals 是唯一决策依据
+            # 应急降级：无 YAMNet 结果时，用 librosa 粗筛（准确率低）
+            # ============================================================
+            yamnet_info = yamnet_vocals_map.get(track_id) if yamnet_vocals_map else None
 
-                    if not has_vocals or vocals_ratio < args.vocals_threshold:
-                        logger.info(f"  Step 0: YAMNet has_vocals={has_vocals}, vocals_ratio={vocals_ratio:.1%} < {args.vocals_threshold:.0%}，跳过（纯器乐）")
-                        result["status"] = "skipped_yamnet_no_vocals"
-                        result["error"] = f"YAMNet has_vocals={has_vocals}, vocals_ratio={vocals_ratio:.1%}"
-                        results.append(result)
-                        continue
-                    logger.info(f"  Step 0: YAMNet has_vocals={has_vocals}, vocals_ratio={vocals_ratio:.1%} >= {args.vocals_threshold:.0%}，继续处理")
-                else:
-                    logger.info(f"  Step 0: YAMNet 结果中未找到 {track_id}，将执行 librosa 粗筛")
+            if yamnet_info:
+                # 有 YAMNet 结果：直接用 has_vocals 决策
+                has_vocals, vocals_ratio = yamnet_info
+                result["yamnet_has_vocals"] = has_vocals
+                result["yamnet_vocals_ratio"] = vocals_ratio
 
-            logger.info(f"  Step 1: 语言检测")
+                if not has_vocals:
+                    logger.info(f"  关卡A [YAMNet]: has_vocals=False → 纯器乐，跳过 Demucs + ASR")
+                    result["status"] = "skipped_instrumental_yamnet"
+                    result["error"] = f"YAMNet has_vocals=False, vocals_ratio={vocals_ratio:.1%}"
+                    results.append(result)
+                    continue
+                logger.info(f"  关卡A [YAMNet]: has_vocals=True, vocals_ratio={vocals_ratio:.1%} → 继续")
+            else:
+                # 无 YAMNet 结果：应急降级，用 librosa 粗筛
+                logger.warning(f"  关卡A [应急]: 无 YAMNet 结果，使用 librosa 粗筛（准确率低）")
+                vocal_ratio = _fallback_vocal_ratio_librosa(audio_path)
+                result["fallback_vocal_ratio"] = vocal_ratio
+
+                if vocal_ratio <= 0.10:
+                    logger.info(f"  关卡A [应急]: librosa人声占比 {vocal_ratio:.1%} <= 10% → 跳过")
+                    result["status"] = "skipped_instrumental_fallback"
+                    result["error"] = f"[应急] librosa vocal_ratio={vocal_ratio:.1%} <= 10%"
+                    results.append(result)
+                    continue
+                logger.info(f"  关卡A [应急]: librosa人声占比 {vocal_ratio:.1%} > 10% → 继续")
+
+            # ============================================================
+            # 关卡 B：Whisper 语言检测（Demucs 之前，避免浪费分离算力）
+            # ============================================================
+            logger.info(f"  关卡B [Whisper]: 语言检测")
             lang, lang_conf = detect_language(whisper_model, audio_path)
             result["language"] = lang
             result["language_confidence"] = lang_conf
 
             if target_languages and lang not in target_languages:
-                logger.info(f"  语言 {lang} 不在目标列表，跳过")
+                logger.info(f"  关卡B [Whisper]: 语言 {lang} 不在目标列表 → 跳过")
                 result["status"] = "skipped_language"
                 results.append(result)
                 continue
+            logger.info(f"  关卡B [Whisper]: 语言 {lang} (置信度 {lang_conf:.1%}) → 继续")
 
-            # Step 1.5: librosa 粗筛人声占比（>10% 才跑 Demucs，避免纯器乐浪费时间）
-            logger.info(f"  Step 1.5: librosa 粗筛人声占比")
-            vocal_ratio = detect_vocal_ratio_librosa(audio_path)
-            result["vocal_ratio_estimate"] = vocal_ratio
-
-            if vocal_ratio <= 0.10:
-                logger.info(f"  人声占比 {vocal_ratio:.1%} <= 10%，判定为纯器乐，跳过 Demucs 和 ASR")
-                result["status"] = "skipped_instrumental"
-                result["error"] = f"人声占比 {vocal_ratio:.1%} <= 10%，纯器乐"
-                results.append(result)
-                continue
-
-            logger.info(f"  人声占比 {vocal_ratio:.1%} > 10%，继续 Demucs 分离")
-
+            # ============================================================
+            # 关卡 C：Demucs 分离（只有通过关卡 A + B 才到这里）
+            # ============================================================
             if args.skip_demucs:
                 vocals_path = str(Path(args.stems_dir) / track_id / "vocals.wav")
                 if not Path(vocals_path).exists():
-                    logger.warning(f"  vocals.wav 不存在，跳过")
+                    logger.warning(f"  关卡C [Demucs]: vocals.wav 不存在，跳过")
                     result["status"] = "no_vocals"
                     results.append(result)
                     continue
             else:
-                logger.info(f"  Step 2: Demucs 分离人声")
+                logger.info(f"  关卡C [Demucs]: 分离人声")
                 vocals_path = separate_vocals_demucs(audio_path, args.stems_dir, track_id)
                 if not vocals_path:
                     result["status"] = "demucs_failed"
@@ -421,7 +425,10 @@ def main():
             info = sf.info(vocals_path)
             result["duration"] = info.duration
 
-            logger.info(f"  Step 3: ASR 转写")
+            # ============================================================
+            # 关卡 D：ASR 转写（语言决定路由）
+            # ============================================================
+            logger.info(f"  关卡D [ASR]: 转写（lang={lang}）")
             if lang in CHINESE_LANGS:
                 if deps["funasr"]:
                     text, confidence = transcribe_chinese_funasr(vocals_path)
