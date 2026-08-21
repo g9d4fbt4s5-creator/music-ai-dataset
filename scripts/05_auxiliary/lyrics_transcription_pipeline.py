@@ -262,6 +262,10 @@ def main():
     parser.add_argument("--limit", type=int, default=None, help="只处理前 N 个音频")
     parser.add_argument("--dry-run", action="store_true", help="预览模式")
     parser.add_argument("--skip-demucs", action="store_true", help="跳过 Demucs 分离")
+    parser.add_argument("--yamnet-results", type=str, default=None,
+                        help="YAMNet 输出 CSV 路径，用于按 has_vocals 字段决定是否处理（上游开关）")
+    parser.add_argument("--vocals-threshold", type=float, default=0.05,
+                        help="YAMNet vocals_ratio 阈值，低于此值跳过（默认0.05，即5%）")
     args = parser.parse_args()
 
     logger.info("=" * 60)
@@ -306,6 +310,23 @@ def main():
         target_languages = set(lang.strip() for lang in args.languages.split(","))
         logger.info(f"只转写语言: {target_languages}")
 
+    # 加载 YAMNet 结果（上游开关：按 has_vocals 字段决定是否处理）
+    yamnet_df = None
+    yamnet_vocals_map = {}
+    if args.yamnet_results and os.path.exists(args.yamnet_results):
+        logger.info(f"加载 YAMNet 结果: {args.yamnet_results}")
+        yamnet_df = pd.read_csv(args.yamnet_results)
+        # 构建 track_id -> (has_vocals, vocals_ratio) 映射
+        for _, row in yamnet_df.iterrows():
+            tid = str(row.get("track_id", ""))
+            has_vocals = bool(row.get("has_vocals", False))
+            vocals_ratio = float(row.get("vocals_ratio", 0.0))
+            yamnet_vocals_map[tid] = (has_vocals, vocals_ratio)
+        logger.info(f"YAMNet 结果加载完成: {len(yamnet_vocals_map)} 条记录")
+        logger.info(f"  其中 has_vocals=True: {sum(1 for v in yamnet_vocals_map.values() if v[0])} 条")
+    else:
+        logger.info("未提供 YAMNet 结果，将对所有音频执行 librosa 粗筛")
+
     whisper_model = load_whisper_model(args.whisper_model)
 
     logger.info("")
@@ -337,6 +358,24 @@ def main():
         }
 
         try:
+            # Step 0: YAMNet 上游开关（按 has_vocals 字段决定是否处理）
+            if yamnet_vocals_map:
+                yamnet_info = yamnet_vocals_map.get(track_id)
+                if yamnet_info:
+                    has_vocals, vocals_ratio = yamnet_info
+                    result["yamnet_has_vocals"] = has_vocals
+                    result["yamnet_vocals_ratio"] = vocals_ratio
+
+                    if not has_vocals or vocals_ratio < args.vocals_threshold:
+                        logger.info(f"  Step 0: YAMNet has_vocals={has_vocals}, vocals_ratio={vocals_ratio:.1%} < {args.vocals_threshold:.0%}，跳过（纯器乐）")
+                        result["status"] = "skipped_yamnet_no_vocals"
+                        result["error"] = f"YAMNet has_vocals={has_vocals}, vocals_ratio={vocals_ratio:.1%}"
+                        results.append(result)
+                        continue
+                    logger.info(f"  Step 0: YAMNet has_vocals={has_vocals}, vocals_ratio={vocals_ratio:.1%} >= {args.vocals_threshold:.0%}，继续处理")
+                else:
+                    logger.info(f"  Step 0: YAMNet 结果中未找到 {track_id}，将执行 librosa 粗筛")
+
             logger.info(f"  Step 1: 语言检测")
             lang, lang_conf = detect_language(whisper_model, audio_path)
             result["language"] = lang

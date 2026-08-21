@@ -249,8 +249,20 @@ music_corpus_project/
   - 中文歌唱：FunASR paraformer-zh（比 Whisper 好，仍有丢字需人工校）
   - ❌ 不用 Whisper large-v3（太重且歌唱不行）
 - **YAMNet 人声判断验证**：不用 Demucs 验证（太慢，10首需10分钟），改用 **Whisper base 语言检测 + librosa 粗筛人声占比**（轻量，秒级）
-- **Demucs 触发策略**：先 librosa 粗筛人声占比，**>10% 才跑 Demucs**，分离结果缓存（避免重复分离）
+- **Demucs 触发策略（三级开关）**：
+  - **Level 0（YAMNet 上游开关）**：读取 YAMNet 结果的 `has_vocals` 字段，`has_vocals=False` 或 `vocals_ratio < 5%` 直接跳过（连语言检测都不用做）
+  - **Level 1（librosa 粗筛）**：YAMNet 标记有人声的样本，再用 librosa HPSS+人声频段能量粗筛，`>10%` 才跑 Demucs
+  - **Level 2（Demucs 分离）**：通过前两级的样本才跑 Demucs，分离结果缓存（避免重复分离）
 - **歌词转写必须先过 Demucs**：分离人声后再 ASR，准确率提升 20-40%（实测中文流行歌 WER 从60%降到25%）
+- **按批次决策（不同流派预期完全不同）**：
+  | 数据集 | 预期 has_vocals | Demucs/ASR 策略 |
+  |--------|----------------|-----------------|
+  | Jazz/Classical | <5% | 跳过 Demucs + ASR |
+  | Pop/Rock/R&B | 80-95% | 必须跑 Demucs + FunASR |
+  | Hip-hop | 95%+ | 必须跑，歌词是核心标签 |
+  | Electronic/Ambient | <10% | 跳过 |
+  | Folk/World | 30-60% | 抽检后决定 |
+  - **结论**：YAMNet 的 `has_vocals` 字段成为 Demucs/ASR 的开关——不是全量跑，而是按批次决策
 - **GPU ASR 工具链**：Whisper 20250625 / FunASR 1.4.2 / faster-whisper 1.2.1 / jiwer / noisereduce 全部就绪
 
 ### 5.7 传输路径：音频只走 Mac↔GPU，不走 OSS（08-21决策）
