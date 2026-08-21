@@ -299,16 +299,58 @@ def merge_batch_to_global(batch_id: int, local_out: Path) -> None:
     logger.info(f"批次 {batch_id:03d} 合并完成")
 
 
+def cleanup_gpu_batch(batch_id: int, dry_run: bool = False) -> bool:
+    """
+    SSH 触发 GPU 清理（方案A：Mac回传完成后安全清理）
+
+    只删音频/产物，不删模型/代码/环境。
+    必须在 Mac 回传产物完成后调用，否则会删掉还没回传的文件！
+
+    Args:
+        batch_id: 批次ID
+        dry_run: 预览模式
+
+    Returns:
+        是否清理成功
+    """
+    logger.info(f"触发 GPU 清理: batch_{batch_id:03d}（只删音频/产物，保留模型/代码/环境）")
+
+    # GPU 上的清理脚本路径
+    cleanup_script = f"{REMOTE_PROJECT}/scripts/utils/gpu_cleanup.sh"
+
+    # 清理命令
+    cleanup_cmd = f"bash {cleanup_script} batch_{batch_id:03d}"
+
+    if dry_run:
+        logger.info(f"[预览] 将在 GPU 执行: {cleanup_cmd}")
+        return True
+
+    try:
+        result = ssh_run(cleanup_cmd, check=False)
+        if result.returncode == 0:
+            logger.info(f"GPU 清理完成: batch_{batch_id:03d}")
+            return True
+        else:
+            logger.warning(f"GPU 清理返回非零状态: {result.returncode}")
+            logger.warning(f"stderr: {result.stderr}")
+            return False
+    except Exception as e:
+        logger.error(f"GPU 清理失败: {e}")
+        return False
+
+
 # ===================== 主流水线 =====================
 def run_full_pipeline(
     input_csv: Path,
     batch_size: int = DEFAULT_BATCH_SIZE,
     start_from: int = 0,
     dry_run: bool = False,
+    auto_cleanup: bool = True,
 ) -> None:
     """完整流水线"""
     logger.info("=" * 60)
     logger.info("Mac↔GPU 批次编排流水线")
+    logger.info(f"自动清理: {'开启' if auto_cleanup else '关闭'}（回传完成后清理GPU音频/产物）")
     logger.info("=" * 60)
 
     # 1. 读取待处理清单
@@ -357,6 +399,15 @@ def run_full_pipeline(
         if not dry_run:
             merge_batch_to_global(batch_idx, local_out)
 
+        # Step 7: 清理GPU批次（回传完成后安全清理，只删音频/产物，保留模型/代码/环境）
+        if auto_cleanup:
+            if not dry_run:
+                cleanup_success = cleanup_gpu_batch(batch_idx, dry_run)
+                if not cleanup_success:
+                    logger.warning(f"批次 {batch_idx:03d} GPU清理失败，需手动清理")
+            else:
+                cleanup_gpu_batch(batch_idx, dry_run)
+
         logger.info(f"批次 {batch_idx:03d} 完成！")
 
     logger.info("")
@@ -378,6 +429,8 @@ def main():
     parser.add_argument("--prepare-only", action="store_true", help="只准备批次，不上传")
     parser.add_argument("--upload-only", action="store_true", help="只上传指定批次")
     parser.add_argument("--download-only", action="store_true", help="只回传指定批次")
+    parser.add_argument("--no-cleanup", action="store_true",
+                        help="关闭自动清理（默认回传完成后自动清理GPU音频/产物）")
     parser.add_argument("--dry-run", action="store_true", help="预览模式，不实际执行")
     args = parser.parse_args()
 
@@ -428,6 +481,7 @@ def main():
         batch_size=args.batch_size,
         start_from=args.start_from,
         dry_run=args.dry_run,
+        auto_cleanup=not args.no_cleanup,
     )
 
 
