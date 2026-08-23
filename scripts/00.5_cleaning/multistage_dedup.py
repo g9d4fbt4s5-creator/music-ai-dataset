@@ -2,24 +2,28 @@
 multistage_dedup.py
 多级去重流水线（Stage 4）
 
-四个阶段：
+五个阶段：
 1. 精确去重（Stage 4.1）：SHA-256哈希比对，完全相同的文件
-2. 近似去重（Stage 4.2）：chroma特征+余弦相似度>0.9，同一首歌不同版本
-3. 片段级去重（Stage 4.3）：滑动窗口切片+逐段指纹，同一首歌的不同节选
-4. 跨集去重（Stage 4.4）：全局指纹库+子集标记，训练/验证/测试集泄露
+2. 音频指纹去重（Stage 4.2）：Chromaprint (fpcalc) 感知指纹，同一首歌不同格式/码率 ✅ 推荐
+3. 近似去重（Stage 4.2-降级）：chroma特征+余弦相似度>0.9，fpcalc未安装时的降级方案
+4. 片段级去重（Stage 4.3）：滑动窗口切片+逐段指纹，同一首歌的不同节选
+5. 跨集去重（Stage 4.4）：全局指纹库+子集标记，训练/验证/测试集泄露
 
 用法：
-    # 全部4阶段
+    # 全部5阶段（推荐：精确+指纹+近似+片段+跨集）
     python multistage_dedup.py --all
 
     # 只跑精确去重
     python multistage_dedup.py --stage exact
 
-    # 跑精确+近似
+    # 跑精确+音频指纹（推荐组合）
+    python multistage_dedup.py --stage exact,fingerprint
+
+    # 跑精确+近似（降级方案，fpcalc未安装时）
     python multistage_dedup.py --stage exact,approximate
 
     # 自定义相似度阈值
-    python multistage_dedup.py --stage approximate --threshold 0.85
+    python multistage_dedup.py --stage fingerprint --threshold 0.95
 
     # 片段级去重（10秒窗口，50%重叠）
     python multistage_dedup.py --stage segment --chunk-sec 10 --overlap 0.5
@@ -32,6 +36,7 @@ multistage_dedup.py
 """
 import os
 import sys
+import subprocess
 import hashlib
 import logging
 import argparse
@@ -580,7 +585,7 @@ def main():
     parser = argparse.ArgumentParser(description="多级去重流水线（Stage 4）")
     parser.add_argument("--all", action="store_true", help="运行全部4阶段")
     parser.add_argument("--stage", type=str, default=None,
-                        help="指定阶段（逗号分隔）：exact,approximate,segment,cross-set")
+                        help="指定阶段（逗号分隔）：exact,fingerprint,approximate,segment,cross-set")
     parser.add_argument("--manifest", type=str, default=str(DEFAULT_MANIFEST),
                         help="audio_manifest.csv 路径")
     parser.add_argument("--checksum", type=str, default=str(DEFAULT_CHECKSUM),
@@ -602,7 +607,7 @@ def main():
     # 确定要运行的阶段
     stages = set()
     if args.all:
-        stages = {"exact", "approximate", "segment", "cross-set"}
+        stages = {"exact", "fingerprint", "approximate", "segment", "cross-set"}
     elif args.stage:
         stages = set(s.strip() for s in args.stage.split(","))
     else:
@@ -626,7 +631,47 @@ def main():
         exact_dup, exact_keep = exact_dedup(checksum_path, manifest_path, args.dry_run)
         all_results["exact"] = {"duplicates": exact_dup, "keep": exact_keep}
 
-    # Stage 4.2: 近似去重
+    # Stage 4.2: 音频指纹去重（Chromaprint，推荐，感知级）
+    if "fingerprint" in stages:
+        logger.info("")
+        logger.info("-" * 60)
+        logger.info("Stage 4.2: 音频指纹去重（Chromaprint/fpcalc，感知级）")
+        logger.info("-" * 60)
+        try:
+            # 调用 fingerprint_dedup.py
+            fingerprint_script = PROJECT_ROOT / "scripts" / "00.5_cleaning" / "fingerprint_dedup.py"
+            cmd = [
+                sys.executable, str(fingerprint_script),
+                "--input", str(manifest_path),
+                "--threshold", str(args.threshold),
+                "--save-fingerprint-db",
+            ]
+            if args.limit:
+                cmd.extend(["--limit", str(args.limit)])
+            if args.dry_run:
+                cmd.append("--dry-run")
+
+            logger.info(f"调用: {' '.join(cmd)}")
+            result = subprocess.run(cmd, capture_output=True, text=True, timeout=3600)
+            if result.returncode == 0:
+                logger.info("音频指纹去重完成")
+                # 解析输出中的重复数量
+                for line in result.stdout.split("\n"):
+                    if "发现重复组" in line:
+                        logger.info(f"  {line.strip()}")
+                all_results["fingerprint"] = {"status": "completed"}
+            else:
+                logger.warning(f"音频指纹去重返回非零状态: {result.returncode}")
+                logger.warning(f"stderr: {result.stderr[-500:]}")
+                all_results["fingerprint"] = {"status": "failed", "error": result.stderr[-200:]}
+        except subprocess.TimeoutExpired:
+            logger.error("音频指纹去重超时（>1小时）")
+            all_results["fingerprint"] = {"status": "timeout"}
+        except Exception as e:
+            logger.error(f"音频指纹去重异常: {e}")
+            all_results["fingerprint"] = {"status": "error", "error": str(e)}
+
+    # Stage 4.2-降级: 近似去重（chroma特征+余弦相似度，fpcalc未安装时的降级方案）
     if "approximate" in stages:
         approx_dup, approx_keep = approximate_dedup(
             manifest_path, args.threshold, args.limit, args.dry_run
