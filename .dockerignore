@@ -1,0 +1,76 @@
+# ============================================================
+# .dockerignore — 排除不需要打进镜像的文件
+# ============================================================
+# 原则：镜像只放代码 + 依赖，数据/模型/日志全部外部挂载
+
+# 数据文件（音频/特征/元数据，全部通过volume挂载）
+data/
+!data/.gitkeep
+
+# 模型权重（运行时从HuggingFace下载，或挂载到/data/models）
+models/
+!models/.gitkeep
+
+# 日志文件
+logs/
+*.log
+
+# 报告和可视化（运行时生成）
+reports/
+notebooks/
+snapshots/
+
+# 环境配置（包含密钥，不打进镜像）
+.env
+.env.local
+*.pem
+*.key
+
+# Git相关
+.git/
+.gitignore
+.github/
+
+# IDE和系统文件
+.vscode/
+.idea/
+.DS_Store
+*.swp
+*.swo
+*~
+
+# Python缓存
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+build/
+dist/
+
+# Conda环境（不打进镜像，用Dockerfile重新装）
+envs/
+*.yml
+!environment.yml
+!environment_gpu.yml
+
+# 临时文件
+tmp/
+temp/
+*.tmp
+*.bak
+
+# 大文件（音频/视频/压缩包）
+*.mp3
+*.wav
+*.flac
+*.ogg
+*.m4a
+*.aac
+*.zip
+*.tar.gz
+*.tar
+*.rar
+
+# envs目录下的wheel缓存
+envs/wheel_cache/

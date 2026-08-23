@@ -1,0 +1,54 @@
+# ============================================================
+# docker-compose.yml — 本地测试用
+# ============================================================
+# 用法：
+#   docker compose up gpu          # 启动GPU主镜像（交互模式）
+#   docker compose run gpu bash    # 进入GPU镜像的bash
+#   docker compose run yamnet bash # 进入YAMNet镜像的bash
+#
+# 注意：需要安装nvidia-docker2才能使用GPU
+# ============================================================
+
+services:
+  # GPU主镜像：特征提取/源分离/ASR/聚类
+  gpu:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.gpu
+    image: ghcr.io/g9d4fbt4s5-creator/music-corpus-gpu:latest
+    container_name: music-corpus-gpu
+    runtime: nvidia                    # 使用NVIDIA GPU
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+      - TZ=Asia/Shanghai
+    volumes:
+      - ./data:/data                   # 数据目录挂载
+      - ./scripts:/app/scripts         # 代码热重载（开发时用）
+      - ./configs:/app/configs
+      - ./models:/app/models            # 模型权重缓存
+    working_dir: /app
+    stdin_open: true                    # 保持stdin打开（交互模式）
+    tty: true                           # 分配伪终端
+    command: bash                       # 默认进入bash
+
+  # YAMNet专用镜像：音频分类（TensorFlow）
+  yamnet:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.yamnet
+    image: ghcr.io/g9d4fbt4s5-creator/music-corpus-yamnet:latest
+    container_name: music-corpus-yamnet
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+      - TZ=Asia/Shanghai
+    volumes:
+      - ./data:/data
+      - ./scripts:/app/scripts
+      - ./configs:/app/configs
+    working_dir: /app
+    stdin_open: true
+    tty: true
+    command: bash
