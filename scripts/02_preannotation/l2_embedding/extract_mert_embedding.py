@@ -36,10 +36,10 @@ SAMPLE_RATE = 24000
 
 
 def load_mert_model(device: str = "cuda"):
-    from transformers import Wav2Vec2FeatureExtractor, MertModel
+    from transformers import AutoModel, AutoFeatureExtractor
     logger.info(f"加载 MERT 模型: {MODEL_NAME}")
-    feature_extractor = Wav2Vec2FeatureExtractor.from_pretrained(MODEL_NAME)
-    model = MertModel.from_pretrained(MODEL_NAME)
+    feature_extractor = AutoFeatureExtractor.from_pretrained(MODEL_NAME)
+    model = AutoModel.from_pretrained(MODEL_NAME, trust_remote_code=True)
     model = model.to(device)
     model.eval()
     logger.info(f"✅ MERT 模型加载完成，设备: {device}")
