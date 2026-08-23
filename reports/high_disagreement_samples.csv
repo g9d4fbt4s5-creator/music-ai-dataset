@@ -1,0 +1,2 @@
+audio_id,n_tools,tools,mean_bpm,std_bpm,min_bpm,max_bpm,range_bpm,diff_essentia_librosa
+6296d8903f0d52a9225aaafabb1eb449_01M0E9X17RZ522YBF6Z913H4VJ,2,"essentia,librosa",128.60107421875,32.89794921875,95.703125,161.4990234375,65.7958984375,65.7958984375
