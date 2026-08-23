@@ -30,7 +30,16 @@ from typing import List, Dict, Optional, Tuple
 import numpy as np
 import pandas as pd
 
-LOG_DIR = "/root/autodl-tmp/logs"
+# ===================== 配置 =====================
+# 自动检测运行环境（Mac本地 vs GPU）
+PROJECT_ROOT = Path(__file__).parent.parent.parent
+
+# 日志目录：优先用项目根目录下的logs，GPU上可用/root/autodl-tmp/logs
+if os.path.exists("/root/autodl-tmp"):
+    LOG_DIR = "/root/autodl-tmp/logs"
+else:
+    LOG_DIR = str(PROJECT_ROOT / "logs")
+
 os.makedirs(LOG_DIR, exist_ok=True)
 time_str = datetime.now().strftime("%Y%m%d_%H%M%S")
 log_file = os.path.join(LOG_DIR, f"lyrics_transcription_{time_str}.log")
@@ -241,12 +250,20 @@ def scan_input_dir(input_dir):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Stage 5.2 歌词转写流水线（GPU 端运行）")
+    # 根据环境自动选择默认路径
+    if os.path.exists("/root/autodl-tmp"):
+        default_output_dir = "/root/autodl-tmp/lyrics"
+        default_stems_dir = "/root/autodl-tmp/demucs_stems"
+    else:
+        default_output_dir = str(PROJECT_ROOT / "data" / "02_preannotation" / "lyrics")
+        default_stems_dir = str(PROJECT_ROOT / "data" / "01_preprocess" / "demucs_stems")
+
+    parser = argparse.ArgumentParser(description="Stage 5.2 歌词转写流水线（GPU 端运行，Mac 本地也可测试）")
     parser.add_argument("--input-dir", type=str, help="输入音频目录")
     parser.add_argument("--file-list", type=str, help="音频文件列表路径")
     parser.add_argument("--input-file", type=str, help="单个音频文件")
-    parser.add_argument("--output-dir", type=str, default="/root/autodl-tmp/lyrics", help="输出目录")
-    parser.add_argument("--stems-dir", type=str, default="/root/autodl-tmp/demucs_stems", help="Demucs stems 目录")
+    parser.add_argument("--output-dir", type=str, default=default_output_dir, help=f"输出目录（默认 {default_output_dir}）")
+    parser.add_argument("--stems-dir", type=str, default=default_stems_dir, help=f"Demucs stems 目录（默认 {default_stems_dir}）")
     parser.add_argument("--languages", type=str, default=None, help="只转写指定语言（逗号分隔）")
     parser.add_argument("--whisper-model", type=str, default="base", help="Whisper 语言检测模型大小")
     parser.add_argument("--faster-whisper-model", type=str, default="small", help="faster-whisper 转写模型大小")

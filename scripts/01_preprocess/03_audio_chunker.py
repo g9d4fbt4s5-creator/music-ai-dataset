@@ -9,14 +9,29 @@ audio_chunker.py
 - 生成切片元数据 CSV（chunk_id, audio_id, start, end, duration, path）
 - 支持重采样到目标采样率
 - 支持单声道/立体声输出
+- 支持批量处理 manifest 中的音频
 
 用法：
+    # 批量处理 manifest 中的所有音频
+    python 03_audio_chunker.py --manifest data/00_raw_collect/audio_manifest.csv
+
+    # 自定义切片参数
+    python 03_audio_chunker.py --manifest manifest.csv --chunk-sec 15 --overlap 0.5
+
+    # 只处理前N个
+    python 03_audio_chunker.py --manifest manifest.csv --limit 10
+
+    # 预览模式
+    python 03_audio_chunker.py --manifest manifest.csv --dry-run
+
+    # 作为模块导入
     from audio_chunker import AudioChunker
     chunker = AudioChunker(chunk_size=30, overlap=0.5, min_chunk_length=5)
     chunks = chunker.chunk(audio_path, output_dir)
-    # chunks: List[ChunkInfo]
 """
 import os
+import sys
+import argparse
 import logging
 import numpy as np
 import pandas as pd
@@ -25,6 +40,13 @@ import soundfile as sf
 from pathlib import Path
 from typing import Dict, Optional, List, Tuple
 from dataclasses import dataclass, asdict
+from datetime import datetime
+
+# ===================== 配置 =====================
+PROJECT_ROOT = Path(__file__).parent.parent.parent
+sys.path.insert(0, str(PROJECT_ROOT / "scripts" / "utils"))
+
+from get_audio_physical_path import get_audio_absolute_path
 
 logger = logging.getLogger(__name__)
 
@@ -258,16 +280,151 @@ class AudioChunker:
 
 
 if __name__ == "__main__":
-    # 测试
-    logging.basicConfig(level=logging.INFO, format="%(levelname)s | %(message)s")
+    parser = argparse.ArgumentParser(
+        description="音频切片分块脚本（Stage 6 预处理输出）",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
+    parser.add_argument("--manifest", type=str, required=True,
+                        help="输入 audio_manifest.csv 路径")
+    parser.add_argument("--output-dir", type=str,
+                        default=str(PROJECT_ROOT / "data" / "01_preprocess" / "segments"),
+                        help="切片输出目录（默认 data/01_preprocess/segments）")
+    parser.add_argument("--chunk-sec", type=float, default=15.0,
+                        help="切片长度（秒），默认15秒")
+    parser.add_argument("--overlap", type=float, default=0.5,
+                        help="滑动窗口重叠比例（0-1），默认0.5（50%%）")
+    parser.add_argument("--min-chunk-length", type=float, default=5.0,
+                        help="最小切片长度（秒），默认5秒，丢弃过短的末尾片段")
+    parser.add_argument("--target-sr", type=int, default=None,
+                        help="目标采样率（Hz），None则保持原采样率")
+    parser.add_argument("--target-channels", type=int, default=None,
+                        help="目标声道数（1=单声道，2=立体声），None则保持原声道")
+    parser.add_argument("--limit", type=int, default=None,
+                        help="只处理前N个音频（用于测试）")
+    parser.add_argument("--dry-run", action="store_true",
+                        help="预览模式，不实际生成切片文件")
+    args = parser.parse_args()
 
-    test_audio = "/path/to/test.wav"
-    if os.path.exists(test_audio):
-        chunker = AudioChunker(chunk_size=30, overlap=0.5, min_chunk_length=5)
-        chunks = chunker.chunk(test_audio, "/tmp/chunks")
-        print(f"生成 {len(chunks)} 个切片")
-        for c in chunks[:3]:
-            print(f"  {c.chunk_id}: {c.start_time:.1f}s - {c.end_time:.1f}s ({c.duration:.1f}s)")
+    # 日志配置
+    log_dir = PROJECT_ROOT / "logs"
+    log_dir.mkdir(exist_ok=True)
+    time_str = datetime.now().strftime("%Y%m%d_%H%M%S")
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s | %(levelname)s | %(message)s",
+        handlers=[
+            logging.FileHandler(log_dir / f"audio_chunker_{time_str}.log", encoding="utf-8"),
+            logging.StreamHandler()
+        ]
+    )
+
+    logger.info("=" * 60)
+    logger.info("音频切片分块（Stage 6 预处理输出）")
+    logger.info(f"manifest: {args.manifest}")
+    logger.info(f"输出目录: {args.output_dir}")
+    logger.info(f"切片长度: {args.chunk_sec}秒")
+    logger.info(f"重叠比例: {args.overlap*100:.0f}%")
+    logger.info(f"最小切片长度: {args.min_chunk_length}秒")
+    if args.target_sr:
+        logger.info(f"目标采样率: {args.target_sr}Hz")
+    if args.target_channels:
+        logger.info(f"目标声道数: {args.target_channels}")
+    logger.info("=" * 60)
+
+    # 加载 manifest
+    manifest_path = Path(args.manifest)
+    if not manifest_path.is_absolute():
+        manifest_path = PROJECT_ROOT / manifest_path
+    manifest_df = pd.read_csv(manifest_path)
+    logger.info(f"加载音频清单: {len(manifest_df)} 首")
+
+    if args.limit:
+        manifest_df = manifest_df.head(args.limit)
+        logger.info(f"限制处理: 前 {args.limit} 首")
+
+    # 解析音频路径
+    audio_paths = []
+    audio_ids = []
+    skipped = 0
+
+    for _, row in manifest_df.iterrows():
+        audio_id = row.get("audio_id", "")
+        if not audio_id:
+            skipped += 1
+            continue
+
+        # 优先从 file_relative_path 读取
+        rel_path = row.get("file_relative_path", "")
+        if rel_path and isinstance(rel_path, str):
+            abs_path = PROJECT_ROOT / "data" / "00_raw_collect" / rel_path
+            if abs_path.exists():
+                audio_paths.append(str(abs_path))
+                audio_ids.append(audio_id)
+                continue
+
+        # 尝试用 audio_id 查找
+        abs_path = get_audio_absolute_path(audio_id)
+        if abs_path and Path(abs_path).exists():
+            audio_paths.append(abs_path)
+            audio_ids.append(audio_id)
+        else:
+            logger.warning(f"音频文件不存在: {audio_id}")
+            skipped += 1
+
+    logger.info(f"有效音频: {len(audio_paths)} 首，跳过: {skipped} 首")
+
+    if not audio_paths:
+        logger.error("没有有效音频，退出")
+        sys.exit(1)
+
+    # 创建切片器
+    chunker = AudioChunker(
+        chunk_size=args.chunk_sec,
+        overlap=args.overlap,
+        min_chunk_length=args.min_chunk_length,
+        target_sample_rate=args.target_sr,
+        target_channels=args.target_channels,
+    )
+
+    # 输出目录
+    output_dir = Path(args.output_dir)
+    if not output_dir.is_absolute():
+        output_dir = PROJECT_ROOT / output_dir
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    # 切片元数据 CSV 路径
+    manifest_csv = output_dir / f"chunks_manifest_{time_str}.csv"
+
+    if args.dry_run:
+        logger.info("DRY-RUN 模式：预览，不实际生成切片文件")
+        # 只计算预计切片数量
+        total_duration = 0
+        for ap in audio_paths:
+            try:
+                duration = librosa.get_duration(path=ap)
+                total_duration += duration
+            except Exception:
+                pass
+        step = args.chunk_sec * (1 - args.overlap)
+        estimated_chunks = int(total_duration / step) if step > 0 else 0
+        logger.info(f"预计总时长: {total_duration:.1f}秒")
+        logger.info(f"预计切片数量: ~{estimated_chunks} 个")
     else:
-        print("测试文件不存在")
-        print("用法: from audio_chunker import AudioChunker")
+        # 批量切片
+        all_chunks, chunks_df = chunker.batch_chunk(
+            audio_paths=audio_paths,
+            output_dir=str(output_dir),
+            audio_ids=audio_ids,
+            manifest_csv=str(manifest_csv),
+        )
+
+        # 总结
+        logger.info("")
+        logger.info("=" * 60)
+        logger.info("切片完成")
+        logger.info(f"  输入音频: {len(audio_paths)} 首")
+        logger.info(f"  生成切片: {len(all_chunks)} 个")
+        logger.info(f"  总时长: {sum(c.duration for c in all_chunks):.1f}秒")
+        logger.info(f"  输出目录: {output_dir}")
+        logger.info(f"  元数据: {manifest_csv}")
+        logger.info("=" * 60)
