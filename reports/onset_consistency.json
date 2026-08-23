@@ -1,0 +1,15 @@
+{
+  "n_audio_files": 3,
+  "tools": [
+    "madmom",
+    "librosa"
+  ],
+  "n_truth": 0,
+  "n_evaluated": 0,
+  "window": 0.05,
+  "consistency": {
+    "n_samples": 3,
+    "mean_match_ratio1": 0.35353535353535354,
+    "mean_match_ratio2": 0.06331236897274634
+  }
+}

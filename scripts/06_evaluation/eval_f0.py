@@ -80,7 +80,7 @@ def load_audio(audio_path: Path, sr: int = 22050, mono: bool = True):
 # ===================== F0 提取工具 =====================
 
 def extract_f0_torchcrepe(audio_path: Path, sr: int = 22050,
-                           model: str = "small",
+                           model: str = "tiny",
                            hop_length: int = 512) -> Tuple[np.ndarray, np.ndarray]:
     """
     用 torchcrepe 提取基频
@@ -95,22 +95,37 @@ def extract_f0_torchcrepe(audio_path: Path, sr: int = 22050,
         (times, freqs) — 时间数组和频率数组（Hz，0表示无声）
     """
     import torch
-    import crepe
+    import torchcrepe
 
-    # 加载音频（crepe 需要 16kHz）
+    # 加载音频（torchcrepe 需要 16kHz）
     import librosa
     y, sr_orig = librosa.load(str(audio_path), sr=16000, mono=True)
 
+    # 转换为 torch tensor (batch, channels, time)
+    audio = torch.tensor(y, dtype=torch.float32).unsqueeze(0)
+
     # 用 torchcrepe 预测
     with torch.no_grad():
-        # crepe.predict 返回 (times, freqs, confidence, activation)
-        result = crepe.predict(y, sr_orig, model_capacity=model,
-                                hop_length=hop_length, center=True,
-                                verbose=0)
+        # torchcrepe.predict 返回 pitch，如果 return_periodicity=True 还返回 periodicity
+        pitch, periodicity = torchcrepe.predict(
+            audio, sr_orig,
+            hop_length=hop_length,
+            fmin=50.0, fmax=2006.0,
+            model=model,
+            decoder=torchcrepe.decode.viterbi,
+            return_harmonicity=False,
+            return_periodicity=True,
+            batch_size=None,
+            device='cpu',
+            pad=True
+        )
 
-    times = result[0]  # 时间（秒）
-    freqs = result[1]  # 频率（Hz）
-    confidence = result[2]  # 置信度
+    # 转换为 numpy
+    freqs = pitch.squeeze(0).cpu().numpy()
+    confidence = periodicity.squeeze(0).cpu().numpy()
+
+    # 生成时间数组
+    times = np.arange(len(freqs)) * hop_length / sr_orig
 
     # 低置信度的帧设为0（无声）
     freqs[confidence < 0.5] = 0
