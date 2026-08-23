@@ -1,0 +1,217 @@
+# 预标注配置文件
+# Branch D 增强版：分层混合式预标注架构
+
+# ===================== 全局配置 =====================
+global:
+  project_root: "/Users/m.jian/music_corpus_project"
+  data_root: "data"
+  output_dir: "data/02_preannotation"
+  cache_dir: "data/02_preannotation/api_cache"
+  log_dir: "logs/preannotation"
+  random_seed: 42
+
+# ===================== L1 物理层（已有，本地特征） =====================
+l1_physical:
+  enabled: true
+  features:
+    - bpm              # BPM/节拍
+    - key              # 调性
+    - snr              # 信噪比
+    - language         # 语言（Whisper检测）
+    - duration         # 时长
+    - sample_rate      # 采样率
+    - loudness         # 响度（LUFS）
+  input: "data/01_preprocess/preprocess_meta"
+  output: "data/02_preannotation/l1_physical"
+
+# ===================== L2 语义层（GPU：CLAP zero-shot） =====================
+l2_semantic:
+  enabled: true
+  model: "clap"              # CLAP 模型
+  model_name: "laion/clap-htsat-unfused"  # CLAP 预训练模型
+  device: "cuda"             # GPU 运行
+  batch_size: 16
+  # 分类标签候选
+  labels:
+    genre:
+      - "jazz"
+      - "classical"
+      - "pop"
+      - "rock"
+      - "electronic"
+      - "hip hop"
+      - "folk"
+      - "world"
+      - "blues"
+      - "R&B"
+    mood:
+      - "happy"
+      - "sad"
+      - "energetic"
+      - "calm"
+      - "melancholic"
+      - "uplifting"
+      - "tense"
+      - "relaxed"
+      - "romantic"
+      - "angry"
+    instrumentation:
+      - "piano"
+      - "guitar"
+      - "saxophone"
+      - "trumpet"
+      - "drums"
+      - "bass"
+      - "violin"
+      - "cello"
+      - "flute"
+      - "clarinet"
+  # 每个标签取 top-k 候选
+  top_k: 5
+  # 置信度阈值
+  confidence_threshold: 0.3
+  input: "data/01_preprocess/processed_master"
+  output: "data/02_preannotation/l2_semantic"
+  embeddings_output: "data/02_preannotation/model_output_cache/clap_embeddings"
+
+# ===================== L3 结构层（API：DeepSeek + Qwen-Audio） =====================
+l3_structural:
+  enabled: true
+
+  # --- L3a: DeepSeek V4 Flash 文本标签提取（全量） ---
+  text_label_extraction:
+    provider: "deepseek"
+    model: "deepseek-chat"       # DeepSeek V4 Flash
+    base_url: "https://api.deepseek.com/v1"
+    api_key_env: "DEEPSEEK_API_KEY"  # 从环境变量读取
+    # 输入：L1 + L2 特征 JSON
+    input_features:
+      - l1_physical
+      - l2_semantic
+    # 输出标签
+    output_labels:
+      - genre              # 流派（三级）
+      - mood               # 情绪
+      - instrumentation    # 乐器列表
+      - vocal_presence     # 是否有人声
+      - tempo_category     # 速度分类（slow/medium/fast）
+      - era                # 年代
+      - subgenre           # 子流派
+    # 伪 Caption 生成
+    generate_caption: true
+    caption_max_length: 200
+    # 并发配置
+    concurrency:
+      max_workers: 10          # 最大并发数
+      rate_limit_per_minute: 60  # 每分钟请求数限制
+      retry:
+        max_retries: 3
+        initial_delay: 1.0
+        max_delay: 10.0
+        backoff_factor: 2.0
+    # 缓存
+    cache:
+      enabled: true
+      cache_dir: "data/02_preannotation/api_cache/deepseek"
+      cache_format: "json"
+    # 成本控制
+    cost_control:
+      max_tokens_per_request: 1000
+      estimated_cost_per_1k: 0.002  # 元/1k tokens
+    input: "data/02_preannotation/l1_physical,l2_semantic"
+    output: "data/02_preannotation/l3_structural/text_labels"
+
+  # --- L3b: DeepSeek V4 Pro 疑难样本纠错（10%抽样） ---
+  error_correction:
+    provider: "deepseek"
+    model: "deepseek-chat"       # DeepSeek V4 Pro（用同一个endpoint，可切换）
+    base_url: "https://api.deepseek.com/v1"
+    api_key_env: "DEEPSEEK_API_KEY"
+    # 抽样策略
+    sampling:
+      strategy: "confidence"     # 按置信度抽样
+      ratio: 0.10                 # 10% 样本
+      min_confidence: 0.5         # 置信度低于此值的样本优先
+    # 纠错输入：L3a 初始标签 + 特征
+    # 纠错输出：修正后的标签 JSON
+    concurrency:
+      max_workers: 5
+      retry:
+        max_retries: 3
+    cache:
+      enabled: true
+      cache_dir: "data/02_preannotation/api_cache/deepseek_pro"
+    output: "data/02_preannotation/l3_structural/corrected_labels"
+
+  # --- L3c: Qwen-Audio 真实音频结构（5%黄金集） ---
+  audio_structure:
+    provider: "qwen"
+    model: "qwen-audio-turbo"    # Qwen-Audio 模型
+    base_url: "https://dashscope.aliyuncs.com/compatible-mode/v1"
+    api_key_env: "DASHSCOPE_API_KEY"  # 阿里云百炼 API Key
+    # 抽样策略
+    sampling:
+      strategy: "random"          # 随机抽样
+      ratio: 0.05                 # 5% 黄金集
+      min_samples: 10             # 最少样本数
+    # 输入：音频片段（FLAC，可降采样）
+    audio_input:
+      format: "flac"
+      sample_rate: 16000          # 降采样到16kHz节省成本
+      max_duration: 30             # 最长30秒片段
+      segment_strategy: "middle"  # 取中间片段
+    # 输出：真实结构标注
+    output_labels:
+      - section_boundaries   # 段落边界（intro/verse/chorus/bridge/outro）
+      - instrument_sections  # 乐器区间（哪些时间段有哪些乐器）
+      - real_caption         # 真实音频描述（基于实际听感）
+      - vocal_segments       # 人声片段（时间范围）
+      - tempo_changes        # 速度变化点
+    # 并发配置
+    concurrency:
+      max_workers: 3
+      rate_limit_per_minute: 20
+      retry:
+        max_retries: 3
+    # 缓存
+    cache:
+      enabled: true
+      cache_dir: "data/02_preannotation/api_cache/qwen_audio"
+    # 成本控制
+    cost_control:
+      estimated_cost_per_minute: 1.0  # 元/分钟音频
+    input: "data/01_preprocess/processed_master"
+    output: "data/02_preannotation/l3_structural/audio_structure"
+
+# ===================== L4 传播层（Mac：KNN传播+融合） =====================
+l4_propagated:
+  enabled: true
+  # KNN 传播配置
+  knn:
+    k: 5                          # K近邻数
+    distance_metric: "cosine"     # 距离度量
+    embedding_source: "clap"      # 使用 CLAP 嵌入
+    weight_scheme: "distance"     # 距离加权
+  # 融合策略
+  fusion:
+    strategy: "weighted_voting"   # 加权投票
+    weights:
+      l2_semantic: 0.3            # CLAP zero-shot 权重
+      l3_text: 0.4                # DeepSeek 文本标签权重
+      l3_corrected: 0.2           # DeepSeek Pro 纠错权重
+      l3_audio: 0.1               # Qwen-Audio 真实结构权重
+    # 标签冲突解决
+    conflict_resolution: "highest_confidence"
+  # 输出
+  output: "data/02_preannotation/l4_propagated"
+  final_labels_output: "data/02_preannotation/ls_preannotations.jsonl"
+
+# ===================== 成本估算 =====================
+cost_estimation:
+  # 500首 Jazz 估算
+  clap_zero_shot: 0.0            # GPU顺手跑，无额外成本
+  deepseek_flash_500: 1.5        # 约 ¥1~2
+  deepseek_pro_50: 0.5           # 10%纠错，约 ¥0.5
+  qwen_audio_25: 25.0            # 5%黄金集，约 ¥25
+  total_estimated: 27.0           # 总计约 ¥27
+  total_time_minutes: 20          # 总耗时约 20 分钟（API并发）
