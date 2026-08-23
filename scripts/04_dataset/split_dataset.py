@@ -85,6 +85,21 @@ from pathlib import Path
 from typing import Optional, Dict, List, Tuple
 from collections import defaultdict
 
+# 算子级血缘记录器（Lineage v2.0）
+LINEAGE_AVAILABLE = False
+LineageLogger = None
+try:
+    import importlib.util
+    lineage_path = Path(__file__).parent.parent / "07_lineage" / "lineage_logger.py"
+    if lineage_path.exists():
+        spec = importlib.util.spec_from_file_location("lineage_logger", str(lineage_path))
+        lineage_module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(lineage_module)
+        LineageLogger = lineage_module.LineageLogger
+        LINEAGE_AVAILABLE = True
+except Exception as e:
+    logging.getLogger(__name__).warning(f"LineageLogger 导入失败: {e}")
+
 # ===================== 配置 =====================
 PROJECT_ROOT = Path(__file__).parent.parent.parent
 TZ = timezone(timedelta(hours=8))
@@ -798,6 +813,57 @@ def main():
         input_manifest_path=input_path,
         upstream_lineage=upstream_lineage,
     )
+
+    # === 记录 v2.0 算子级血缘（Lineage v2.0）===
+    if LINEAGE_AVAILABLE:
+        try:
+            lineage_logger = LineageLogger(
+                dataset_version=output_dir.name,
+                output_path=str(output_dir / "lineage_v2.json"),
+                upstream_lineage=upstream_lineage,
+                auto_save=False
+            )
+
+            # 记录划分算子
+            total_input = len(train_df) + len(val_df) + len(test_df) + len(holdout_df)
+            lineage_logger.log_operator(
+                operator_name="dataset_split",
+                operator_version="1.0",
+                input_manifest=str(input_path),
+                input_count=total_input,
+                output_path=str(output_dir),
+                output_count=total_input,
+                failed_count=0,
+                config={
+                    "split_method": split_method,
+                    "train_ratio": args.train,
+                    "val_ratio": args.val,
+                    "test_ratio": args.test,
+                    "holdout_ratio": args.holdout,
+                    "stratify_by": args.stratify_by,
+                    "isolate_by": args.isolate_by,
+                    "temporal_by": args.temporal_by,
+                    "test_from": args.test_from,
+                    "holdout_from": args.holdout_from,
+                    "random_state": args.random_state,
+                    "source_isolation_passed": stats.get("source_isolation_passed", True),
+                },
+                status="success"
+            )
+
+            # 记录数据集划分
+            lineage_logger.log_splits({
+                "train": {"count": len(train_df), "source_manifest": str(input_path)},
+                "val": {"count": len(val_df), "source_manifest": str(input_path)},
+                "test": {"count": len(test_df), "source_manifest": source_isolation.get("test") or str(input_path)},
+                "holdout": {"count": len(holdout_df), "source_manifest": source_isolation.get("holdout") or str(input_path)},
+            })
+
+            lineage_logger.save()
+            logger.info(f"算子级血缘(v2.0)已保存: {output_dir / 'lineage_v2.json'}")
+            lineage_logger.print_summary()
+        except Exception as e:
+            logger.warning(f"血缘记录失败（不影响划分结果）: {e}")
 
     logger.info("")
     logger.info("=" * 60)

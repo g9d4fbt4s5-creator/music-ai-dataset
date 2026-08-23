@@ -57,6 +57,21 @@ from collections import OrderedDict
 import pandas as pd
 import numpy as np
 
+# 算子级血缘记录器（Lineage v2.0）
+LINEAGE_AVAILABLE = False
+LineageLogger = None
+try:
+    import importlib.util
+    lineage_path = Path(__file__).parent / "07_lineage" / "lineage_logger.py"
+    if lineage_path.exists():
+        spec = importlib.util.spec_from_file_location("lineage_logger", str(lineage_path))
+        lineage_module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(lineage_module)
+        LineageLogger = lineage_module.LineageLogger
+        LINEAGE_AVAILABLE = True
+except Exception as e:
+    logging.getLogger(__name__).warning(f"LineageLogger 导入失败: {e}")
+
 # ===================== 配置 =====================
 PROJECT_ROOT = Path(__file__).parent.parent
 TZ = timezone(timedelta(hours=8))
@@ -514,21 +529,57 @@ def run_etl_pipeline(
             stages_to_run = stages_to_run[idx:]
             logger.info(f"断点续跑: 从 {resume_from} 开始")
 
+    # === 初始化算子级血缘记录器（Lineage v2.0）===
+    lineage_logger = None
+    if LINEAGE_AVAILABLE and not dry_run and not report_only:
+        lineage_dir = PROJECT_ROOT / "data" / "lineage"
+        lineage_dir.mkdir(parents=True, exist_ok=True)
+        lineage_path = lineage_dir / f"etl_pipeline_{time_str}.json"
+        lineage_logger = LineageLogger(
+            dataset_version=f"etl_{time_str}",
+            output_path=str(lineage_path),
+            auto_save=True
+        )
+        logger.info(f"血缘记录器已初始化: {lineage_path}")
+
     # 执行各阶段
     if not report_only:
         for stage_id in stages_to_run:
-            try:
-                count, output_path = execute_stage(
-                    stage_id, current_input, PREPROCESS_DIR,
-                    gpu_mode=gpu_mode, dry_run=dry_run
-                )
-                stage_counts[stage_id] = count
-                current_input = output_path if isinstance(output_path, Path) and output_path.suffix == ".csv" else current_input
-            except Exception as e:
-                logger.error(f"{stage_id} 执行失败: {e}")
-                stage_counts[stage_id] = 0
-                if not dry_run:
-                    raise
+            stage_info = STAGES.get(stage_id, {})
+            stage_name = stage_info.get("name", stage_id)
+
+            if lineage_logger:
+                # 用上下文管理器记录算子执行（自动记录耗时和状态）
+                with lineage_logger.operator(stage_name, version="1.0") as op:
+                    op.set_input(str(current_input), count=stage_counts.get(stage_id, 0) if stage_counts else 0)
+                    try:
+                        count, output_path = execute_stage(
+                            stage_id, current_input, PREPROCESS_DIR,
+                            gpu_mode=gpu_mode, dry_run=dry_run
+                        )
+                        stage_counts[stage_id] = count
+                        current_input = output_path if isinstance(output_path, Path) and output_path.suffix == ".csv" else current_input
+                        op.set_output(str(output_path) if output_path else "", count=count)
+                        op.set_config({"stage_id": stage_id, "gpu_mode": gpu_mode})
+                    except Exception as e:
+                        logger.error(f"{stage_id} 执行失败: {e}")
+                        stage_counts[stage_id] = 0
+                        op.set_output("", count=0, failed_count=1, failure_reasons={"execution_error": 1})
+                        if not dry_run:
+                            raise
+            else:
+                try:
+                    count, output_path = execute_stage(
+                        stage_id, current_input, PREPROCESS_DIR,
+                        gpu_mode=gpu_mode, dry_run=dry_run
+                    )
+                    stage_counts[stage_id] = count
+                    current_input = output_path if isinstance(output_path, Path) and output_path.suffix == ".csv" else current_input
+                except Exception as e:
+                    logger.error(f"{stage_id} 执行失败: {e}")
+                    stage_counts[stage_id] = 0
+                    if not dry_run:
+                        raise
     else:
         # 只生成报告：从已有数据读取各阶段样本数
         logger.info("报告模式：从已有数据读取统计")
@@ -576,6 +627,14 @@ def run_etl_pipeline(
         "report_path": str(report_path) if report_path else None,
     }
     save_json(pipeline_meta, report_dir / "pipeline_metadata.json")
+
+    # === 保存 v2.0 算子级血缘 ===
+    if lineage_logger:
+        lineage_v2_path = report_dir / "lineage_v2.json"
+        lineage_logger.save(str(lineage_v2_path))
+        logger.info(f"算子级血缘(v2.0)已保存: {lineage_v2_path}")
+        lineage_logger.print_summary()
+        pipeline_meta["lineage_v2_path"] = str(lineage_v2_path)
 
     # 输出总结
     logger.info("\n" + "=" * 60)

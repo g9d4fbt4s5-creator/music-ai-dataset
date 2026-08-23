@@ -41,6 +41,22 @@ from datetime import datetime, timezone, timedelta
 from pathlib import Path
 from typing import List, Dict, Optional
 
+# 算子级血缘记录器（Lineage v2.0）
+# 注意：07_lineage 以数字开头，不能直接用 import 语句，需要用 importlib
+LINEAGE_AVAILABLE = False
+LineageLogger = None
+try:
+    import importlib.util
+    lineage_path = Path(__file__).parent.parent / "07_lineage" / "lineage_logger.py"
+    if lineage_path.exists():
+        spec = importlib.util.spec_from_file_location("lineage_logger", str(lineage_path))
+        lineage_module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(lineage_module)
+        LineageLogger = lineage_module.LineageLogger
+        LINEAGE_AVAILABLE = True
+except Exception as e:
+    logging.getLogger(__name__).warning(f"LineageLogger 导入失败: {e}")
+
 # ===================== 配置 =====================
 PROJECT_ROOT = Path(__file__).parent.parent.parent
 
@@ -1092,9 +1108,52 @@ def main():
         6: run_stage6_preprocess_output,
     }
 
+    stage_names = {
+        1: "metadata_cleaning",
+        2: "format_normalization",
+        3: "quality_cleaning",
+        4: "deduplication",
+        5: "auxiliary_cleaning",
+        6: "preprocess_output",
+    }
+
+    # === 初始化算子级血缘记录器（Lineage v2.0）===
+    lineage_logger = None
+    if LINEAGE_AVAILABLE and not args.dry_run:
+        version_str = datetime.now(TZ).strftime("%Y%m%d_%H%M%S")
+        lineage_dir = PROJECT_ROOT / "data" / "lineage"
+        lineage_dir.mkdir(parents=True, exist_ok=True)
+        lineage_path = lineage_dir / f"clean_pipeline_v{version_str}.json"
+        lineage_logger = LineageLogger(
+            dataset_version=f"v{version_str}",
+            output_path=str(lineage_path),
+            auto_save=True
+        )
+        logger.info(f"血缘记录器已初始化: {lineage_path}")
+
+    initial_count = len(df)
+
     for stage in stages_to_run:
         if stage in stage_functions:
-            df = stage_functions[stage](df, config, dry_run=args.dry_run)
+            input_count = len(df)
+            stage_name = stage_names.get(stage, f"stage_{stage}")
+
+            if lineage_logger:
+                # 用上下文管理器记录算子执行（自动记录耗时和状态）
+                with lineage_logger.operator(stage_name, version="1.0") as op:
+                    op.set_input(str(manifest_path), count=input_count)
+                    df = stage_functions[stage](df, config, dry_run=args.dry_run)
+                    output_count = len(df)
+                    # 计算失败/剔除数量
+                    removed_count = input_count - output_count
+                    op.set_output(
+                        f"data/00.5_cleaned/reports/v{version_str}/",
+                        count=output_count,
+                        failed_count=max(0, removed_count)
+                    )
+                    op.set_config({"stage": stage, "dry_run": args.dry_run})
+            else:
+                df = stage_functions[stage](df, config, dry_run=args.dry_run)
 
     # 汇总
     logger.info("")
@@ -1248,10 +1307,20 @@ def main():
         # 同时复制到版本化目录
         shutil.copy2(lineage_path, version_dir / "lineage.json")
 
+        # === 保存 v2.0 算子级血缘（Lineage v2.0）===
+        if lineage_logger:
+            lineage_v2_path = version_dir / "lineage_v2.json"
+            lineage_logger.save(str(lineage_v2_path))
+            logger.info(f"算子级血缘(v2.0)已保存: {lineage_v2_path}")
+            # 打印摘要
+            lineage_logger.print_summary()
+
         logger.info(f"\n版本化输出完成: {version_dir}")
         logger.info(f"  - cleaned_manifest.csv")
         logger.info(f"  - cleaning_rules.json")
-        logger.info(f"  - lineage.json")
+        logger.info(f"  - lineage.json (v1.0 轻量血缘)")
+        if lineage_logger:
+            logger.info(f"  - lineage_v2.json (v2.0 算子级血缘)")
         logger.info(f"  - {len(copied)} 个报告文件")
 
 
