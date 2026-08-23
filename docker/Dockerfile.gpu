@@ -60,6 +60,16 @@ RUN pip install --no-cache-dir \
     faster-whisper==1.0.3 \          # 非中文ASR（更快的Whisper）
     || echo "⚠️  funasr/faster-whisper安装失败，可在运行时手动安装"
 
+# 第六阶段：MIR评测 + API依赖 + 配置工具
+RUN pip install --no-cache-dir \
+    essentia==2.1b6.dev1110 \       # 音频特征提取（BPM/调性/节拍）
+    madmom==0.16.1 \                 # 节拍/onset检测（深度学习）
+    mir_eval==0.8 \                   # MIR标准评测库（BPM/f0/onset误差）
+    requests==2.32.3 \                # HTTP客户端（DeepSeek/Qwen API调用）
+    pyyaml==6.0.2 \                   # YAML配置文件读取
+    paramiko==3.4.0 \                 # SSH客户端（Mac-GPU通信，可选）
+    || echo "⚠️  essentia/madmom/mir_eval安装失败，可在运行时手动安装"
+
 # ============================================================
 # 工作目录与代码
 # ============================================================
@@ -97,11 +107,19 @@ import librosa
 import soundfile
 import demucs
 import whisper
+import essentia
+import madmom
+import mir_eval
+import requests
+import yaml
 print('✅ 所有核心依赖导入成功')
 print(f'   torch: {torch.__version__}')
 print(f'   torchaudio: {torchaudio.__version__}')
 print(f'   transformers: {transformers.__version__}')
 print(f'   librosa: {librosa.__version__}')
+print(f'   essentia: {essentia.__version__}')
+print(f'   madmom: {madmom.__version__}')
+print(f'   mir_eval: {mir_eval.__version__}')
 print(f'   CUDA available: {torch.cuda.is_available()}')
 " || echo "⚠️  依赖检查失败（可能是CUDA环境问题，不影响镜像构建）"
 
