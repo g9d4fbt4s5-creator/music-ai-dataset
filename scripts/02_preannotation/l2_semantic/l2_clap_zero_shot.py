@@ -85,7 +85,9 @@ def load_clap_model(model_path: Optional[str] = None, device: str = "cuda"):
 
     if model_path and Path(model_path).exists():
         logger.info(f"使用本地模型: {model_path}")
-        model = laion_clap.CLAP_Module(enable_fusion=False, device=device)
+        # fusion 版本的权重需要 enable_fusion=True
+        enable_fusion = "fusion" in str(model_path).lower()
+        model = laion_clap.CLAP_Module(enable_fusion=enable_fusion, device=device)
         model.load_ckpt(model_path)
     else:
         logger.info("使用默认模型（从 HuggingFace 下载）")
