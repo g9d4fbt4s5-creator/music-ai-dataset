@@ -32,11 +32,13 @@ data/00_raw_collect/
 
 ### 黄金集 Golden Set
 
-- **不是与 train/val/test 并列的"第四划分"**
-- 从 **Train 中抽样**出来的小集合（50–500 条，约5%），人工精标
+- **不是与 train/val/test 并列的"第四划分"，也不是独立数据池**
+- **双重身份**：物理上存在于 main_pool 中，从 main_pool 抽样约5%（50–500条）人工精标
+- **划分时不做特殊处理**：它可能进 train，也可能进 val，取决于随机划分，不强制锁在 train 里
 - 用途: few-shot 示例、prompt 校准、Reward Model 训练、IAA 基准、KNN传播种子
 - **本项目**: L3 Qwen-Omni 的 5% 采样 = 黄金集
 - 存储: `data/03_human_annotation/reviewed_good/`
+- **面试表述**: "黄金集物理上在 main_pool 里，但划分时正常分布，我们不特殊处理它的归属"
 
 ### OOD 集 Out-of-Distribution
 

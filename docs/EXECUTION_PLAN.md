@@ -132,7 +132,7 @@ GitHub: https://github.com/g9d4fbt4s5-creator/music-ai-dataset
 | # | 问题 | 状态 | 影响 |
 |---|------|------|------|
 | 1 | CLAP嵌入提取全部失败(format错误) | 待修复 | L2 zero-shot分类不可用 |
-| 2 | QC Gate 27首0 pass | 阈值待调 | 500首时需放宽 |
+| 2 | QC Gate 阈值偏严(27首0 pass/21 marginal/6 fail) | 500首全量前需根据分布微调 | 避免marginal队列膨胀导致人工审核压力爆炸 |
 | 3 | Stage4 4个近似重复候选未验证 | 悬置 | 可能有重复数据 |
 | 4 | 第6首2秒超短bad样本仍在下游 | 待排除 | 影响聚类和训练切片 |
 | 5 | Mac无法科学上网 | iOS方案替代 | Gemini/GPT需iOS端调用 |
