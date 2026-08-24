@@ -53,6 +53,7 @@
       <Label value="Breakdown" background="#22d3ee" alias="breakdown"/>
       <Label value="Outro" background="#94a3b8" alias="outro"/>
       <Label value="Silence" background="#e5e7eb" alias="silence"/>
+      <Label value="Unknown" background="#d1d5db" alias="unknown"/>
     </Labels>
   </View>
 

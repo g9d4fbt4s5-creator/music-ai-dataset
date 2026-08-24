@@ -37,20 +37,33 @@ except ImportError:
     SKLEARN_AVAILABLE = False
 
 
-# ========== 融合阈值配置 ==========
+# ========== KNN 传播量化阈值（文件顶部常量，500首全量时可微调） ==========
+# cosine_dist = 1 - cosine_sim，距离越小越相似
+DIST_THRESHOLD_GENRE = 0.40          # 流派稳定字段，放宽
+DIST_THRESHOLD_MOOD = 0.25           # 情绪主观，严格
+DIST_THRESHOLD_INSTRUMENTS = 0.25    # 乐器存在性，严格
+DIST_THRESHOLD_VOCAL = 0.30          # 人声判定，中等
+
+# 黄金集标签置信度要求
+GOLD_CONFIDENCE_GENRE = {"high", "medium"}
+GOLD_CONFIDENCE_MOOD = {"high"}
+GOLD_CONFIDENCE_INSTRUMENTS = {"high"}
+GOLD_CONFIDENCE_VOCAL = {"high", "medium"}
+
+# ========== 融合阈值配置（引用上方常量） ==========
 FUSION_CONFIG = {
     "genre": {
-        "max_cosine_dist": 0.40,      # cosine距离 < 0.4 才传播
-        "min_gold_confidence": "medium",  # 黄金集标签置信度≥medium
+        "max_cosine_dist": DIST_THRESHOLD_GENRE,
+        "min_gold_confidence": "medium",
         "propagate": True,
     },
     "mood": {
-        "max_cosine_dist": 0.25,      # 严格阈值
-        "min_gold_confidence": "high",    # 需high置信度
+        "max_cosine_dist": DIST_THRESHOLD_MOOD,
+        "min_gold_confidence": "high",
         "propagate": True,
     },
     "instruments": {
-        "max_cosine_dist": 0.25,      # 严格阈值
+        "max_cosine_dist": DIST_THRESHOLD_INSTRUMENTS,
         "min_gold_confidence": "high",
         "propagate": True,
     },
@@ -61,7 +74,7 @@ FUSION_CONFIG = {
         "propagate": False,            # 不传播段落结构
     },
     "vocal_presence": {
-        "max_cosine_dist": 0.30,
+        "max_cosine_dist": DIST_THRESHOLD_VOCAL,
         "min_gold_confidence": "medium",
         "propagate": True,
     },
