@@ -1,0 +1,158 @@
+{
+  "version": "v1.0.0",
+  "description": "Music AI Dataset 训练配方 — Jazz 音乐理解与生成",
+  "created": "2026-08-25",
+  "data_mix": {
+    "train": {
+      "main_pool": "85%",
+      "augmented": "15%"
+    },
+    "val": {
+      "main_pool": "100%"
+    },
+    "test": {
+      "test_pool": "100%"
+    },
+    "holdout": {
+      "holdout_pool": "100%"
+    },
+    "ood": {
+      "ood_pool": "100%",
+      "description": "MAESTRO古典/Ballroom舞曲，测Jazz模型泛化"
+    }
+  },
+  "preprocessing": {
+    "sample_rate": 24000,
+    "segment_sec": 15,
+    "overlap": 0.5,
+    "features": [
+      "mel_spectrogram",
+      "mfcc",
+      "chroma",
+      "spectral_contrast",
+      "zero_crossing_rate",
+      "spectral_centroid",
+      "rms_energy"
+    ],
+    "feature_dim": 128,
+    "normalization": "per_dataset_minmax",
+    "loudnorm_target": {
+      "integrated_lufs": -16,
+      "true_peak_db": -1.5,
+      "lra": 11
+    }
+  },
+  "augmentation": [
+    {
+      "type": "add_noise",
+      "label_invariant": true,
+      "apply_to": "all_stages",
+      "params": {
+        "noise_type": "gaussian",
+        "snr_range_db": [20, 40],
+        "probability": 0.3
+      }
+    },
+    {
+      "type": "spec_augment",
+      "label_invariant": true,
+      "apply_to": "all_stages",
+      "params": {
+        "freq_mask_num": 2,
+        "freq_mask_width": 20,
+        "time_mask_num": 2,
+        "time_mask_width": 50,
+        "probability": 0.5
+      }
+    },
+    {
+      "type": "time_stretch",
+      "label_invariant": false,
+      "apply_to": "pretrain_only",
+      "params": {
+        "rate_range": [0.8, 1.2],
+        "probability": 0.2,
+        "note": "改变BPM，训练节奏敏感任务时禁用；需同步修改bpm标签"
+      }
+    },
+    {
+      "type": "pitch_shift",
+      "label_invariant": false,
+      "apply_to": "pretrain_only",
+      "params": {
+        "semitones_range": [-2, 2],
+        "probability": 0.2,
+        "note": "改变调性，需同步修改key标签"
+      }
+    }
+  ],
+  "label_schema": {
+    "genre": {
+      "type": "single_choice",
+      "values": ["jazz", "blues", "classical", "pop", "rock", "electronic", "folk", "world", "other"]
+    },
+    "subgenre": {
+      "type": "multi_choice",
+      "max": 3,
+      "values": ["bebop", "cool_jazz", "swing", "fusion", "free_jazz", "latin_jazz", "bossa_nova", "smooth_jazz", "hard_bop", "modal_jazz", "avant_garde", "ragtime", "dixieland"]
+    },
+    "mood": {
+      "type": "multi_choice",
+      "max": 2,
+      "values": ["relaxed", "energetic", "melancholic", "happy", "mysterious", "intense", "calm", "nostalgic"]
+    },
+    "instrumentation": {
+      "type": "multi_choice",
+      "max": 5,
+      "values": ["piano", "saxophone", "trumpet", "trombone", "clarinet", "acoustic_guitar", "electric_guitar", "double_bass", "electric_bass", "drums", "vibraphone", "flute", "violin", "cello", "hammond_organ", "synthesizer", "vocals", "choir", "percussion"]
+    },
+    "vocal_presence": {
+      "type": "single_choice",
+      "values": ["instrumental", "vocal", "mixed"]
+    },
+    "structure": {
+      "type": "time_intervals",
+      "labels": ["Intro", "Theme", "Improvisation", "Chorus", "Bridge", "Interlude", "Outro", "Unknown"]
+    },
+    "quality_assessment": {
+      "type": "single_choice",
+      "values": ["excellent", "good", "fair", "poor"]
+    }
+  },
+  "training_tasks": {
+    "pretrain": {
+      "objective": "contrastive_learning",
+      "model": "MERT-v1-95M + CLAP",
+      "data": "全量无标注音频",
+      "augmentation": "all_augmentations"
+    },
+    "sft": {
+      "objective": "supervised_finetuning",
+      "tasks": ["genre_classification", "mood_classification", "instrument_detection", "caption_generation"],
+      "data": "有标注子集(L4预标注+人工校验)",
+      "augmentation": "label_invariant_only"
+    },
+    "dpo": {
+      "objective": "direct_preference_optimization",
+      "data": "人工偏好标注 + badcase自动生成",
+      "note": "用于caption生成和音乐质量排序"
+    }
+  },
+  "evaluation": {
+    "metrics": {
+      "genre_classification": ["accuracy", "macro_f1", "per_class_f1"],
+      "mood_classification": ["macro_auc", "subset_accuracy"],
+      "instrument_detection": ["macro_f1", "precision_recall_curve"],
+      "caption_generation": ["bleu", "meteor", "bertscore", "human_preference"],
+      "structure_segmentation": ["f_measure", "precision", "recall", "median_deviation"]
+    },
+    "ood_evaluation": {
+      "datasets": ["MAESTRO", "Ballroom"],
+      "metrics": ["accuracy_drop", "calibration_error"],
+      "note": "Jazz训练→古典/舞曲测试，衡量泛化能力"
+    }
+  },
+  "random_seed": 42,
+  "lineage_ref": "data/00.5_cleaned/reports/v20260824_083208/lineage.json",
+  "qc_gate_ref": "data/00.5_cleaned/reports/v20260824_083208/qc_gate_report.csv"
+}

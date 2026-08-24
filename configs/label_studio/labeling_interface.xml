@@ -1,35 +1,187 @@
+<!--
+  Music AI Dataset — Label Studio 标注接口 v2.0
+  适配 L1-L4 分层预标注架构
+  字段: 流派/子流派/情绪/乐器/人声/结构段落/质量/Caption/复核标记
+-->
 <View>
-  <Header value="音乐语料人工校验标注"/>
+  <Header value="🎵 音乐语料人工校验标注 (L1-L4 预标注)" style="font-size: 18px; margin-bottom: 12px;"/>
 
-  <!-- ========== 最开头：音质差警告 ========== -->
-  <View style="background: #fff3cd; padding: 12px; border-radius: 6px; margin-bottom: 12px; border-left: 4px solid #ffc107;">
-    <Header value="⚠️ 音质差警告，是否剔除？" style="font-size: 16px; color: #856404;"/>
-    <Choices name="poor_quality_reject" toName="audio_player" choice="single" showInLine="true">
-      <Choice value="是，剔除"/>
-      <Choice value="否，保留"/>
+  <!-- ========== 音质差警告 (marginal/fail 样本) ========== -->
+  <View style="background: #fff3cd; padding: 10px; border-radius: 6px; margin-bottom: 10px; border-left: 4px solid #ffc107;" whenTagName="flag_for_review">
+    <Header value="⚠️ 边际样本 — 需重点复核" style="font-size: 14px; color: #856404;"/>
+    <Text name="qc_flags" value="QC标记: $qc_flags"/>
+  </View>
+
+  <!-- ========== 黄金集标记 ========== -->
+  <View style="background: #d4edda; padding: 8px; border-radius: 6px; margin-bottom: 10px; border-left: 4px solid #28a745;" whenTagName="is_golden">
+    <Header value="🌟 黄金集样本 (L3 结构标注)" style="font-size: 14px; color: #155724;"/>
+  </View>
+
+  <!-- ========== 音频播放器 ========== -->
+  <Audio name="audio" value="$audio" height="100"/>
+
+  <!-- ========== 元数据展示 (只读) ========== -->
+  <View style="display: flex; gap: 20px; margin: 10px 0; padding: 10px; background: #f8f9fa; border-radius: 6px;">
+    <View>
+      <Text name="meta_bpm" value="BPM: $bpm"/>
+      <Text name="meta_key" value="调性: $key"/>
+      <Text name="meta_duration" value="时长: $duration_sec s"/>
+    </View>
+    <View>
+      <Text name="meta_snr" value="SNR: $snr_db dB"/>
+      <Text name="meta_loudness" value="响度: $loudness_db LUFS"/>
+      <Text name="meta_source" value="来源: $source"/>
+    </View>
+    <View>
+      <Text name="meta_propagated" value="传播来源: $propagated_from"/>
+      <Text name="meta_similarity" value="KNN相似度: $propagation_similarity"/>
+      <Text name="meta_fusion" value="融合来源: $fusion_sources"/>
+    </View>
+  </View>
+
+  <!-- ========== 分类标签 (L4 预标注) ========== -->
+  <Header value="🏷️ 分类标签 (可修正预标注)" style="font-size: 15px; margin-top: 16px;"/>
+
+  <View style="display: flex; gap: 20px; flex-wrap: wrap;">
+    <!-- 流派 (单选) -->
+    <View style="flex: 1; min-width: 200px;">
+      <Label>流派 Genre</Label>
+      <Choices name="genre" toName="audio" choice="single">
+        <Choice value="jazz"/>
+        <Choice value="blues"/>
+        <Choice value="classical"/>
+        <Choice value="pop"/>
+        <Choice value="rock"/>
+        <Choice value="electronic"/>
+        <Choice value="folk"/>
+        <Choice value="world"/>
+        <Choice value="other"/>
+      </Choices>
+    </View>
+
+    <!-- 子流派 (多选, 最多3) -->
+    <View style="flex: 1; min-width: 200px;">
+      <Label>子流派 Subgenre (最多3)</Label>
+      <Choices name="subgenre" toName="audio" choice="multiple">
+        <Choice value="bebop"/>
+        <Choice value="cool_jazz"/>
+        <Choice value="swing"/>
+        <Choice value="fusion"/>
+        <Choice value="free_jazz"/>
+        <Choice value="latin_jazz"/>
+        <Choice value="bossa_nova"/>
+        <Choice value="smooth_jazz"/>
+        <Choice value="hard_bop"/>
+        <Choice value="modal_jazz"/>
+        <Choice value="avant_garde"/>
+        <Choice value="ragtime"/>
+        <Choice value="dixieland"/>
+      </Choices>
+    </View>
+
+    <!-- 情绪 (多选, 最多2) -->
+    <View style="flex: 1; min-width: 200px;">
+      <Label>情绪 Mood (最多2)</Label>
+      <Choices name="mood" toName="audio" choice="multiple">
+        <Choice value="relaxed"/>
+        <Choice value="energetic"/>
+        <Choice value="melancholic"/>
+        <Choice value="happy"/>
+        <Choice value="mysterious"/>
+        <Choice value="intense"/>
+        <Choice value="calm"/>
+        <Choice value="nostalgic"/>
+      </Choices>
+    </View>
+  </View>
+
+  <View style="display: flex; gap: 20px; flex-wrap: wrap; margin-top: 10px;">
+    <!-- 人声 (单选) -->
+    <View style="flex: 1; min-width: 150px;">
+      <Label>人声 Vocal Presence</Label>
+      <Choices name="vocal_presence" toName="audio" choice="single">
+        <Choice value="instrumental"/>
+        <Choice value="vocal"/>
+        <Choice value="mixed"/>
+      </Choices>
+    </View>
+
+    <!-- 质量评估 (单选) -->
+    <View style="flex: 1; min-width: 150px;">
+      <Label>质量评估 Quality</Label>
+      <Choices name="quality_assessment" toName="audio" choice="single">
+        <Choice value="excellent"/>
+        <Choice value="good"/>
+        <Choice value="fair"/>
+        <Choice value="poor"/>
+      </Choices>
+    </View>
+  </View>
+
+  <!-- 乐器 (多选, 最多5) -->
+  <View style="margin-top: 10px;">
+    <Label>乐器 Instrumentation (最多5)</Label>
+    <Choices name="instruments" toName="audio" choice="multiple" showInline="true">
+      <Choice value="piano"/>
+      <Choice value="saxophone"/>
+      <Choice value="trumpet"/>
+      <Choice value="trombone"/>
+      <Choice value="clarinet"/>
+      <Choice value="acoustic_guitar"/>
+      <Choice value="electric_guitar"/>
+      <Choice value="double_bass"/>
+      <Choice value="electric_bass"/>
+      <Choice value="drums"/>
+      <Choice value="vibraphone"/>
+      <Choice value="flute"/>
+      <Choice value="violin"/>
+      <Choice value="cello"/>
+      <Choice value="hammond_organ"/>
+      <Choice value="synthesizer"/>
+      <Choice value="vocals"/>
+      <Choice value="choir"/>
+      <Choice value="percussion"/>
     </Choices>
   </View>
 
-  <!-- ========== 质量检查选项（移到开头） ========== -->
-  <Choices name="quality_check" toName="audio_player" choice="single" showInLine="true">
-    <Choice value="数据正常"/>
-    <Choice value="音频损坏/静音"/>
-    <Choice value="标签错误需要修正"/>
-    <Choice value="样本丢弃"/>
-  </Choices>
+  <!-- ========== 结构段落标注 (L3 黄金集) ========== -->
+  <Header value="🎼 结构段落 (黄金集专用, 可拖动调整边界)" style="font-size: 15px; margin-top: 16px;"/>
+  <Labels name="structure" toName="audio">
+    <Label value="Intro" background="#66c2a5"/>
+    <Label value="Theme" background="#fc8d62"/>
+    <Label value="Improvisation" background="#8da0cb"/>
+    <Label value="Chorus" background="#e78ac3"/>
+    <Label value="Bridge" background="#a6d854"/>
+    <Label value="Interlude" background="#ffd92f"/>
+    <Label value="Outro" background="#e5c494"/>
+    <Label value="Unknown" background="#b3b3b3"/>
+  </Labels>
 
-  <Audio name="audio_player" value="$audio_url" height="120"/>
+  <!-- ========== Caption (自然语言描述) ========== -->
+  <Header value="📝 自然语言描述 Caption" style="font-size: 15px; margin-top: 16px;"/>
+  <TextArea name="caption" toName="audio" rows="3" placeholder="用音乐评论家的口吻描述这首作品，不要罗列技术参数(BPM/调性/SNR)..." editable="true"/>
 
-  <Text name="field_yturl" value="【YouTube链接】: $yt_url"/>
-  <Text name="field_segment" value="【片段时间】: $segment_time"/>
-  <Text name="field_caption" value="【文本描述】: $full_caption"/>
-  <Text name="field_rawtags" value="【原始标签】: $raw_aspect_tags"/>
-  <Text name="field_unmapped" value="【未映射标签】: $unmapped_tags"/>
-  <Text name="field_gmcode" value="【GM乐器编码】: $gm128_instrument_codes"/>
-  <Text name="field_gmname" value="【乐器名称】: $gm128_instrument_text"/>
-  <Text name="field_genre" value="【三级流派】: $three_level_genre_text"/>
-  <Text name="field_vad" value="【VAD数值】: $vad_value"/>
-  <Text name="field_emotion" value="【对应情绪】: $vad_emotion_text"/>
+  <!-- ========== 审核决策 ========== -->
+  <Header value="✅ 审核决策" style="font-size: 15px; margin-top: 16px;"/>
+  <View style="display: flex; gap: 20px;">
+    <View style="flex: 1;">
+      <Label>审核结果</Label>
+      <Choices name="review_decision" toName="audio" choice="single" required="true">
+        <Choice value="approve"/>
+        <Choice value="approve_with_edits"/>
+        <Choice value="needs_revision"/>
+        <Choice value="reject"/>
+      </Choices>
+    </View>
+    <View style="flex: 1;">
+      <Label>是否加入黄金集</Label>
+      <Choices name="add_to_golden" toName="audio" choice="single">
+        <Choice value="yes"/>
+        <Choice value="no"/>
+      </Choices>
+    </View>
+  </View>
 
-  <TextArea name="human_note" toName="audio_player" rows="2" placeholder="人工修正备注，填写修正后的标签"/>
+  <!-- 人工备注 -->
+  <TextArea name="human_note" toName="audio" rows="2" placeholder="人工备注: 修正了哪些标签？为什么？" style="margin-top: 10px;"/>
 </View>
