@@ -1,0 +1,194 @@
+<!--
+  Label Studio 标注模板 V4 (整合版)
+  ====================================
+  以 V3 工程化骨架为基础，吸收 V2 业务深度：
+  - 10类结构区间 (Intro/Verse/Pre-Chorus/Chorus/Bridge/Instrumental/Solo/Breakdown/Outro/Silence)
+  - GM128 乐器区间 (10类常用)
+  - 流派主/次标签分离
+  - 情绪多选 + VAD备注
+  - 调性主音/调式/转调
+  - 质量 A-E 级 (与审核决策对齐，D/E自动触发reject)
+  - 审核工作流 (approve/reject/review_flag/黄金集)
+  - 元数据只读区 (L1物理标签 + L4传播来源)
+  - 条件显示 (边际样本警告 / 黄金集标记)
+
+  版本历史:
+  - V1: 基础7类区间，无工程对接 (废弃)
+  - V2: 业务需求文档，无交互设计 (仅参考)
+  - V3: 界面草图，工程对接好但业务字段不足 (骨架保留)
+  - V4: 整合版，当前采用
+
+  字段映射见 docs/LABELING_GUIDE.md
+-->
+<View>
+
+  <!-- ========== 1. 条件显示：边际样本 / 黄金集 ========== -->
+  <Header value="⚠️ 边际样本 — QC标记: $qc_flags" size="4"
+          style="color: #d97706; display: $marginal_display" />
+  <Header value="🌟 黄金集样本 — L3结构预标注已加载" size="4"
+          style="color: #059669; display: $golden_display" />
+
+  <!-- ========== 2. 音频播放器 ========== -->
+  <Audio name="audio_source" value="$audio" zoom="true" speed="true" waveheight="120" />
+
+  <!-- ========== 3. 元数据只读参考区 (L1/L4 预标注) ========== -->
+  <Header value="📊 预标注元数据（参考用，不可编辑）" size="5" />
+  <View style="background: #f3f4f6; padding: 12px; border-radius: 8px; margin-bottom: 16px;">
+    <Text name="meta_physical" value="BPM: $bpm | 调性: $key | 响度: $lufs LUFS | SNR: $snr dB | 时长: $duration_sec s" />
+    <Text name="meta_source" value="来源批次: $source_batch | 传播来源: $propagation_source | KNN相似度: $knn_sim" />
+    <Text name="meta_fusion" value="融合策略: $fusion_strategy | L2置信度: $l2_confidence | 标注来源: $annotation_source" />
+  </View>
+
+  <!-- ========== 4. 结构段落 (10类时间区间，上半区) ========== -->
+  <View style="margin-bottom: 24px;">
+    <Header value="🎼 音乐结构段落（可拖动边界，上半区）" size="5" />
+    <Labels name="structure" toName="audio_source" choice="multiple" showInline="true">
+      <Label value="Intro" background="#7dd3fc" alias="intro"/>
+      <Label value="Verse" background="#fde047" alias="verse"/>
+      <Label value="Pre-Chorus" background="#fdba74" alias="pre_chorus"/>
+      <Label value="Chorus" background="#f87171" alias="chorus"/>
+      <Label value="Bridge" background="#a78bfa" alias="bridge"/>
+      <Label value="Instrumental" background="#34d399" alias="instrumental"/>
+      <Label value="Solo" background="#fb923c" alias="solo"/>
+      <Label value="Breakdown" background="#22d3ee" alias="breakdown"/>
+      <Label value="Outro" background="#94a3b8" alias="outro"/>
+      <Label value="Silence" background="#e5e7eb" alias="silence"/>
+    </Labels>
+  </View>
+
+  <!-- ========== 5. 乐器配器 (GM128时间区间，下半区，与结构视觉分离) ========== -->
+  <View style="margin-bottom: 24px; padding-top: 12px; border-top: 2px dashed #e5e7eb;">
+    <Header value="🎹 乐器配器区间（GM128标准，下半区，可多选重叠）" size="5" />
+    <Labels name="instruments" toName="audio_source" choice="multiple" showInline="true">
+      <Label value="钢琴 Piano" background="#60a5fa" alias="GM001"/>
+      <Label value="木吉他 Acoustic Guitar" background="#34d399" alias="GM025"/>
+      <Label value="电吉他 Electric Guitar" background="#fb923c" alias="GM027"/>
+      <Label value="弦乐 Strings" background="#c084fc" alias="GM048"/>
+      <Label value="鼓组 Drum Kit" background="#f43f5e" alias="GM118"/>
+      <Label value="贝斯 Bass" background="#0284c7" alias="GM033"/>
+      <Label value="人声演唱 Lead Vocal" background="#a3e635" alias="GM091"/>
+      <Label value="和声 Backup Vocal" background="#facc15" alias="GM092"/>
+      <Label value="合成器 Synth" background="#22d3ee" alias="GM098"/>
+      <Label value="管乐 Brass" background="#fb7185" alias="GM061"/>
+    </Labels>
+    <Text name="instruments_note" value="提示：乐器区间与结构区间在同一波形上，用颜色区分。预标注已填充，只需修正边界。" size="small" style="color: #6b7280;"/>
+  </View>
+
+  <!-- ========== 6. 流派 (主标签单选 + 次标签多选) ========== -->
+  <Header value="🏷️ 流派（主标签必填，次标签可选）" size="5" />
+  <Choices name="genre_primary" toName="audio_source" choice="single" required="true">
+    <Choice value="流行 Pop"/>
+    <Choice value="摇滚 Rock"/>
+    <Choice value="电子 Electronic"/>
+    <Choice value="嘻哈 HipHop"/>
+    <Choice value="爵士 Jazz"/>
+    <Choice value="古典 Classical"/>
+    <Choice value="民谣 Folk"/>
+    <Choice value="世界音乐 World"/>
+    <Choice value="原声配乐 Soundtrack"/>
+    <Choice value="实验先锋 Experimental"/>
+  </Choices>
+  <Choices name="genre_secondary" toName="audio_source" choice="multiple">
+    <Choice value="另类摇滚 Alt-Rock"/>
+    <Choice value="独立摇滚 Indie-Rock"/>
+    <Choice value="重金属 Metal"/>
+    <Choice value="House"/>
+    <Choice value="Techno"/>
+    <Choice value="Dubstep"/>
+    <Choice value="Trap"/>
+    <Choice value="摇摆 Swing"/>
+    <Choice value="比波普 Bebop"/>
+    <Choice value="融合爵士 Fusion"/>
+    <Choice value="巴洛克 Baroque"/>
+    <Choice value="浪漫派 Romantic"/>
+    <Choice value="现代派 Contemporary"/>
+    <Choice value="Fusion跨界"/>
+    <Choice value="Remix改编"/>
+  </Choices>
+
+  <!-- ========== 7. 情绪 (多选 + VAD备注) ========== -->
+  <Header value="🎭 情绪（可多选，VAD值可选填）" size="5" />
+  <Choices name="mood" toName="audio_source" choice="multiple">
+    <Choice value="欢快活泼 Joyful"/>
+    <Choice value="温柔舒缓 Calm"/>
+    <Choice value="激昂热血 Intense"/>
+    <Choice value="忧郁伤感 Melancholic"/>
+    <Choice value="浪漫甜蜜 Romantic"/>
+    <Choice value="空灵治愈 Ethereal"/>
+    <Choice value="紧张悬疑 Tense"/>
+    <Choice value="大气史诗 Epic"/>
+    <Choice value="神秘 Mysterious"/>
+    <Choice value="怀旧 Nostalgic"/>
+  </Choices>
+  <TextArea name="mood_vad" toName="audio_source"
+            placeholder="VAD映射备注（可选）：如 Valence=0.8, Arousal=0.3, Dominance=0.5"
+            rows="1" />
+
+  <!-- ========== 8. 调性与和声 (可选，预填L1结果) ========== -->
+  <Header value="🎵 调性与和声（可选，L1已预填）" size="5" />
+  <Choices name="key_tonic" toName="audio_source" choice="single">
+    <Choice value="C"/><Choice value="C#/Db"/><Choice value="D"/><Choice value="D#/Eb"/>
+    <Choice value="E"/><Choice value="F"/><Choice value="F#/Gb"/><Choice value="G"/>
+    <Choice value="G#/Ab"/><Choice value="A"/><Choice value="A#/Bb"/><Choice value="B"/>
+    <Choice value="Atonal 无调性"/>
+  </Choices>
+  <Choices name="key_mode" toName="audio_source" choice="single">
+    <Choice value="Major 大调"/>
+    <Choice value="Minor 小调"/>
+    <Choice value="Modal 中古调式"/>
+    <Choice value="Atonal 无调性"/>
+  </Choices>
+  <TextArea name="key_modulation" toName="audio_source"
+            placeholder="调性转换记录（可选）：如 0:45 从 C Major 转至 F Minor"
+            rows="2" />
+
+  <!-- ========== 9. 人声 ========== -->
+  <Header value="🎤 人声" size="5" />
+  <Choices name="vocal_presence" toName="audio_source" choice="single" required="true">
+    <Choice value="纯器乐 Instrumental"/>
+    <Choice value="有人声 Vocal"/>
+    <Choice value="人声+器乐混合 Mixed"/>
+  </Choices>
+
+  <!-- ========== 10. 质量评估 (A-E级，与审核决策对齐，D/E自动触发reject) ========== -->
+  <Header value="⭐ 音频质量评估（A-E级，D/E自动标记需复核）" size="5" />
+  <Choices name="quality_grade" toName="audio_source" choice="single" required="true">
+    <Choice value="A级 5分 母带级"/>
+    <Choice value="B级 4分 良好"/>
+    <Choice value="C级 3分 可接受"/>
+    <Choice value="D级 2分 较差"/>
+    <Choice value="E级 1分 极差/废弃"/>
+  </Choices>
+
+  <!-- ========== 11. 自然语言描述 Caption ========== -->
+  <Header value="📝 自然语言描述（Caption，可修正预标注文本）" size="5" />
+  <TextArea name="caption" toName="audio_source"
+            placeholder="音乐风格、情绪、场景的自然语言描述，禁止罗列技术参数（如BPM 120、C大调）"
+            rows="4" />
+
+  <!-- ========== 12. 审核决策 (HITL闭环) ========== -->
+  <Header value="✅ 审核决策" size="5" />
+  <Choices name="review_decision" toName="audio_source" choice="single" required="true">
+    <Choice value="approve 通过"/>
+    <Choice value="approve_with_edits 通过并修正"/>
+    <Choice value="needs_revision 需返工"/>
+    <Choice value="reject 拒绝"/>
+  </Choices>
+  <Choices name="golden_set" toName="audio_source" choice="single">
+    <Choice value="yes 加入黄金集"/>
+    <Choice value="no 不加入"/>
+  </Choices>
+  <Choices name="review_flag" toName="audio_source" choice="single">
+    <Choice value="no_review_needed 无需复核"/>
+    <Choice value="needs_second_review 需二次复核"/>
+    <Choice value="disagreement_detected 标注分歧"/>
+    <Choice value="golden_standard 黄金标准"/>
+  </Choices>
+
+  <!-- ========== 13. 人工备注 ========== -->
+  <Header value="📋 修正说明" size="5" />
+  <TextArea name="annotation_note" toName="audio_source"
+            placeholder="修正说明：改了哪些标签？为什么？（如：预标注流派错误，实际为Cool Jazz而非Bebop）"
+            rows="3" />
+
+</View>
