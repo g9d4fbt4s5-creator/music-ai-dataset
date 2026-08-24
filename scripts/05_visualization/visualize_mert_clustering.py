@@ -1,223 +1,237 @@
+#!/usr/bin/env python3
 """
-visualize_mert_clustering.py
-MERT 嵌入向量聚类可视化：t-SNE + UMAP + DBSCAN
+MERT 聚类可视化 — t-SNE/UMAP 降维 + plotly 交互散点图
 
-功能：
-- 加载 MERT 768维嵌入向量
-- 加载 L3 真实标签（用于着色）
-- t-SNE 降维到2D/3D
-- UMAP 降维到2D
-- DBSCAN 聚类
-- 用 plotly 生成交互式 HTML 可视化
+读取 MERT 768维嵌入，降维到2D，按流派/情绪/人声着色，生成交互式HTML。
 
-用法：
+使用:
     python visualize_mert_clustering.py \
-        --mert-dir data/02_preannotation/l2_mert_embedding \
-        --l3-dir data/02_preannotation/l3_structural/text_labels \
-        --output reports/mert_clustering_visualization.html
+        --embeddings-dir data/00.5_cleaned/reports/vXXX/l2_mert_embedding \
+        --labels-dir data/02_preannotation/l4_propagated \
+        --output data/00.5_cleaned/reports/vXXX/stats/mert_clustering.html
 """
-import os
-import sys
-import json
+
 import argparse
-import logging
+import json
+import os
+from pathlib import Path
+
 import numpy as np
 import pandas as pd
-from pathlib import Path
-from typing import Dict, List, Optional, Tuple
-
-import plotly.graph_objects as go
-from plotly.subplots import make_subplots
-import plotly.express as px
-
-from sklearn.manifold import TSNE
-from sklearn.cluster import DBSCAN
-from sklearn.preprocessing import StandardScaler
-from sklearn.metrics import silhouette_score
 
 try:
-    import umap
-    HAS_UMAP = True
+    import plotly.graph_objects as go
+    from plotly.subplots import make_subplots
+    PLOTLY_AVAILABLE = True
 except ImportError:
-    HAS_UMAP = False
-
-logging.basicConfig(level=logging.INFO, format="%(asctime)s | %(levelname)s | %(message)s")
-logger = logging.getLogger(__name__)
-
-COLOR_PALETTE = [
-    '#e6194B', '#3cb44b', '#ffe119', '#4363d8', '#f58231',
-    '#911eb4', '#42d4f4', '#f032e6', '#bfef45', '#fabed4',
-    '#469990', '#dcbeff', '#9A6324', '#fffac8', '#800000',
-    '#aaffc3', '#808000', '#ffd8b1', '#000075', '#a9a9a9',
-]
+    PLOTLY_AVAILABLE = False
+    print("⚠️ plotly 未安装，将生成静态数据JSON而非HTML")
 
 
-def load_mert_embeddings(mert_dir: Path) -> Tuple[List[str], np.ndarray]:
+def load_embeddings(embeddings_dir: str) -> tuple:
+    """加载 MERT 嵌入"""
+    embeddings_dir = Path(embeddings_dir)
     audio_ids = []
-    embeddings = []
-    for f in sorted(mert_dir.glob("*_mert_embedding.npy")):
-        audio_id = f.stem.replace("_mert_embedding", "")
-        emb = np.load(f)
-        audio_ids.append(audio_id)
-        embeddings.append(emb)
-    embeddings = np.array(embeddings)
-    logger.info(f"MERT 嵌入: {len(audio_ids)} 首, 维度: {embeddings.shape[1]}")
-    return audio_ids, embeddings
+    vectors = []
+
+    for f in sorted(embeddings_dir.glob("*.npy")):
+        aid = f.stem.replace("_mert_embedding", "")
+        vec = np.load(f)
+        if vec.ndim > 1:
+            vec = vec.flatten()[:768]
+        audio_ids.append(aid)
+        vectors.append(vec)
+
+    return audio_ids, np.array(vectors)
 
 
-def load_l3_labels(l3_dir: Path) -> Dict[str, Dict]:
-    labels = {}
-    for f in l3_dir.glob("*_text_labels.json"):
-        with open(f, "r", encoding="utf-8") as fp:
+def load_labels(labels_dir: str, audio_ids: list) -> dict:
+    """加载 L4 融合标签用于着色"""
+    labels_dir = Path(labels_dir)
+    labels = {aid: {} for aid in audio_ids}
+
+    for f in labels_dir.glob("*_full_tags.json"):
+        with open(f) as fp:
             data = json.load(fp)
-        audio_id = data.get("audio_id", f.stem.replace("_text_labels", ""))
-        labels[audio_id] = data
-    logger.info(f"L3 标签: {len(labels)} 首")
+        aid = data.get("audio_id", "")
+        if aid in labels:
+            labels[aid] = {
+                "genre": data.get("genre", "unknown"),
+                "mood": (data.get("mood", ["unknown"]) or ["unknown"])[0],
+                "vocal_presence": data.get("vocal_presence", "unknown"),
+                "quality": data.get("quality_assessment", "unknown"),
+                "propagated_from": data.get("propagated_from", "deepseek"),
+                "bpm": data.get("bpm", 0),
+                "caption": data.get("caption", "")[:80],
+            }
+
     return labels
 
 
-def run_tsne(embeddings, n_components=2, perplexity=5, random_state=42):
-    logger.info(f"运行 t-SNE (n_components={n_components}, perplexity={perplexity})...")
-    tsne = TSNE(n_components=n_components, perplexity=min(perplexity, len(embeddings)-1),
-                random_state=random_state, init='pca', learning_rate='auto')
-    result = tsne.fit_transform(embeddings)
-    logger.info(f"  t-SNE 完成: {result.shape}")
-    return result
+def reduce_dimensions(vectors: np.ndarray, method: str = "tsne",
+                       perplexity: int = 30, n_neighbors: int = 15) -> np.ndarray:
+    """降维到2D"""
+    n_samples = len(vectors)
+
+    if method == "tsne":
+        from sklearn.manifold import TSNE
+        perp = min(perplexity, n_samples - 1)
+        tsne = TSNE(n_components=2, random_state=42, perplexity=perp,
+                    init="pca", learning_rate="auto")
+        return tsne.fit_transform(vectors)
+
+    elif method == "umap":
+        import umap
+        n_n = min(n_neighbors, n_samples - 1)
+        reducer = umap.UMAP(n_components=2, random_state=42, n_neighbors=n_n)
+        return reducer.fit_transform(vectors)
+
+    else:
+        raise ValueError(f"未知降维方法: {method}")
 
 
-def run_umap(embeddings, n_components=2, n_neighbors=5, min_dist=0.1, random_state=42):
-    if not HAS_UMAP:
-        logger.warning("umap-learn 未安装，跳过 UMAP")
-        return None
-    logger.info(f"运行 UMAP (n_components={n_components}, n_neighbors={n_neighbors})...")
-    reducer = umap.UMAP(n_components=n_components, n_neighbors=min(n_neighbors, len(embeddings)-1),
-                        min_dist=min_dist, random_state=random_state)
-    result = reducer.fit_transform(embeddings)
-    logger.info(f"  UMAP 完成: {result.shape}")
-    return result
+def build_interactive_html(audio_ids: list, coords_tsne: np.ndarray,
+                           coords_umap: np.ndarray, labels: dict,
+                           output_path: str):
+    """构建 plotly 交互式HTML"""
+    if not PLOTLY_AVAILABLE:
+        # 保存静态数据
+        data = {
+            "audio_ids": audio_ids,
+            "tsne": coords_tsne.tolist(),
+            "umap": coords_umap.tolist(),
+            "labels": labels,
+        }
+        json_path = output_path.replace(".html", "_data.json")
+        with open(json_path, "w") as f:
+            json.dump(data, f, indent=2, ensure_ascii=False)
+        print(f"plotly不可用，已保存数据到: {json_path}")
+        return
+
+    # 准备数据
+    genres = [labels[aid].get("genre", "unknown") for aid in audio_ids]
+    moods = [labels[aid].get("mood", "unknown") for aid in audio_ids]
+    vocals = [labels[aid].get("vocal_presence", "unknown") for aid in audio_ids]
+    qualities = [labels[aid].get("quality", "unknown") for aid in audio_ids]
+    bpms = [labels[aid].get("bpm", 0) for aid in audio_ids]
+    captions = [labels[aid].get("caption", "") for aid in audio_ids]
+    propagated = [labels[aid].get("propagated_from", "deepseek") for aid in audio_ids]
+
+    hover_text = [
+        f"<b>{aid[:16]}</b><br>"
+        f"流派: {g}<br>情绪: {m}<br>人声: {v}<br>"
+        f"BPM: {b}<br>质量: {q}<br>来源: {p}<br>"
+        f"<i>{c}</i>"
+        for aid, g, m, v, b, q, p, c in
+        zip(audio_ids, genres, moods, vocals, bpms, qualities, propagated, captions)
+    ]
+
+    # 颜色映射
+    genre_colors = {
+        "jazz": "#1f77b4", "blues": "#ff7f0e", "classical": "#2ca02c",
+        "pop": "#d62728", "rock": "#9467bd", "electronic": "#8c564b",
+        "folk": "#e377c2", "world": "#7f7f7f", "other": "#bcbd22",
+        "unknown": "#17becf",
+    }
+    mood_colors = {
+        "relaxed": "#2ca02c", "energetic": "#ff7f0e", "melancholic": "#1f77b4",
+        "happy": "#ffbb78", "mysterious": "#9467bd", "intense": "#d62728",
+        "calm": "#98df8a", "nostalgic": "#c5b0d5", "unknown": "#7f7f7f",
+    }
+    vocal_colors = {
+        "instrumental": "#1f77b4", "vocal": "#ff7f0e",
+        "mixed": "#2ca02c", "unknown": "#7f7f7f",
+    }
+
+    def make_scatter(coords, color_key, color_map, title):
+        colors = [color_map.get(v, "#7f7f7f") for v in color_key]
+        return go.Scatter(
+            x=coords[:, 0], y=coords[:, 1],
+            mode="markers",
+            marker=dict(size=10, color=colors, line=dict(width=1, color="white")),
+            text=hover_text, hoverinfo="text",
+            name=title,
+        )
+
+    # 创建2x2子图
+    fig = make_subplots(
+        rows=2, cols=2,
+        subplot_titles=(
+            "t-SNE — 按流派着色",
+            "t-SNE — 按情绪着色",
+            "UMAP — 按流派着色",
+            "UMAP — 按人声着色",
+        ),
+        horizontal_spacing=0.08, vertical_spacing=0.12,
+    )
+
+    fig.add_trace(make_scatter(coords_tsne, genres, genre_colors, "genre"), row=1, col=1)
+    fig.add_trace(make_scatter(coords_tsne, moods, mood_colors, "mood"), row=1, col=2)
+    fig.add_trace(make_scatter(coords_umap, genres, genre_colors, "genre"), row=2, col=1)
+    fig.add_trace(make_scatter(coords_umap, vocals, vocal_colors, "vocal"), row=2, col=2)
+
+    fig.update_layout(
+        title=dict(
+            text=f"MERT 768d 嵌入聚类可视化 (n={len(audio_ids)})",
+            font=dict(size=18),
+        ),
+        height=900, width=1200,
+        showlegend=False,
+        template="plotly_white",
+    )
+
+    # 更新坐标轴
+    for i in range(1, 3):
+        for j in range(1, 3):
+            fig.update_xaxes(title_text="Dim 1", row=i, col=j)
+            fig.update_yaxes(title_text="Dim 2", row=i, col=j)
+
+    fig.write_html(output_path, include_plotlyjs="cdn")
+    print(f"交互式HTML已保存: {output_path}")
 
 
-def run_dbscan(embeddings, eps=2.0, min_samples=2):
-    logger.info(f"运行 DBSCAN (eps={eps}, min_samples={min_samples})...")
-    scaler = StandardScaler()
-    embeddings_scaled = scaler.fit_transform(embeddings)
-    clustering = DBSCAN(eps=eps, min_samples=min_samples)
-    labels = clustering.fit_predict(embeddings_scaled)
-    n_clusters = len(set(labels)) - (1 if -1 in labels else 0)
-    n_noise = list(labels).count(-1)
-    logger.info(f"  DBSCAN 完成: {n_clusters} 个簇, {n_noise} 个噪声点")
-    return labels, n_clusters
+def run_visualization(embeddings_dir: str, labels_dir: str, output_path: str):
+    """主流程"""
+    print("加载 MERT 嵌入...")
+    audio_ids, vectors = load_embeddings(embeddings_dir)
+    print(f"  {len(audio_ids)} 个样本, {vectors.shape[1]} 维")
 
+    print("加载标签...")
+    labels = load_labels(labels_dir, audio_ids)
+    labeled = sum(1 for aid in audio_ids if labels[aid])
+    print(f"  {labeled}/{len(audio_ids)} 个有标签")
 
-def create_scatter_2d(coords, audio_ids, labels, color_by="genre", title="t-SNE"):
-    df = pd.DataFrame({'x': coords[:, 0], 'y': coords[:, 1], 'audio_id': audio_ids})
-    df['genre'] = df['audio_id'].map(lambda aid: labels.get(aid, {}).get('genre', 'unknown'))
-    df['mood'] = df['audio_id'].map(lambda aid: ', '.join(labels.get(aid, {}).get('mood', [])[:2]))
-    df['instrumentation'] = df['audio_id'].map(lambda aid: ', '.join(labels.get(aid, {}).get('instrumentation', [])[:3]))
-    df['caption'] = df['audio_id'].map(lambda aid: labels.get(aid, {}).get('caption', '')[:60])
+    print("t-SNE 降维...")
+    coords_tsne = reduce_dimensions(vectors, method="tsne")
 
-    fig = px.scatter(df, x='x', y='y', color=color_by,
-                     hover_data=['audio_id', 'genre', 'mood', 'instrumentation', 'caption'],
-                     title=title, color_discrete_sequence=COLOR_PALETTE)
-    fig.update_traces(marker=dict(size=12, line=dict(width=1, color='DarkSlateGrey')))
-    fig.update_layout(plot_bgcolor='white', paper_bgcolor='white', title_x=0.5)
-    return fig
+    print("UMAP 降维...")
+    coords_umap = reduce_dimensions(vectors, method="umap")
 
+    print("生成交互式HTML...")
+    build_interactive_html(audio_ids, coords_tsne, coords_umap, labels, output_path)
 
-def create_scatter_3d(coords, audio_ids, labels, color_by="genre", title="t-SNE 3D"):
-    df = pd.DataFrame({'x': coords[:, 0], 'y': coords[:, 1], 'z': coords[:, 2], 'audio_id': audio_ids})
-    df['genre'] = df['audio_id'].map(lambda aid: labels.get(aid, {}).get('genre', 'unknown'))
-    df['mood'] = df['audio_id'].map(lambda aid: ', '.join(labels.get(aid, {}).get('mood', [])[:2]))
-    fig = px.scatter_3d(df, x='x', y='y', z='z', color=color_by,
-                         hover_data=['audio_id', 'genre', 'mood'], title=title,
-                         color_discrete_sequence=COLOR_PALETTE)
-    fig.update_traces(marker=dict(size=5))
-    fig.update_layout(title_x=0.5)
-    return fig
+    # 统计
+    genre_dist = {}
+    for aid in audio_ids:
+        g = labels[aid].get("genre", "unknown")
+        genre_dist[g] = genre_dist.get(g, 0) + 1
 
-
-def create_cluster_viz(coords, audio_ids, cluster_labels, title="DBSCAN 聚类"):
-    df = pd.DataFrame({'x': coords[:, 0], 'y': coords[:, 1], 'audio_id': audio_ids,
-                       'cluster': [f"Cluster {l}" if l != -1 else "Noise" for l in cluster_labels]})
-    fig = px.scatter(df, x='x', y='y', color='cluster', hover_data=['audio_id', 'cluster'],
-                     title=title, color_discrete_sequence=COLOR_PALETTE)
-    fig.update_traces(marker=dict(size=12, line=dict(width=1, color='DarkSlateGrey')))
-    fig.update_layout(plot_bgcolor='white', paper_bgcolor='white', title_x=0.5)
-    return fig
-
-
-def create_combined_html(figures, output_path):
-    html_parts = [fig.to_html(full_html=False, include_plotlyjs='cdn') for fig in figures]
-    combined = f"""
-    <!DOCTYPE html><html><head><meta charset="utf-8"><title>MERT 聚类可视化</title>
-    <style>body{{font-family:-apple-system,sans-serif;margin:20px;background:#f5f5f5}}
-    .chart{{background:white;border-radius:8px;padding:20px;margin-bottom:20px;box-shadow:0 2px 4px rgba(0,0,0,.1)}}
-    h1{{color:#333;text-align:center}}.summary{{background:#e8f4f8;padding:15px;border-radius:8px;margin-bottom:20px}}</style>
-    </head><body><h1>MERT 嵌入聚类可视化</h1>
-    <div class="summary"><p><strong>说明：</strong>基于 MERT-v1-95M 768维音乐理解嵌入，使用 t-SNE 和 UMAP 降维到2D/3D，DBSCAN 自动聚类。鼠标悬停查看详细标签。</p></div>
-    {''.join(f'<div class="chart">{h}</div>' for h in html_parts)}
-    </body></html>"""
-    with open(output_path, "w", encoding="utf-8") as f:
-        f.write(combined)
-    logger.info(f"✅ 可视化已保存: {output_path}")
-
-
-def main():
-    parser = argparse.ArgumentParser(description="MERT 嵌入聚类可视化：t-SNE + UMAP + DBSCAN")
-    parser.add_argument("--mert-dir", default="data/02_preannotation/l2_mert_embedding")
-    parser.add_argument("--l3-dir", default="data/02_preannotation/l3_structural/text_labels")
-    parser.add_argument("--output", default="reports/mert_clustering_visualization.html")
-    parser.add_argument("--perplexity", type=int, default=5)
-    parser.add_argument("--eps", type=float, default=2.0)
-    parser.add_argument("--min-samples", type=int, default=2)
-    args = parser.parse_args()
-
-    mert_dir = Path(args.mert_dir)
-    l3_dir = Path(args.l3_dir)
-    output_path = Path(args.output)
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-
-    logger.info("=" * 60)
-    logger.info("MERT 聚类可视化")
-    logger.info("=" * 60)
-
-    logger.info("\n[Step 1] 加载数据...")
-    audio_ids, embeddings = load_mert_embeddings(mert_dir)
-    l3_labels = load_l3_labels(l3_dir)
-
-    logger.info("\n[Step 2] t-SNE 2D...")
-    tsne_2d = run_tsne(embeddings, 2, args.perplexity)
-
-    logger.info("\n[Step 3] t-SNE 3D...")
-    tsne_3d = run_tsne(embeddings, 3, args.perplexity)
-
-    logger.info("\n[Step 4] UMAP 2D...")
-    umap_2d = run_umap(embeddings, 2, args.perplexity)
-
-    logger.info("\n[Step 5] DBSCAN 聚类...")
-    cluster_labels, n_clusters = run_dbscan(tsne_2d, args.eps, args.min_samples)
-
-    logger.info("\n[Step 6] 创建可视化...")
-    figures = []
-    figures.append(create_scatter_2d(tsne_2d, audio_ids, l3_labels, "genre",
-                                       f"t-SNE 2D - 按流派着色 (MERT 768d, n={len(audio_ids)})"))
-    figures.append(create_scatter_2d(tsne_2d, audio_ids, l3_labels, "mood", "t-SNE 2D - 按情绪着色"))
-    figures.append(create_scatter_3d(tsne_3d, audio_ids, l3_labels, "genre", "t-SNE 3D - 按流派着色"))
-    if umap_2d is not None:
-        figures.append(create_scatter_2d(umap_2d, audio_ids, l3_labels, "genre", "UMAP 2D - 按流派着色"))
-    figures.append(create_cluster_viz(tsne_2d, audio_ids, cluster_labels,
-                                        f"DBSCAN 聚类结果 (eps={args.eps}, {n_clusters} 簇)"))
-
-    create_combined_html(figures, output_path)
-
-    logger.info("\n" + "=" * 60)
-    logger.info("可视化完成")
-    logger.info("=" * 60)
-    logger.info(f"  样本数: {len(audio_ids)}, 嵌入维度: {embeddings.shape[1]}")
-    logger.info(f"  DBSCAN 簇数: {n_clusters}")
-    logger.info(f"  输出文件: {output_path}")
-    logger.info("=" * 60)
+    print(f"\n{'='*60}")
+    print(f"MERT 聚类可视化完成")
+    print(f"{'='*60}")
+    print(f"  样本数: {len(audio_ids)}")
+    print(f"  流派分布: {genre_dist}")
+    print(f"  输出: {output_path}")
+    print(f"\n  在浏览器中打开HTML可交互查看:")
+    print(f"  - 悬停查看样本详情(流派/情绪/BPM/Caption)")
+    print(f"  - 4个子图: t-SNE(流派/情绪) + UMAP(流派/人声)")
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(description="MERT 聚类可视化")
+    parser.add_argument("--embeddings-dir", required=True, help="MERT嵌入目录")
+    parser.add_argument("--labels-dir", required=True, help="L4标签目录")
+    parser.add_argument("--output", required=True, help="输出HTML路径")
+    args = parser.parse_args()
+
+    run_visualization(args.embeddings_dir, args.labels_dir, args.output)

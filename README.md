@@ -1,17 +1,115 @@
-# 音乐语料数据集建设项目
+# 音乐 AI 数据集建设项目 (Music AI Dataset)
 
-## 项目概述
+> 求职作品集 | 目标岗位: 腾讯音乐娱乐集团 AI创新内容运营 (深圳)
+> 端到端音乐数据集构建: 采集→清洗→预标注→人工校验→训练评估
 
-基于 MusicCaps 数据集 + 自有音频，通过机器预标注 + Label Studio 人工校验的方式，构建标准化音乐语料数据集。
+## 项目亮点
 
-采用 **本地 Mac + AutoDL GPU + 阿里云 OSS** 混合架构：
-- **本地磁盘是唯一业务数据源**，所有业务流水线只读本地磁盘
-- **GPU 负责重计算**（预处理、demucs分轨、大模型推理），结果通过 rsync 直接拉回本地
-- **OSS 仅作纯备份归档**，业务绝不从 OSS 读取音频
+| 维度 | 说明 |
+|------|------|
+| **7阶段流水线** | 采集入库→元数据清洗→格式标准化→质量清洗→去重→辅助清洗→预处理输出，严格顺序执行 |
+| **L1-L4分层预标注** | 物理特征→语义候选→多模态结构标注→KNN传播融合，成本分层(5%多模态+95%文本) |
+| **来源隔离数据集** | main_pool/test_pool/holdout_pool/ood_pool 四池独立，test/holdout 不参与训练 |
+| **三层计算架构** | Mac主节点 + AutoDL GPU重计算 + iOS科学上网采集，苹果生态互通 |
+| **工程化文档** | ARCHITECTURE.md + DATASET_TAXONOMY.md + DECISIONS.md(10条ADR) + EXECUTION_PLAN.md |
+
+## 核心架构
+
+### 7阶段数据流水线
+
+```
+Stage 0 采集入库 → Stage 1 元数据清洗 → Stage 2 格式标准化(GPU)
+→ Stage 3 质量清洗(三分支pass/marginal/fail) → Stage 4 近似去重
+→ Stage 5 辅助清洗(5.1语言过滤/5.2歌词转写/5.3风格聚类)
+→ Stage 6 预处理输出(切片+训练特征)
+```
+
+### L1-L4 分层预标注
+
+```
+L1 物理标签: BPM/调性/SNR/LUFS (librosa, 全量)
+L2 语义候选: MERT 768d嵌入 + CLAP zero-shot (GPU, 全量)
+L3 结构标注: Qwen-Omni多模态, 段落/乐器/情绪/Caption (5%黄金集)
+L4 传播融合: DeepSeek全量文本 + KNN传播(量化阈值) + 规则融合 (全量)
+→ ls_preannotations.jsonl → Label Studio 人工校验
+```
+
+### 模型选型与成本
+
+| 层级 | 模型 | 单首成本 | 覆盖 |
+|------|------|----------|------|
+| L3 | Qwen3.5-Omni-Flash (多模态, 国内直连) | ~¥0.1 | 5% |
+| L4 | DeepSeek V4 Flash (文本) | ~¥0.001 | 100% |
+| L4 | KNN(cosine) | 免费 | 100% |
+
+## 文档索引
+
+| 文档 | 内容 |
+|------|------|
+| [ARCHITECTURE.md](docs/ARCHITECTURE.md) | 完整7阶段+L1-L4架构, 三分支决策, 融合矩阵, QC清单 |
+| [DATASET_TAXONOMY.md](docs/DATASET_TAXONOMY.md) | 数据集分类体系, 核心四划分, 功能标签, 样本均衡, 统计评测 |
+| [DECISIONS.md](docs/DECISIONS.md) | 10条关键决策记录(ADR), 背景/选项/决策/理由/后果 |
+| [EXECUTION_PLAN.md](docs/EXECUTION_PLAN.md) | 执行计划活文档, P0-P3进度跟踪, 已知问题, 环境配置 |
+| [IOS_MAC_SYNC.md](docs/IOS_MAC_SYNC.md) | iOS→Mac数据采集同步工作流, 科学上网方案 |
+
+## 快速开始
+
+### 环境准备
+
+```bash
+# Mac 本地环境
+conda env create -f environment.yml
+conda activate labelstudio-env
+
+# GPU 环境 (AutoDL)
+conda env create -f environment_gpu.yml
+```
+
+### 端到端运行 (27首测试数据)
+
+```bash
+# Stage 0-1: 入库 + 元数据清洗
+python3 scripts/00_collect/import_audio.py --source-dir data/incoming/
+python3 scripts/00.5_cleaning/clean_pipeline.py --stages 1
+
+# Stage 2-6: GPU 重计算 (SSH到GPU执行)
+# 格式标准化 → 质量清洗 → 去重 → 辅助清洗 → 预处理
+
+# L1-L4 预标注 (Mac)
+python3 scripts/02_preannotation/l1_physical/l1_physical_features.py
+python3 scripts/02_preannotation/l4_propagated/l4_knn_propagation.py \
+  --embeddings-dir data/.../l2_mert_embedding \
+  --l4-deepseek-dir data/02_preannotation/l4_deepseek \
+  --l3-golden-dir data/02_preannotation/l3_structural \
+  --output-dir data/02_preannotation/l4_propagated \
+  --ls-output data/02_preannotation/ls_preannotations.jsonl
+
+# Label Studio 人工校验
+label-studio start --allow-local-files
+```
+
+### 数据集统计与可视化
+
+```bash
+# 数据集统计评测
+python3 scripts/06_evaluation/dataset_stats.py \
+  --manifest data/00_raw_collect/audio_manifest.csv \
+  --l4-dir data/02_preannotation/l4_propagated \
+  --mert-dir data/.../l2_mert_embedding \
+  --output-dir data/.../stats/
+
+# MERT 聚类可视化 (plotly交互HTML)
+python3 scripts/05_visualization/visualize_mert_clustering.py \
+  --embeddings-dir data/.../l2_mert_embedding \
+  --labels-dir data/02_preannotation/l4_propagated \
+  --output data/.../stats/mert_clustering.html
+```
 
 ---
 
-## 核心约束（违反即出事故）
+## 存储架构与核心约束
+
+> 以下为项目底层存储架构，详细配置见各章节。
 
 | 约束 | 违规后果 |
 |------|----------|
