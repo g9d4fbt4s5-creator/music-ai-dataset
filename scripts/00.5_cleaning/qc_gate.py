@@ -160,6 +160,44 @@ def check_source_quality(meta_row):
     return branch, flags, reason
 
 
+def check_mapping_blacklist(raw_tags, mapping_dict_path=None):
+    """
+    映射字典黑名单检查：若原始标签命中黑名单，直接 fail。
+
+    黑名单标签示例: noise, speech, silence, low quality, distorted 等。
+    这些标签表示音频不是音乐或质量极差，应在映射阶段提前过滤，
+    不浪费下游 GPU 算力。
+
+    Args:
+        raw_tags: 原始标签列表（从文本描述/模型输出提取）
+        mapping_dict_path: label_mapping_dict.json 路径
+
+    Returns:
+        (branch, hit_tags, reason)
+    """
+    if not raw_tags:
+        return "pass", [], "no_raw_tags"
+
+    # 加载黑名单
+    blacklist = set()
+    if mapping_dict_path and os.path.exists(mapping_dict_path):
+        try:
+            with open(mapping_dict_path, "r", encoding="utf-8") as f:
+                mapping = json.load(f)
+            blacklist = set(mapping.get("blacklist_tags", []))
+        except Exception:
+            pass
+
+    if not blacklist:
+        return "pass", [], "no_blacklist_configured"
+
+    hit_tags = [tag for tag in raw_tags if tag.lower().strip() in blacklist]
+
+    if hit_tags:
+        return "fail", hit_tags, f"blacklist_tags_hit: {hit_tags}"
+    return "pass", [], "no_blacklist_hit"
+
+
 def merge_branches(branches):
     """合并多个分支决策: fail > marginal > pass"""
     if "fail" in branches:
@@ -169,7 +207,8 @@ def merge_branches(branches):
     return "pass"
 
 
-def run_qc_gate(manifest_path, yamnet_path, quality_path, output_path):
+def run_qc_gate(manifest_path, yamnet_path, quality_path, output_path,
+                mapping_dict_path=None):
     """主流程: 读取各检查结果，合并为统一三分支决策"""
     manifest = pd.read_csv(manifest_path)
     yamnet = pd.read_csv(yamnet_path) if os.path.exists(yamnet_path) else pd.DataFrame()
@@ -203,17 +242,30 @@ def run_qc_gate(manifest_path, yamnet_path, quality_path, output_path):
         # 4. 源质量检查
         source_branch, source_flags, source_reason = check_source_quality(row)
 
-        # 5. 合并决策
+        # 5. 映射字典黑名单检查（从元数据的原始标签提取）
+        blacklist_branch = "pass"
+        blacklist_hits = []
+        blacklist_reason = "no_raw_tags"
+        raw_tags_str = row.get("raw_tags", row.get("aspect_list", ""))
+        if raw_tags_str:
+            raw_tags = [t.strip() for t in str(raw_tags_str).split(",") if t.strip()]
+            blacklist_branch, blacklist_hits, blacklist_reason = check_mapping_blacklist(
+                raw_tags, mapping_dict_path
+            )
+
+        # 6. 合并决策
         final_branch = merge_branches([
-            content_branch, quality_branch, duration_branch, source_branch
+            content_branch, quality_branch, duration_branch,
+            source_branch, blacklist_branch
         ])
 
-        all_flags = quality_flags + duration_tags + source_flags
+        all_flags = quality_flags + duration_tags + source_flags + blacklist_hits
         all_reasons = {
             "content": content_reason,
             "quality": quality_reason,
             "duration": duration_reason,
             "source": source_reason,
+            "blacklist": blacklist_reason,
         }
 
         results.append({
