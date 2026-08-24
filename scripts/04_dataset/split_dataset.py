@@ -604,6 +604,8 @@ def main():
                         help="严格模式：发现跨池重复 audio_id 时直接报错终止（默认只警告）")
     parser.add_argument("--protect-golden", action="store_true", default=True,
                         help="黄金集保护：黄金集样本(is_golden=true)不进入 test/holdout/ood，划分时正常分布不特殊处理（默认开启）")
+    parser.add_argument("--qc-report", type=str, default=None,
+                        help="QC Gate报告路径，过滤掉final_branch=fail的样本（如2秒超短/非音乐/低质量）")
     parser.add_argument("--random-state", type=int, default=42, help="随机种子")
     args = parser.parse_args()
 
@@ -614,6 +616,18 @@ def main():
     # 加载数据
     input_path = Path(args.input)
     df = load_manifest(input_path)
+
+    # P0: QC Gate过滤 — 排除final_branch=fail的样本（2秒超短/非音乐/低质量等）
+    if args.qc_report:
+        qc_path = Path(args.qc_report)
+        if qc_path.exists():
+            qc_df = pd.read_csv(qc_path)
+            fail_ids = set(qc_df[qc_df["final_branch"] == "fail"]["audio_id"])
+            before_count = len(df)
+            df = df[~df["audio_id"].isin(fail_ids)]
+            logger.info(f"QC过滤: 排除 {before_count - len(df)} 个fail样本（{len(fail_ids)}个在QC报告中标记为fail）")
+        else:
+            logger.warning(f"QC报告不存在: {qc_path}，跳过过滤")
 
     # P0: 划分前校验音频文件checksum完整性（防止文件存在但已损坏）
     checksum_result = None

@@ -148,9 +148,8 @@ def check_source_quality(meta_row):
         flags.append(f"low_sr({sr}Hz)")
         branch = "marginal"
     if channels == 1:
+        # mono 只作为 info 标记，不影响分支：很多爵士/老录音本身就是单声道，不是质量问题
         flags.append("mono")
-        if branch == "pass":
-            branch = "marginal"
     if bitrate > 0 and bitrate < THRESHOLDS["bitrate_min"]:
         flags.append(f"low_bitrate({bitrate//1000}kbps)")
         if branch == "pass":
