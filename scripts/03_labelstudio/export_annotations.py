@@ -149,106 +149,77 @@ def extract_annotation_result(ann: Dict) -> Dict:
     return parsed
 
 
-def extract_mapping_updates(annotations: List[Dict], mapping_dict: Dict) -> List[Dict]:
+import re
+
+# 结构化映射建议正则：【映射建议】原始标签 "xxx" 应映射为 "yyy" (类型: zzz)
+MAPPING_PATTERN = re.compile(
+    r'【映射建议】原始标签\s*"([^"]+)"\s*应映射为\s*"([^"]+)"\s*(?:\(类型:\s*(\w+)\))?'
+)
+VALID_MAPPING_TYPES = {"instrument", "genre", "emotion", "blacklist"}
+
+
+def extract_mapping_updates(annotations: List[Dict], mapping_dict: Dict) -> Dict:
     """
-    从标注结果中半自动提取映射更新建议。
+    从标注结果中提取映射更新建议（结构化解析 + unparsed 兜底）。
+
+    输出格式: {"parsed": [...], "unparsed": [...]}
+    - parsed: 成功匹配结构化格式的建议，含 mapping_type 字段
+    - unparsed: 有映射意图但格式不规范，需人工解析
 
     安全原则: 只生成 diff 待人工确认，不直接修改字典。
-
-    触发条件:
-    - annotation_note 包含 "应映射为" / "映射错误" / "unmapped" / "新增标签"
-    - 预标注的 unmapped_original_tags 非空
-    - 审核决策为 approve_with_edits 且修改了流派/乐器/情绪
     """
-    updates = []
-    existing_genres = set(mapping_dict.get("genre_3level_map", {}).keys())
-    existing_insts = set(mapping_dict.get("instrument_gm128_map", {}).keys())
-    existing_emotions = set(mapping_dict.get("emotion_vad_map", {}).keys())
+    parsed_updates = []
+    unparsed = []
 
     for ann in annotations:
         parsed = extract_annotation_result(ann)
         note = parsed.get("annotation_note", "")
         audio_id = parsed["audio_id"]
+        annotator = parsed.get("annotator", "")
 
-        # 条件1: note 中明确提到映射问题
-        mapping_keywords = ["应映射为", "映射错误", "unmapped", "新增标签",
-                           "应该是", "应为", "标签错误"]
-        has_mapping_issue = any(kw in note for kw in mapping_keywords)
+        if not note:
+            continue
 
-        # 条件2: 预标注有 unmapped 标签
-        meta = ann.get("meta", {})
-        unmapped_tags = meta.get("unmapped_original_tags", [])
-        if isinstance(unmapped_tags, str):
-            unmapped_tags = [unmapped_tags]
+        # 结构化解析
+        matches = MAPPING_PATTERN.findall(note)
 
-        # 条件3: 修改了流派且新流派不在字典中
-        genre_edits = []
-        if parsed.get("genre_primary") and parsed["genre_primary"] not in existing_genres:
-            # 检查是否是中文标签（V4模板用中文）
-            genre_edits.append({
-                "field": "genre_primary",
-                "annotated_value": parsed["genre_primary"],
-                "suggestion": f"新增流派映射: {parsed['genre_primary']}",
+        if matches:
+            for raw_tag, proposed, type_hint in matches:
+                type_hint = type_hint.lower().strip() if type_hint else "unknown"
+
+                # 类型前置校验
+                if type_hint not in VALID_MAPPING_TYPES:
+                    unparsed.append({
+                        "audio_id": audio_id,
+                        "raw_note": note,
+                        "reason": f"非法 mapping_type: '{type_hint}'，允许值: {', '.join(sorted(VALID_MAPPING_TYPES))}",
+                        "status": "needs_manual_parsing",
+                        "created_at": datetime.now().isoformat(),
+                    })
+                    continue
+
+                parsed_updates.append({
+                    "audio_id": audio_id,
+                    "original_tag": raw_tag,
+                    "proposed_mapping": proposed,
+                    "mapping_type": type_hint,  # 下游 merge_mapping.py 唯一依据
+                    "annotator": annotator,
+                    "review_decision": parsed.get("review_decision", ""),
+                    "status": "pending",  # 人工审核前
+                    "created_at": datetime.now().isoformat(),
+                })
+        elif any(kw in note for kw in ["映射", "unmapped", "应映射", "标签错误"]):
+            # 兜底：有映射意图但没匹配到结构化格式
+            unparsed.append({
+                "audio_id": audio_id,
+                "annotator": annotator,
+                "raw_note": note,
+                "reason": "未匹配到结构化格式【映射建议】原始标签 \"xxx\" 应映射为 \"yyy\" (类型: zzz)",
+                "status": "needs_manual_parsing",
+                "created_at": datetime.now().isoformat(),
             })
 
-        if has_mapping_issue or unmapped_tags or genre_edits:
-            update = {
-                "audio_id": audio_id,
-                "annotator": parsed.get("annotator", ""),
-                "review_decision": parsed.get("review_decision", ""),
-                "annotation_note": note,
-                "unmapped_original_tags": unmapped_tags,
-                "genre_edits": genre_edits,
-                "proposed_mapping": parse_mapping_proposal(note),
-                "confidence": "manual_review_needed",
-                "status": "pending",
-                "created_at": datetime.now().isoformat(),
-            }
-            updates.append(update)
-
-    return updates
-
-
-def parse_mapping_proposal(note: str) -> Optional[Dict]:
-    """从 annotation_note 中简单解析映射建议"""
-    if not note:
-        return None
-
-    proposal = {}
-
-    # 简单模式: "X 应映射为 Y"
-    import re
-    patterns = [
-        r'([\w\s]+)\s*应映射为\s*([\w\s]+)',
-        r'([\w\s]+)\s*应为\s*([\w\s]+)',
-        r'([\w\s]+)\s*应该是\s*([\w\s]+)',
-    ]
-
-    for pattern in patterns:
-        match = re.search(pattern, note)
-        if match:
-            original = match.group(1).strip()
-            target = match.group(2).strip()
-            proposal = {
-                "original_tag": original,
-                "target_mapping": target,
-                "field": infer_field(target),
-            }
-            break
-
-    return proposal if proposal else None
-
-
-def infer_field(value: str) -> str:
-    """推断映射目标属于哪个字段"""
-    value_lower = value.lower()
-    if any(kw in value_lower for kw in ["jazz", "rock", "pop", "electronic", "爵士", "摇滚", "流行"]):
-        return "genre"
-    if any(kw in value_lower for kw in ["piano", "guitar", "drum", "钢琴", "吉他", "鼓"]):
-        return "instrument"
-    if any(kw in value_lower for kw in ["happy", "sad", "calm", "欢快", "忧郁", "舒缓"]):
-        return "emotion"
-    return "unknown"
+    return {"parsed": parsed_updates, "unparsed": unparsed}
 
 
 def apply_mapping_updates(pending_path: str, mapping_dict_path: str,
@@ -393,12 +364,14 @@ def run_export(ls_export_path: str, mapping_dict_path: str, output_dir: str):
         json.dump(parsed_results, f, indent=2, ensure_ascii=False)
     print(f"结构化结果: {parsed_path}")
 
-    # 4. 提取映射更新建议（半自动，不直接改字典）
-    mapping_updates = extract_mapping_updates(annotations, mapping)
+    # 4. 提取映射更新建议（结构化解析 + unparsed 兜底）
+    mapping_result = extract_mapping_updates(annotations, mapping)
+    parsed_count = len(mapping_result.get("parsed", []))
+    unparsed_count = len(mapping_result.get("unparsed", []))
     pending_path = os.path.join(output_dir, "mapping_updates_pending.json")
     with open(pending_path, "w", encoding="utf-8") as f:
-        json.dump(mapping_updates, f, indent=2, ensure_ascii=False)
-    print(f"映射更新建议: {pending_path} ({len(mapping_updates)} 条待人工确认)")
+        json.dump(mapping_result, f, indent=2, ensure_ascii=False)
+    print(f"映射更新建议: {pending_path} (parsed={parsed_count}, unparsed={unparsed_count})")
 
     # 5. 统计
     stats = compute_stats(annotations)

@@ -1,145 +1,168 @@
+#!/usr/bin/env python3
 """
-tag_mapping_musiccaps.py
-MusicCaps 标签映射：将 aspect_list 原始标签映射为 GM128 乐器编码、VAD 情绪数值、三级流派
+tag_mapping_musiccaps.py — MusicCaps 标签映射（收敛到 TagMapper）
+
+将 MusicCaps 的 aspect_list 原始标签通过统一的 TagMapper 映射为：
+- GM128 乐器编码
+- VAD 情绪三元组
+- 三级流派（primary + secondary）
+- 软/硬黑名单分级
+
+所有映射规则收敛到 TagMapper，本脚本只负责：
+1. 读取 MusicCaps CSV
+2. 解析 aspect_list
+3. 调用 TagMapper.map_all()
+4. 过滤硬黑名单样本
+5. 输出 V4 可直接读取的 JSON
+
+使用:
+    python tag_mapping_musiccaps.py \
+        --input data/00_raw_collect/raw_metadata/musiccaps_full.csv \
+        --mapping configs/label_mapping_dict.json \
+        --output data/02_preannotation/musiccaps_mapped_v4.json
 """
-import pandas as pd
+
+import argparse
 import ast
 import json
 import os
-import logging
+import sys
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, List
+from typing import List
 
-# ===================== 路径配置（相对于项目根目录） =====================
+# 项目根目录
 PROJECT_ROOT = Path(__file__).parent.parent.parent
+sys.path.insert(0, str(PROJECT_ROOT / "scripts" / "02_preannotation"))
 
-# -------- logging 配置 --------
-LOG_DIR = PROJECT_ROOT / "logs"
-os.makedirs(LOG_DIR, exist_ok=True)
-time_str = datetime.now().strftime("%Y%m%d_%H%M%S")
-log_file = LOG_DIR / f"tag_mapping_{time_str}.log"
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s | %(levelname)s | %(message)s",
-    handlers=[
-        logging.FileHandler(log_file, encoding="utf-8"),
-        logging.StreamHandler()
-    ]
-)
-logger = logging.getLogger(__name__)
-
-# 标签映射字典
-MAPPING_JSON_PATH = PROJECT_ROOT / "data/02_preannotation/label_mapping/label_mapping_dict.json"
-with open(MAPPING_JSON_PATH, "r", encoding="utf-8") as f:
-    mapping_cfg = json.load(f)
-
-INSTRUMENT_GM128_MAP: Dict[str, int] = mapping_cfg["instrument_gm128_map"]
-EMOTION_VAD_MAP: Dict[str, Dict[str, float]] = mapping_cfg["emotion_vad_map"]
-GENRE_3LEVEL_MAP: Dict[str, List[str]] = mapping_cfg["genre_3level_map"]
-BLACKLIST = mapping_cfg["blacklist_tags"]
-
-# 输入输出路径
-INPUT_CSV = PROJECT_ROOT / "data/00_raw_collect/raw_metadata/musiccaps_full.csv"
-OUTPUT_JSON = PROJECT_ROOT / "data/02_preannotation/preann_csv/musiccaps_mapped_label.json"
+from tag_mapper import TagMapper
 
 
 def parse_aspect_list(raw_str: str) -> List[str]:
-    """解析MusicCaps aspect list字符串为标签列表"""
-    try:
-        return ast.literal_eval(raw_str)
-    except Exception:
+    """解析 MusicCaps aspect list 字符串为标签列表"""
+    if not raw_str or raw_str == "":
         return []
+    try:
+        result = ast.literal_eval(raw_str)
+        if isinstance(result, list):
+            return [str(t).strip().lower() for t in result if t]
+        return []
+    except (ValueError, SyntaxError):
+        # 兜底：逗号分隔
+        return [t.strip().lower() for t in raw_str.split(",") if t.strip()]
 
 
-def map_tags(aspect_tags: List[str]):
+def process_musiccaps(input_csv: str, mapping_path: str, output_path: str,
+                      include_soft_blacklist: bool = True):
     """
-    原始标签列表 -> 映射为GM128乐器、VAD情绪、三级流派
-    返回：gm_insts, vad_list, genre_list, unmapped_tags
+    处理 MusicCaps CSV，输出映射后的 JSON。
+
+    Args:
+        input_csv: MusicCaps CSV 路径
+        mapping_path: label_mapping_dict.json 路径
+        output_path: 输出 JSON 路径
+        include_soft_blacklist: 是否包含软黑名单样本（标记marginal但保留）
     """
-    gm_insts = []
-    vad_list = []
-    genre_list = []
-    unmapped_tags = []
+    import pandas as pd
 
-    for tag in aspect_tags:
-        tag = tag.strip().lower()
-        if tag in BLACKLIST:
-            continue
+    print("=" * 60)
+    print("MusicCaps 标签映射（收敛到 TagMapper）")
+    print("=" * 60)
 
-        if tag in INSTRUMENT_GM128_MAP:
-            gm_insts.append(INSTRUMENT_GM128_MAP[tag])
-        elif tag in EMOTION_VAD_MAP:
-            vad_list.append(EMOTION_VAD_MAP[tag])
-        elif tag in GENRE_3LEVEL_MAP:
-            genre_list.append(GENRE_3LEVEL_MAP[tag])
-        else:
-            unmapped_tags.append(tag)
+    # 1. 加载映射器
+    mapper = TagMapper(mapping_path)
+    print(f"映射字典版本: {mapper.version}")
+    print(f"乐器映射: {len(mapper.inst_map)}, 情绪: {len(mapper.emotion_map)}, "
+          f"流派: {len(mapper.genre_map)}")
+    print(f"硬黑名单: {len(mapper.hard_blacklist)}, 软黑名单: {len(mapper.soft_blacklist)}")
 
-    # 去重
-    gm_insts = list(sorted(set(gm_insts)))
-    unmapped_tags = list(sorted(set(unmapped_tags)))
-    return gm_insts, vad_list, genre_list, unmapped_tags
+    # 2. 读取 CSV
+    df = pd.read_csv(input_csv)
+    total = len(df)
+    print(f"\n读取 {total} 条 MusicCaps 记录")
 
-
-def main():
-    logger.info("=" * 60)
-    logger.info("MusicCaps 标签映射开始")
-    logger.info("=" * 60)
-    
-    logger.info(f"输入文件: {INPUT_CSV}")
-    logger.info(f"映射字典: {MAPPING_JSON_PATH}")
-    
-    if not INPUT_CSV.exists():
-        logger.error(f"找不到输入文件: {INPUT_CSV}")
-        return
-    
-    df = pd.read_csv(INPUT_CSV)
-    logger.info(f"读取完成，总样本数: {len(df)}")
-    
-    output_rows = []
+    # 3. 逐条映射
+    results = []
+    hard_filtered = 0
+    soft_flagged = 0
     unmapped_total = 0
 
     for idx, row in df.iterrows():
-        ytid = str(row["ytid"])
-        start_s = int(row["start_s"])
-        end_s = int(row["end_s"])
-        caption_text = str(row["caption"])
-        aspect_raw = str(row["aspect_list"])
+        # 解析 aspect_list
+        aspect_str = row.get("aspect_list", row.get("aspect", ""))
+        raw_tags = parse_aspect_list(str(aspect_str))
 
-        raw_tags = parse_aspect_list(aspect_raw)
-        gm_insts, vad_list, genre_list, unmapped_tags = map_tags(raw_tags)
-        
-        unmapped_total += len(unmapped_tags)
+        if not raw_tags:
+            continue
 
-        item = {
-            "ytid": ytid,
-            "start_s": start_s,
-            "end_s": end_s,
-            "caption_text": caption_text,
-            "raw_aspect_tags": raw_tags,
-            "gm128_instrument_codes": gm_insts,
-            "vad_emotion": vad_list,
-            "genre_3level": genre_list,
-            "unmapped_original_tags": unmapped_tags
+        # 调用统一映射器
+        mapped = mapper.map_all(raw_tags)
+
+        # 硬黑名单：直接过滤
+        if mapped["sample_tier"] == "fail":
+            hard_filtered += 1
+            continue
+
+        # 软黑名单：标记但保留
+        if mapped["sample_tier"] == "marginal":
+            soft_flagged += 1
+            if not include_soft_blacklist:
+                continue
+
+        # 统计未映射
+        unmapped_total += len(mapped["unmapped_original_tags"])
+
+        # 构建输出记录
+        record = {
+            "audio_id": row.get("ytid", row.get("audio_id", f"mc_{idx}")),
+            "file_path": row.get("file_path", ""),
+            "caption": row.get("caption", row.get("text", "")),
+            "start_s": float(row.get("start_s", row.get("start", 0))),
+            "end_s": float(row.get("end_s", row.get("end", 0))),
+            "raw_tags": raw_tags,
+            **mapped,  # genre_primary/secondary, gm128_instruments, vad_emotions, unmapped, blacklist, sample_tier
+            "preannotation_version": "musiccaps_v1",
         }
-        output_rows.append(item)
-        
-        # 每1000条打个日志
+        results.append(record)
+
         if (idx + 1) % 1000 == 0:
-            logger.info(f"已处理 {idx + 1}/{len(df)} 条")
+            print(f"  处理进度: {idx+1}/{total}")
 
-    # 输出json
-    OUTPUT_JSON.parent.mkdir(parents=True, exist_ok=True)
-    with open(OUTPUT_JSON, "w", encoding="utf-8") as fw:
-        json.dump(output_rows, fw, ensure_ascii=False, indent=2)
+    # 4. 输出
+    os.makedirs(os.path.dirname(output_path) or ".", exist_ok=True)
+    with open(output_path, "w", encoding="utf-8") as f:
+        json.dump(results, f, indent=2, ensure_ascii=False)
 
-    logger.info(f"✅ 映射完成，输出: {OUTPUT_JSON}")
-    logger.info(f"总样本数: {len(output_rows)}")
-    logger.info(f"未映射标签总次数: {unmapped_total}")
-    logger.info(f"日志文件: {log_file}")
-    logger.info("=" * 60)
+    # 5. 统计
+    print(f"\n{'='*60}")
+    print(f"映射完成")
+    print(f"{'='*60}")
+    print(f"  原始记录: {total}")
+    print(f"  硬黑名单过滤: {hard_filtered} (speech/silence等)")
+    print(f"  软黑名单标记: {soft_flagged} (noise/distorted等, 已保留)")
+    print(f"  输出记录: {len(results)}")
+    print(f"  未映射标签总数: {unmapped_total}")
+    print(f"  输出: {output_path}")
+
+    if unmapped_total > 0:
+        print(f"\n  ⚠️ 存在 {unmapped_total} 个未映射标签，建议:")
+        print(f"     1. 运行 stat_unmapped.py 统计高频未映射标签")
+        print(f"     2. 在 Label Studio 中用【映射建议】格式标注")
+        print(f"     3. export_annotations.py 提取 → merge_mapping.py 合并")
+
+    return results
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(description="MusicCaps 标签映射（收敛到 TagMapper）")
+    parser.add_argument("--input", required=True, help="MusicCaps CSV 路径")
+    parser.add_argument("--mapping", default=str(PROJECT_ROOT / "configs" / "label_mapping_dict.json"),
+                        help="映射字典路径")
+    parser.add_argument("--output", default=str(PROJECT_ROOT / "data" / "02_preannotation" / "musiccaps_mapped_v4.json"),
+                        help="输出 JSON 路径")
+    parser.add_argument("--exclude-soft-blacklist", action="store_true",
+                        help="排除软黑名单样本（默认保留并标记marginal）")
+    args = parser.parse_args()
+
+    process_musiccaps(args.input, args.mapping, args.output,
+                      include_soft_blacklist=not args.exclude_soft_blacklist)

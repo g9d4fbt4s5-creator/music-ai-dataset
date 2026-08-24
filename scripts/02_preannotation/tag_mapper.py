@@ -66,7 +66,15 @@ class TagMapper:
         self.emotion_map = self.mapping.get("emotion_vad_map",
                                              self.mapping.get("vad_emotion_map", {}))
         self.genre_map = self.mapping.get("genre_3level_map", {})
-        self.blacklist = set(self.mapping.get("blacklist_tags", []))
+        # 黑名单分级：硬黑名单(直接fail) + 软黑名单(标记marginal但保留)
+        self.hard_blacklist = set(self.mapping.get("hard_blacklist",
+            ["speech", "silence", "talking", "podcast", "audiobook", "static"]))
+        self.soft_blacklist = set(self.mapping.get("soft_blacklist",
+            ["noise", "noisy", "background noise", "low quality", "bad audio",
+             "distorted", "clipping", "corrupted"]))
+        # 兼容旧字段 blacklist_tags → 全部归入硬黑名单
+        legacy_blacklist = set(self.mapping.get("blacklist_tags", []))
+        self.hard_blacklist.update(legacy_blacklist - self.soft_blacklist)
         self.bridge = self.mapping.get("genre_level_bridge", {})
 
         # 版本信息
@@ -164,18 +172,29 @@ class TagMapper:
             "unmapped": None,
         }
 
-    def is_blacklisted(self, raw_tag: str) -> bool:
-        """检查标签是否在黑名单中"""
+    def is_hard_blacklisted(self, raw_tag: str) -> bool:
+        """检查标签是否在硬黑名单中（直接fail，样本丢弃）"""
         if not raw_tag:
             return False
-        return raw_tag.lower().strip() in self.blacklist
+        return raw_tag.lower().strip() in self.hard_blacklist
+
+    def is_soft_blacklisted(self, raw_tag: str) -> bool:
+        """检查标签是否在软黑名单中（标记marginal，样本保留）"""
+        if not raw_tag:
+            return False
+        return raw_tag.lower().strip() in self.soft_blacklist
 
     def map_all(self, raw_tags: List[str]) -> Dict[str, Any]:
         """
         一键映射所有维度的原始标签。
 
+        黑名单分级:
+        - 硬黑名单(speech/silence/podcast等): 样本直接 fail，不进入下游
+        - 软黑名单(noise/distorted等): 样本标记 marginal，保留但需人工复核
+        - 正常标签: 执行映射
+
         Args:
-            raw_tags: 原始标签列表（如 ["piano", "sad", "jazz", "noisy"]）
+            raw_tags: 原始标签列表（如 ["piano", "sad", "jazz", "noise"]）
 
         Returns:
             {
@@ -186,6 +205,8 @@ class TagMapper:
                 "vad_emotions": [{"valence":..., "arousal":..., "dominance":...}, ...],
                 "unmapped_original_tags": ["未映射的标签", ...],
                 "blacklist_hit": ["命中黑名单的标签", ...],
+                "blacklist_severity": "hard" | "soft" | "none",
+                "sample_tier": "fail" | "marginal" | "normal",
                 "mapping_version": "v2.0"
             }
         """
@@ -197,20 +218,31 @@ class TagMapper:
             "vad_emotions": [],
             "unmapped_original_tags": [],
             "blacklist_hit": [],
+            "blacklist_severity": "none",
+            "sample_tier": "normal",
             "mapping_version": self.version,
         }
 
         seen_instruments = set()
         seen_genres = set()
         seen_emotions = set()
+        has_hard = False
+        has_soft = False
 
         for tag in raw_tags:
             if not tag:
                 continue
 
-            # 黑名单优先
-            if self.is_blacklisted(tag):
+            # 硬黑名单：不映射，样本直接fail
+            if self.is_hard_blacklisted(tag):
                 result["blacklist_hit"].append(tag)
+                has_hard = True
+                continue
+
+            # 软黑名单：不映射，但样本保留（其他标签仍映射）
+            if self.is_soft_blacklisted(tag):
+                result["blacklist_hit"].append(tag)
+                has_soft = True
                 continue
 
             # 乐器
@@ -240,6 +272,14 @@ class TagMapper:
             # 未映射
             if tag not in result["unmapped_original_tags"]:
                 result["unmapped_original_tags"].append(tag)
+
+        # 判定样本级别
+        if has_hard:
+            result["blacklist_severity"] = "hard"
+            result["sample_tier"] = "fail"
+        elif has_soft:
+            result["blacklist_severity"] = "soft"
+            result["sample_tier"] = "marginal"
 
         return result
 

@@ -6,6 +6,18 @@
         {"date": "2026-08-25", "version": "v2.0", "action": "add", "note": "新增 genre_level_bridge 歧义覆盖、compatible_preannotation_versions、blacklist_tags 扩展；适配 V4 Label Studio 模板"}
     ],
     "compatible_preannotation_versions": ["l1_physical_v1", "l2_clap_v1", "l3_qwen_omni_v1", "l4_deepseek_knn_v1"],
+    "version_rule": {
+        "major": "映射规则变更 / 大规模黑名单调整 / 字段结构变化",
+        "minor": "新增/修改少量标签映射"
+    },
+    "hard_blacklist": [
+        "speech", "silence", "talking", "podcast", "audiobook",
+        "static", "white noise", "pink noise"
+    ],
+    "soft_blacklist": [
+        "noise", "noisy", "background noise", "low quality", "bad audio",
+        "distorted", "clipping", "corrupted"
+    ],
     "instrument_gm128_map": {
         "piano": 0,
         "electric piano": 4,

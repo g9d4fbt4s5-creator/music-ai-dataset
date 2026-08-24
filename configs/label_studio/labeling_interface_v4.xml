@@ -188,7 +188,7 @@
   <!-- ========== 13. 人工备注 ========== -->
   <Header value="📋 修正说明" size="5" />
   <TextArea name="annotation_note" toName="audio_source"
-            placeholder="修正说明：改了哪些标签？为什么？（如：预标注流派错误，实际为Cool Jazz而非Bebop）"
-            rows="3" />
+            placeholder="【映射建议】原始标签 &quot;swing_feel&quot; 应映射为 &quot;Jazz, Swing&quot; (类型: genre)&#10;【映射建议】原始标签 &quot;pad_synth&quot; 应映射为 &quot;GM098&quot; (类型: instrument)&#10;【映射建议】原始标签 &quot;dark_feel&quot; 应映射为 &quot;0.2, 0.3, 0.4&quot; (类型: emotion)&#10;【映射建议】原始标签 &quot;noise_only&quot; 应映射为 &quot;未映射&quot; (类型: blacklist)&#10;⚠️ 类型字段必填：instrument / genre / emotion / blacklist&#10;【标签修正】genre_primary 应为 Jazz 而非 Pop&#10;其他备注..."
+            rows="5" />
 
 </View>
