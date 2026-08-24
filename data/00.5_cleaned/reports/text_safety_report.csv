@@ -1,5 +1,0 @@
-row_index,max_risk_score,total_matches,unsafe_columns,is_safe
-0,0.0,0,,True
-1,0.4800000000000001,4,,True
-2,0.48,5,,True
-3,0.22499999999999998,4,,True

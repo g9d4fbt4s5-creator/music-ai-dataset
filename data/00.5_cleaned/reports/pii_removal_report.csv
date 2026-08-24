@@ -1,4 +1,0 @@
-row_index,description_removed,description_types,total_removed,all_types,notes_removed,notes_types
-0,2.0,phone:1; email:1,2,phone:1; email:1,,
-1,2.0,id_card:1; chinese_address:1,3,id_card:1; chinese_address:1; ip_address:1,1.0,ip_address:1
-2,,,0,,,

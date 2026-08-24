@@ -48,6 +48,12 @@ data/01_preprocess/demucs_stems/
 # 清洗后音频
 data/00.5_cleaned/audio/
 
+# 可重新生成的质量/QC报告（数据产物，不纳入版本控制）
+data/00.5_cleaned/reports/
+data/00.5_cleaned/dedup_mapping.csv
+data/00.5_cleaned/duplicate_pairs.csv
+# 注意: cleaned_manifest.csv 保留（清洗后清单，是数据血缘关键节点）
+
 # 模型推理输出缓存（大）
 data/02_preannotation/model_output_cache/
 
