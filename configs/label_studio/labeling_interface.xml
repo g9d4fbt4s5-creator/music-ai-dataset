@@ -180,6 +180,15 @@
         <Choice value="no"/>
       </Choices>
     </View>
+    <View style="flex: 1;">
+      <Label>复核标记 (IAA统计用)</Label>
+      <Choices name="review_flag" toName="audio" choice="single">
+        <Choice value="no_review_needed"/>
+        <Choice value="needs_second_review"/>
+        <Choice value="disagreement_detected"/>
+        <Choice value="golden_standard"/>
+      </Choices>
+    </View>
   </View>
 
   <!-- 人工备注 -->

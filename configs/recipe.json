@@ -4,8 +4,9 @@
   "created": "2026-08-25",
   "data_mix": {
     "train": {
-      "main_pool": "85%",
-      "augmented": "15%"
+      "main_pool": "100%",
+      "augmented": "0%",
+      "note": "初期不做增强，保持数据原始性；增强策略待baseline建立后逐步添加"
     },
     "val": {
       "main_pool": "100%"
@@ -17,24 +18,54 @@
       "holdout_pool": "100%"
     },
     "ood": {
-      "ood_pool": "100%",
-      "description": "MAESTRO古典/Ballroom舞曲，测Jazz模型泛化"
+      "ood_pool": "5%",
+      "description": "与main_pool风格差异较大的来源(不同年代/录音方式/子流派)，不参与训练和验证，测泛化能力",
+      "candidate_datasets": ["MAESTRO(古典钢琴)", "Ballroom(标准舞曲)", "GTZAN(流派多样性)"]
+    },
+    "golden_set": {
+      "location": "main_pool内部抽样5%",
+      "note": "黄金集包含在main_pool中(需传播标签到训练集)，划分train/val时正常分布不特殊处理",
+      "purpose": "L3结构标注+人工校验+KNN传播种子+few-shot示例"
     }
   },
   "preprocessing": {
     "sample_rate": 24000,
     "segment_sec": 15,
     "overlap": 0.5,
-    "features": [
-      "mel_spectrogram",
-      "mfcc",
-      "chroma",
-      "spectral_contrast",
-      "zero_crossing_rate",
-      "spectral_centroid",
-      "rms_energy"
-    ],
+    "features": {
+      "mel_spectrogram": {
+        "n_mels": 128,
+        "n_fft": 2048,
+        "hop_length": 512,
+        "f_min": 20,
+        "f_max": 12000,
+        "window": "hann"
+      },
+      "mfcc": {
+        "n_mfcc": 20,
+        "n_fft": 2048,
+        "hop_length": 512
+      },
+      "chroma": {
+        "n_chroma": 12,
+        "hop_length": 512
+      },
+      "spectral_contrast": {
+        "n_bands": 7,
+        "hop_length": 512
+      },
+      "zero_crossing_rate": {
+        "hop_length": 512
+      },
+      "spectral_centroid": {
+        "hop_length": 512
+      },
+      "rms_energy": {
+        "hop_length": 512
+      }
+    },
     "feature_dim": 128,
+    "feature_aggregation": "mean+std_per_segment",
     "normalization": "per_dataset_minmax",
     "loudnorm_target": {
       "integrated_lufs": -16,
@@ -42,50 +73,58 @@
       "lra": 11
     }
   },
-  "augmentation": [
-    {
-      "type": "add_noise",
-      "label_invariant": true,
-      "apply_to": "all_stages",
-      "params": {
-        "noise_type": "gaussian",
-        "snr_range_db": [20, 40],
-        "probability": 0.3
+  "augmentation": {
+    "enabled": false,
+    "note": "初期不做增强，保持数据原始性；待baseline模型建立后，根据效果逐步启用以下策略",
+    "strategies": [
+      {
+        "type": "add_noise",
+        "label_invariant": true,
+        "apply_to": "all_stages",
+        "enabled": false,
+        "params": {
+          "noise_type": "gaussian",
+          "snr_range_db": [20, 40],
+          "probability": 0.3
+        }
+      },
+      {
+        "type": "spec_augment",
+        "label_invariant": true,
+        "apply_to": "all_stages",
+        "enabled": false,
+        "params": {
+          "freq_mask_num": 2,
+          "freq_mask_width": 20,
+          "time_mask_num": 2,
+          "time_mask_width": 50,
+          "probability": 0.5
+        }
+      },
+      {
+        "type": "time_stretch",
+        "label_invariant": false,
+        "apply_to": "pretrain_only",
+        "enabled": false,
+        "params": {
+          "rate_range": [0.8, 1.2],
+          "probability": 0.2,
+          "note": "改变BPM，训练节奏敏感任务时禁用；需同步修改bpm标签"
+        }
+      },
+      {
+        "type": "pitch_shift",
+        "label_invariant": false,
+        "apply_to": "pretrain_only",
+        "enabled": false,
+        "params": {
+          "semitones_range": [-2, 2],
+          "probability": 0.2,
+          "note": "改变调性，需同步修改key标签"
+        }
       }
-    },
-    {
-      "type": "spec_augment",
-      "label_invariant": true,
-      "apply_to": "all_stages",
-      "params": {
-        "freq_mask_num": 2,
-        "freq_mask_width": 20,
-        "time_mask_num": 2,
-        "time_mask_width": 50,
-        "probability": 0.5
-      }
-    },
-    {
-      "type": "time_stretch",
-      "label_invariant": false,
-      "apply_to": "pretrain_only",
-      "params": {
-        "rate_range": [0.8, 1.2],
-        "probability": 0.2,
-        "note": "改变BPM，训练节奏敏感任务时禁用；需同步修改bpm标签"
-      }
-    },
-    {
-      "type": "pitch_shift",
-      "label_invariant": false,
-      "apply_to": "pretrain_only",
-      "params": {
-        "semitones_range": [-2, 2],
-        "probability": 0.2,
-        "note": "改变调性，需同步修改key标签"
-      }
-    }
-  ],
+    ]
+  },
   "label_schema": {
     "genre": {
       "type": "single_choice",
