@@ -495,6 +495,7 @@ def save_splits(
     random_state: Optional[int] = None,
     input_manifest_path: Optional[Path] = None,
     upstream_lineage: Optional[str] = None,
+    ood_df: Optional[pd.DataFrame] = None,
 ):
     """保存划分结果"""
     import hashlib
@@ -510,6 +511,10 @@ def save_splits(
     val_df[[id_col]].to_csv(splits_dir / "val.csv", index=False)
     test_df[[id_col]].to_csv(splits_dir / "test.csv", index=False)
     holdout_df[[id_col]].to_csv(splits_dir / "holdout_gold.csv", index=False)
+    # OOD 集（如果有）
+    if "ood" in stats and len(ood_df) > 0 and id_col in ood_df.columns:
+        ood_df[[id_col]].to_csv(splits_dir / "ood.csv", index=False)
+        logger.info(f"  OOD集: {len(ood_df)} 首 → ood.csv")
 
     logger.info(f"划分清单已保存到: {splits_dir}")
 
@@ -593,8 +598,12 @@ def main():
                         help="独立测试集来源（从独立采集的数据池导入，不参与清洗调优，防止迭代污染）")
     parser.add_argument("--holdout-from", type=str, default=None,
                         help="独立holdout集来源（长期封存，跨版本模型对比，必须与训练集来自不同采集批次）")
+    parser.add_argument("--ood-from", type=str, default=None,
+                        help="独立OOD集来源（域外泛化测试，风格/来源与main_pool差异大，不参与训练/验证）")
     parser.add_argument("--strict", action="store_true",
                         help="严格模式：发现跨池重复 audio_id 时直接报错终止（默认只警告）")
+    parser.add_argument("--protect-golden", action="store_true", default=True,
+                        help="黄金集保护：黄金集样本(is_golden=true)不进入 test/holdout/ood，划分时正常分布不特殊处理（默认开启）")
     parser.add_argument("--random-state", type=int, default=42, help="随机种子")
     args = parser.parse_args()
 
@@ -666,8 +675,9 @@ def main():
     # 来源隔离：用独立采集的数据池替换 test/holdout（防止迭代污染和分布漂移）
     # 坑1保护：test-from/holdout-from 样本全部直接进入对应集合，绝对不混入 train/val
     # 坑2保护：audio_id 全局跨池唯一性校验，main/test/holdout 之间不能出现相同 audio_id
-    source_isolation = {"test": None, "holdout": None}
+    source_isolation = {"test": None, "holdout": None, "ood": None}
     overlap_audio_ids = []
+    ood_df = pd.DataFrame(columns=df.columns) if len(df) > 0 else pd.DataFrame()
 
     if args.test_from:
         test_from_path = Path(args.test_from)
@@ -720,12 +730,40 @@ def main():
         else:
             logger.warning(f"  ⚠️  独立holdout集路径不存在: {holdout_from_path}，使用原划分")
 
+    # OOD 集：独立采集，风格/来源与 main_pool 差异大，不参与训练/验证
+    if args.ood_from:
+        ood_from_path = Path(args.ood_from)
+        if not ood_from_path.is_absolute():
+            ood_from_path = PROJECT_ROOT / ood_from_path
+        if ood_from_path.exists():
+            logger.info(f"来源隔离：从独立数据池导入OOD集: {ood_from_path}")
+            ood_df = load_manifest(ood_from_path)
+            source_isolation["ood"] = str(ood_from_path)
+            logger.info(f"  OOD集: {len(ood_df)} 首（不参与训练/验证，仅用于域外泛化测试）")
+        else:
+            logger.warning(f"  ⚠️  OOD集路径不存在: {ood_from_path}，跳过")
+
+    # 黄金集保护：黄金集样本(is_golden=true)不进入 test/holdout/ood
+    # 黄金集物理上在 main_pool，划分时正常分布（可能进 train 也可能进 val），不特殊处理
+    if args.protect_golden and "is_golden" in df.columns:
+        golden_ids = set(df[df["is_golden"] == True]["audio_id"].tolist()) if "audio_id" in df.columns else set()
+        if golden_ids:
+            logger.info(f"黄金集保护：检测到 {len(golden_ids)} 个黄金集样本，确保不进入 test/holdout/ood")
+            for split_name, split_df in [("test", test_df), ("holdout", holdout_df), ("ood", ood_df)]:
+                if "audio_id" in split_df.columns and len(split_df) > 0:
+                    golden_in_split = set(split_df["audio_id"].tolist()) & golden_ids
+                    if golden_in_split:
+                        logger.error(f"  ❌ 黄金集保护失败：{split_name} 集中发现 {len(golden_in_split)} 个黄金集样本")
+                        logger.error(f"     前5个: {list(golden_in_split)[:5]}")
+                        if args.strict:
+                            raise ValueError(f"Golden set leakage: {len(golden_in_split)} golden samples in {split_name}")
+
     # 坑2：audio_id 全局跨池唯一性校验
-    # main_pool (train/val)、test_pool、holdout_pool 之间不能出现相同 audio_id
+    # main_pool (train/val)、test_pool、holdout_pool、ood_pool 之间不能出现相同 audio_id
     logger.info("坑2保护：校验 audio_id 全局跨池唯一性...")
     all_id_sets = {}
-    for split_name, split_df in [("train", train_df), ("val", val_df), ("test", test_df), ("holdout", holdout_df)]:
-        if "audio_id" in split_df.columns:
+    for split_name, split_df in [("train", train_df), ("val", val_df), ("test", test_df), ("holdout", holdout_df), ("ood", ood_df)]:
+        if "audio_id" in split_df.columns and len(split_df) > 0:
             all_id_sets[split_name] = set(split_df["audio_id"].tolist())
         else:
             all_id_sets[split_name] = set()
@@ -760,6 +798,10 @@ def main():
     # 生成统计
     stats = generate_split_stats(train_df, val_df, test_df, holdout_df, args.stratify_by)
     stats["split_method"] = split_method
+    # OOD 集统计
+    if len(ood_df) > 0:
+        stats["ood"] = {"count": len(ood_df), "source": source_isolation.get("ood")}
+        stats["splits"]["ood"] = {"count": len(ood_df), "ratio": 0.0, "note": "独立采集，不参与比例分配"}
     if args.temporal_by:
         stats["temporal_by"] = args.temporal_by
     if args.isolate_by:
@@ -812,6 +854,7 @@ def main():
         random_state=args.random_state,
         input_manifest_path=input_path,
         upstream_lineage=upstream_lineage,
+        ood_df=ood_df,
     )
 
     # === 记录 v2.0 算子级血缘（Lineage v2.0）===
@@ -869,7 +912,10 @@ def main():
     logger.info("=" * 60)
     logger.info("划分完成")
     logger.info(f"  输出目录: {output_dir}")
-    logger.info(f"  train: {len(train_df)} | val: {len(val_df)} | test: {len(test_df)} | holdout: {len(holdout_df)}")
+    ood_count = len(ood_df) if len(ood_df) > 0 else 0
+    logger.info(f"  train: {len(train_df)} | val: {len(val_df)} | test: {len(test_df)} | holdout: {len(holdout_df)} | ood: {ood_count}")
+    if source_isolation.get("ood"):
+        logger.info(f"  OOD来源: {source_isolation['ood']}")
     logger.info("=" * 60)
 
 
