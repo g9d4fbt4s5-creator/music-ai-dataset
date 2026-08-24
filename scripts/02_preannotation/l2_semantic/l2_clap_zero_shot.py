@@ -133,6 +133,12 @@ def extract_embedding(model, audio_path: str, device: str = "cuda") -> np.ndarra
     """
     提取音频的 CLAP 嵌入向量
 
+    关键修复（2026-08-25）：
+    - laion_clap 的 get_audio_embedding_from_data(use_tensor=False) 期望输入是
+      一个**列表**的 int16 numpy 数组，而不是单个 float32 数组或 torch tensor。
+    - 之前用 float32 tensor + use_tensor=True 会报 "expected np.ndarray (got numpy.float32)"。
+    - 正确做法：wav * 32767 → int16 → [wav_int16] → use_tensor=False
+
     Args:
         model: CLAP 模型
         audio_path: 音频文件路径
@@ -143,13 +149,18 @@ def extract_embedding(model, audio_path: str, device: str = "cuda") -> np.ndarra
     """
     import torch
 
-    audio = load_audio(audio_path)
-    audio_tensor = torch.from_numpy(audio).unsqueeze(0).to(device)
+    audio = load_audio(audio_path)  # float32, sr=48000
+
+    # 关键修复1: 转为int16格式（CLAP内部期望16-bit PCM）
+    audio_int16 = (audio * 32767).astype(np.int16)
 
     with torch.no_grad():
-        embedding = model.get_audio_embedding_from_data(audio_tensor, use_tensor=True)
+        # 关键修复2: 传入列表[audio_int16]而不是单个数组，use_tensor=False
+        embedding = model.get_audio_embedding_from_data(
+            x=[audio_int16], use_tensor=False
+        )
 
-    return embedding.cpu().numpy().flatten()
+    return np.array(embedding).flatten()
 
 
 # ===================== Zero-shot 分类 =====================
