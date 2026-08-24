@@ -31,14 +31,14 @@ THRESHOLDS = {
 
     # 音质 (librosa, 使用原始指标 orig_*)
     "snr_db_fail": 10.0,          # < 10dB fail
-    "snr_db_marginal": 20.0,      # < 20dB marginal
+    "snr_db_marginal": 15.0,      # < 15dB marginal (老爵士/黑胶转录正常范围10-15dB, 从20dB下调)
     "clip_ratio_fail": 0.05,      # > 5% 削波 fail
     "clip_ratio_marginal": 0.02,  # > 2% 削波 marginal
     "silence_ratio_fail": 0.80,   # > 80% 静音 fail
     "silence_ratio_marginal": 0.50, # > 50% 静音 marginal
-    "dr_low_fail": 3.0,            # DR < 3 fail
-    "dr_high_fail": 20.0,          # DR > 20 fail
-    "dr_marginal": 5.0,            # DR < 5 marginal
+    "dr_low_fail": 3.0,            # DR < 3 fail (过度压缩)
+    "dr_marginal": 5.0,            # 3 ≤ DR < 5 marginal (压缩偏重)
+    "dr_high_info": 20.0,          # DR > 20 仅记录 info (高动态范围是优点, 古典/爵士/原声常见, 不是缺陷)
 
     # 时长
     "duration_min_fail": 5.0,      # < 5s fail
@@ -47,7 +47,7 @@ THRESHOLDS = {
 
     # 源质量
     "sample_rate_min": 22050,      # < 22050Hz marginal
-    "bitrate_min": 128000,         # < 128kbps marginal
+    # 注意: 比特率检查只对 orig_bitrate(原始有损格式)有意义, FLAC无损压缩比特率随内容变化, 不检查
 }
 
 
@@ -75,7 +75,7 @@ def check_quality(quality_row):
     snr = float(quality_row.get("snr_db", 999))
     clip = float(quality_row.get("clip_ratio", 0))
     silence = float(quality_row.get("silence_ratio", 0))
-    dr = float(quality_row.get("dynamic_range", 10))
+    dr = float(quality_row.get("dynamic_range_db", quality_row.get("dynamic_range", 10)))  # 兼容两种列名
 
     if snr < THRESHOLDS["snr_db_fail"]:
         flags.append(f"low_snr({snr:.1f}dB)")
@@ -101,13 +101,17 @@ def check_quality(quality_row):
         if branch == "pass":
             branch = "marginal"
 
-    if dr < THRESHOLDS["dr_low_fail"] or dr > THRESHOLDS["dr_high_fail"]:
-        flags.append(f"abnormal_dr({dr:.1f})")
+    # DR (动态范围): 高DR是优点, 低DR才是问题
+    if dr < THRESHOLDS["dr_low_fail"]:
+        flags.append(f"low_dr({dr:.1f})")
         branch = "fail"
     elif dr < THRESHOLDS["dr_marginal"]:
-        flags.append(f"low_dr({dr:.1f})")
+        flags.append(f"marginal_dr({dr:.1f})")
         if branch == "pass":
             branch = "marginal"
+    elif dr > THRESHOLDS["dr_high_info"]:
+        # DR > 20 是高动态范围(古典/爵士/原声常见), 仅记录info, 不影响分支
+        flags.append(f"high_dr({dr:.1f})")
 
     reason = "; ".join(flags) if flags else "all_checks_pass"
     return branch, flags, reason
@@ -136,13 +140,18 @@ def check_duration(duration_sec):
 
 
 def check_source_quality(meta_row):
-    """源质量检查（采样率/声道/比特率），返回 (source_branch, flags, reason)"""
+    """源质量检查（采样率/声道/原始比特率），返回 (source_branch, flags, reason)
+
+    注意: 比特率只检查 orig_bitrate(原始有损格式如mp3/aac的比特率)。
+    FLAC是无损压缩, 比特率随内容动态变化, 不反映源质量, 因此不检查。
+    """
     flags = []
     branch = "pass"
 
     sr = int(meta_row.get("sample_rate", 44100))
     channels = int(meta_row.get("channels", 2))
-    bitrate = int(meta_row.get("bit_rate", 320000))
+    # 只读取原始比特率, FLAC转码后的比特率不检查
+    orig_bitrate = meta_row.get("orig_bitrate", None)
 
     if sr < THRESHOLDS["sample_rate_min"]:
         flags.append(f"low_sr({sr}Hz)")
@@ -150,10 +159,13 @@ def check_source_quality(meta_row):
     if channels == 1:
         # mono 只作为 info 标记，不影响分支：很多爵士/老录音本身就是单声道，不是质量问题
         flags.append("mono")
-    if bitrate > 0 and bitrate < THRESHOLDS["bitrate_min"]:
-        flags.append(f"low_bitrate({bitrate//1000}kbps)")
-        if branch == "pass":
-            branch = "marginal"
+    # 比特率检查: 仅当 orig_bitrate 存在且为有损格式时检查
+    if orig_bitrate is not None:
+        orig_bitrate = int(orig_bitrate)
+        if orig_bitrate > 0 and orig_bitrate < 128000:
+            flags.append(f"low_orig_bitrate({orig_bitrate//1000}kbps)")
+            if branch == "pass":
+                branch = "marginal"
 
     reason = "; ".join(flags) if flags else "source_quality_ok"
     return branch, flags, reason
