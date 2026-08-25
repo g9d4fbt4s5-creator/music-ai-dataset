@@ -856,6 +856,10 @@ def main():
                         help="黄金集保护：黄金集样本(is_golden=true)不进入 test/holdout/ood，划分时正常分布不特殊处理（默认开启）")
     parser.add_argument("--qc-report", type=str, default=None,
                         help="QC Gate报告路径，过滤掉final_branch=fail的样本（如2秒超短/非音乐/低质量）")
+    parser.add_argument("--source-type-filter", action="store_true", default=True,
+                        help="ADR-003: 启用source_type过滤，排除AI生成/分轨人声等域外样本（默认开启）")
+    parser.add_argument("--no-source-type-filter", action="store_false", dest="source_type_filter",
+                        help="禁用source_type过滤")
     parser.add_argument("--cross-set-dedup", action="store_true", default=True,
                         help="ADR-003: 启用跨集去重（基于song_group_id，无则降级到指纹相似度），默认开启")
     parser.add_argument("--no-cross-set-dedup", action="store_false", dest="cross_set_dedup",
@@ -884,6 +888,17 @@ def main():
             logger.info(f"QC过滤: 排除 {before_count - len(df)} 个fail样本（{len(fail_ids)}个在QC报告中标记为fail）")
         else:
             logger.warning(f"QC报告不存在: {qc_path}，跳过过滤")
+
+    # P0: source_type 过滤 — 排除域外样本（AI生成、分轨人声等，ADR-003 第7节）
+    source_type_report = None
+    if args.source_type_filter:
+        try:
+            import sys
+            sys.path.insert(0, str(PROJECT_ROOT / "scripts"))
+            from utils.source_type_filter import filter_by_source_type
+            df, source_type_report = filter_by_source_type(df, report_path=None)
+        except ImportError as e:
+            logger.warning(f"source_type_filter 导入失败: {e}，跳过 source_type 过滤")
 
     # P0: 划分前校验音频文件checksum完整性（防止文件存在但已损坏）
     checksum_result = None
