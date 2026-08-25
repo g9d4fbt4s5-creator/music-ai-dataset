@@ -44,5 +44,13 @@
       {"start": "05:41", "title": "at the same time", "artist": "How to count one to ten"},
       {"start": "10:21", "title": "windmill", "artist": "How to count one to ten"}
     ]
+  },
+  "nu_jazz_Illusion_Kira_Linn_Linntett.flac": {
+    "output_prefix": "kira_linn_illusion",
+    "tracks": [
+      {"start": "00:00", "title": "Rage", "artist": "Kira Linn / Linntett"},
+      {"start": "05:05", "title": "Illusion", "artist": "Kira Linn / Linntett"},
+      {"start": "13:18", "title": "Women to Sky", "artist": "Kira Linn / Linntett"}
+    ]
   }
 }
