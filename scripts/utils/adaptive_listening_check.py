@@ -84,16 +84,17 @@ TEMPLATE_REGISTRY: Dict[str, Dict[str, Any]] = {
   <Audio name="audio" value="$audio" zoom="true" waveheight="80" />
   <Header value="样本信息" size="4" />
   <Text name="meta" value="SNR: $snr dB | DR: $dr dB | 静音: $silence% | 来源: $source" />
+  <Text name="focus" value="$focus_note" />
   <Header value="听检判断" size="4" />
   <Choices name="snr_decision" toName="audio" choice="single" required="true" showInline="true">
     <Choice value="acceptable" html="✅ 噪声可接受，质量合格" />
-    <Choice value="vintage_normal" html="🎺 历史录音正常特征" />
+    <Choice value="musical_normal" html="🎵 音乐制作正常特征（曲风/乐器/效果器/演奏法/历史录音）" />
     <Choice value="noise_too_high" html="🔊 噪声过大，影响聆听" />
     <Choice value="uncertain" html="❓ 不确定" />
   </Choices>
   <TextArea name="comment" toName="audio" placeholder="备注（可选）" rows="2" />
 </View>""",
-        "prefill_fields": ["audio", "snr", "dr", "silence", "source"],
+        "prefill_fields": ["audio", "snr", "dr", "silence", "source", "focus_note"],
     },
 
     "qc_content_boundary": {
@@ -414,12 +415,13 @@ class AdaptiveListeningCheck:
             return "无有效听检结果"
 
         if task_type == "qc_snr_calibration":
-            acceptable = decisions.get("acceptable", 0) + decisions.get("vintage_normal", 0)
+            acceptable = decisions.get("acceptable", 0) + decisions.get("musical_normal", 0)
             too_noisy = decisions.get("noise_too_high", 0)
             if acceptable >= total * 0.6:
                 return (
                     f"建议：SNR阈值可从15dB放宽到12dB。"
-                    f"听检{total}首中{acceptable}首({acceptable/total:.0%})噪声可接受或为历史录音正常特征，"
+                    f"听检{total}首中{acceptable}首({acceptable/total:.0%})噪声可接受或为音乐制作正常特征"
+                    f"（曲风/乐器/效果器/演奏法/历史录音），"
                     f"仅{too_noisy}首噪声过大。放宽后marginal占比预计从33%降至7%。"
                 )
             elif too_noisy >= total * 0.4:
