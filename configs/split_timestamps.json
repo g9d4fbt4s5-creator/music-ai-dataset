@@ -27,5 +27,22 @@
       {"start": "32:26", "title": "爱与诚", "artist": "古巨基"},
       {"start": "36:10", "title": "喜欢你", "artist": "G.E.M邓紫棋"}
     ]
+  },
+  "Wave_Antonio_Carlos_Jobim.flac": {
+    "output_prefix": "jobim_wave",
+    "tracks": [
+      {"start": "00:00", "title": "Wave", "artist": "Antonio Carlos Jobim"},
+      {"start": "02:55", "title": "The Red Blouse", "artist": "Antonio Carlos Jobim"},
+      {"start": "07:59", "title": "Look To The Sky", "artist": "Antonio Carlos Jobim"},
+      {"start": "10:23", "title": "Triste", "artist": "Antonio Carlos Jobim"}
+    ]
+  },
+  "~_1st_E.P_How_to_count_one_to_ten.flac": {
+    "output_prefix": "1st_ep",
+    "tracks": [
+      {"start": "00:00", "title": "a siesta", "artist": "How to count one to ten"},
+      {"start": "05:41", "title": "at the same time", "artist": "How to count one to ten"},
+      {"start": "10:21", "title": "windmill", "artist": "How to count one to ten"}
+    ]
   }
 }
