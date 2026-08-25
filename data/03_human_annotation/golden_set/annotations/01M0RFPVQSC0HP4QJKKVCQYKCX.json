@@ -1,0 +1,38 @@
+{
+  "audio_id": "01M0RFPVQSC0HP4QJKKVCQYKCX",
+  "original_filename": "12d7299f2ad4bd182c44d1f2aa14ae17_01M0RFPVQSC0HP4QJKKVCQYKCX.mp3",
+  "duration_sec": 526.341,
+  "format": "mp3",
+  "source_type": "normal",
+  "is_golden": true,
+  "golden_version": "v1.0",
+  "annotation": {
+    "genre_level1": "Jazz",
+    "genre_level2": null,
+    "genre_level3": null,
+    "genre_confidence": "pending",
+    "instruments": [],
+    "instruments_gm128_ids": [],
+    "vocal_presence": "pending",
+    "mood_tags": [],
+    "mood_vad": {"valence": null, "arousal": null, "dominance": null},
+    "tempo_bpm": null,
+    "time_signature": null,
+    "key": null,
+    "is_cover": null,
+    "is_live": null,
+    "quality_notes": "长曲（526秒），可能为现场录音或长即兴，需人工确认",
+    "special_features": []
+  },
+  "qc_snapshot": {
+    "final_branch": "pass",
+    "snr_db": null,
+    "dr_db": null,
+    "music_score": null,
+    "silence_ratio": null
+  },
+  "annotator": null,
+  "annotation_timestamp": null,
+  "review_status": "pending_annotation",
+  "golden_purpose": ["KNN_propagation_seed", "few_shot_example", "regression_test", "IAA_benchmark"]
+}

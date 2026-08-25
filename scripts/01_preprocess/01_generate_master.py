@@ -322,6 +322,15 @@ def main():
     # 加载 manifest
     df = load_manifest()
 
+    # P0: source_type 过滤 — 排除域外样本（AI生成、分轨人声等，ADR-003 第7节）
+    try:
+        import sys
+        sys.path.insert(0, str(PROJECT_ROOT / "scripts"))
+        from utils.source_type_filter import filter_by_source_type
+        df, _ = filter_by_source_type(df, report_path=None)
+    except ImportError as e:
+        logger.warning(f"source_type_filter 导入失败: {e}，跳过 source_type 过滤")
+
     # 过滤要处理的音频
     if args.audio_id:
         df = df[df["audio_id"] == args.audio_id]
