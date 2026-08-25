@@ -454,6 +454,256 @@ def stratified_split(
     return train_df, val_df, test_df, holdout_df
 
 
+# ========== ADR-003: 跨集去重 ==========
+CROSS_SET_SIM_THRESHOLD = 0.50  # 指纹相似度 > 0.5 视为跨集重复（ADR-003）
+
+
+def cross_set_dedup_by_song_group(
+    train_df: pd.DataFrame,
+    target_df: pd.DataFrame,
+    set_name: str = "test",
+) -> Tuple[pd.DataFrame, List[Dict]]:
+    """
+    基于 song_group_id 的跨集去重（ADR-003 定义）。
+    移除 target_df 中与 train_df 共享同一 song_group_id 的样本。
+
+    这是跨集去重的首选方法，因为 song_group_id 是 ADR-003 定义的
+    歌曲级唯一标识，同一首歌的不同版本/翻唱/remix/切片共享同一 ID。
+
+    Args:
+        train_df: 训练集 DataFrame（含 audio_id, song_group_id）
+        target_df: 目标集 DataFrame（val/test/holdout）
+        set_name: 目标集名称（用于日志和报告）
+
+    Returns:
+        cleaned_df: 去重后的目标集
+        removed_list: 被移除的样本列表（用于审计）
+    """
+    if "song_group_id" not in train_df.columns or "song_group_id" not in target_df.columns:
+        logger.warning(f"[{set_name}] 缺少 song_group_id 字段，跳过基于 song_group_id 的跨集去重")
+        return target_df.copy(), []
+
+    # 获取 train 中的 song_group_id 集合（排除空值和 unknown）
+    train_groups = set(train_df["song_group_id"].dropna().unique())
+    train_groups = {g for g in train_groups if g and not str(g).startswith("unknown_song_")}
+
+    if not train_groups:
+        logger.info(f"[{set_name}] train 集无有效 song_group_id，跳过跨集去重")
+        return target_df.copy(), []
+
+    keep_indices = []
+    removed_list = []
+
+    for idx, row in target_df.iterrows():
+        sgid = row.get("song_group_id")
+        if pd.isna(sgid) or not sgid or str(sgid).startswith("unknown_song_"):
+            # 无有效 song_group_id，保守保留
+            keep_indices.append(idx)
+            continue
+
+        if sgid in train_groups:
+            # 与 train 集共享同一 song_group_id，移除
+            matched_train = train_df[train_df["song_group_id"] == sgid]["audio_id"].tolist()
+            removed_list.append({
+                "removed_id": row["audio_id"],
+                "matched_train_ids": matched_train,
+                "song_group_id": sgid,
+                "reason": "same_song_group_as_train",
+                "set": set_name,
+            })
+            logger.info(f"[{set_name}] 跨集去重移除: {row['audio_id']} "
+                        f"(song_group={sgid}, 与train {len(matched_train)}首重复)")
+        else:
+            keep_indices.append(idx)
+
+    cleaned_df = target_df.loc[keep_indices].copy()
+    return cleaned_df, removed_list
+
+
+def cross_set_dedup_by_fingerprint(
+    train_df: pd.DataFrame,
+    target_df: pd.DataFrame,
+    fingerprint_file: Optional[Path] = None,
+    threshold: float = CROSS_SET_SIM_THRESHOLD,
+    set_name: str = "test",
+) -> Tuple[pd.DataFrame, List[Dict]]:
+    """
+    基于 Chromaprint 指纹相似度的跨集去重（ADR-003 定义）。
+    移除 target_df 中与 train_df 指纹相似度 > threshold 的样本。
+
+    当 song_group_id 不可用时使用此方法。指纹文件格式为 JSON:
+    {"audio_id": [fp_int_1, fp_int_2, ...], ...}
+
+    Args:
+        train_df: 训练集 DataFrame（含 audio_id）
+        target_df: 目标集 DataFrame
+        fingerprint_file: 指纹文件路径（JSON格式）
+        threshold: 相似度阈值（默认0.5，ADR-003定义）
+        set_name: 目标集名称
+
+    Returns:
+        cleaned_df: 去重后的目标集
+        removed_list: 被移除的样本列表
+    """
+    if not fingerprint_file or not Path(fingerprint_file).exists():
+        logger.warning(f"[{set_name}] 指纹文件不存在，跳过基于指纹的跨集去重")
+        return target_df.copy(), []
+
+    try:
+        with open(fingerprint_file, "r", encoding="utf-8") as f:
+            fp_dict_raw = json.load(f)
+        fp_dict = {aid: np.array(fp, dtype=np.uint32) for aid, fp in fp_dict_raw.items()}
+    except Exception as e:
+        logger.warning(f"[{set_name}] 指纹文件加载失败: {e}，跳过跨集去重")
+        return target_df.copy(), []
+
+    train_ids = set(train_df["audio_id"].unique())
+    train_fps = {aid: fp_dict[aid] for aid in train_ids if aid in fp_dict}
+
+    if not train_fps:
+        logger.warning(f"[{set_name}] train 集无指纹数据，跳过跨集去重")
+        return target_df.copy(), []
+
+    def compute_fp_similarity(fp1: np.ndarray, fp2: np.ndarray) -> float:
+        """计算两个 Chromaprint 指纹的相似度（基于 bit error rate）"""
+        if len(fp1) == 0 or len(fp2) == 0:
+            return 0.0
+        min_len = min(len(fp1), len(fp2))
+        fp1, fp2 = fp1[:min_len], fp2[:min_len]
+        xor = np.bitwise_xor(fp1, fp2)
+        bit_diff = np.sum(np.unpackbits(xor.view(np.uint8)))
+        total_bits = min_len * 32
+        return 1.0 - (bit_diff / total_bits) if total_bits > 0 else 0.0
+
+    keep_indices = []
+    removed_list = []
+
+    for idx, row in target_df.iterrows():
+        tid = row["audio_id"]
+        tfp = fp_dict.get(tid)
+
+        if tfp is None:
+            keep_indices.append(idx)
+            continue
+
+        max_sim = 0.0
+        matched_train = None
+        for trid, trfp in train_fps.items():
+            sim = compute_fp_similarity(tfp, trfp)
+            if sim > max_sim:
+                max_sim = sim
+                matched_train = trid
+
+        if max_sim > threshold:
+            removed_list.append({
+                "removed_id": tid,
+                "matched_train_id": matched_train,
+                "similarity": round(float(max_sim), 4),
+                "reason": "fingerprint_similarity_above_threshold",
+                "set": set_name,
+            })
+            logger.info(f"[{set_name}] 指纹跨集去重移除: {tid} "
+                        f"(sim={max_sim:.3f} vs train {matched_train})")
+        else:
+            keep_indices.append(idx)
+
+    cleaned_df = target_df.loc[keep_indices].copy()
+    return cleaned_df, removed_list
+
+
+def apply_cross_set_dedup(
+    train_df: pd.DataFrame,
+    val_df: pd.DataFrame,
+    test_df: pd.DataFrame,
+    holdout_df: pd.DataFrame,
+    fingerprint_file: Optional[Path] = None,
+    output_dir: Optional[Path] = None,
+) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, Dict]:
+    """
+    对 val/test/holdout 执行跨集去重（ADR-003 要求）。
+
+    优先使用 song_group_id 方法（ADR-003 定义的歌曲级隔离），
+    如果 song_group_id 不可用则降级到指纹相似度方法。
+
+    Args:
+        train_df: 训练集
+        val_df: 验证集
+        test_df: 测试集
+        holdout_df: 黄金测试集
+        fingerprint_file: 指纹文件路径（可选）
+        output_dir: 输出目录（用于保存去重报告）
+
+    Returns:
+        cleaned_val, cleaned_test, cleaned_holdout: 去重后的各集
+        report: 去重报告
+    """
+    logger.info("=" * 60)
+    logger.info("ADR-003 跨集去重")
+    logger.info("=" * 60)
+
+    all_removed = []
+
+    # 对 val 去重
+    cleaned_val, removed_val = cross_set_dedup_by_song_group(train_df, val_df, "val")
+    if removed_val:
+        all_removed.extend(removed_val)
+    elif fingerprint_file:
+        cleaned_val, removed_val = cross_set_dedup_by_fingerprint(
+            train_df, val_df, fingerprint_file, set_name="val")
+        all_removed.extend(removed_val)
+
+    # 对 test 去重
+    cleaned_test, removed_test = cross_set_dedup_by_song_group(train_df, test_df, "test")
+    if removed_test:
+        all_removed.extend(removed_test)
+    elif fingerprint_file:
+        cleaned_test, removed_test = cross_set_dedup_by_fingerprint(
+            train_df, test_df, fingerprint_file, set_name="test")
+        all_removed.extend(removed_test)
+
+    # 对 holdout 去重（holdout 是独立采集的，也需要检查与 train 的重复）
+    cleaned_holdout, removed_holdout = cross_set_dedup_by_song_group(
+        train_df, holdout_df, "holdout")
+    if removed_holdout:
+        all_removed.extend(removed_holdout)
+    elif fingerprint_file:
+        cleaned_holdout, removed_holdout = cross_set_dedup_by_fingerprint(
+            train_df, holdout_df, fingerprint_file, set_name="holdout")
+        all_removed.extend(removed_holdout)
+
+    report = {
+        "method": "song_group_id (primary) / fingerprint_similarity (fallback)",
+        "threshold_song_group": "exact_match",
+        "threshold_fingerprint": CROSS_SET_SIM_THRESHOLD,
+        "val_original": len(val_df),
+        "val_removed": len(removed_val),
+        "val_final": len(cleaned_val),
+        "test_original": len(test_df),
+        "test_removed": len(removed_test),
+        "test_final": len(cleaned_test),
+        "holdout_original": len(holdout_df),
+        "holdout_removed": len(removed_holdout),
+        "holdout_final": len(cleaned_holdout),
+        "total_removed": len(all_removed),
+        "removed_samples": all_removed,
+    }
+
+    logger.info(f"跨集去重完成: val移除{len(removed_val)}/{len(val_df)}, "
+                f"test移除{len(removed_test)}/{len(test_df)}, "
+                f"holdout移除{len(removed_holdout)}/{len(holdout_df)}, "
+                f"总计移除{len(all_removed)}")
+
+    # 保存报告
+    if output_dir:
+        output_dir.mkdir(parents=True, exist_ok=True)
+        report_path = output_dir / "cross_set_dedup_report.json"
+        with open(report_path, "w", encoding="utf-8") as f:
+            json.dump(report, f, indent=2, ensure_ascii=False, default=str)
+        logger.info(f"跨集去重报告已保存: {report_path}")
+
+    return cleaned_val, cleaned_test, cleaned_holdout, report
+
+
 def generate_split_stats(
     train_df: pd.DataFrame,
     val_df: pd.DataFrame,
@@ -606,6 +856,12 @@ def main():
                         help="黄金集保护：黄金集样本(is_golden=true)不进入 test/holdout/ood，划分时正常分布不特殊处理（默认开启）")
     parser.add_argument("--qc-report", type=str, default=None,
                         help="QC Gate报告路径，过滤掉final_branch=fail的样本（如2秒超短/非音乐/低质量）")
+    parser.add_argument("--cross-set-dedup", action="store_true", default=True,
+                        help="ADR-003: 启用跨集去重（基于song_group_id，无则降级到指纹相似度），默认开启")
+    parser.add_argument("--no-cross-set-dedup", action="store_false", dest="cross_set_dedup",
+                        help="禁用跨集去重")
+    parser.add_argument("--fingerprint-file", type=str, default=None,
+                        help="Chromaprint指纹文件路径（JSON格式: {audio_id: [fp_ints]}），song_group_id不可用时使用")
     parser.add_argument("--random-state", type=int, default=42, help="随机种子")
     args = parser.parse_args()
 
@@ -809,6 +1065,22 @@ def main():
                 f"Use --strict=False to override (not recommended)."
             )
 
+    # ========== ADR-003: 跨集去重 ==========
+    # 在来源隔离和坑2校验之后执行
+    # 优先使用 song_group_id（ADR-003定义的歌曲级隔离），无则降级到指纹相似度
+    # 注意：output_dir 尚未定义，报告暂存到 cross_set_dedup_report，稍后保存
+    cross_set_dedup_report = None
+    if args.cross_set_dedup:
+        fp_file = Path(args.fingerprint_file) if args.fingerprint_file else None
+        val_df, test_df, holdout_df, cross_set_dedup_report = apply_cross_set_dedup(
+            train_df=train_df,
+            val_df=val_df,
+            test_df=test_df,
+            holdout_df=holdout_df,
+            fingerprint_file=fp_file,
+            output_dir=None,  # 稍后保存
+        )
+
     # 生成统计
     stats = generate_split_stats(train_df, val_df, test_df, holdout_df, args.stratify_by)
     stats["split_method"] = split_method
@@ -860,6 +1132,29 @@ def main():
                 upstream_lineage = str(lineage_file)
                 logger.info(f"上游血缘: {upstream_lineage}")
                 break
+
+    # ========== 保存 ADR-003 跨集去重报告 ==========
+    if cross_set_dedup_report:
+        stats["cross_set_dedup"] = {
+            "enabled": True,
+            "method": cross_set_dedup_report["method"],
+            "total_removed": cross_set_dedup_report["total_removed"],
+            "val_removed": cross_set_dedup_report["val_removed"],
+            "test_removed": cross_set_dedup_report["test_removed"],
+            "holdout_removed": cross_set_dedup_report["holdout_removed"],
+        }
+        # 保存报告到 output_dir
+        output_dir.mkdir(parents=True, exist_ok=True)
+        report_path = output_dir / "cross_set_dedup_report.json"
+        with open(report_path, "w", encoding="utf-8") as f:
+            json.dump(cross_set_dedup_report, f, indent=2, ensure_ascii=False, default=str)
+        logger.info(f"ADR-003 跨集去重报告已保存: {report_path}")
+        logger.info(f"  总计移除: {cross_set_dedup_report['total_removed']} 首 "
+                    f"(val={cross_set_dedup_report['val_removed']}, "
+                    f"test={cross_set_dedup_report['test_removed']}, "
+                    f"holdout={cross_set_dedup_report['holdout_removed']})")
+    elif args.cross_set_dedup:
+        logger.info("ADR-003 跨集去重: 已启用，但无重复样本移除")
 
     # 保存
     save_splits(
