@@ -35,16 +35,16 @@ THRESHOLDS = {
     "clip_ratio_fail": 0.05,      # > 5% 削波 fail
     "clip_ratio_marginal": 0.02,  # > 2% 削波 marginal
     "silence_ratio_fail": 0.80,   # > 80% 静音 fail
-    "silence_ratio_marginal": 0.50, # > 50% 静音 marginal
+    "silence_ratio_marginal": 0.60, # > 60% 静音 marginal (爵士/古典长前奏/间奏/尾奏正常, 从50%放宽到60%)
     "dr_low_fail": 3.0,            # DR < 3 fail (过度压缩)
     "dr_marginal": 5.0,            # 3 ≤ DR < 5 marginal (压缩偏重)
     "dr_high_info": 20.0,          # DR > 20 仅记录 info (高动态范围是优点, 古典/爵士/原声常见, 不是缺陷)
 
     # v6新增: LUFS 集成响度
     "lufs_fail_low": -36.0,        # < -36 LUFS fail (太轻)
-    "lufs_fail_high": -6.0,        # > -6 LUFS fail (爆响)
-    "lufs_marginal_low": -28.0,    # -36 ~ -28 LUFS marginal
-    "lufs_marginal_high": -11.0,   # -11 ~ -6 LUFS marginal
+    "lufs_fail_high": -4.0,         # > -4 LUFS fail (爆响; 金属/电子 -8~-4为正常母带风格, 从-6放宽到-4)
+    "lufs_marginal_low": -28.0,     # -36 ~ -28 LUFS marginal
+    "lufs_marginal_high": -8.0,     # -8 ~ -4 LUFS marginal (金属/电子正常母带风格, 从-11调整到-8)
 
     # v6新增: DC offset 直流偏移 (quality报告暂无, 预留接口)
     "dc_offset_fail": 0.15,         # > 0.15 fail (直流偏移带来爆音)
