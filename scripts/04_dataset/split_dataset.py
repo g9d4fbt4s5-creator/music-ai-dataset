@@ -671,6 +671,21 @@ def apply_cross_set_dedup(
             train_df, holdout_df, fingerprint_file, set_name="holdout")
         all_removed.extend(removed_holdout)
 
+    # 【新增】val vs test 去重（防止同一 artist/song 被分到 val 和 test）
+    removed_test_val = []
+    if len(cleaned_val) > 0 and len(cleaned_test) > 0:
+        cleaned_test, removed_test_val = cross_set_dedup_by_song_group(
+            cleaned_val, cleaned_test, "test_vs_val")
+        if removed_test_val:
+            all_removed.extend(removed_test_val)
+            logger.info(f"val-test 去重: 移除 {len(removed_test_val)} 首重复样本")
+        elif fingerprint_file:
+            cleaned_test, removed_test_val = cross_set_dedup_by_fingerprint(
+                cleaned_val, cleaned_test, fingerprint_file, set_name="test_vs_val")
+            if removed_test_val:
+                all_removed.extend(removed_test_val)
+                logger.info(f"val-test 指纹去重: 移除 {len(removed_test_val)} 首重复样本")
+
     report = {
         "method": "song_group_id (primary) / fingerprint_similarity (fallback)",
         "threshold_song_group": "exact_match",
@@ -679,7 +694,9 @@ def apply_cross_set_dedup(
         "val_removed": len(removed_val),
         "val_final": len(cleaned_val),
         "test_original": len(test_df),
-        "test_removed": len(removed_test),
+        "test_removed_train": len(removed_test),
+        "test_removed_val_vs_test": len(removed_test_val),
+        "test_removed_total": len(removed_test) + len(removed_test_val),
         "test_final": len(cleaned_test),
         "holdout_original": len(holdout_df),
         "holdout_removed": len(removed_holdout),
@@ -928,44 +945,71 @@ def main():
         logger.info(f"  分层字段: {args.stratify_by or '无（随机抽样）'}")
         logger.info(f"  随机种子: {args.random_state}")
 
-        # 分层抽样（复用现有逻辑）
-        if args.stratify_by and args.stratify_by in df.columns:
-            logger.info(f"按 '{args.stratify_by}' 分层抽样")
+        # 分层字段 fallback：genre_major → cluster_id → source_type → 随机
+        stratify_col = args.stratify_by
+        if stratify_col and (stratify_col not in df.columns or df[stratify_col].isna().all()):
+            for fallback_col in ["cluster_id", "source_type"]:
+                if fallback_col in df.columns and not df[fallback_col].isna().all():
+                    logger.info(f"黄金集分层字段 fallback: {stratify_col} → {fallback_col}")
+                    stratify_col = fallback_col
+                    break
+            else:
+                stratify_col = None
+                logger.warning("无可用分层字段，退化为随机抽样")
+
+        # 全局上限：最少3首，不超过比例
+        max_total = max(int(n_total * args.golden_ratio), 3)
+        max_total = min(max_total, n_total)
+
+        # 分层抽样（每组保底1首）
+        if stratify_col:
+            logger.info(f"按 '{stratify_col}' 分层抽样（每组保底1首，全局上限{max_total}首）")
             golden_df = pd.DataFrame()
-            for _, group in df.groupby(args.stratify_by):
+            group_sizes = []
+            for group_key, group in df.groupby(stratify_col):
                 n_group = max(int(len(group) * args.golden_ratio), 1)
                 n_group = min(n_group, len(group))
                 sample = group.sample(n=n_group, random_state=args.random_state)
                 golden_df = pd.concat([golden_df, sample])
+                group_sizes.append((group_key, len(group), n_group))
             golden_df = golden_df.reset_index(drop=True)
-            # 保底抽样后调整：每个分层组至少保留1首，不破坏保底
-            if len(golden_df) > n_golden:
-                # 保底感知裁剪：每组先保留1首，多余样本中随机裁剪
-                keep_ids = set()
-                for _, group in golden_df.groupby(args.stratify_by):
-                    # 每组保留1首（随机选）
-                    keep_one = group.sample(n=1, random_state=args.random_state)
-                    keep_ids.add(keep_one["audio_id"].iloc[0])
-                # 保底样本必须保留
-                keep_df = golden_df[golden_df["audio_id"].isin(keep_ids)]
-                # 从非保底样本中裁剪到目标数量
-                extra_df = golden_df[~golden_df["audio_id"].isin(keep_ids)]
-                need_extra = n_golden - len(keep_df)
-                if need_extra > 0 and len(extra_df) > 0:
-                    extra_sample = extra_df.sample(n=min(need_extra, len(extra_df)), random_state=args.random_state)
-                    golden_df = pd.concat([keep_df, extra_sample]).reset_index(drop=True)
-                else:
-                    golden_df = keep_df.reset_index(drop=True)
-                logger.info(f"保底感知裁剪: {len(golden_df)} 首（每组至少1首，原{len(golden_df)+len(extra_df)-len(keep_df)}首）")
-            elif len(golden_df) < n_golden:
+
+            # 日志：输出每个组抽了多少首
+            logger.info("各分层组抽样情况:")
+            for gkey, gsize, nsamp in group_sizes:
+                logger.info(f"  {gkey}: {nsamp}/{gsize} ({nsamp/gsize*100:.1f}%)")
+
+            # 如果保底导致超额，从大众组优先裁剪（每组至少留1首）
+            if len(golden_df) > max_total:
+                excess = len(golden_df) - max_total
+                # 按组大小降序，从大众组开始裁
+                group_counts = golden_df.groupby(stratify_col).size().sort_values(ascending=False)
+                for group_key in group_counts.index:
+                    if excess <= 0:
+                        break
+                    group_mask = golden_df[stratify_col] == group_key
+                    group_sampled = golden_df[group_mask]
+                    # 每组至少留1首
+                    can_remove = len(group_sampled) - 1
+                    remove = min(can_remove, excess)
+                    if remove > 0:
+                        to_remove = group_sampled.sample(n=remove, random_state=args.random_state)
+                        golden_df = golden_df.drop(to_remove.index)
+                        excess -= remove
+                        logger.info(f"  从大众组 '{group_key}' 裁剪 {remove} 首（剩余{len(group_sampled)-remove}首）")
+                golden_df = golden_df.reset_index(drop=True)
+                logger.info(f"保底超额，已从大众组裁剪至 {len(golden_df)} 首（上限 {max_total}）")
+            # 如果总数不足，从剩余样本补充
+            elif len(golden_df) < max_total:
                 remaining = df[~df["audio_id"].isin(golden_df["audio_id"])]
-                need = n_golden - len(golden_df)
-                extra = remaining.sample(n=min(need, len(remaining)), random_state=args.random_state)
-                golden_df = pd.concat([golden_df, extra]).reset_index(drop=True)
-                logger.info(f"补充抽样: +{len(extra)} 首（达到目标{n_golden}首）")
+                need = min(max_total - len(golden_df), len(remaining))
+                if need > 0:
+                    extra = remaining.sample(n=need, random_state=args.random_state)
+                    golden_df = pd.concat([golden_df, extra]).reset_index(drop=True)
+                    logger.info(f"补充随机样本: +{need} 首（达到目标{max_total}首）")
         else:
-            logger.info("随机抽样（无分层字段）")
-            golden_df = df.sample(n=n_golden, random_state=args.random_state).reset_index(drop=True)
+            logger.info(f"随机抽样（无分层字段），目标 {max_total} 首")
+            golden_df = df.sample(n=max_total, random_state=args.random_state).reset_index(drop=True)
 
         golden_ids = golden_df["audio_id"].tolist()
         logger.info(f"黄金集抽样完成: {len(golden_df)}/{n_total} ({len(golden_df)/n_total:.1%})")
