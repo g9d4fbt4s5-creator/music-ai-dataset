@@ -40,6 +40,19 @@ THRESHOLDS = {
     "dr_marginal": 5.0,            # 3 ≤ DR < 5 marginal (压缩偏重)
     "dr_high_info": 20.0,          # DR > 20 仅记录 info (高动态范围是优点, 古典/爵士/原声常见, 不是缺陷)
 
+    # v6新增: LUFS 集成响度
+    "lufs_fail_low": -36.0,        # < -36 LUFS fail (太轻)
+    "lufs_fail_high": -6.0,        # > -6 LUFS fail (爆响)
+    "lufs_marginal_low": -28.0,    # -36 ~ -28 LUFS marginal
+    "lufs_marginal_high": -11.0,   # -11 ~ -6 LUFS marginal
+
+    # v6新增: DC offset 直流偏移 (quality报告暂无, 预留接口)
+    "dc_offset_fail": 0.15,         # > 0.15 fail (直流偏移带来爆音)
+    "dc_offset_marginal": 0.05,     # 0.05 ~ 0.15 marginal
+
+    # v6新增: 可解码性
+    "decode_fail_on_corrupted": True,  # corrupted=True 直接 fail
+
     # 时长
     "duration_min_fail": 5.0,      # < 5s fail
     "duration_long_form": 900.0,   # > 15min tag=long_form
@@ -68,53 +81,103 @@ def classify_content(yamnet_row):
 
 
 def check_quality(quality_row):
-    """librosa 音质检查，返回 (quality_branch, flags, reason)"""
+    """librosa 音质检查，返回 (quality_branch, flags, reason, quality_warn)
+
+    v6新增: LUFS集成响度检查、DC offset直流偏移检查(预留接口)
+    quality_warn: 触发marginal的全部原因列表, 人工审核时一目了然
+    """
     flags = []
+    quality_warn = []  # v6新增: 只记录marginal/fail级别的警告
     branch = "pass"
 
     snr = float(quality_row.get("snr_db", 999))
-    clip = float(quality_row.get("clip_ratio", 0))
+    clip = float(quality_row.get("clipping_ratio", quality_row.get("clip_ratio", 0)))
     silence = float(quality_row.get("silence_ratio", 0))
     dr = float(quality_row.get("dynamic_range_db", quality_row.get("dynamic_range", 10)))  # 兼容两种列名
+    # v6新增: LUFS集成响度
+    lufs = quality_row.get("loudness_lufs", None)
+    if lufs is not None and str(lufs).lower() not in ("nan", "none", ""):
+        lufs = float(lufs)
+    else:
+        lufs = None
+    # v6新增: DC offset (quality报告暂无, 预留接口)
+    dc_offset = quality_row.get("dc_offset", None)
+    if dc_offset is not None and str(dc_offset).lower() not in ("nan", "none", ""):
+        dc_offset = float(dc_offset)
+    else:
+        dc_offset = None
 
     if snr < THRESHOLDS["snr_db_fail"]:
         flags.append(f"low_snr({snr:.1f}dB)")
+        quality_warn.append(f"low_snr:{snr:.1f}dB")
         branch = "fail"
     elif snr < THRESHOLDS["snr_db_marginal"]:
         flags.append(f"marginal_snr({snr:.1f}dB)")
+        quality_warn.append(f"marginal_snr:{snr:.1f}dB")
         if branch == "pass":
             branch = "marginal"
 
     if clip > THRESHOLDS["clip_ratio_fail"]:
         flags.append(f"high_clipping({clip:.1%})")
+        quality_warn.append(f"high_clipping:{clip:.1%}")
         branch = "fail"
     elif clip > THRESHOLDS["clip_ratio_marginal"]:
         flags.append(f"marginal_clipping({clip:.1%})")
+        quality_warn.append(f"marginal_clipping:{clip:.1%}")
         if branch == "pass":
             branch = "marginal"
 
     if silence > THRESHOLDS["silence_ratio_fail"]:
         flags.append(f"high_silence({silence:.1%})")
+        quality_warn.append(f"high_silence:{silence:.1%}")
         branch = "fail"
     elif silence > THRESHOLDS["silence_ratio_marginal"]:
         flags.append(f"marginal_silence({silence:.1%})")
+        quality_warn.append(f"marginal_silence:{silence:.1%}")
         if branch == "pass":
             branch = "marginal"
 
     # DR (动态范围): 高DR是优点, 低DR才是问题
     if dr < THRESHOLDS["dr_low_fail"]:
         flags.append(f"low_dr({dr:.1f})")
+        quality_warn.append(f"low_dr:{dr:.1f}")
         branch = "fail"
     elif dr < THRESHOLDS["dr_marginal"]:
         flags.append(f"marginal_dr({dr:.1f})")
+        quality_warn.append(f"marginal_dr:{dr:.1f}")
         if branch == "pass":
             branch = "marginal"
     elif dr > THRESHOLDS["dr_high_info"]:
         # DR > 20 是高动态范围(古典/爵士/原声常见), 仅记录info, 不影响分支
         flags.append(f"high_dr({dr:.1f})")
 
+    # v6新增: LUFS集成响度检查
+    if lufs is not None:
+        if lufs < THRESHOLDS["lufs_fail_low"] or lufs > THRESHOLDS["lufs_fail_high"]:
+            flags.append(f"lufs_extreme({lufs:.1f} LUFS)")
+            quality_warn.append(f"lufs_extreme:{lufs:.1f}LUFS")
+            branch = "fail"
+        elif (THRESHOLDS["lufs_fail_low"] <= lufs <= THRESHOLDS["lufs_marginal_low"] or
+              THRESHOLDS["lufs_marginal_high"] <= lufs <= THRESHOLDS["lufs_fail_high"]):
+            flags.append(f"marginal_lufs({lufs:.1f} LUFS)")
+            quality_warn.append(f"marginal_lufs:{lufs:.1f}LUFS")
+            if branch == "pass":
+                branch = "marginal"
+
+    # v6新增: DC offset直流偏移检查 (预留接口, 当前quality报告暂无此字段)
+    if dc_offset is not None:
+        if dc_offset > THRESHOLDS["dc_offset_fail"]:
+            flags.append(f"high_dc_offset({dc_offset:.3f})")
+            quality_warn.append(f"high_dc_offset:{dc_offset:.3f}")
+            branch = "fail"
+        elif dc_offset > THRESHOLDS["dc_offset_marginal"]:
+            flags.append(f"marginal_dc_offset({dc_offset:.3f})")
+            quality_warn.append(f"marginal_dc_offset:{dc_offset:.3f}")
+            if branch == "pass":
+                branch = "marginal"
+
     reason = "; ".join(flags) if flags else "all_checks_pass"
-    return branch, flags, reason
+    return branch, flags, reason, quality_warn
 
 
 def check_duration(duration_sec):
@@ -168,6 +231,29 @@ def check_source_quality(meta_row):
                 branch = "marginal"
 
     reason = "; ".join(flags) if flags else "source_quality_ok"
+    return branch, flags, reason
+
+
+def check_decodeability(quality_row):
+    """v6新增: 可解码性检查，返回 (decode_branch, flags, reason)
+
+    corrupted=True 或 全零/全NaN音频 直接 fail。
+    """
+    flags = []
+    branch = "pass"
+
+    corrupted = quality_row.get("corrupted", False)
+    # 兼容字符串格式
+    if isinstance(corrupted, str):
+        corrupted = corrupted.lower() in ("true", "1", "yes")
+
+    if corrupted and THRESHOLDS["decode_fail_on_corrupted"]:
+        flags.append("corrupted_audio")
+        branch = "fail"
+        reason = "corrupted_audio_unable_to_decode"
+    else:
+        reason = "decode_ok"
+
     return branch, flags, reason
 
 
@@ -243,9 +329,20 @@ def run_qc_gate(manifest_path, yamnet_path, quality_path, output_path,
         quality_branch = "pass"
         quality_flags = []
         quality_reason = "no_quality_data"
+        quality_warn = []  # v6新增: 触发marginal/fail的全部原因
         if not quality.empty and audio_id in quality["audio_id"].values:
             qrow = quality[quality["audio_id"] == audio_id].iloc[0]
-            quality_branch, quality_flags, quality_reason = check_quality(qrow)
+            quality_branch, quality_flags, quality_reason, quality_warn = check_quality(qrow)
+
+        # v6新增: 2.5 可解码性检查
+        decode_branch = "pass"
+        decode_flags = []
+        decode_reason = "no_quality_data"
+        if not quality.empty and audio_id in quality["audio_id"].values:
+            qrow = quality[quality["audio_id"] == audio_id].iloc[0]
+            decode_branch, decode_flags, decode_reason = check_decodeability(qrow)
+            if decode_branch == "fail":
+                quality_warn.append("corrupted_audio")
 
         # 3. 时长检查
         duration_branch, duration_tags, duration_reason = check_duration(duration)
@@ -267,16 +364,17 @@ def run_qc_gate(manifest_path, yamnet_path, quality_path, output_path,
         # 6. 合并决策
         final_branch = merge_branches([
             content_branch, quality_branch, duration_branch,
-            source_branch, blacklist_branch
+            source_branch, blacklist_branch, decode_branch
         ])
 
-        all_flags = quality_flags + duration_tags + source_flags + blacklist_hits
+        all_flags = quality_flags + duration_tags + source_flags + blacklist_hits + decode_flags
         all_reasons = {
             "content": content_reason,
             "quality": quality_reason,
             "duration": duration_reason,
             "source": source_reason,
             "blacklist": blacklist_reason,
+            "decode": decode_reason,
         }
 
         results.append({
@@ -288,8 +386,10 @@ def run_qc_gate(manifest_path, yamnet_path, quality_path, output_path,
             "quality_branch": quality_branch,
             "duration_branch": duration_branch,
             "source_branch": source_branch,
+            "decode_branch": decode_branch,  # v6新增
             "final_branch": final_branch,
             "flags": json.dumps(all_flags, ensure_ascii=False),
+            "quality_warn": json.dumps(quality_warn, ensure_ascii=False),  # v6新增: 触发marginal/fail的全部原因
             "flag_for_review": final_branch == "marginal",
             "reasons": json.dumps(all_reasons, ensure_ascii=False),
         })
