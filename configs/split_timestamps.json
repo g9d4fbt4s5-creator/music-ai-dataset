@@ -1,0 +1,31 @@
+{
+  "YES_+20_-40.flac": {
+    "output_prefix": "rb_playlist",
+    "tracks": [
+      {"start": "00:00", "title": "Call You Tonight", "artist": "Whitney Houston"},
+      {"start": "04:09", "title": "Leave The Door Open", "artist": "Bruno Mars & Anderson .Paak & Silk Sonic"},
+      {"start": "08:10", "title": "Dilemma", "artist": "Nelly & Kelly Rowland"},
+      {"start": "12:59", "title": "Snooze", "artist": "SZA"},
+      {"start": "16:19", "title": "Paris in the Rain", "artist": "Lauv"},
+      {"start": "19:41", "title": "The Girl That's Underneath", "artist": "Jake Miller & Jabbar Hakeem"},
+      {"start": "22:46", "title": "We Belong Together", "artist": "Mariah Carey"},
+      {"start": "26:07", "title": "EX", "artist": "Kiana Ledé"},
+      {"start": "29:47", "title": "What You Won't Do For Love", "artist": "Bobby Caldwell"}
+    ]
+  },
+  "PLAYLIST_Citywalk.flac": {
+    "output_prefix": "cantonese_playlist",
+    "tracks": [
+      {"start": "00:00", "title": "必杀技", "artist": "古巨基"},
+      {"start": "03:52", "title": "喜帖街", "artist": "谢安琪"},
+      {"start": "07:23", "title": "七友", "artist": "梁汉文"},
+      {"start": "11:42", "title": "心淡", "artist": "容祖儿"},
+      {"start": "15:51", "title": "相依为命", "artist": "陈小春"},
+      {"start": "19:46", "title": "下一站天后", "artist": "Twins"},
+      {"start": "23:14", "title": "富士山下", "artist": "陈奕迅"},
+      {"start": "27:33", "title": "孤雏", "artist": "AGA"},
+      {"start": "32:26", "title": "爱与诚", "artist": "古巨基"},
+      {"start": "36:10", "title": "喜欢你", "artist": "G.E.M邓紫棋"}
+    ]
+  }
+}
