@@ -938,14 +938,31 @@ def main():
                 sample = group.sample(n=n_group, random_state=args.random_state)
                 golden_df = pd.concat([golden_df, sample])
             golden_df = golden_df.reset_index(drop=True)
-            # 如果抽样数量超过目标，裁剪；如果不足，从剩余样本中补充
+            # 保底抽样后调整：每个分层组至少保留1首，不破坏保底
             if len(golden_df) > n_golden:
-                golden_df = golden_df.sample(n=n_golden, random_state=args.random_state).reset_index(drop=True)
+                # 保底感知裁剪：每组先保留1首，多余样本中随机裁剪
+                keep_ids = set()
+                for _, group in golden_df.groupby(args.stratify_by):
+                    # 每组保留1首（随机选）
+                    keep_one = group.sample(n=1, random_state=args.random_state)
+                    keep_ids.add(keep_one["audio_id"].iloc[0])
+                # 保底样本必须保留
+                keep_df = golden_df[golden_df["audio_id"].isin(keep_ids)]
+                # 从非保底样本中裁剪到目标数量
+                extra_df = golden_df[~golden_df["audio_id"].isin(keep_ids)]
+                need_extra = n_golden - len(keep_df)
+                if need_extra > 0 and len(extra_df) > 0:
+                    extra_sample = extra_df.sample(n=min(need_extra, len(extra_df)), random_state=args.random_state)
+                    golden_df = pd.concat([keep_df, extra_sample]).reset_index(drop=True)
+                else:
+                    golden_df = keep_df.reset_index(drop=True)
+                logger.info(f"保底感知裁剪: {len(golden_df)} 首（每组至少1首，原{len(golden_df)+len(extra_df)-len(keep_df)}首）")
             elif len(golden_df) < n_golden:
                 remaining = df[~df["audio_id"].isin(golden_df["audio_id"])]
                 need = n_golden - len(golden_df)
                 extra = remaining.sample(n=min(need, len(remaining)), random_state=args.random_state)
                 golden_df = pd.concat([golden_df, extra]).reset_index(drop=True)
+                logger.info(f"补充抽样: +{len(extra)} 首（达到目标{n_golden}首）")
         else:
             logger.info("随机抽样（无分层字段）")
             golden_df = df.sample(n=n_golden, random_state=args.random_state).reset_index(drop=True)
