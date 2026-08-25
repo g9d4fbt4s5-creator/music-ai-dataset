@@ -69,6 +69,9 @@ class ListeningTaskType(Enum):
     # 数据源质量
     DATA_SOURCE_QUALITY = "data_source_quality"           # 新采集源整体质量评估
 
+    # 阈值后抽检（阈值调整的安全刹车）
+    POST_THRESHOLD_AUDIT = "post_threshold_audit"          # 阈值漂移样本质量抽检
+
 
 # ============================================================
 # 2. 模板骨架映射表（问题类型→XML骨架）
@@ -237,6 +240,27 @@ TEMPLATE_REGISTRY: Dict[str, Dict[str, Any]] = {
 </View>""",
         "prefill_fields": ["audio", "source", "batch", "format", "sample_rate", "bit_depth"],
     },
+
+    "post_threshold_audit": {
+        "description": "阈值漂移样本质量抽检（阈值调整的安全刹车）",
+        "decision_field": "audit_decision",
+        "xml_skeleton": """<View>
+  <Audio name="audio" value="$audio" zoom="true" waveheight="80" />
+  <Header value="阈值漂移样本信息" size="4" />
+  <Text name="meta" value="漂移类型: $shift_type | 旧分支: $old_branch → 新分支: $new_branch | 漂移值: $shift_value" />
+  <Text name="quality_meta" value="SNR: $snr dB | DR: $dr dB | 静音: $silence% | 削波: $clip%" />
+  <Text name="focus" value="$focus_note" />
+  <Header value="抽检判断" size="4" />
+  <Choices name="audit_decision" toName="audio" choice="single" required="true" showInline="true">
+    <Choice value="acceptable" html="✅ 质量合格，可进入训练池" />
+    <Choice value="marginal" html="⚠️ 边缘质量，应退回 marginal" />
+    <Choice value="reject" html="❌ 劣质，应判 fail" />
+  </Choices>
+  <TextArea name="reject_reason" toName="audio" placeholder="如判为 marginal/reject，请说明原因（如：噪声过大/削波严重/静音过多等）" rows="2" />
+</View>""",
+        "prefill_fields": ["audio", "shift_type", "old_branch", "new_branch", "shift_value",
+                           "snr", "dr", "silence", "clip", "focus_note"],
+    },
 }
 
 
@@ -255,6 +279,7 @@ TEMPLATE_VERSIONS = {
     "cluster_validation": {"version": "1.0", "last_verified": "2026-08-25"},
     "segment_boundary": {"version": "1.0", "last_verified": "2026-08-25"},
     "data_source_quality": {"version": "1.0", "last_verified": "2026-08-25"},
+    "post_threshold_audit": {"version": "1.0", "last_verified": "2026-08-25"},
 }
 
 # 将版本信息注入 TEMPLATE_REGISTRY
@@ -347,6 +372,124 @@ class AdaptiveListeningCheck:
             self._save_task(task, Path(output_dir))
 
         return task
+
+    def find_threshold_shifted_samples(
+        self,
+        quality_report_path: str,
+        old_thresholds: Dict[str, float],
+        new_thresholds: Dict[str, float],
+        metric: str = "snr_db",
+    ) -> List[Dict[str, Any]]:
+        """
+        识别阈值漂移样本：因为本次阈值调整而改变分支的样本。
+
+        例如：SNR阈值从15dB放宽到12dB，SNR在[12, 15)区间的样本
+        旧规则下是marginal，新规则下是pass，这些就是阈值漂移样本。
+
+        Args:
+            quality_report_path: quality_check_report.csv 路径
+            old_thresholds: 旧阈值配置，如 {"snr_db_marginal": 15.0}
+            new_thresholds: 新阈值配置，如 {"snr_db_marginal": 12.0}
+            metric: 阈值调整的指标名（如 snr_db, dr_db, silence_ratio）
+
+        Returns:
+            阈值漂移样本列表，每个样本包含听检任务所需的预填字段
+        """
+        import pandas as pd
+
+        df = pd.read_csv(quality_report_path)
+        old_thresh = old_thresholds.get(f"{metric}_marginal", old_thresholds.get(metric, 0))
+        new_thresh = new_thresholds.get(f"{metric}_marginal", new_thresholds.get(metric, 0))
+
+        # 确定漂移区间（假设阈值是放宽，new < old）
+        if new_thresh < old_thresh:
+            # 放宽：[new, old) 区间的样本从 marginal→pass
+            shifted = df[(df[metric] >= new_thresh) & (df[metric] < old_thresh)]
+            old_branch = "marginal"
+            new_branch = "pass"
+        else:
+            # 收紧：[old, new) 区间的样本从 pass→marginal
+            shifted = df[(df[metric] >= old_thresh) & (df[metric] < new_thresh)]
+            old_branch = "pass"
+            new_branch = "marginal"
+
+        # 构建听检样本
+        samples = []
+        for _, row in shifted.iterrows():
+            # 计算漂移值（样本值与旧阈值的差值，越小越接近边界）
+            shift_value = abs(float(row[metric]) - old_thresh)
+
+            # 分层优先级
+            if shift_value <= 1.0:
+                priority = "P0"  # 阈值边界附近，50%抽检
+            elif row.get("silence_ratio", 0) > 0.3 or row.get("clip_ratio", 0) > 0.02:
+                priority = "P1"  # 复合marginal标记，30%抽检
+            else:
+                priority = "P2"  # 纯阈值漂移，10%抽检
+
+            sample = {
+                "audio": row.get("audio_path", row.get("file_path", "")),
+                "audio_id": row.get("audio_id", ""),
+                "shift_type": f"{metric}_{int(old_thresh)}_to_{int(new_thresh)}",
+                "old_branch": old_branch,
+                "new_branch": new_branch,
+                "shift_value": round(shift_value, 2),
+                "snr": round(float(row.get("snr_db", 0)), 1),
+                "dr": round(float(row.get("dr_db", 0)), 1),
+                "silence": round(float(row.get("silence_ratio", 0)) * 100, 1),
+                "clip": round(float(row.get("clip_ratio", 0)) * 100, 1),
+                "priority": priority,
+                "focus_note": f"⚠️ 阈值漂移样本({priority}): {metric}={row[metric]:.1f}, 旧{old_branch}→新{new_branch}",
+            }
+            samples.append(sample)
+
+        return samples
+
+    def generate_post_threshold_audit(
+        self,
+        quality_report_path: str,
+        old_thresholds: Dict[str, float],
+        new_thresholds: Dict[str, float],
+        metric: str = "snr_db",
+        output_dir: Optional[str] = None,
+        max_samples: int = 50,
+    ) -> Optional[ListeningTask]:
+        """
+        生成阈值后抽检任务（post_threshold_audit）。
+
+        阈值调整后自动调用，识别漂移样本并生成抽检任务。
+        如果漂移样本已全部听检过，返回None（无需重复抽检）。
+
+        Args:
+            quality_report_path: quality_check_report.csv 路径
+            old_thresholds: 旧阈值配置
+            new_thresholds: 新阈值配置
+            metric: 阈值调整的指标名
+            output_dir: 输出目录
+            max_samples: 最大抽检样本数（默认50，500首全量时限制）
+
+        Returns:
+            ListeningTask 对象，或 None（如果无需抽检）
+        """
+        samples = self.find_threshold_shifted_samples(
+            quality_report_path, old_thresholds, new_thresholds, metric
+        )
+
+        if not samples:
+            print("✅ 无阈值漂移样本，无需抽检")
+            return None
+
+        # 按优先级排序，限制样本数
+        priority_order = {"P0": 0, "P1": 1, "P2": 2}
+        samples.sort(key=lambda x: priority_order.get(x["priority"], 3))
+        samples = samples[:max_samples]
+
+        print(f"⚠️ 发现 {len(samples)} 个阈值漂移样本，已生成抽检任务")
+        print(f"   P0(边界): {sum(1 for s in samples if s['priority']=='P0')}首")
+        print(f"   P1(复合): {sum(1 for s in samples if s['priority']=='P1')}首")
+        print(f"   P2(纯漂移): {sum(1 for s in samples if s['priority']=='P2')}首")
+
+        return self.generate_task("post_threshold_audit", samples, output_dir)
 
     def parse_results(
         self,
@@ -487,6 +630,34 @@ class AdaptiveListeningCheck:
                 return f"建议：该数据源质量可接受（{high+acceptable}/{total}首），可继续采集。"
             else:
                 return f"建议：该数据源质量不稳定，建议限制采集比例。"
+
+        elif task_type == "post_threshold_audit":
+            # 阈值后抽检：劣质率决策规则
+            acceptable = decisions.get("acceptable", 0)
+            marginal = decisions.get("marginal", 0)
+            reject = decisions.get("reject", 0)
+            # 劣质率 = (marginal + reject) / total
+            poor_quality = marginal + reject
+            poor_rate = poor_quality / total if total > 0 else 0
+
+            if poor_rate <= 0.05:
+                return (
+                    f"✅ 阈值调整有效，正式生效。"
+                    f"抽检{total}首中{acceptable}首质量合格（{acceptable/total:.0%}），"
+                    f"劣质率{poor_rate:.1%}（≤5%），阈值漂移样本可全部进入训练池。"
+                )
+            elif poor_rate <= 0.20:
+                return (
+                    f"⚠️ 阈值需微调。"
+                    f"抽检{total}首中{poor_quality}首边缘/劣质（{poor_rate:.1%}，5%-20%区间），"
+                    f"建议收紧阈值（如SNR 12dB→13dB），重新识别漂移样本并抽检。"
+                )
+            else:
+                return (
+                    f"❌ 阈值放宽过度，建议回滚。"
+                    f"抽检{total}首中{poor_quality}首边缘/劣质（{poor_rate:.1%}，>20%），"
+                    f"阈值漂移样本应恢复旧分支（marginal/fail），防止污染训练池。"
+                )
 
         else:
             return f"听检完成，共{total}首。决策分布：{decisions}。请根据结果手动调整对应配置。"
