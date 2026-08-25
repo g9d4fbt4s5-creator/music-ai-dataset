@@ -1,0 +1,28 @@
+{
+  "total_tracks": 85,
+  "total_duration_minutes": 381.4,
+  "avg_duration_seconds": 269.2,
+  "source_type_distribution": {
+    "normal": 80,
+    "ace_studio_generated_demucs_vocals": 5
+  },
+  "format_distribution": {
+    "flac": 55,
+    "mp3": 21,
+    "wav": 6,
+    "m4a": 3
+  },
+  "sample_rate_distribution": {
+    "44100": 77,
+    "48000": 8
+  },
+  "golden_set_count": 3,
+  "removed_compilations": [
+    "YES_+20_-40.flac",
+    "PLAYLIST_Citywalk.flac",
+    "Wave_Antonio_Carlos_Jobim.flac",
+    "~_1st_E.P_How_to_count_one_to_ten.flac",
+    "nu_jazz_Illusion_Kira_Linn_Linntett.flac",
+    "fusion_Alive_Hiromi.flac"
+  ]
+}
