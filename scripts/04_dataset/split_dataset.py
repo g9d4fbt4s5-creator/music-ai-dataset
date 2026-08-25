@@ -866,6 +866,15 @@ def main():
                         help="禁用跨集去重")
     parser.add_argument("--fingerprint-file", type=str, default=None,
                         help="Chromaprint指纹文件路径（JSON格式: {audio_id: [fp_ints]}），song_group_id不可用时使用")
+    parser.add_argument("--sample-golden", action="store_true",
+                        help="黄金集抽样模式：从main_pool分层抽样指定比例作为golden_set（ADR-003第6节）")
+    parser.add_argument("--golden-ratio", type=float, default=0.05,
+                        help="黄金集抽样比例（默认0.05，即5%%）")
+    parser.add_argument("--golden-output-dir", type=str,
+                        default=str(PROJECT_ROOT / "data" / "03_human_annotation" / "golden_set"),
+                        help="黄金集输出目录（默认 data/03_human_annotation/golden_set）")
+    parser.add_argument("--generate-l3-tasks", action="store_true",
+                        help="黄金集抽样模式下同时生成L3结构标注任务清单")
     parser.add_argument("--random-state", type=int, default=42, help="随机种子")
     args = parser.parse_args()
 
@@ -899,6 +908,112 @@ def main():
             df, source_type_report = filter_by_source_type(df, report_path=None)
         except ImportError as e:
             logger.warning(f"source_type_filter 导入失败: {e}，跳过 source_type 过滤")
+
+    # ========== ADR-003 第6节：黄金集抽样模式 ==========
+    if args.sample_golden:
+        logger.info("=" * 60)
+        logger.info("黄金集抽样模式 (ADR-003 第6节)")
+        logger.info("=" * 60)
+
+        golden_output_dir = Path(args.golden_output_dir)
+        golden_output_dir.mkdir(parents=True, exist_ok=True)
+
+        n_total = len(df)
+        n_golden = max(int(n_total * args.golden_ratio), 3)  # 最少3首
+        n_golden = min(n_golden, n_total)
+
+        logger.info(f"  总样本数: {n_total}")
+        logger.info(f"  抽样比例: {args.golden_ratio} ({args.golden_ratio*100:.1f}%)")
+        logger.info(f"  抽样数量: {n_golden}")
+        logger.info(f"  分层字段: {args.stratify_by or '无（随机抽样）'}")
+        logger.info(f"  随机种子: {args.random_state}")
+
+        # 分层抽样（复用现有逻辑）
+        if args.stratify_by and args.stratify_by in df.columns:
+            logger.info(f"按 '{args.stratify_by}' 分层抽样")
+            golden_df = pd.DataFrame()
+            for _, group in df.groupby(args.stratify_by):
+                n_group = max(int(len(group) * args.golden_ratio), 1)
+                n_group = min(n_group, len(group))
+                sample = group.sample(n=n_group, random_state=args.random_state)
+                golden_df = pd.concat([golden_df, sample])
+            golden_df = golden_df.reset_index(drop=True)
+            # 如果抽样数量超过目标，裁剪；如果不足，从剩余样本中补充
+            if len(golden_df) > n_golden:
+                golden_df = golden_df.sample(n=n_golden, random_state=args.random_state).reset_index(drop=True)
+            elif len(golden_df) < n_golden:
+                remaining = df[~df["audio_id"].isin(golden_df["audio_id"])]
+                need = n_golden - len(golden_df)
+                extra = remaining.sample(n=min(need, len(remaining)), random_state=args.random_state)
+                golden_df = pd.concat([golden_df, extra]).reset_index(drop=True)
+        else:
+            logger.info("随机抽样（无分层字段）")
+            golden_df = df.sample(n=n_golden, random_state=args.random_state).reset_index(drop=True)
+
+        golden_ids = golden_df["audio_id"].tolist()
+        logger.info(f"黄金集抽样完成: {len(golden_df)}/{n_total} ({len(golden_df)/n_total:.1%})")
+
+        # 1. 更新原始 manifest 的 is_golden 列
+        if "is_golden" in df.columns:
+            full_manifest = pd.read_csv(input_path)
+            full_manifest["is_golden"] = full_manifest["audio_id"].isin(golden_ids)
+            full_manifest.to_csv(input_path, index=False)
+            logger.info(f"已更新 {input_path} 的 is_golden 列（{len(golden_ids)} 首标记为 true）")
+        else:
+            logger.warning("manifest 中无 is_golden 列，跳过更新")
+
+        # 2. 生成 golden_ids.json
+        with open(golden_output_dir / "golden_ids.json", "w", encoding="utf-8") as f:
+            json.dump(golden_ids, f, indent=2, ensure_ascii=False)
+        logger.info(f"  已保存: {golden_output_dir / 'golden_ids.json'}")
+
+        # 3. 生成 golden_set_meta.json
+        meta = {
+            "version": "v1.0",
+            "created_at": datetime.now(TZ).isoformat(),
+            "total_pool_size": n_total,
+            "golden_size": len(golden_df),
+            "ratio": args.golden_ratio,
+            "seed": args.random_state,
+            "stratify_by": args.stratify_by,
+            "source_manifest": str(input_path),
+            "audio_ids": golden_ids,
+        }
+        with open(golden_output_dir / "golden_set_meta.json", "w", encoding="utf-8") as f:
+            json.dump(meta, f, indent=2, ensure_ascii=False)
+        logger.info(f"  已保存: {golden_output_dir / 'golden_set_meta.json'}")
+
+        # 4. 可选：生成 L3 任务清单
+        if args.generate_l3_tasks:
+            l3_tasks = []
+            for _, row in golden_df.iterrows():
+                l3_tasks.append({
+                    "audio_id": row["audio_id"],
+                    "audio_path": row.get("file_relative_path", ""),
+                    "duration": row.get("duration_sec", row.get("duration", None)),
+                })
+            with open(golden_output_dir / "l3_task_list.json", "w", encoding="utf-8") as f:
+                json.dump(l3_tasks, f, indent=2, ensure_ascii=False)
+            logger.info(f"  已保存: {golden_output_dir / 'l3_task_list.json'} ({len(l3_tasks)} 个任务)")
+
+        # 5. 生成黄金集清单（CSV，含关键元数据）
+        meta_cols = ["audio_id", "original_filename", "duration_sec", "format", "source_type"]
+        available_meta = [c for c in meta_cols if c in golden_df.columns]
+        golden_manifest = golden_df[available_meta].copy()
+        golden_manifest["is_golden"] = True
+        golden_manifest["golden_version"] = "v1.0"
+        golden_manifest["review_status"] = "pending_annotation"
+        golden_manifest.to_csv(golden_output_dir / "golden_set_manifest.csv", index=False)
+        logger.info(f"  已保存: {golden_output_dir / 'golden_set_manifest.csv'}")
+
+        logger.info("")
+        logger.info("=" * 60)
+        logger.info("黄金集抽样完成")
+        logger.info(f"  输出目录: {golden_output_dir}")
+        logger.info(f"  样本数: {len(golden_df)}/{n_total}")
+        logger.info(f"  下一步: 对黄金集样本执行 L3 结构标注 + 人工精标")
+        logger.info("=" * 60)
+        return
 
     # P0: 划分前校验音频文件checksum完整性（防止文件存在但已损坏）
     checksum_result = None
