@@ -721,6 +721,78 @@ def apply_cross_set_dedup(
     return cleaned_val, cleaned_test, cleaned_holdout, report
 
 
+def verify_artist_isolation(
+    train_df: pd.DataFrame,
+    val_df: pd.DataFrame,
+    test_df: pd.DataFrame,
+    holdout_df: Optional[pd.DataFrame] = None,
+    isolation_col: str = "artist_id",
+) -> Dict:
+    """
+    验证 artist_id（或其他隔离字段）隔离是否生效。
+
+    同一 artist 不应出现在多个集合中。自动检查所有两两组合的交集。
+
+    Args:
+        train_df: 训练集
+        val_df: 验证集
+        test_df: 测试集
+        holdout_df: 黄金测试集（可选）
+        isolation_col: 隔离字段名（默认 artist_id，也可用 song_group_id）
+
+    Returns:
+        report: 验证报告字典，包含 is_passed、leaks、各集合 artist 数量等
+    """
+    sets = {
+        "train": train_df,
+        "val": val_df,
+        "test": test_df,
+    }
+    if holdout_df is not None and len(holdout_df) > 0:
+        sets["holdout"] = holdout_df
+
+    # 提取各集合的隔离字段值（排除空值和 "unknown"）
+    set_ids = {}
+    for name, df in sets.items():
+        if isolation_col in df.columns:
+            ids = set(df[isolation_col].dropna().unique())
+            # 排除 unknown 前缀的默认值（这些没有真实隔离意义）
+            ids = {x for x in ids if not str(x).startswith("unknown_")}
+            set_ids[name] = ids
+        else:
+            set_ids[name] = set()
+            logger.warning(f"集合 {name} 缺少 {isolation_col} 列，跳过隔离验证")
+
+    # 检查两两交集
+    leaks = {}
+    set_names = list(set_ids.keys())
+    for i in range(len(set_names)):
+        for j in range(i + 1, len(set_names)):
+            common = set_ids[set_names[i]] & set_ids[set_names[j]]
+            if common:
+                leak_key = f"{set_names[i]}_{set_names[j]}"
+                leaks[leak_key] = sorted(list(common))
+                logger.warning(f"❌ {isolation_col} 隔离失效: {set_names[i]} vs {set_names[j]} 有 {len(common)} 个重复: {common}")
+
+    is_passed = len(leaks) == 0
+
+    report = {
+        "isolation_col": isolation_col,
+        "is_passed": is_passed,
+        "leaks": leaks,
+        "leak_count": len(leaks),
+        "set_artist_counts": {name: len(ids) for name, ids in set_ids.items()},
+        "timestamp": datetime.now(TZ).isoformat(),
+    }
+
+    if is_passed:
+        logger.info(f"✅ {isolation_col} 隔离验证通过（{len(set_names)} 个集合，无重复）")
+    else:
+        logger.error(f"❌ {isolation_col} 隔离验证失败: {len(leaks)} 组交集")
+
+    return report
+
+
 def generate_split_stats(
     train_df: pd.DataFrame,
     val_df: pd.DataFrame,
@@ -1271,6 +1343,17 @@ def main():
             fingerprint_file=fp_file,
             output_dir=None,  # 稍后保存
         )
+
+    # 验证 artist_id 隔离（ADR-003 防泄漏底线）
+    artist_isolation_report = verify_artist_isolation(
+        train_df=train_df,
+        val_df=val_df,
+        test_df=test_df,
+        holdout_df=holdout_df,
+        isolation_col="artist_id",
+    )
+    if not artist_isolation_report["is_passed"]:
+        logger.warning("artist_id 隔离验证失败！存在跨集合重复，可能导致数据泄漏")
 
     # 生成统计
     stats = generate_split_stats(train_df, val_df, test_df, holdout_df, args.stratify_by)

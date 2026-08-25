@@ -58,19 +58,23 @@ def filter_by_source_type(
     excluded_types: Optional[Set[str]] = None,
     report_path: Optional[Path] = None,
     strict: bool = False,
+    exclude: bool = False,
 ) -> Tuple[pd.DataFrame, dict]:
     """
-    按 source_type 过滤 DataFrame，排除域外样本（AI生成、分轨人声等）。
+    按 source_type 过滤/标记 DataFrame（ADR-003 第7节）。
 
     Args:
         df: 输入 DataFrame，必须包含 audio_id 和 source_type 列
         excluded_types: 自定义被排除的 source_type 集合（默认使用 EXCLUDED_SOURCE_TYPES）
         report_path: 过滤报告输出路径（JSON格式，可选）
         strict: 严格模式，遇到未知 source_type 时警告（默认 False，保守放行）
+        exclude: 是否真正排除样本（默认 False，只标记不排除）
+            - False（默认）: 不删除样本，添加 source_type_marked 列，用于统计和差异化 QC
+            - True: 删除 EXCLUDED_SOURCE_TYPES 中的样本（旧行为，用于严格训练集过滤）
 
     Returns:
-        filtered_df: 过滤后的 DataFrame
-        report: 过滤报告字典
+        result_df: 处理后的 DataFrame
+        report: 过滤/标记报告字典
     """
     if excluded_types is None:
         excluded_types = EXCLUDED_SOURCE_TYPES
@@ -87,6 +91,7 @@ def filter_by_source_type(
             "after_count": before_count,
             "excluded_count": 0,
             "excluded_ids": [],
+            "mode": "mark_only" if not exclude else "exclude",
             "timestamp": datetime.now().isoformat(),
         }
         return df.copy(), report
@@ -101,35 +106,49 @@ def filter_by_source_type(
         if unknown_types:
             logger.warning(f"发现未知 source_type: {unknown_types}，保守放行（不排除）")
 
-    # 识别被排除的样本
-    excluded_mask = df["source_type"].isin(excluded_types)
-    excluded_df = df[excluded_mask]
-    filtered_df = df[~excluded_mask].copy()
+    # 识别被标记/排除的样本
+    marked_mask = df["source_type"].isin(excluded_types)
+    marked_df = df[marked_mask]
+    marked_count = len(marked_df)
 
-    excluded_count = len(excluded_df)
-    after_count = len(filtered_df)
+    if exclude:
+        # 排除模式：删除被标记的样本
+        result_df = df[~marked_mask].copy()
+        result_df["source_type_marked"] = False
+        after_count = len(result_df)
+        mode = "exclude"
+        if marked_count > 0:
+            logger.info(f"source_type 过滤: {before_count} → {after_count} (排除 {marked_count} 首)")
+    else:
+        # 标记模式：不删除，只添加标记列
+        result_df = df.copy()
+        result_df["source_type_marked"] = marked_mask
+        after_count = before_count
+        mode = "mark_only"
+        if marked_count > 0:
+            logger.info(f"source_type 标记: {marked_count} 首被标记为域外样本（不排除，保留在 pool 中）")
 
     # 生成报告
-    excluded_ids = excluded_df["audio_id"].tolist() if "audio_id" in excluded_df.columns else []
-    excluded_by_type = excluded_df["source_type"].value_counts().to_dict() if excluded_count > 0 else {}
+    marked_ids = marked_df["audio_id"].tolist() if "audio_id" in marked_df.columns else []
+    marked_by_type = marked_df["source_type"].value_counts().to_dict() if marked_count > 0 else {}
 
     report = {
         "filtered": True,
+        "mode": mode,
         "before_count": before_count,
         "after_count": after_count,
-        "excluded_count": excluded_count,
-        "excluded_by_type": excluded_by_type,
-        "excluded_ids": excluded_ids,
+        "marked_count": marked_count,
+        "marked_by_type": marked_by_type,
+        "marked_ids": marked_ids,
         "excluded_types_used": sorted(list(excluded_types)),
         "timestamp": datetime.now().isoformat(),
     }
 
-    if excluded_count > 0:
-        logger.info(f"source_type 过滤: {before_count} → {after_count} (排除 {excluded_count} 首)")
-        for stype, count in excluded_by_type.items():
+    if marked_count > 0:
+        for stype, count in marked_by_type.items():
             logger.info(f"  {stype}: {count} 首")
     else:
-        logger.info(f"source_type 过滤: {before_count} → {after_count} (无排除)")
+        logger.info(f"source_type: {before_count} 首，无域外样本标记")
 
     # 保存报告
     if report_path:
@@ -137,9 +156,9 @@ def filter_by_source_type(
         report_path.parent.mkdir(parents=True, exist_ok=True)
         with open(report_path, "w", encoding="utf-8") as f:
             json.dump(report, f, indent=2, ensure_ascii=False)
-        logger.info(f"source_type 过滤报告已保存: {report_path}")
+        logger.info(f"source_type 报告已保存: {report_path}")
 
-    return filtered_df, report
+    return result_df, report
 
 
 def get_excluded_source_types() -> Set[str]:
@@ -166,6 +185,8 @@ if __name__ == "__main__":
     parser.add_argument("--report", default="data/01_preprocess/source_type_filter_report.json",
                         help="过滤报告输出路径")
     parser.add_argument("--strict", action="store_true", help="严格模式，警告未知 source_type")
+    parser.add_argument("--exclude", action="store_true",
+                        help="真正排除域外样本（默认只标记不排除，添加 source_type_marked 列）")
     args = parser.parse_args()
 
     logging.basicConfig(level=logging.INFO, format="%(asctime)s | %(levelname)s | %(message)s")
@@ -182,6 +203,7 @@ if __name__ == "__main__":
         df,
         report_path=Path(args.report),
         strict=args.strict,
+        exclude=args.exclude,
     )
 
     if args.output:
@@ -195,9 +217,10 @@ if __name__ == "__main__":
     print("=" * 60)
     print(f"  输入: {report['before_count']} 首")
     print(f"  输出: {report['after_count']} 首")
-    print(f"  排除: {report['excluded_count']} 首")
-    if report["excluded_by_type"]:
+    print(f"  模式: {report['mode']}")
+    print(f"  标记/排除: {report['marked_count']} 首")
+    if report["marked_by_type"]:
         print("  按类型:")
-        for stype, count in report["excluded_by_type"].items():
+        for stype, count in report["marked_by_type"].items():
             print(f"    {stype}: {count} 首")
     print("=" * 60)
