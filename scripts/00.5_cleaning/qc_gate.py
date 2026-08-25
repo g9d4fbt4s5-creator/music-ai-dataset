@@ -31,7 +31,7 @@ THRESHOLDS = {
 
     # 音质 (librosa, 使用原始指标 orig_*)
     "snr_db_fail": 10.0,          # < 10dB fail
-    "snr_db_marginal": 15.0,      # < 15dB marginal (老爵士/黑胶转录正常范围10-15dB, 从20dB下调)
+    "snr_db_marginal": 12.0,      # < 12dB marginal (9首marginal人工听检100%可接受, 从15dB放宽到12dB; 老爵士/黑胶/风格乐器效果器正常底噪范围10-12dB)
     "clip_ratio_fail": 0.05,      # > 5% 削波 fail
     "clip_ratio_marginal": 0.02,  # > 2% 削波 marginal
     "silence_ratio_fail": 0.80,   # > 80% 静音 fail
