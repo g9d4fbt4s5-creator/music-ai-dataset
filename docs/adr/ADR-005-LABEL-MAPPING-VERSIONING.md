@@ -219,5 +219,9 @@ genre/instrument/mood 等标签，才能用于训练和评估。
 - 语义化版本（Semantic Versioning 2.0.0）
 - 配置即代码（Configuration as Code）
 - 原子性提交（Atomic Commit）原则
-- ADR-002《HITL 异步闭环》
-- ADR-004《L1-L4 预标注分层》
+
+## 与其他 ADR 的关系
+
+- **ADR-002《HITL 异步闭环》**：映射字典更新是 HITL 听检任务的一种产出（unmapped_tag_review），人工审核后通过 merge_mapping.py 原子合并
+- **ADR-003《数据划分与来源隔离》**：source_type 过滤与映射字典的 hard_blacklist/soft_blacklist 协同工作，合成/分轨样本在 source_type 层排除，低质量标签在映射字典层过滤
+- **ADR-004《L1-L4 预标注分层》**：映射字典是 L2 语义候选标签的标准化层，L4 KNN 传播后的标签也需经过映射字典标准化

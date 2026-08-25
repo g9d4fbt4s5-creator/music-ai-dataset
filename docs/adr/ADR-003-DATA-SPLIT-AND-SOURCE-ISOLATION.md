@@ -198,6 +198,7 @@ data/00_raw_collect/
 - **ADR-001《QC Gate 阈值决策》**：域外样本（Ace Studio 生成）不调整 YAMNet 阈值，而是通过 source_type 标记排除，参见本 ADR 第7节
 - **ADR-002《HITL 异步闭环》**：marginal 样本（包括跨集去重疑似重复）进入 waiting_pool 人工复核
 - **ADR-004《L1-L4 预标注分层》**：黄金集是 L4 KNN 传播的种子源
+- **ADR-005《标签映射字典版本管理》**：source_type 过滤与映射字典的 hard_blacklist/soft_blacklist 协同工作，合成/分轨样本在 source_type 层排除，低质量标签在映射字典层过滤
 
 ---
 
