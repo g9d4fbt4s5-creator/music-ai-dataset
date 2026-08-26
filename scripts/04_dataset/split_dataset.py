@@ -1441,7 +1441,7 @@ def main():
             "method": cross_set_dedup_report["method"],
             "total_removed": cross_set_dedup_report["total_removed"],
             "val_removed": cross_set_dedup_report["val_removed"],
-            "test_removed": cross_set_dedup_report["test_removed"],
+            "test_removed": cross_set_dedup_report.get("test_removed_total", cross_set_dedup_report.get("test_removed", 0)),
             "holdout_removed": cross_set_dedup_report["holdout_removed"],
         }
         # 保存报告到 output_dir
@@ -1452,7 +1452,7 @@ def main():
         logger.info(f"ADR-003 跨集去重报告已保存: {report_path}")
         logger.info(f"  总计移除: {cross_set_dedup_report['total_removed']} 首 "
                     f"(val={cross_set_dedup_report['val_removed']}, "
-                    f"test={cross_set_dedup_report['test_removed']}, "
+                    f"test={cross_set_dedup_report.get('test_removed_total', cross_set_dedup_report.get('test_removed', 0))}, "
                     f"holdout={cross_set_dedup_report['holdout_removed']})")
     elif args.cross_set_dedup:
         logger.info("ADR-003 跨集去重: 已启用，但无重复样本移除")

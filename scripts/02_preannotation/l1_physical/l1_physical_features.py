@@ -37,7 +37,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-def extract_physical_features(audio_path: str) -> Dict:
+def extract_physical_features(audio_path: str, audio_id_override: str = None) -> Dict:
     """
     提取音频的物理特征
 
@@ -65,7 +65,7 @@ def extract_physical_features(audio_path: str) -> Dict:
     y, sr = librosa.load(audio_path, sr=22050, mono=True)
 
     features = {
-        "audio_id": Path(audio_path).stem,
+        "audio_id": audio_id_override if audio_id_override else Path(audio_path).stem,
         "duration_sec": round(float(duration), 2) if duration else round(float(len(y) / sr), 2),
         "sample_rate": sample_rate,
         "channels": channels,
@@ -178,6 +178,18 @@ def main():
 
     audio_files = sorted(audio_files)
 
+    # 建立 master_path → audio_id(ULID) 映射
+    path_to_audio_id = {}
+    if args.manifest and Path(args.manifest).exists():
+        manifest_df = pd.read_csv(args.manifest)
+        if "master_path" in manifest_df.columns and "audio_id" in manifest_df.columns:
+            for _, row in manifest_df.iterrows():
+                mp = row.get("master_path", "")
+                if pd.notna(mp) and mp:
+                    mp_abs = str(Path(mp).resolve()) if not Path(mp).is_absolute() else mp
+                    path_to_audio_id[mp_abs] = row["audio_id"]
+        logger.info(f"从 manifest 加载 {len(path_to_audio_id)} 个 master_path → audio_id 映射")
+
     if args.limit:
         audio_files = audio_files[:args.limit]
 
@@ -193,7 +205,9 @@ def main():
     results = []
     for idx, audio_path in enumerate(audio_files):
         try:
-            features = extract_physical_features(str(audio_path))
+            audio_path_abs = str(audio_path.resolve())
+            audio_id_override = path_to_audio_id.get(audio_path_abs)
+            features = extract_physical_features(str(audio_path), audio_id_override)
             results.append(features)
 
             # 保存单个 JSON
