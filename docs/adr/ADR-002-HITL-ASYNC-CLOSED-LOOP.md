@@ -185,6 +185,54 @@ data/03_human_annotation/badcase/auto_collected.jsonl（过程态）
 
 ---
 
+## 黄金集 pending 状态下的 L4 降级策略（2026-08-27 新增）
+
+### 背景
+
+L4 KNN 传播的高置信种子来自 L3 黄金集人工标注（详见 ADR-004 第 5.2 节）。但黄金集标注是人工密集型任务，可能长期处于 `pending_annotation` 状态。如果 L4 传播必须等待黄金集标注完成，会阻塞整个流水线。
+
+**当前状态（2026-08-27）**：3 首黄金集 `review_status=pending_annotation`，L4 种子池因此缺少高置信种子。
+
+### 降级策略
+
+当黄金集处于 `pending_annotation` 状态时，L4 KNN 传播按以下优先级降级：
+
+| 优先级 | 种子来源 | 置信度 | 触发条件 | 标签覆盖 |
+|--------|---------|--------|---------|---------|
+| **P0（首选）** | L3 黄金集人工标注（`review_status=completed`） | 高 | 黄金集标注完成 | genre, mood, instruments, segments, caption |
+| **P1（降级）** | L3 Qwen-Omni 自动标注（`review_status=qwen_omni_annotated`） | 中高 | 黄金集已通过 Qwen-Omni 自动标注，但未经人工校验 | genre, mood, instruments, segments, caption（需标记 `auto_annotated=true`） |
+| **P2（再降级）** | L2 CLAP 零样本 top-1 候选（confidence > 0.3） | 中 | 黄金集完全未标注，或 Qwen-Omni 标注不可用 | genre, mood（无 instruments/segments/caption） |
+| **P3（最低）** | L1 物理特征规则映射（可选，第一版不实现） | 低 | 以上全部不可用 | genre 粗分类（如 BPM>120 → 可能 pop/electronic） |
+
+### 降级标记
+
+L4 传播结果必须明确标记种子来源，便于后续人工校验和质量评估：
+
+```json
+{
+  "audio_id": "xxx",
+  "genre": "jazz",
+  "propagation_source": "knn_train",
+  "seed_source": "l2_clap_candidate",  // 标记种子来源层级
+  "seed_confidence_level": "medium",     // high / medium_high / medium / low
+  "golden_pending": true,                // 标记传播时黄金集是否处于 pending 状态
+  "pending_degradation": "P2"            // 实际使用的降级层级
+}
+```
+
+### 降级状态下的质量控制
+
+1. **传播阈值收紧**：降级状态下（P2/P3），KNN 传播的距离阈值收紧 20%（如 genre 从 0.40 收紧到 0.32），降低错误传播风险
+2. **人工校验优先级提升**：降级状态下传播的样本，进入 waiting_pool 的优先级提升为 P1（正常为 P2）
+3. **黄金集标注完成后重跑**：黄金集 `review_status` 变为 `completed` 后，必须重跑 L4 传播，用高置信种子替换降级种子
+4. **不可用于 test/holdout/ood**：无论降级层级如何，test/holdout/ood 始终禁止传播（ADR-004 第 5.1 节）
+
+### 与 ADR-004 的关系
+
+本章节是 ADR-004《L1-L4 预标注分层架构》第 5.2 节（种子池构建）的补充，明确了黄金集 pending 状态下的降级流程。ADR-004 定义了种子池的组成，本 ADR 定义了种子池不可用时的降级策略。
+
+---
+
 ## 阈值后抽检（post_threshold_audit）
 
 阈值调整不是"一放了之"。让一批原本被拦在门外的 marginal/fail 样本进入训练池，如果它们实际上质量不达标，会污染下游的 KNN 传播和模型训练。
