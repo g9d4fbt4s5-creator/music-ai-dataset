@@ -964,6 +964,10 @@ def main():
                         help="黄金集输出目录（默认 data/03_human_annotation/golden_set）")
     parser.add_argument("--generate-l3-tasks", action="store_true",
                         help="黄金集抽样模式下同时生成L3结构标注任务清单")
+    parser.add_argument("--golden-prefer-short", action="store_true",
+                        help="黄金集抽样优先选择短曲目（降低L3 API成本和延迟），V3架构建议")
+    parser.add_argument("--golden-max-duration", type=float, default=180.0,
+                        help="短曲目阈值（秒），默认180秒=3分钟，仅在--golden-prefer-short时生效")
     parser.add_argument("--random-state", type=int, default=42, help="随机种子")
     args = parser.parse_args()
 
@@ -1033,8 +1037,30 @@ def main():
         max_total = max(int(n_total * args.golden_ratio), 3)
         max_total = min(max_total, n_total)
 
+        # V3: 黄金集优先选择短曲目（降低L3 API成本和延迟，Kimi建议）
+        golden_df = None
+        if args.golden_prefer_short and "duration_sec" in df.columns:
+            short_df = df[df["duration_sec"] <= args.golden_max_duration].copy()
+            logger.info(f"短曲目偏好: {len(short_df)}/{len(df)} 首 <= {args.golden_max_duration}秒")
+            if len(short_df) >= max_total:
+                # 短曲目足够，仅从短曲目中抽样
+                df = short_df
+                logger.info(f"短曲目足够，仅从 {len(short_df)} 首短曲目中抽样")
+            else:
+                # 短曲目不足，全部选中短曲目，再从长曲目中补充
+                preselected = short_df.copy()
+                remaining = df[~df["audio_id"].isin(preselected["audio_id"])]
+                need = max_total - len(preselected)
+                if need > 0 and len(remaining) > 0:
+                    extra = remaining.sample(n=min(need, len(remaining)), random_state=args.random_state)
+                    preselected = pd.concat([preselected, extra]).reset_index(drop=True)
+                golden_df = preselected
+                logger.info(f"短曲目不足({len(short_df)}首)，预选全部短曲目 + {len(preselected)-len(short_df)} 首长曲目 = {len(preselected)} 首")
+                # 跳过分层/随机抽样，直接使用预选结果
+                stratify_col = None
+
         # 分层抽样（每组保底1首）
-        if stratify_col:
+        if stratify_col and golden_df is None:
             logger.info(f"按 '{stratify_col}' 分层抽样（每组保底1首，全局上限{max_total}首）")
             golden_df = pd.DataFrame()
             group_sizes = []
@@ -1080,8 +1106,9 @@ def main():
                     golden_df = pd.concat([golden_df, extra]).reset_index(drop=True)
                     logger.info(f"补充随机样本: +{need} 首（达到目标{max_total}首）")
         else:
-            logger.info(f"随机抽样（无分层字段），目标 {max_total} 首")
-            golden_df = df.sample(n=max_total, random_state=args.random_state).reset_index(drop=True)
+            if golden_df is None:
+                logger.info(f"随机抽样（无分层字段），目标 {max_total} 首")
+                golden_df = df.sample(n=max_total, random_state=args.random_state).reset_index(drop=True)
 
         golden_ids = golden_df["audio_id"].tolist()
         logger.info(f"黄金集抽样完成: {len(golden_df)}/{n_total} ({len(golden_df)/n_total:.1%})")
