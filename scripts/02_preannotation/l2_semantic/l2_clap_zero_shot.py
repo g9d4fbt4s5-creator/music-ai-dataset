@@ -90,9 +90,26 @@ def load_clap_model(model_path: Optional[str] = None, device: str = "cuda"):
         model = laion_clap.CLAP_Module(enable_fusion=enable_fusion, device=device)
         model.load_ckpt(model_path)
     else:
-        logger.info("使用默认模型（从 HuggingFace 下载）")
-        model = laion_clap.CLAP_Module(enable_fusion=False, device=device)
-        model.load_ckpt()  # 默认下载 630k-audioset-fusion-best.pt
+        # 未指定 --model-path 时，先检查本地常见路径（GPU 无外网时优先使用本地模型）
+        DEFAULT_LOCAL_PATHS = [
+            "/root/autodl-tmp/models/clap_fusion/630k-audioset-fusion-best.pt",
+            "/workspace/models/clap_fusion/630k-audioset-fusion-best.pt",
+            "/root/.cache/laion_clap/630k-audioset-fusion-best.pt",
+        ]
+        for p in DEFAULT_LOCAL_PATHS:
+            if Path(p).exists():
+                logger.info(f"找到本地模型: {p}")
+                enable_fusion = "fusion" in p.lower()
+                model = laion_clap.CLAP_Module(enable_fusion=enable_fusion, device=device)
+                model.load_ckpt(p)
+                model.eval()
+                logger.info("✅ CLAP 模型加载完成（本地路径）")
+                return model
+        # 本地无模型，报错提示（GPU 无外网时默认下载会失败）
+        raise FileNotFoundError(
+            "CLAP model not found locally. Please specify via --model-path or download to one of:\n"
+            + "\n".join(f"  {p}" for p in DEFAULT_LOCAL_PATHS)
+        )
 
     model.eval()
     logger.info("✅ CLAP 模型加载完成")
@@ -276,6 +293,9 @@ def main():
     parser.add_argument("--limit", type=int, default=None,
                         help="限制处理数量")
     args = parser.parse_args()
+
+    # 自动创建日志目录（防止 nohup 重定向失败导致进程立即退出）
+    Path("logs").mkdir(parents=True, exist_ok=True)
 
     input_dir = Path(args.input_dir)
     output_dir = Path(args.output) if args.output else input_dir.parent / "l2_semantic"

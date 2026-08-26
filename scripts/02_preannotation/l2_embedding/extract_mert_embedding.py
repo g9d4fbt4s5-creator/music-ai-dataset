@@ -80,6 +80,9 @@ def main():
     parser.add_argument("--limit", type=int, default=None, help="限制处理数量")
     args = parser.parse_args()
 
+    # 自动创建日志目录（防止 nohup 重定向失败导致进程立即退出）
+    Path("logs").mkdir(parents=True, exist_ok=True)
+
     input_dir = Path(args.input_dir)
     output_dir = Path(args.output)
     output_dir.mkdir(parents=True, exist_ok=True)

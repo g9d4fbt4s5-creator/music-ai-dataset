@@ -24,6 +24,9 @@
 
 set -euo pipefail
 
+# 脚本所在目录（用于定位 Python 工具脚本）
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 # 配置
 GPU_HOST="connect.westb.seetacloud.com"
 GPU_USER="root"
@@ -71,19 +74,15 @@ elif [ "$DIRECTION" = "--mp3" ]; then
         echo "  原始: ${ORIG_SIZE} (${FILE_COUNT} 个音频文件)"
     fi
 
-    # 转换FLAC/WAV为MP3，保持目录结构
-    echo "  正在转换..."
-    CONVERTED=0
-    while IFS= read -r -d '' src_file; do
-        # 计算相对路径
-        rel_path="${src_file#$LOCAL_PATH}"
-        # 目标MP3路径（替换扩展名为.mp3）
-        dst_file="$TMP_MP3_DIR/${rel_path%.*}.mp3"
-        # 创建目标目录
-        mkdir -p "$(dirname "$dst_file")"
-        # 转换
-        ffmpeg -y -i "$src_file" -b:a "$MP3_BITRATE" -loglevel error "$dst_file" 2>/dev/null && CONVERTED=$((CONVERTED + 1))
-    done < <(find "$LOCAL_PATH" \( -name "*.flac" -o -name "*.wav" \) -print0)
+    # 转换FLAC/WAV为MP3（并行，带超时，防止ffmpeg卡住）
+    echo "  正在转换（并行4线程，单文件120秒超时）..."
+    python "$SCRIPT_DIR/convert_to_mp3_parallel.py" \
+        --input-dir "$LOCAL_PATH" \
+        --output-dir "$TMP_MP3_DIR" \
+        --workers 4 \
+        --timeout 120 \
+        --bitrate "$MP3_BITRATE"
+    CONVERTED=$(find "$TMP_MP3_DIR" -name "*.mp3" 2>/dev/null | wc -l)
 
     # 复制非音频文件（CSV、JSON等）
     while IFS= read -r -d '' src_file; do
