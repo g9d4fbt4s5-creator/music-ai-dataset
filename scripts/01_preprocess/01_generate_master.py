@@ -38,8 +38,9 @@ import pandas as pd
 PROJECT_ROOT = Path(__file__).parent.parent.parent
 
 # 母版规格
+# V3修正（2026-08-26）：48kHz/16bit，CLAP输入48kHz无需重采样，16bit比24bit节省33%空间
 MASTER_SAMPLE_RATE = 48000
-MASTER_BIT_DEPTH = 24
+MASTER_BIT_DEPTH = 16
 MASTER_CHANNELS = 2
 MASTER_FORMAT = "flac"
 
@@ -148,7 +149,7 @@ def transcode_to_master(
     # -acodec flac: FLAC 编码
     # -ar: 采样率
     # -ac: 声道数
-    # -sample_fmt s32: 32位整数采样格式（FLAC 支持 24-bit，用 s32 容器）
+    # -sample_fmt s16: 16位整数采样格式（V3修正，节省33%空间）
     # -compression_level 8: 最高压缩
     cmd = [
         "ffmpeg",
@@ -157,7 +158,7 @@ def transcode_to_master(
         "-acodec", "flac",
         "-ar", str(sample_rate),
         "-ac", str(channels),
-        "-sample_fmt", "s32",
+        "-sample_fmt", "s16",
         "-compression_level", "8",
         str(master_path)
     ]
