@@ -313,6 +313,10 @@ def main():
     parser.add_argument("--dry-run", action="store_true", help="预览模式，不实际转码")
     parser.add_argument("--force", action="store_true", help="强制重新生成，覆盖已有母版")
     parser.add_argument("--manifest", type=str, default=str(MANIFEST_CSV), help="audio_manifest.csv 路径")
+    parser.add_argument("--qc-report", type=str, default=None,
+                        help="QC Gate 报告路径（用于排除 fail 样本），默认自动查找")
+    parser.add_argument("--skip-qc-filter", action="store_true",
+                        help="跳过 QC fail 过滤（处理全部样本）")
     args = parser.parse_args()
 
     logger.info("=" * 60)
@@ -335,6 +339,31 @@ def main():
         df, _ = filter_by_source_type(df, report_path=None)
     except ImportError as e:
         logger.warning(f"source_type_filter 导入失败: {e}，跳过 source_type 过滤")
+
+    # P0: QC fail 过滤 — 排除 QC Gate 标记为 fail 的样本（PIPELINE_OVERVIEW_V2.md）
+    if not args.skip_qc_filter:
+        qc_report_path = args.qc_report
+        if qc_report_path is None:
+            # 自动查找 QC 报告
+            default_qc = PROJECT_ROOT / "data" / "00.5_cleaned" / "reports" / "qc_gate_report.csv"
+            if default_qc.exists():
+                qc_report_path = str(default_qc)
+        
+        if qc_report_path and Path(qc_report_path).exists():
+            try:
+                qc_df = pd.read_csv(qc_report_path)
+                if "final_branch" in qc_df.columns and "audio_id" in qc_df.columns:
+                    fail_ids = set(qc_df[qc_df["final_branch"] == "fail"]["audio_id"])
+                    before = len(df)
+                    df = df[~df["audio_id"].isin(fail_ids)]
+                    after = len(df)
+                    logger.info(f"QC fail 过滤: {before} → {after} (排除 {before - after} 首 fail 样本)")
+                else:
+                    logger.warning(f"QC 报告缺少 final_branch 或 audio_id 列，跳过过滤")
+            except Exception as e:
+                logger.warning(f"QC 报告读取失败: {e}，跳过过滤")
+        else:
+            logger.info("未找到 QC 报告，跳过 fail 过滤（处理全部样本）")
 
     # 过滤要处理的音频
     if args.audio_id:

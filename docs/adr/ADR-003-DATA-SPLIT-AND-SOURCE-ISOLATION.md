@@ -193,6 +193,45 @@ data/00_raw_collect/
 
 ---
 
+## 切片时机决策（2026-08-26 修正）
+
+### 决策
+
+**切片必须在 Stage 4 数据划分之后执行（Stage 5），只对 train/val 的 audio_id 切片。**
+
+### 背景
+
+早期设计将切片放在 Stage 1（预处理阶段），导致以下问题：
+
+1. **数据范围错误**：对全部样本（含 fail/test/holdout/ood）切片，浪费算力
+2. **结构信息缺失**：预标注（L1-L4）未完成，无法按乐段边界智能切片
+3. **切片数量盲目**：85首切出3038片，但实际进入训练集的可能只有60-70首
+4. **与数据划分矛盾**：切片后再划分，可能导致同一首歌的不同切片跨集泄漏
+
+### 修正后的流程
+
+```
+Stage 0-3: 采集 → QC → 母版 → 预标注 → 人工审核
+    ↓
+Stage 4: 数据划分（train/val/test/holdout/ood + 跨集去重 + artist隔离）
+    ↓
+Stage 5: 切片 + 特征提取（只对 train/val，按结构边界切）
+    ↓
+Stage 6: 模型训练
+```
+
+### 实现
+
+- 脚本位置：`scripts/05_training_prep/01_audio_chunker.py`
+- 关键参数：`--only-train-val`（只切 train/val）、`--splits`（数据划分目录）
+- 测试集不切片：test/holdout/ood 保持整首音频，用于完整曲目评估
+
+### 历史切片处理
+
+之前在 Stage 1 切的 3038 片标记为 `pre_split_chunks`（历史产物），不用于正式训练。确认 Stage 5 逻辑正确后可删除。
+
+---
+
 ## 与其他 ADR 的关系
 
 - **ADR-001《QC Gate 阈值决策》**：域外样本（Ace Studio 生成）不调整 YAMNet 阈值，而是通过 source_type 标记排除，参见本 ADR 第7节
