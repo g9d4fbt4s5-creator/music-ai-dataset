@@ -157,7 +157,7 @@
   },
   "annotator": null,
   "annotation_timestamp": null,
-  "review_status": "qwen_omni_annotated",
+  "review_status": "auto_annotated",
   "golden_purpose": [
     "KNN_propagation_seed",
     "few_shot_example",
@@ -178,5 +178,7 @@
       "text_tokens": 854
     },
     "total_tokens": 2357
-  }
+  },
+  "golden_status": "retired_v1",
+  "retired_reason": "聚类后重新选择黄金集，旧3首风格覆盖不全"
 }
