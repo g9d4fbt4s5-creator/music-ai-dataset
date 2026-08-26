@@ -1,10 +1,10 @@
 # ADR-001: QC Gate 阈值决策
 
 ## 状态
-Accepted
+Accepted（2026-08-27 修正：增加 Stage 0 入库前硬门槛 + fail 样本物理隔离）
 
 ## 日期
-2026-08-25（2026-08-26 修订：静音/LUFS/SNR表述/交叉引用）
+2026-08-25（2026-08-26 修订：静音/LUFS/SNR表述/交叉引用；2026-08-27 修订：Stage 0 硬门槛 + fail 隔离）
 
 ## 决策者
 数据工程团队
@@ -75,6 +75,56 @@ fail 不进入下游 Stage，marginal 进入下游但标记 `flag_for_review`，
 | 采样率 | < 22050 Hz | ≥ 22050 Hz | 低采样率影响下游特征提取 |
 | 比特率 | orig_bitrate < 128kbps | ≥ 128kbps | 只检查原始有损格式；FLAC无损不检查 |
 | 声道 | — | mono 仅 info | 很多爵士/老录音本身就是单声道，不是质量问题 |
+
+### 6. Stage 0 入库前硬门槛（2026-08-27 新增）
+
+**与 Stage 0.5 QC Gate 的区别**：
+- **Stage 0 入库前硬门槛**：在音频入库（分配 ULID、写入 manifest、复制到 raw_audio/）**之前**执行，不满足则直接拒绝入库，不占用存储和 ID
+- **Stage 0.5 QC Gate**：入库后执行，输出 pass/marginal/fail 三分支，fail 样本逻辑排除但物理保留
+
+**硬门槛阈值**：
+
+| 指标 | 阈值 | 理由 |
+|------|------|------|
+| **最小时长** | ≥ 30 秒 | <30秒碎片无完整音乐结构，无法用于训练切片（15秒×2） |
+| **最小采样率** | ≥ 16000 Hz | MERT 模型输入为 16kHz，低于此采样率无法提取有效嵌入 |
+| **可解码性** | ffmpeg/ffprobe 可正常解码 | 损坏音频无法处理 |
+| **文件完整性** | 文件大小 > 0 且 < 500MB | 空文件或异常大文件 |
+
+**不满足硬门槛的处理**：
+1. 不分配 ULID
+2. 不写入 manifest
+3. 不复制到 raw_audio/
+4. 记录到 `data/00_raw_collect/rejected_imports.csv`（含原始文件名、拒绝原因、时间戳）
+5. 原始文件保留在上传目录，不删除（供用户复查）
+
+**与 Stage 0.5 QC Gate fail 的区别**：
+- Stage 0 硬门槛拒绝：**从未入库**，无 ULID，无 manifest 记录
+- Stage 0.5 QC fail：**已入库**，有 ULID 和 manifest，逻辑排除但物理保留
+
+### 7. fail 样本物理隔离规则（2026-08-27 新增）
+
+**Stage 0.5 QC Gate 判定为 fail 的样本**，必须执行物理隔离：
+
+| 动作 | 规则 |
+|------|------|
+| **目录隔离** | 从 `data/00_raw_collect/raw_audio/` 移动到 `data/00_raw_collect/quarantine/`（隔离区） |
+| **manifest 标记** | `qc_final_branch = fail`，`quarantined = True`，`quarantine_date = YYYY-MM-DD` |
+| **下游排除** | Stage 1-6 所有脚本必须过滤 `qc_final_branch = fail` 的样本，禁止进入母版生成、特征提取、训练切片 |
+| **保留期限** | 隔离区样本保留 90 天，供人工复查和误判恢复；90 天后可归档或删除 |
+| **恢复机制** | 人工复查确认误判后，从 quarantine/ 移回 raw_audio/，manifest 标记 `qc_final_branch = pass`，`quarantined = False` |
+
+**违反后果**：
+- fail 样本（如 2 秒超短音频、非音乐、损坏文件）进入下游 Stage，导致：
+  - L1 物理特征提取产生无效值（BPM=0、key=Unknown）
+  - MERT/CLAP 嵌入提取失败或产生异常向量
+  - 训练切片产生无效样本（<15秒）
+  - 模型训练时损失函数异常
+
+**当前状态**（2026-08-27）：
+- 85 首母版中包含 1 首 2 秒 fail 样本（已被 L1 处理，产生 BPM=0 的无效特征）
+- 需修复：将该样本移入 quarantine/，重新运行 L1/L2 排除 fail 样本
+- 此问题记录为 P1 债务，待 500 首扩展前修复
 
 ---
 
