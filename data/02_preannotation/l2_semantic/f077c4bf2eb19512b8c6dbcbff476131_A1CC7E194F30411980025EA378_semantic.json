@@ -1,0 +1,93 @@
+{
+  "audio_id": "f077c4bf2eb19512b8c6dbcbff476131_A1CC7E194F30411980025EA378",
+  "embedding_dim": 512,
+  "embedding_norm": 0.9999999403953552,
+  "genre": [
+    {
+      "label": "electronic",
+      "score": 0.31484925746917725
+    },
+    {
+      "label": "cool jazz",
+      "score": 0.1952296793460846
+    },
+    {
+      "label": "free jazz",
+      "score": 0.17821058630943298
+    },
+    {
+      "label": "rock",
+      "score": 0.16431686282157898
+    },
+    {
+      "label": "hard bop",
+      "score": 0.15208184719085693
+    }
+  ],
+  "mood": [
+    {
+      "label": "energetic",
+      "score": 0.21784614026546478
+    },
+    {
+      "label": "introspective",
+      "score": 0.19453315436840057
+    },
+    {
+      "label": "peaceful",
+      "score": 0.19042015075683594
+    },
+    {
+      "label": "romantic",
+      "score": 0.156049907207489
+    },
+    {
+      "label": "dark",
+      "score": 0.12226585298776627
+    }
+  ],
+  "instrumentation": [
+    {
+      "label": "drums",
+      "score": 0.2423829287290573
+    },
+    {
+      "label": "bass",
+      "score": 0.23202845454216003
+    },
+    {
+      "label": "no vocals",
+      "score": 0.20315487682819366
+    },
+    {
+      "label": "organ",
+      "score": 0.14548194408416748
+    },
+    {
+      "label": "violin",
+      "score": 0.13077233731746674
+    }
+  ],
+  "scene": [
+    {
+      "label": "dance",
+      "score": 0.16675691306591034
+    },
+    {
+      "label": "workout",
+      "score": 0.140342116355896
+    },
+    {
+      "label": "meditation",
+      "score": 0.1358279287815094
+    },
+    {
+      "label": "party",
+      "score": 0.1253555715084076
+    },
+    {
+      "label": "study",
+      "score": 0.10484430193901062
+    }
+  ]
+}

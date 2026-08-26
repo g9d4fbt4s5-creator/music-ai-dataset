@@ -1,0 +1,93 @@
+{
+  "audio_id": "0876de68a0757759bc041ec8881189b7_1EDDB5EFB16E4A36AFFFAC2132",
+  "embedding_dim": 512,
+  "embedding_norm": 0.9999999403953552,
+  "genre": [
+    {
+      "label": "electronic",
+      "score": 0.17066486179828644
+    },
+    {
+      "label": "pop",
+      "score": 0.14348304271697998
+    },
+    {
+      "label": "folk",
+      "score": 0.1425427496433258
+    },
+    {
+      "label": "cool jazz",
+      "score": 0.13869625329971313
+    },
+    {
+      "label": "free jazz",
+      "score": 0.07984144985675812
+    }
+  ],
+  "mood": [
+    {
+      "label": "energetic",
+      "score": 0.2361578345298767
+    },
+    {
+      "label": "peaceful",
+      "score": 0.14049029350280762
+    },
+    {
+      "label": "romantic",
+      "score": 0.07962741702795029
+    },
+    {
+      "label": "dreamy",
+      "score": 0.07237058132886887
+    },
+    {
+      "label": "tense",
+      "score": 0.057366177439689636
+    }
+  ],
+  "instrumentation": [
+    {
+      "label": "no vocals",
+      "score": 0.3369613587856293
+    },
+    {
+      "label": "vocals",
+      "score": 0.17136061191558838
+    },
+    {
+      "label": "violin",
+      "score": 0.11376500129699707
+    },
+    {
+      "label": "bass",
+      "score": 0.11137540638446808
+    },
+    {
+      "label": "acoustic guitar",
+      "score": 0.1093539148569107
+    }
+  ],
+  "scene": [
+    {
+      "label": "study",
+      "score": 0.1467893421649933
+    },
+    {
+      "label": "dance",
+      "score": 0.14664751291275024
+    },
+    {
+      "label": "party",
+      "score": 0.13701169192790985
+    },
+    {
+      "label": "elevator music",
+      "score": 0.10068647563457489
+    },
+    {
+      "label": "meditation",
+      "score": 0.09217795729637146
+    }
+  ]
+}

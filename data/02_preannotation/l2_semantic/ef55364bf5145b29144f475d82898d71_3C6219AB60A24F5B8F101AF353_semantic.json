@@ -1,0 +1,93 @@
+{
+  "audio_id": "ef55364bf5145b29144f475d82898d71_3C6219AB60A24F5B8F101AF353",
+  "embedding_dim": 512,
+  "embedding_norm": 1.0,
+  "genre": [
+    {
+      "label": "pop",
+      "score": 0.12965607643127441
+    },
+    {
+      "label": "folk",
+      "score": 0.11154723912477493
+    },
+    {
+      "label": "cool jazz",
+      "score": 0.10334968566894531
+    },
+    {
+      "label": "swing",
+      "score": 0.0936233401298523
+    },
+    {
+      "label": "rock",
+      "score": 0.07440491020679474
+    }
+  ],
+  "mood": [
+    {
+      "label": "energetic",
+      "score": 0.17542999982833862
+    },
+    {
+      "label": "peaceful",
+      "score": 0.07530228048563004
+    },
+    {
+      "label": "romantic",
+      "score": 0.05762508139014244
+    },
+    {
+      "label": "excited",
+      "score": 0.009463222697377205
+    },
+    {
+      "label": "dreamy",
+      "score": 0.004010126926004887
+    }
+  ],
+  "instrumentation": [
+    {
+      "label": "no vocals",
+      "score": 0.24486835300922394
+    },
+    {
+      "label": "vocals",
+      "score": 0.1401849389076233
+    },
+    {
+      "label": "trumpet",
+      "score": 0.06921045482158661
+    },
+    {
+      "label": "violin",
+      "score": 0.06746752560138702
+    },
+    {
+      "label": "bass",
+      "score": 0.06513074785470963
+    }
+  ],
+  "scene": [
+    {
+      "label": "study",
+      "score": 0.13712778687477112
+    },
+    {
+      "label": "dance",
+      "score": 0.1285506784915924
+    },
+    {
+      "label": "party",
+      "score": 0.11888901889324188
+    },
+    {
+      "label": "concert live",
+      "score": 0.06560608744621277
+    },
+    {
+      "label": "elevator music",
+      "score": 0.06103702634572983
+    }
+  ]
+}

@@ -1,0 +1,93 @@
+{
+  "audio_id": "98002e0b16f5b2eea700a1d85681b9d9_286F49DADB7640A39E52E4C55A",
+  "embedding_dim": 512,
+  "embedding_norm": 0.9999999403953552,
+  "genre": [
+    {
+      "label": "folk",
+      "score": 0.12023834884166718
+    },
+    {
+      "label": "electronic",
+      "score": 0.08178618550300598
+    },
+    {
+      "label": "bebop",
+      "score": 0.06468548625707626
+    },
+    {
+      "label": "classical",
+      "score": 0.05453042313456535
+    },
+    {
+      "label": "hip hop",
+      "score": 0.05272983759641647
+    }
+  ],
+  "mood": [
+    {
+      "label": "peaceful",
+      "score": 0.11819908767938614
+    },
+    {
+      "label": "energetic",
+      "score": 0.1166282594203949
+    },
+    {
+      "label": "dreamy",
+      "score": 0.07887487858533859
+    },
+    {
+      "label": "melancholic",
+      "score": 0.041914526373147964
+    },
+    {
+      "label": "tense",
+      "score": 0.04132407531142235
+    }
+  ],
+  "instrumentation": [
+    {
+      "label": "no vocals",
+      "score": 0.2706344723701477
+    },
+    {
+      "label": "vocals",
+      "score": 0.22185982763767242
+    },
+    {
+      "label": "violin",
+      "score": 0.11444159597158432
+    },
+    {
+      "label": "bass",
+      "score": 0.0945078507065773
+    },
+    {
+      "label": "harp",
+      "score": 0.06242602318525314
+    }
+  ],
+  "scene": [
+    {
+      "label": "meditation",
+      "score": 0.1782466471195221
+    },
+    {
+      "label": "dance",
+      "score": 0.07869012653827667
+    },
+    {
+      "label": "coffee shop",
+      "score": 0.04604136943817139
+    },
+    {
+      "label": "elevator music",
+      "score": 0.04508614167571068
+    },
+    {
+      "label": "studio recording",
+      "score": 0.021143700927495956
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "audio_id": "01M0RFPVS7VN7C7RPNCZ2XYDFS",
+  "genre": "jazz",
+  "subgenre": "bebop",
+  "mood": [
+    "神秘",
+    "激昂"
+  ],
+  "instrumentation": [
+    "电吉他",
+    "贝斯",
+    "合成器",
+    "架子鼓",
+    "钢琴"
+  ],
+  "vocal_presence": "instrumental",
+  "quality_assessment": "good",
+  "caption": "一段充满活力的爵士乐，以快速的节奏和即兴的演奏为特色，吉他、贝斯与鼓的默契配合营造出紧张而热烈的氛围，令人不由自主地随之摇摆。",
+  "fusion": {
+    "mood_source": "knn(from 01M0RFPVNJ21SF5Y7VHPP8QV6T, sim=0.7744)",
+    "instrumentation_source": "knn(from 01M0RFPVNJ21SF5Y7VHPP8QV6T)",
+    "caption_source": "deepseek",
+    "genre_source": "deepseek"
+  },
+  "propagated_from": "01M0RFPVNJ21SF5Y7VHPP8QV6T",
+  "propagation_similarity": 0.7744,
+  "bpm": 152.0,
+  "key": "D",
+  "duration_sec": 214.74,
+  "snr_db": 35.2
+}

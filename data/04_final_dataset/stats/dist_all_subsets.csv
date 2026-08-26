@@ -1,0 +1,5 @@
+subset,priority,description,total_count,pass_count,pass_ratio,marginal_count,marginal_ratio,fail_count,fail_ratio,snr_db_mean,snr_db_std,snr_db_median,dynamic_range_db_mean,dynamic_range_db_std,dynamic_range_db_median,silence_ratio_mean,silence_ratio_std,silence_ratio_median,clipping_ratio_mean,clipping_ratio_std,clipping_ratio_median,loudness_lufs_mean,loudness_lufs_std,loudness_lufs_median,duration_sec_mean,duration_sec_std,duration_sec_median
+golden,P0,内部回归冒烟集（few-shot/回归测试）,0,0,0,0,0.0,0,0,,,,,,,,,,,,,,,,,,
+holdout,P0,冻结最终 benchmark,0,0,0,0,0.0,0,0,,,,,,,,,,,,,,,,,,
+ood,P1,域外测试集（鲁棒性测试）,0,0,0,0,0.0,0,0,,,,,,,,,,,,,,,,,,
+marginal,P1,待人工复核候选池,3,0,0,3,100.0,0,0,,,,,,,,,,,,,,,,181.87,114.39,134.89

@@ -1,0 +1,93 @@
+{
+  "audio_id": "505ee9fab4e5e675b126bcaf4755d316_CDF8316BBDD2488A877E675E8F",
+  "embedding_dim": 512,
+  "embedding_norm": 1.0,
+  "genre": [
+    {
+      "label": "electronic",
+      "score": 0.1959007978439331
+    },
+    {
+      "label": "pop",
+      "score": 0.15493443608283997
+    },
+    {
+      "label": "cool jazz",
+      "score": 0.15159998834133148
+    },
+    {
+      "label": "hard bop",
+      "score": 0.145920991897583
+    },
+    {
+      "label": "latin jazz",
+      "score": 0.1194186583161354
+    }
+  ],
+  "mood": [
+    {
+      "label": "energetic",
+      "score": 0.21822403371334076
+    },
+    {
+      "label": "dreamy",
+      "score": 0.0867961049079895
+    },
+    {
+      "label": "romantic",
+      "score": 0.08505021780729294
+    },
+    {
+      "label": "peaceful",
+      "score": 0.06735771149396896
+    },
+    {
+      "label": "tense",
+      "score": 0.05678132548928261
+    }
+  ],
+  "instrumentation": [
+    {
+      "label": "no vocals",
+      "score": 0.22820407152175903
+    },
+    {
+      "label": "vocals",
+      "score": 0.1637239158153534
+    },
+    {
+      "label": "bass",
+      "score": 0.15055784583091736
+    },
+    {
+      "label": "flute",
+      "score": 0.11890047043561935
+    },
+    {
+      "label": "trumpet",
+      "score": 0.11349697411060333
+    }
+  ],
+  "scene": [
+    {
+      "label": "meditation",
+      "score": 0.1363382637500763
+    },
+    {
+      "label": "study",
+      "score": 0.13382850587368011
+    },
+    {
+      "label": "workout",
+      "score": 0.12768158316612244
+    },
+    {
+      "label": "dance",
+      "score": 0.11985588073730469
+    },
+    {
+      "label": "party",
+      "score": 0.10884054750204086
+    }
+  ]
+}

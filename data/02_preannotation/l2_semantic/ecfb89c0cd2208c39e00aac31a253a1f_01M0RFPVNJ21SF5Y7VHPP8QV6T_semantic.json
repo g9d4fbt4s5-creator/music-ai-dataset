@@ -1,0 +1,93 @@
+{
+  "audio_id": "ecfb89c0cd2208c39e00aac31a253a1f_01M0RFPVNJ21SF5Y7VHPP8QV6T",
+  "embedding_dim": 512,
+  "embedding_norm": 1.0,
+  "genre": [
+    {
+      "label": "electronic",
+      "score": 0.32763752341270447
+    },
+    {
+      "label": "latin jazz",
+      "score": 0.29813826084136963
+    },
+    {
+      "label": "cool jazz",
+      "score": 0.25458866357803345
+    },
+    {
+      "label": "free jazz",
+      "score": 0.20510730147361755
+    },
+    {
+      "label": "pop",
+      "score": 0.16271650791168213
+    }
+  ],
+  "mood": [
+    {
+      "label": "energetic",
+      "score": 0.2796787917613983
+    },
+    {
+      "label": "romantic",
+      "score": 0.17977142333984375
+    },
+    {
+      "label": "introspective",
+      "score": 0.15079152584075928
+    },
+    {
+      "label": "happy",
+      "score": 0.08761943876743317
+    },
+    {
+      "label": "peaceful",
+      "score": 0.06792284548282623
+    }
+  ],
+  "instrumentation": [
+    {
+      "label": "trumpet",
+      "score": 0.3548545837402344
+    },
+    {
+      "label": "saxophone",
+      "score": 0.30630093812942505
+    },
+    {
+      "label": "clarinet",
+      "score": 0.2818834185600281
+    },
+    {
+      "label": "violin",
+      "score": 0.1907537430524826
+    },
+    {
+      "label": "flute",
+      "score": 0.18860283493995667
+    }
+  ],
+  "scene": [
+    {
+      "label": "workout",
+      "score": 0.21333327889442444
+    },
+    {
+      "label": "party",
+      "score": 0.16448894143104553
+    },
+    {
+      "label": "study",
+      "score": 0.12441332638263702
+    },
+    {
+      "label": "dance",
+      "score": 0.11932196468114853
+    },
+    {
+      "label": "concert live",
+      "score": 0.0766916424036026
+    }
+  ]
+}

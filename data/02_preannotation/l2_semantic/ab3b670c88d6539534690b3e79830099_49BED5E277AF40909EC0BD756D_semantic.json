@@ -1,0 +1,93 @@
+{
+  "audio_id": "ab3b670c88d6539534690b3e79830099_49BED5E277AF40909EC0BD756D",
+  "embedding_dim": 512,
+  "embedding_norm": 1.0,
+  "genre": [
+    {
+      "label": "pop",
+      "score": 0.22706229984760284
+    },
+    {
+      "label": "electronic",
+      "score": 0.21239763498306274
+    },
+    {
+      "label": "fusion",
+      "score": 0.17685578763484955
+    },
+    {
+      "label": "hard bop",
+      "score": 0.16889774799346924
+    },
+    {
+      "label": "swing",
+      "score": 0.16691306233406067
+    }
+  ],
+  "mood": [
+    {
+      "label": "energetic",
+      "score": 0.25404155254364014
+    },
+    {
+      "label": "romantic",
+      "score": 0.22380903363227844
+    },
+    {
+      "label": "dreamy",
+      "score": 0.16265800595283508
+    },
+    {
+      "label": "tense",
+      "score": 0.10891814529895782
+    },
+    {
+      "label": "peaceful",
+      "score": 0.10752411186695099
+    }
+  ],
+  "instrumentation": [
+    {
+      "label": "no vocals",
+      "score": 0.19866904616355896
+    },
+    {
+      "label": "flute",
+      "score": 0.16777321696281433
+    },
+    {
+      "label": "violin",
+      "score": 0.16010679304599762
+    },
+    {
+      "label": "clarinet",
+      "score": 0.1548030972480774
+    },
+    {
+      "label": "acoustic guitar",
+      "score": 0.1452435851097107
+    }
+  ],
+  "scene": [
+    {
+      "label": "party",
+      "score": 0.2004028856754303
+    },
+    {
+      "label": "dance",
+      "score": 0.18162459135055542
+    },
+    {
+      "label": "workout",
+      "score": 0.18070361018180847
+    },
+    {
+      "label": "study",
+      "score": 0.16438937187194824
+    },
+    {
+      "label": "concert live",
+      "score": 0.14420264959335327
+    }
+  ]
+}

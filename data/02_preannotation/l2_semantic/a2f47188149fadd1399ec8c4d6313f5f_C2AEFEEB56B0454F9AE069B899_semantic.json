@@ -1,0 +1,93 @@
+{
+  "audio_id": "a2f47188149fadd1399ec8c4d6313f5f_C2AEFEEB56B0454F9AE069B899",
+  "embedding_dim": 512,
+  "embedding_norm": 1.0,
+  "genre": [
+    {
+      "label": "cool jazz",
+      "score": 0.18295791745185852
+    },
+    {
+      "label": "electronic",
+      "score": 0.16480916738510132
+    },
+    {
+      "label": "latin jazz",
+      "score": 0.1622781902551651
+    },
+    {
+      "label": "folk",
+      "score": 0.15493102371692657
+    },
+    {
+      "label": "pop",
+      "score": 0.1500929892063141
+    }
+  ],
+  "mood": [
+    {
+      "label": "energetic",
+      "score": 0.19927501678466797
+    },
+    {
+      "label": "peaceful",
+      "score": 0.12962394952774048
+    },
+    {
+      "label": "romantic",
+      "score": 0.1192074567079544
+    },
+    {
+      "label": "dreamy",
+      "score": 0.08281387388706207
+    },
+    {
+      "label": "tense",
+      "score": 0.06709323823451996
+    }
+  ],
+  "instrumentation": [
+    {
+      "label": "no vocals",
+      "score": 0.31201305985450745
+    },
+    {
+      "label": "bass",
+      "score": 0.17980313301086426
+    },
+    {
+      "label": "vocals",
+      "score": 0.16382214426994324
+    },
+    {
+      "label": "violin",
+      "score": 0.14606988430023193
+    },
+    {
+      "label": "flute",
+      "score": 0.13652178645133972
+    }
+  ],
+  "scene": [
+    {
+      "label": "dance",
+      "score": 0.18541240692138672
+    },
+    {
+      "label": "party",
+      "score": 0.18111619353294373
+    },
+    {
+      "label": "study",
+      "score": 0.16319596767425537
+    },
+    {
+      "label": "meditation",
+      "score": 0.15820497274398804
+    },
+    {
+      "label": "concert live",
+      "score": 0.13049989938735962
+    }
+  ]
+}

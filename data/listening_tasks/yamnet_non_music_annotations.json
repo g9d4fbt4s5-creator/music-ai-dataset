@@ -1,0 +1,387 @@
+[
+  {
+    "id": 11185,
+    "annotations": [
+      {
+        "id": 5540,
+        "completed_by": 1,
+        "result": [
+          {
+            "value": {
+              "choices": [
+                "is_music"
+              ]
+            },
+            "id": "h2TyA7iDjg",
+            "from_name": "content_decision",
+            "to_name": "audio",
+            "type": "choices",
+            "origin": "manual"
+          },
+          {
+            "value": {
+              "text": [
+                "是人声单轨"
+              ]
+            },
+            "id": "1m_CdN2589",
+            "from_name": "comment",
+            "to_name": "audio",
+            "type": "textarea",
+            "origin": "manual"
+          }
+        ],
+        "was_cancelled": false,
+        "ground_truth": false,
+        "created_at": "2026-08-25T14:20:28.290240Z",
+        "updated_at": "2026-08-25T14:20:28.290268Z",
+        "draft_created_at": "2026-08-25T14:20:12.074024Z",
+        "lead_time": 76.927,
+        "prediction": {},
+        "result_count": 2,
+        "unique_id": "22efeba8-1a38-46d2-8c8b-b9ed8d6f2b21",
+        "import_id": null,
+        "last_action": null,
+        "bulk_created": false,
+        "task": 11185,
+        "project": 19,
+        "updated_by": 1,
+        "parent_prediction": null,
+        "parent_annotation": null,
+        "last_created_by": null
+      }
+    ],
+    "drafts": [],
+    "predictions": [],
+    "data": {
+      "audio": "/data/local-files/?d=data/00_raw_collect/raw_audio/f0/b8/f0b8fba5717578aecd96cb0114ff8ad7_01M0E9X162CTB4D15WZQ5D8FVX.wav",
+      "audio_id": "01M0E9X162CTB4D15WZQ5D8FVX",
+      "music_score": 0.053,
+      "yamnet_class": "?",
+      "duration": 30.0,
+      "focus_note": "⚠️ YAMNet判为非音乐(score=0.053, class=?), 确认是否误杀"
+    },
+    "meta": {},
+    "created_at": "2026-08-25T14:17:59.954896Z",
+    "updated_at": "2026-08-25T14:20:28.354330Z",
+    "allow_skip": true,
+    "inner_id": 28,
+    "total_annotations": 1,
+    "cancelled_annotations": 0,
+    "total_predictions": 0,
+    "comment_count": 0,
+    "unresolved_comment_count": 0,
+    "last_comment_updated_at": null,
+    "project": 19,
+    "updated_by": 1,
+    "comment_authors": []
+  },
+  {
+    "id": 11186,
+    "annotations": [
+      {
+        "id": 5541,
+        "completed_by": 1,
+        "result": [
+          {
+            "value": {
+              "choices": [
+                "is_music"
+              ]
+            },
+            "id": "CY_bc7i-_Y",
+            "from_name": "content_decision",
+            "to_name": "audio",
+            "type": "choices",
+            "origin": "manual"
+          },
+          {
+            "value": {
+              "text": [
+                "是人声单轨"
+              ]
+            },
+            "id": "_ccNs2YstX",
+            "from_name": "comment",
+            "to_name": "audio",
+            "type": "textarea",
+            "origin": "manual"
+          }
+        ],
+        "was_cancelled": false,
+        "ground_truth": false,
+        "created_at": "2026-08-25T14:20:53.387129Z",
+        "updated_at": "2026-08-25T14:20:53.387156Z",
+        "draft_created_at": "2026-08-25T14:20:46.169710Z",
+        "lead_time": 19.253,
+        "prediction": {},
+        "result_count": 2,
+        "unique_id": "a793b3bf-dff5-42ef-b3ef-4e00a8cf0973",
+        "import_id": null,
+        "last_action": null,
+        "bulk_created": false,
+        "task": 11186,
+        "project": 19,
+        "updated_by": 1,
+        "parent_prediction": null,
+        "parent_annotation": null,
+        "last_created_by": null
+      }
+    ],
+    "drafts": [],
+    "predictions": [],
+    "data": {
+      "audio": "/data/local-files/?d=data/00_raw_collect/raw_audio/62/96/6296d8903f0d52a9225aaafabb1eb449_01M0E9X17RZ522YBF6Z913H4VJ.wav",
+      "audio_id": "01M0E9X17RZ522YBF6Z913H4VJ",
+      "music_score": 0.019,
+      "yamnet_class": "?",
+      "duration": 30.0,
+      "focus_note": "⚠️ YAMNet判为非音乐(score=0.019, class=?), 确认是否误杀"
+    },
+    "meta": {},
+    "created_at": "2026-08-25T14:17:59.954992Z",
+    "updated_at": "2026-08-25T14:20:53.453781Z",
+    "allow_skip": true,
+    "inner_id": 29,
+    "total_annotations": 1,
+    "cancelled_annotations": 0,
+    "total_predictions": 0,
+    "comment_count": 0,
+    "unresolved_comment_count": 0,
+    "last_comment_updated_at": null,
+    "project": 19,
+    "updated_by": 1,
+    "comment_authors": []
+  },
+  {
+    "id": 11187,
+    "annotations": [
+      {
+        "id": 5542,
+        "completed_by": 1,
+        "result": [
+          {
+            "value": {
+              "choices": [
+                "is_music"
+              ]
+            },
+            "id": "0rwpflWgIE",
+            "from_name": "content_decision",
+            "to_name": "audio",
+            "type": "choices",
+            "origin": "manual"
+          },
+          {
+            "value": {
+              "text": [
+                "是人声单轨"
+              ]
+            },
+            "id": "Edtm3nLCUo",
+            "from_name": "comment",
+            "to_name": "audio",
+            "type": "textarea",
+            "origin": "manual"
+          }
+        ],
+        "was_cancelled": false,
+        "ground_truth": false,
+        "created_at": "2026-08-25T14:21:04.049049Z",
+        "updated_at": "2026-08-25T14:21:04.049074Z",
+        "draft_created_at": null,
+        "lead_time": 8.204,
+        "prediction": {},
+        "result_count": 2,
+        "unique_id": "4638cae9-d6e8-4feb-9776-6eb05674ec6a",
+        "import_id": null,
+        "last_action": null,
+        "bulk_created": false,
+        "task": 11187,
+        "project": 19,
+        "updated_by": 1,
+        "parent_prediction": null,
+        "parent_annotation": null,
+        "last_created_by": null
+      }
+    ],
+    "drafts": [],
+    "predictions": [],
+    "data": {
+      "audio": "/data/local-files/?d=data/00_raw_collect/raw_audio/0e/5b/0e5bed0b45b606bc1d1b7678bc07bc70_01M0E9X19DMAXGT6QD167G1YJX.wav",
+      "audio_id": "01M0E9X19DMAXGT6QD167G1YJX",
+      "music_score": 0.098,
+      "yamnet_class": "?",
+      "duration": 30.0,
+      "focus_note": "⚠️ YAMNet判为非音乐(score=0.098, class=?), 确认是否误杀"
+    },
+    "meta": {},
+    "created_at": "2026-08-25T14:17:59.955052Z",
+    "updated_at": "2026-08-25T14:21:04.099198Z",
+    "allow_skip": true,
+    "inner_id": 30,
+    "total_annotations": 1,
+    "cancelled_annotations": 0,
+    "total_predictions": 0,
+    "comment_count": 0,
+    "unresolved_comment_count": 0,
+    "last_comment_updated_at": null,
+    "project": 19,
+    "updated_by": 1,
+    "comment_authors": []
+  },
+  {
+    "id": 11188,
+    "annotations": [
+      {
+        "id": 5543,
+        "completed_by": 1,
+        "result": [
+          {
+            "value": {
+              "choices": [
+                "is_music"
+              ]
+            },
+            "id": "_BtHcVL7iU",
+            "from_name": "content_decision",
+            "to_name": "audio",
+            "type": "choices",
+            "origin": "manual"
+          },
+          {
+            "value": {
+              "text": [
+                "是人声单轨"
+              ]
+            },
+            "id": "PISKFjOMfQ",
+            "from_name": "comment",
+            "to_name": "audio",
+            "type": "textarea",
+            "origin": "manual"
+          }
+        ],
+        "was_cancelled": false,
+        "ground_truth": false,
+        "created_at": "2026-08-25T14:21:11.318457Z",
+        "updated_at": "2026-08-25T14:21:11.318482Z",
+        "draft_created_at": null,
+        "lead_time": 4.927,
+        "prediction": {},
+        "result_count": 2,
+        "unique_id": "7b298629-70ee-4d3b-8a03-5717373d0ee6",
+        "import_id": null,
+        "last_action": null,
+        "bulk_created": false,
+        "task": 11188,
+        "project": 19,
+        "updated_by": 1,
+        "parent_prediction": null,
+        "parent_annotation": null,
+        "last_created_by": null
+      }
+    ],
+    "drafts": [],
+    "predictions": [],
+    "data": {
+      "audio": "/data/local-files/?d=data/00_raw_collect/raw_audio/13/b9/13b90e65b754067abdde582a4439ff52_01M0E9X1AGP5JXX7YEA7NAV25V.wav",
+      "audio_id": "01M0E9X1AGP5JXX7YEA7NAV25V",
+      "music_score": 0.076,
+      "yamnet_class": "?",
+      "duration": 30.0,
+      "focus_note": "⚠️ YAMNet判为非音乐(score=0.076, class=?), 确认是否误杀"
+    },
+    "meta": {},
+    "created_at": "2026-08-25T14:17:59.955260Z",
+    "updated_at": "2026-08-25T14:21:11.366151Z",
+    "allow_skip": true,
+    "inner_id": 31,
+    "total_annotations": 1,
+    "cancelled_annotations": 0,
+    "total_predictions": 0,
+    "comment_count": 0,
+    "unresolved_comment_count": 0,
+    "last_comment_updated_at": null,
+    "project": 19,
+    "updated_by": 1,
+    "comment_authors": []
+  },
+  {
+    "id": 11189,
+    "annotations": [
+      {
+        "id": 5544,
+        "completed_by": 1,
+        "result": [
+          {
+            "value": {
+              "choices": [
+                "is_music"
+              ]
+            },
+            "id": "pDfm0FjtDY",
+            "from_name": "content_decision",
+            "to_name": "audio",
+            "type": "choices",
+            "origin": "manual"
+          },
+          {
+            "value": {
+              "text": [
+                "是人声单轨"
+              ]
+            },
+            "id": "jCJpsfn7YD",
+            "from_name": "comment",
+            "to_name": "audio",
+            "type": "textarea",
+            "origin": "manual"
+          }
+        ],
+        "was_cancelled": false,
+        "ground_truth": false,
+        "created_at": "2026-08-25T14:21:20.900344Z",
+        "updated_at": "2026-08-25T14:21:20.900402Z",
+        "draft_created_at": null,
+        "lead_time": 6.708,
+        "prediction": {},
+        "result_count": 2,
+        "unique_id": "0f25ac28-effd-4025-bb1f-e2b1bf9a4641",
+        "import_id": null,
+        "last_action": null,
+        "bulk_created": false,
+        "task": 11189,
+        "project": 19,
+        "updated_by": 1,
+        "parent_prediction": null,
+        "parent_annotation": null,
+        "last_created_by": null
+      }
+    ],
+    "drafts": [],
+    "predictions": [],
+    "data": {
+      "audio": "/data/local-files/?d=data/00_raw_collect/raw_audio/e8/fb/e8fb173150cd26420e155e6959acf3f5_01M0E9X1BHAGVNQYTXE4CMNJV0.wav",
+      "audio_id": "01M0E9X1BHAGVNQYTXE4CMNJV0",
+      "music_score": 0.086,
+      "yamnet_class": "?",
+      "duration": 30.0,
+      "focus_note": "⚠️ YAMNet判为非音乐(score=0.086, class=?), 确认是否误杀"
+    },
+    "meta": {},
+    "created_at": "2026-08-25T14:17:59.955717Z",
+    "updated_at": "2026-08-25T14:21:21.095354Z",
+    "allow_skip": true,
+    "inner_id": 32,
+    "total_annotations": 1,
+    "cancelled_annotations": 0,
+    "total_predictions": 0,
+    "comment_count": 0,
+    "unresolved_comment_count": 0,
+    "last_comment_updated_at": null,
+    "project": 19,
+    "updated_by": 1,
+    "comment_authors": []
+  }
+]

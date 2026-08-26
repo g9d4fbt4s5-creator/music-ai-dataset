@@ -1,0 +1,16 @@
+{
+  "audio_id": "A52E2E2FA5474C61984BCECC27",
+  "duration_sec": 189.01,
+  "sample_rate": 48000,
+  "channels": 2,
+  "bpm": 136.0,
+  "lufs": -13.21,
+  "spectral_centroid_mean": 2026.2,
+  "spectral_centroid_std": 818.83,
+  "zero_crossing_rate_mean": 0.0468,
+  "spectral_rolloff_mean": 5263.75,
+  "rms_mean": 0.261905,
+  "rms_std": 0.119204,
+  "key": "E",
+  "key_strength": 0.7914
+}

@@ -1,0 +1,24 @@
+{
+  "audio_id": "01M0E9X19DMAXGT6QD167G1YJX",
+  "genre": "other",
+  "subgenre": "spoken word",
+  "mood": [
+    "relaxed"
+  ],
+  "instrumentation": [],
+  "vocal_presence": "vocal",
+  "quality_assessment": "good",
+  "caption": "一段以人声为主的声音片段，带有轻微的环境感，仿佛在静谧的小空间里低语，传递出一种内敛而略带神秘的气息，适合作为氛围铺垫或叙事背景。",
+  "fusion": {
+    "mood_source": "knn(from 01M0E9X162CTB4D15WZQ5D8FVX, sim=0.789)",
+    "instrumentation_source": "knn(from 01M0E9X162CTB4D15WZQ5D8FVX)",
+    "caption_source": "deepseek",
+    "genre_source": "deepseek"
+  },
+  "propagated_from": "01M0E9X162CTB4D15WZQ5D8FVX",
+  "propagation_similarity": 0.789,
+  "bpm": 123.0,
+  "key": "E",
+  "duration_sec": 30.0,
+  "snr_db": 46.4
+}

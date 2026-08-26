@@ -75,7 +75,7 @@ FORMAT_SPEC = {
     "bit_depth_allowed": {16, 24, 32},
     "channels_allowed": {1, 2},
     "duration_min_sec": 1,
-    "duration_max_sec": 600,
+    "duration_max_sec": 1200,  # 20分钟
     "file_size_max_mb": 200,
 }
 

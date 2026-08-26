@@ -1,0 +1,72 @@
+{
+  "audio_id": "01M0RFPVN7FD6R26FDRFX77R9Z",
+  "genre": "jazz",
+  "subgenre": "smooth jazz",
+  "mood": [
+    "舒缓",
+    "怀旧"
+  ],
+  "instrumentation": [
+    "电吉他"
+  ],
+  "vocal_presence": "instrumental",
+  "quality_assessment": "good",
+  "caption": "这是一段纯粹的电吉他爵士乐独奏。乐曲以一段缓慢、带有蓝调色彩的引子开始，随后展开为长时间的即兴演奏。吉他手运用丰富的推弦、滑音和颤音技巧，营造出一种自由、沉思且略带忧郁的氛围。整首曲子没有伴奏或其他乐器，完全依靠吉他手对音色和动态的细腻控制来推动情绪发展，从平静的叙述到深情的倾诉，最后归于沉寂。",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 42.35,
+      "label": "即兴独奏",
+      "instruments": [
+        "电吉他"
+      ],
+      "emotion": "平静",
+      "confidence": 0.95,
+      "reasoning": "单把电吉他以蓝调风格进行缓慢、抒情的独奏，氛围宁静。"
+    },
+    {
+      "start": 42.35,
+      "end": 133.85,
+      "label": "即兴独奏",
+      "instruments": [
+        "电吉他"
+      ],
+      "emotion": "怀旧",
+      "confidence": 0.92,
+      "reasoning": "吉他独奏继续，旋律线条更加丰富，情感表达更为深沉和怀旧。"
+    },
+    {
+      "start": 133.85,
+      "end": 182.65,
+      "label": "即兴独奏",
+      "instruments": [
+        "电吉他"
+      ],
+      "emotion": "舒缓",
+      "confidence": 0.88,
+      "reasoning": "吉他的演奏进入较为平缓的段落，节奏放缓，情绪回归平静。"
+    },
+    {
+      "start": 182.65,
+      "end": 210.758,
+      "label": "尾奏",
+      "instruments": [
+        "电吉他"
+      ],
+      "emotion": "平静",
+      "confidence": 0.9,
+      "reasoning": "乐曲进入尾声，吉他通过滑音和长音逐渐减弱，最终淡出至无声。"
+    }
+  ],
+  "fusion": {
+    "mood_source": "l3_golden",
+    "instrumentation_source": "l3_golden",
+    "caption_source": "l3_golden",
+    "genre_source": "deepseek"
+  },
+  "propagated_from": "golden_set",
+  "bpm": 103.4,
+  "key": "D",
+  "duration_sec": 210.39,
+  "snr_db": 32.1
+}

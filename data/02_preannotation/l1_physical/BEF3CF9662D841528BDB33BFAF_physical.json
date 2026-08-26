@@ -1,0 +1,16 @@
+{
+  "audio_id": "BEF3CF9662D841528BDB33BFAF",
+  "duration_sec": 263.04,
+  "sample_rate": 48000,
+  "channels": 2,
+  "bpm": 95.7,
+  "lufs": -22.33,
+  "spectral_centroid_mean": 2525.23,
+  "spectral_centroid_std": 456.76,
+  "zero_crossing_rate_mean": 0.1428,
+  "spectral_rolloff_mean": 4812.96,
+  "rms_mean": 0.07067,
+  "rms_std": 0.016277,
+  "key": "E",
+  "key_strength": 0.7683
+}

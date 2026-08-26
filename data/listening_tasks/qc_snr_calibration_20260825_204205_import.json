@@ -1,0 +1,92 @@
+[
+  {
+    "id": "qc_snr_calibration_20260825_204205_000",
+    "data": {
+      "audio": "data/00_raw_collect/raw_audio/de/34/de3496908c92f8421727d3e527103b57_01M0E9X1D5FB4ZND9B13XSD71K.mp3",
+      "snr": "16.1",
+      "dr": "29.9",
+      "silence": "17",
+      "source": "legacy_test"
+    }
+  },
+  {
+    "id": "qc_snr_calibration_20260825_204205_001",
+    "data": {
+      "audio": "data/00_raw_collect/raw_audio/3a/95/3a9570be947691c9da7313787e0c3f43_01M0RFPVN7FD6R26FDRFX77R9Z.mp3",
+      "snr": "14.3",
+      "dr": "27.7",
+      "silence": "18",
+      "source": "jazz_collection"
+    }
+  },
+  {
+    "id": "qc_snr_calibration_20260825_204205_002",
+    "data": {
+      "audio": "data/00_raw_collect/raw_audio/1f/fe/1ffebc2bd5ff8c6fad820477a0d14f58_01M0RFPVP4DRN0N5QYQ124EVEY.mp3",
+      "snr": "14.0",
+      "dr": "43.9",
+      "silence": "66",
+      "source": "jazz_collection"
+    }
+  },
+  {
+    "id": "qc_snr_calibration_20260825_204205_003",
+    "data": {
+      "audio": "data/00_raw_collect/raw_audio/51/54/515480a47dbd89441fb385af845590d8_01M0RFPVPNNQ8XKY1MCWV09261.mp3",
+      "snr": "14.1",
+      "dr": "32.1",
+      "silence": "19",
+      "source": "jazz_collection"
+    }
+  },
+  {
+    "id": "qc_snr_calibration_20260825_204205_004",
+    "data": {
+      "audio": "data/00_raw_collect/raw_audio/12/d7/12d7299f2ad4bd182c44d1f2aa14ae17_01M0RFPVQSC0HP4QJKKVCQYKCX.mp3",
+      "snr": "14.8",
+      "dr": "28.8",
+      "silence": "16",
+      "source": "jazz_collection"
+    }
+  },
+  {
+    "id": "qc_snr_calibration_20260825_204205_005",
+    "data": {
+      "audio": "data/00_raw_collect/raw_audio/02/5e/025ee64371ee3bbdf9718a473863917e_01M0RFPVS7VN7C7RPNCZ2XYDFS.mp3",
+      "snr": "14.9",
+      "dr": "30.2",
+      "silence": "19",
+      "source": "jazz_collection"
+    }
+  },
+  {
+    "id": "qc_snr_calibration_20260825_204205_006",
+    "data": {
+      "audio": "data/00_raw_collect/raw_audio/97/e7/97e7206b4c97cb7cfb14fd835065d258_01M0RFPVVA13WC4CZK46J56CAR.mp3",
+      "snr": "13.2",
+      "dr": "30.2",
+      "silence": "26",
+      "source": "jazz_collection"
+    }
+  },
+  {
+    "id": "qc_snr_calibration_20260825_204205_007",
+    "data": {
+      "audio": "data/00_raw_collect/raw_audio/61/b6/61b663c9b13898ba8ad5bcf34e5a7ec6_01M0RFPVY8ZNBRSF3M6KVT1TY2.mp3",
+      "snr": "20.3",
+      "dr": "25.3",
+      "silence": "11",
+      "source": "jazz_collection"
+    }
+  },
+  {
+    "id": "qc_snr_calibration_20260825_204205_008",
+    "data": {
+      "audio": "data/00_raw_collect/raw_audio/1f/28/1f288a3aa7005c402657c930677e9cc0_01M0RHT5QBG7MD9CBDYF68TKPY.mp3",
+      "snr": "13.1",
+      "dr": "40.6",
+      "silence": "49",
+      "source": "legacy_test"
+    }
+  }
+]

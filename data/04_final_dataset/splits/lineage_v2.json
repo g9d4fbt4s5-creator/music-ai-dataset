@@ -1,0 +1,63 @@
+{
+  "lineage_version": "2.0",
+  "dataset_version": "splits",
+  "created_at": "2026-08-26T15:42:54.308192+00:00",
+  "updated_at": "2026-08-26T15:42:54.308618+00:00",
+  "operators": [
+    {
+      "operator_name": "dataset_split",
+      "operator_version": "1.0",
+      "timestamp": "2026-08-26T15:42:54.308364+00:00",
+      "input_manifest": "data/00_raw_collect/audio_manifest.csv",
+      "input_filter": null,
+      "input_count": 84,
+      "output_path": "data/04_final_dataset/splits",
+      "output_count": 84,
+      "failed_count": 0,
+      "failed_samples": [],
+      "failure_reasons": {},
+      "model_version": null,
+      "config": {
+        "split_method": "stratified",
+        "train_ratio": 0.7,
+        "val_ratio": 0.15,
+        "test_ratio": 0.1,
+        "holdout_ratio": 0.05,
+        "stratify_by": "key",
+        "isolate_by": "artist_id",
+        "temporal_by": null,
+        "test_from": null,
+        "holdout_from": null,
+        "random_state": 42,
+        "source_isolation_passed": true
+      },
+      "duration_sec": null,
+      "status": "success",
+      "error_message": null
+    }
+  ],
+  "splits": {
+    "train": {
+      "count": 59,
+      "source_manifest": "data/00_raw_collect/audio_manifest.csv",
+      "source_batch": null
+    },
+    "val": {
+      "count": 17,
+      "source_manifest": "data/00_raw_collect/audio_manifest.csv",
+      "source_batch": null
+    },
+    "test": {
+      "count": 5,
+      "source_manifest": "data/00_raw_collect/audio_manifest.csv",
+      "source_batch": null
+    },
+    "holdout": {
+      "count": 3,
+      "source_manifest": "data/00_raw_collect/audio_manifest.csv",
+      "source_batch": null
+    }
+  },
+  "upstream_lineage": "/Users/m.jian/music_corpus_project/data/00.5_cleaned/reports/v20260824_083208/lineage.json",
+  "notes": null
+}

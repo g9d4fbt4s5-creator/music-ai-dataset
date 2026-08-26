@@ -1,0 +1,31 @@
+{
+  "audio_id": "01M0RFPVSQM6GZ0JRCMPDF9GE1",
+  "genre": "jazz",
+  "subgenre": "swing",
+  "mood": [
+    "神秘",
+    "激昂"
+  ],
+  "instrumentation": [
+    "电吉他",
+    "贝斯",
+    "合成器",
+    "架子鼓",
+    "钢琴"
+  ],
+  "vocal_presence": "instrumental",
+  "quality_assessment": "good",
+  "caption": "一段慵懒而怀旧的爵士乐，以钢琴和萨克斯为主奏，节奏轻快却不失从容，仿佛置身于旧时代的烟雾缭绕的酒吧，让人不禁随着摇摆的韵律轻轻晃动。",
+  "fusion": {
+    "mood_source": "knn(from 01M0RFPVNJ21SF5Y7VHPP8QV6T, sim=0.9106)",
+    "instrumentation_source": "knn(from 01M0RFPVNJ21SF5Y7VHPP8QV6T)",
+    "caption_source": "deepseek",
+    "genre_source": "deepseek"
+  },
+  "propagated_from": "01M0RFPVNJ21SF5Y7VHPP8QV6T",
+  "propagation_similarity": 0.9106,
+  "bpm": 129.2,
+  "key": "G",
+  "duration_sec": 292.83,
+  "snr_db": 31.7
+}

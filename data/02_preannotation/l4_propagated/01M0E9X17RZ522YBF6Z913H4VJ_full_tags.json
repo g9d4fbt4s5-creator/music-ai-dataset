@@ -1,0 +1,27 @@
+{
+  "audio_id": "01M0E9X17RZ522YBF6Z913H4VJ",
+  "genre": "other",
+  "subgenre": "silence",
+  "mood": [
+    "舒缓",
+    "怀旧"
+  ],
+  "instrumentation": [
+    "电吉他"
+  ],
+  "vocal_presence": "instrumental",
+  "quality_assessment": "poor",
+  "caption": "这段音频几乎完全静默，仅有极其微弱的背景噪声和短暂的说话声，整体呈现出一种静谧的氛围，适合作为无声片段或环境底噪使用。",
+  "fusion": {
+    "mood_source": "knn(from 01M0RFPVN7FD6R26FDRFX77R9Z, sim=0.7578)",
+    "instrumentation_source": "knn(from 01M0RFPVN7FD6R26FDRFX77R9Z)",
+    "caption_source": "deepseek",
+    "genre_source": "deepseek"
+  },
+  "propagated_from": "01M0RFPVN7FD6R26FDRFX77R9Z",
+  "propagation_similarity": 0.7578,
+  "bpm": 161.5,
+  "key": "F",
+  "duration_sec": 30.0,
+  "snr_db": 74.2
+}

@@ -1,0 +1,7 @@
+metric,train_mean,train_std,train_median,val_mean,val_std,val_median,golden_mean,golden_std,golden_median,holdout_mean,holdout_std,holdout_median
+snr_db,,,,,,,,,,,,
+dynamic_range_db,,,,,,,,,,,,
+silence_ratio,,,,,,,,,,,,
+clipping_ratio,,,,,,,,,,,,
+loudness_lufs,,,,,,,,,,,,
+duration_sec,,,,,,,,,,,,

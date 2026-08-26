@@ -1,0 +1,31 @@
+{
+  "audio_id": "01M0RFPVQSC0HP4QJKKVCQYKCX",
+  "genre": "jazz",
+  "subgenre": "swing",
+  "mood": [
+    "神秘",
+    "激昂"
+  ],
+  "instrumentation": [
+    "电吉他",
+    "贝斯",
+    "合成器",
+    "架子鼓",
+    "钢琴"
+  ],
+  "vocal_presence": "instrumental",
+  "quality_assessment": "good",
+  "caption": "这是一段舒缓的爵士乐，节奏从容不迫，仿佛在慵懒的午后回味往昔。吉他与钢琴的对话轻柔而富有韵味，低音提琴和鼓点营造出温暖摇摆的氛围，让人沉浸在怀旧的思绪中。",
+  "fusion": {
+    "mood_source": "knn(from 01M0RFPVNJ21SF5Y7VHPP8QV6T, sim=0.9245)",
+    "instrumentation_source": "knn(from 01M0RFPVNJ21SF5Y7VHPP8QV6T)",
+    "caption_source": "deepseek",
+    "genre_source": "deepseek"
+  },
+  "propagated_from": "01M0RFPVNJ21SF5Y7VHPP8QV6T",
+  "propagation_similarity": 0.9245,
+  "bpm": 68.0,
+  "key": "D",
+  "duration_sec": 526.34,
+  "snr_db": 33.3
+}

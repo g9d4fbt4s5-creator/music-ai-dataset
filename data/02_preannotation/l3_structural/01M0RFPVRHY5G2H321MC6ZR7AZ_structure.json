@@ -1,0 +1,41 @@
+{
+  "structure": [
+    {
+      "section": "Intro",
+      "start_sec": 0,
+      "end_sec": 15,
+      "description": "以钢琴和贝斯轻柔的对话开场，节奏舒缓，营造出静谧而略带忧郁的氛围，鼓组以细碎的镲片声点缀。"
+    },
+    {
+      "section": "Theme",
+      "start_sec": 15,
+      "end_sec": 60,
+      "description": "萨克斯管奏出主旋律，旋律线条流畅而富有歌唱性，节奏稳定在152 BPM，钢琴以和声支撑，鼓组加入摇摆节奏，整体明亮而充满律动。"
+    },
+    {
+      "section": "Improvisation",
+      "start_sec": 60,
+      "end_sec": 120,
+      "description": "萨克斯管即兴独奏，旋律蜿蜒多变，充满张力；钢琴随后加入对话式即兴，贝斯与鼓保持紧凑的节奏，段落内交替独奏，情绪逐渐升温。"
+    },
+    {
+      "section": "Outro",
+      "start_sec": 120,
+      "end_sec": 281.05,
+      "description": "即兴结束后，主题旋律重现但速度略减，钢琴与贝斯渐弱，鼓组退居背景，最终以萨克斯管的长音和钢琴的余韵收尾，回归intro的静谧氛围。"
+    }
+  ],
+  "instruments": [
+    "saxophone",
+    "piano",
+    "double_bass",
+    "drums"
+  ],
+  "mood": [
+    "melancholic",
+    "introspective"
+  ],
+  "caption": "一段充满内省气质的现代爵士乐，以152 BPM的轻快节奏为基底，却流淌着淡淡的忧郁。萨克斯管的即兴如思绪般蜿蜒，钢琴与贝斯的对话细腻而克制，整体在律动与沉思间取得微妙平衡，展现了乐手们精湛的互动与即兴智慧。",
+  "audio_id": "01M0RFPVRHY5G2H321MC6ZR7AZ",
+  "source": "deepseek_v3"
+}

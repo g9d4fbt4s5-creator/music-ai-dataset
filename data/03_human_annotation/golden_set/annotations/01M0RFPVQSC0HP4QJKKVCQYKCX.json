@@ -8,21 +8,94 @@
   "golden_version": "v1.0",
   "annotation": {
     "genre_level1": "Jazz",
-    "genre_level2": null,
-    "genre_level3": null,
-    "genre_confidence": "pending",
-    "instruments": [],
-    "instruments_gm128_ids": [],
-    "vocal_presence": "pending",
-    "mood_tags": [],
-    "mood_vad": {"valence": null, "arousal": null, "dominance": null},
-    "tempo_bpm": null,
-    "time_signature": null,
-    "key": null,
-    "is_cover": null,
-    "is_live": null,
-    "quality_notes": "长曲（526秒），可能为现场录音或长即兴，需人工确认",
-    "special_features": []
+    "genre_level2": "Free Jazz / Avant-garde Jazz",
+    "vocal_presence": "instrumental",
+    "tempo_bpm": 140,
+    "key": "G minor",
+    "instruments": [
+      "Tenor Saxophone",
+      "Piano",
+      "Double Bass",
+      "Drums"
+    ],
+    "mood_tags": [
+      "melancholic",
+      "energetic",
+      "chaotic",
+      "reflective"
+    ],
+    "mood_vad": {
+      "valence": 0.3,
+      "arousal": 0.8,
+      "dominance": 0.6
+    },
+    "caption": "这是一首充满实验精神的自由爵士乐，以忧郁的萨克斯独奏开场，逐渐发展为激烈混乱的即兴演奏，最后回归平静。",
+    "segments": [
+      {
+        "start": 0.0,
+        "end": 28.5,
+        "label": "Intro",
+        "instruments": [
+          "Tenor Saxophone",
+          "Piano",
+          "Double Bass",
+          "Drums"
+        ],
+        "mood": "Melancholic",
+        "confidence": 0.9
+      },
+      {
+        "start": 28.5,
+        "end": 57.0,
+        "label": "Theme A",
+        "instruments": [
+          "Tenor Saxophone",
+          "Piano",
+          "Double Bass",
+          "Drums"
+        ],
+        "mood": "Introspective",
+        "confidence": 0.85
+      },
+      {
+        "start": 57.0,
+        "end": 88.0,
+        "label": "Solo Section",
+        "instruments": [
+          "Tenor Saxophone",
+          "Piano",
+          "Double Bass",
+          "Drums"
+        ],
+        "mood": "Energetic",
+        "confidence": 0.9
+      },
+      {
+        "start": 88.0,
+        "end": 120.0,
+        "label": "Climax",
+        "instruments": [
+          "Tenor Saxophone",
+          "Piano",
+          "Double Bass",
+          "Drums"
+        ],
+        "mood": "Chaotic",
+        "confidence": 0.95
+      },
+      {
+        "start": 120.0,
+        "end": 181.0,
+        "label": "Outro",
+        "instruments": [
+          "Double Bass",
+          "Drums"
+        ],
+        "mood": "Reflective",
+        "confidence": 0.8
+      }
+    ],
+    "confidence": 0.85
   },
   "qc_snapshot": {
     "final_branch": "pass",
@@ -33,6 +106,26 @@
   },
   "annotator": null,
   "annotation_timestamp": null,
-  "review_status": "pending_annotation",
-  "golden_purpose": ["KNN_propagation_seed", "few_shot_example", "regression_test", "IAA_benchmark"]
+  "review_status": "qwen_omni_annotated",
+  "golden_purpose": [
+    "KNN_propagation_seed",
+    "few_shot_example",
+    "regression_test",
+    "IAA_benchmark"
+  ],
+  "annotation_source": "qwen_omni",
+  "annotation_model": "qwen3.5-omni-flash",
+  "truncated": true,
+  "api_usage": {
+    "input_tokens": 1650,
+    "input_tokens_details": {
+      "audio_tokens": 1262,
+      "text_tokens": 388
+    },
+    "output_tokens": 606,
+    "output_tokens_details": {
+      "text_tokens": 606
+    },
+    "total_tokens": 2256
+  }
 }

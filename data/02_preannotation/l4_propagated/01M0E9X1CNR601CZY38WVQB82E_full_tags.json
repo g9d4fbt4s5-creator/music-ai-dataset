@@ -1,0 +1,27 @@
+{
+  "audio_id": "01M0E9X1CNR601CZY38WVQB82E",
+  "genre": "other",
+  "subgenre": "silence",
+  "mood": [
+    "舒缓",
+    "怀旧"
+  ],
+  "instrumentation": [
+    "电吉他"
+  ],
+  "vocal_presence": "instrumental",
+  "quality_assessment": "poor",
+  "caption": "这段音频几乎完全静默，仅有一丝微弱的背景噪音，仿佛录音室在录制间隙的片刻宁静。它缺乏音乐元素，更像是一段空白或者未捕捉到有效信号的片段，在听觉上不构成完整的音乐作品。",
+  "fusion": {
+    "mood_source": "knn(from 01M0RFPVN7FD6R26FDRFX77R9Z, sim=0.7529)",
+    "instrumentation_source": "knn(from 01M0RFPVN7FD6R26FDRFX77R9Z)",
+    "caption_source": "deepseek",
+    "genre_source": "deepseek"
+  },
+  "propagated_from": "01M0RFPVN7FD6R26FDRFX77R9Z",
+  "propagation_similarity": 0.7529,
+  "bpm": 0.0,
+  "key": "C",
+  "duration_sec": 2.01,
+  "snr_db": 0.0
+}

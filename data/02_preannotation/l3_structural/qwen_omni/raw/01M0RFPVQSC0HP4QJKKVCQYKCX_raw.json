@@ -1,0 +1,104 @@
+{
+  "genre": "Jazz",
+  "subgenre": "Free Jazz / Avant-garde Jazz",
+  "vocal_presence": "instrumental",
+  "tempo_bpm": 140,
+  "key": "G minor",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 28.5,
+      "label": "Intro",
+      "instruments": [
+        "Tenor Saxophone",
+        "Piano",
+        "Double Bass",
+        "Drums"
+      ],
+      "mood": "Melancholic",
+      "confidence": 0.9
+    },
+    {
+      "start": 28.5,
+      "end": 57.0,
+      "label": "Theme A",
+      "instruments": [
+        "Tenor Saxophone",
+        "Piano",
+        "Double Bass",
+        "Drums"
+      ],
+      "mood": "Introspective",
+      "confidence": 0.85
+    },
+    {
+      "start": 57.0,
+      "end": 88.0,
+      "label": "Solo Section",
+      "instruments": [
+        "Tenor Saxophone",
+        "Piano",
+        "Double Bass",
+        "Drums"
+      ],
+      "mood": "Energetic",
+      "confidence": 0.9
+    },
+    {
+      "start": 88.0,
+      "end": 120.0,
+      "label": "Climax",
+      "instruments": [
+        "Tenor Saxophone",
+        "Piano",
+        "Double Bass",
+        "Drums"
+      ],
+      "mood": "Chaotic",
+      "confidence": 0.95
+    },
+    {
+      "start": 120.0,
+      "end": 181.0,
+      "label": "Outro",
+      "instruments": [
+        "Double Bass",
+        "Drums"
+      ],
+      "mood": "Reflective",
+      "confidence": 0.8
+    }
+  ],
+  "instruments": [
+    "Tenor Saxophone",
+    "Piano",
+    "Double Bass",
+    "Drums"
+  ],
+  "mood_tags": [
+    "melancholic",
+    "energetic",
+    "chaotic",
+    "reflective"
+  ],
+  "mood_vad": {
+    "valence": 0.3,
+    "arousal": 0.8,
+    "dominance": 0.6
+  },
+  "caption": "这是一首充满实验精神的自由爵士乐，以忧郁的萨克斯独奏开场，逐渐发展为激烈混乱的即兴演奏，最后回归平静。",
+  "confidence": 0.85,
+  "_raw_text": "{\n  \"genre\": \"Jazz\",\n  \"subgenre\": \"Free Jazz / Avant-garde Jazz\",\n  \"vocal_presence\": \"instrumental\",\n  \"tempo_bpm\": 140,\n  \"key\": \"G minor\",\n  \"segments\": [\n    {\n      \"start\": 0.0,\n      \"end\": 28.5,\n      \"label\": \"Intro\",\n      \"instruments\": [\"Tenor Saxophone\", \"Piano\", \"Double Bass\", \"Drums\"],\n      \"mood\": \"Melancholic\",\n      \"confidence\": 0.9\n    },\n    {\n      \"start\": 28.5,\n      \"end\": 57.0,\n      \"label\": \"Theme A\",\n      \"instruments\": [\"Tenor Saxophone\", \"Piano\", \"Double Bass\", \"Drums\"],\n      \"mood\": \"Introspective\",\n      \"confidence\": 0.85\n    },\n    {\n      \"start\": 57.0,\n      \"end\": 88.0,\n      \"label\": \"Solo Section\",\n      \"instruments\": [\"Tenor Saxophone\", \"Piano\", \"Double Bass\", \"Drums\"],\n      \"mood\": \"Energetic\",\n      \"confidence\": 0.9\n    },\n    {\n      \"start\": 88.0,\n      \"end\": 120.0,\n      \"label\": \"Climax\",\n      \"instruments\": [\"Tenor Saxophone\", \"Piano\", \"Double Bass\", \"Drums\"],\n      \"mood\": \"Chaotic\",\n      \"confidence\": 0.95\n    },\n    {\n      \"start\": 120.0,\n      \"end\": 181.0,\n      \"label\": \"Outro\",\n      \"instruments\": [\"Double Bass\", \"Drums\"],\n      \"mood\": \"Reflective\",\n      \"confidence\": 0.8\n    }\n  ],\n  \"instruments\": [\"Tenor Saxophone\", \"Piano\", \"Double Bass\", \"Drums\"],\n  \"mood_tags\": [\"melancholic\", \"energetic\", \"chaotic\", \"reflective\"],\n  \"mood_vad\": {\n    \"valence\": 0.3,\n    \"arousal\": 0.8,\n    \"dominance\": 0.6\n  },\n  \"caption\": \"这是一首充满实验精神的自由爵士乐，以忧郁的萨克斯独奏开场，逐渐发展为激烈混乱的即兴演奏，最后回归平静。\",\n  \"confidence\": 0.85\n}",
+  "_usage": {
+    "input_tokens": 1650,
+    "input_tokens_details": {
+      "audio_tokens": 1262,
+      "text_tokens": 388
+    },
+    "output_tokens": 606,
+    "output_tokens_details": {
+      "text_tokens": 606
+    },
+    "total_tokens": 2256
+  }
+}

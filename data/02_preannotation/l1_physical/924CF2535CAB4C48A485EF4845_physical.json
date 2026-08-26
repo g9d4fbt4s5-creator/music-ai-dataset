@@ -1,0 +1,16 @@
+{
+  "audio_id": "924CF2535CAB4C48A485EF4845",
+  "duration_sec": 367.2,
+  "sample_rate": 48000,
+  "channels": 2,
+  "bpm": 99.38,
+  "lufs": -13.29,
+  "spectral_centroid_mean": 3063.62,
+  "spectral_centroid_std": 1221.94,
+  "zero_crossing_rate_mean": 0.1232,
+  "spectral_rolloff_mean": 6960.8,
+  "rms_mean": 0.199481,
+  "rms_std": 0.145819,
+  "key": "B",
+  "key_strength": 0.74
+}

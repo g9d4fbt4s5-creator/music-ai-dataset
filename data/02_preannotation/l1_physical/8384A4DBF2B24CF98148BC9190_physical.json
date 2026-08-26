@@ -1,0 +1,16 @@
+{
+  "audio_id": "8384A4DBF2B24CF98148BC9190",
+  "duration_sec": 217.96,
+  "sample_rate": 48000,
+  "channels": 2,
+  "bpm": 117.45,
+  "lufs": -20.32,
+  "spectral_centroid_mean": 2824.82,
+  "spectral_centroid_std": 850.93,
+  "zero_crossing_rate_mean": 0.1101,
+  "spectral_rolloff_mean": 5965.68,
+  "rms_mean": 0.096281,
+  "rms_std": 0.031956,
+  "key": "C#",
+  "key_strength": 0.5069
+}

@@ -1,0 +1,93 @@
+{
+  "audio_id": "1ffebc2bd5ff8c6fad820477a0d14f58_01M0RFPVP4DRN0N5QYQ124EVEY",
+  "embedding_dim": 512,
+  "embedding_norm": 1.0,
+  "genre": [
+    {
+      "label": "pop",
+      "score": 0.18175971508026123
+    },
+    {
+      "label": "electronic",
+      "score": 0.157453715801239
+    },
+    {
+      "label": "cool jazz",
+      "score": 0.1447257697582245
+    },
+    {
+      "label": "rock",
+      "score": 0.14031164348125458
+    },
+    {
+      "label": "hard bop",
+      "score": 0.13461682200431824
+    }
+  ],
+  "mood": [
+    {
+      "label": "romantic",
+      "score": 0.1494894176721573
+    },
+    {
+      "label": "energetic",
+      "score": 0.1300220936536789
+    },
+    {
+      "label": "peaceful",
+      "score": 0.12292104959487915
+    },
+    {
+      "label": "introspective",
+      "score": 0.06922274827957153
+    },
+    {
+      "label": "dreamy",
+      "score": 0.03255455940961838
+    }
+  ],
+  "instrumentation": [
+    {
+      "label": "no vocals",
+      "score": 0.22923654317855835
+    },
+    {
+      "label": "violin",
+      "score": 0.16270014643669128
+    },
+    {
+      "label": "acoustic guitar",
+      "score": 0.12272164225578308
+    },
+    {
+      "label": "double bass",
+      "score": 0.12088055908679962
+    },
+    {
+      "label": "flute",
+      "score": 0.10718628764152527
+    }
+  ],
+  "scene": [
+    {
+      "label": "study",
+      "score": 0.19240179657936096
+    },
+    {
+      "label": "dance",
+      "score": 0.16383156180381775
+    },
+    {
+      "label": "meditation",
+      "score": 0.15249383449554443
+    },
+    {
+      "label": "party",
+      "score": 0.1226392537355423
+    },
+    {
+      "label": "workout",
+      "score": 0.1207006648182869
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "audio_id": "01M0RFPVT8N9F5BHQDGGGRMG21",
+  "genre": "jazz",
+  "subgenre": "swing",
+  "mood": [
+    "relaxed"
+  ],
+  "instrumentation": [],
+  "vocal_presence": "instrumental",
+  "quality_assessment": "good",
+  "caption": "这是一段活力四射的爵士乐，轻快的节奏与即兴的旋律交织，萨克斯风在钢琴和节奏组的衬托下自由翱翔，营造出愉悦而热烈的氛围，令人不禁随之摇摆。",
+  "fusion": {
+    "mood_source": "knn(from 01M0RFPVRHY5G2H321MC6ZR7AZ, sim=0.8979)",
+    "instrumentation_source": "knn(from 01M0RFPVRHY5G2H321MC6ZR7AZ)",
+    "caption_source": "deepseek",
+    "genre_source": "deepseek"
+  },
+  "propagated_from": "01M0RFPVRHY5G2H321MC6ZR7AZ",
+  "propagation_similarity": 0.8979,
+  "bpm": 136.0,
+  "key": "G#",
+  "duration_sec": 323.79,
+  "snr_db": 35.6
+}

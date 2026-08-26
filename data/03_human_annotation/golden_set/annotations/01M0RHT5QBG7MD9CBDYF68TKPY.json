@@ -1,28 +1,148 @@
 {
   "audio_id": "01M0RHT5QBG7MD9CBDYF68TKPY",
   "original_filename": "1f288a3aa7005c402657c930677e9cc0_01M0RHT5QBG7MD9CBDYF68TKPY.mp3",
-  "duration_sec": 688.400,
+  "duration_sec": 688.4,
   "format": "mp3",
   "source_type": "normal",
   "is_golden": true,
   "golden_version": "v1.0",
   "annotation": {
     "genre_level1": "Jazz",
-    "genre_level2": null,
-    "genre_level3": null,
-    "genre_confidence": "pending",
-    "instruments": [],
-    "instruments_gm128_ids": [],
-    "vocal_presence": "pending",
-    "mood_tags": [],
-    "mood_vad": {"valence": null, "arousal": null, "dominance": null},
-    "tempo_bpm": null,
-    "time_signature": null,
-    "key": null,
-    "is_cover": null,
-    "is_live": null,
-    "quality_notes": "超长曲（688秒），大概率为现场录音或长即兴演奏，需人工确认是否含观众噪音",
-    "special_features": ["long_form", "possible_live_recording"]
+    "genre_level2": "Bebop / Hard Bop",
+    "vocal_presence": "instrumental",
+    "tempo_bpm": 185,
+    "key": "G minor",
+    "instruments": [
+      "Saxophone",
+      "Piano",
+      "Double Bass",
+      "Drums"
+    ],
+    "mood_tags": [
+      "energetic",
+      "virtuosic",
+      "complex",
+      "improvisational"
+    ],
+    "mood_vad": {
+      "valence": 0.7,
+      "arousal": 0.9,
+      "dominance": 0.8
+    },
+    "caption": "这是一首充满活力的比波爵士乐，以快速复杂的萨克斯独奏为特色。",
+    "segments": [
+      {
+        "start": 0.0,
+        "end": 7.5,
+        "label": "Intro",
+        "instruments": [
+          "Double Bass",
+          "Drums"
+        ],
+        "mood": "Groovy",
+        "confidence": 0.9
+      },
+      {
+        "start": 7.5,
+        "end": 32.0,
+        "label": "Head (Theme)",
+        "instruments": [
+          "Saxophone",
+          "Piano",
+          "Double Bass",
+          "Drums"
+        ],
+        "mood": "Energetic",
+        "confidence": 0.95
+      },
+      {
+        "start": 32.0,
+        "end": 54.0,
+        "label": "Solo Section",
+        "instruments": [
+          "Saxophone",
+          "Piano",
+          "Double Bass",
+          "Drums"
+        ],
+        "mood": "Intense",
+        "confidence": 0.9
+      },
+      {
+        "start": 54.0,
+        "end": 76.0,
+        "label": "Solo Section",
+        "instruments": [
+          "Piano",
+          "Double Bass",
+          "Drums"
+        ],
+        "mood": "Intense",
+        "confidence": 0.9
+      },
+      {
+        "start": 76.0,
+        "end": 100.0,
+        "label": "Solo Section",
+        "instruments": [
+          "Saxophone",
+          "Double Bass",
+          "Drums"
+        ],
+        "mood": "Intense",
+        "confidence": 0.9
+      },
+      {
+        "start": 100.0,
+        "end": 122.0,
+        "label": "Solo Section",
+        "instruments": [
+          "Saxophone",
+          "Double Bass",
+          "Drums"
+        ],
+        "mood": "Intense",
+        "confidence": 0.9
+      },
+      {
+        "start": 122.0,
+        "end": 144.0,
+        "label": "Solo Section",
+        "instruments": [
+          "Saxophone",
+          "Double Bass",
+          "Drums"
+        ],
+        "mood": "Intense",
+        "confidence": 0.9
+      },
+      {
+        "start": 144.0,
+        "end": 166.0,
+        "label": "Solo Section",
+        "instruments": [
+          "Saxophone",
+          "Double Bass",
+          "Drums"
+        ],
+        "mood": "Intense",
+        "confidence": 0.9
+      },
+      {
+        "start": 166.0,
+        "end": 180.0,
+        "label": "Outro",
+        "instruments": [
+          "Saxophone",
+          "Piano",
+          "Double Bass",
+          "Drums"
+        ],
+        "mood": "Energetic",
+        "confidence": 0.9
+      }
+    ],
+    "confidence": 0.92
   },
   "qc_snapshot": {
     "final_branch": "pass",
@@ -33,6 +153,27 @@
   },
   "annotator": null,
   "annotation_timestamp": null,
-  "review_status": "pending_annotation",
-  "golden_purpose": ["KNN_propagation_seed", "few_shot_example", "regression_test", "IAA_benchmark", "long_form_representative"]
+  "review_status": "qwen_omni_annotated",
+  "golden_purpose": [
+    "KNN_propagation_seed",
+    "few_shot_example",
+    "regression_test",
+    "IAA_benchmark",
+    "long_form_representative"
+  ],
+  "annotation_source": "qwen_omni",
+  "annotation_model": "qwen3.5-omni-flash",
+  "truncated": true,
+  "api_usage": {
+    "input_tokens": 1650,
+    "input_tokens_details": {
+      "audio_tokens": 1262,
+      "text_tokens": 388
+    },
+    "output_tokens": 878,
+    "output_tokens_details": {
+      "text_tokens": 878
+    },
+    "total_tokens": 2528
+  }
 }

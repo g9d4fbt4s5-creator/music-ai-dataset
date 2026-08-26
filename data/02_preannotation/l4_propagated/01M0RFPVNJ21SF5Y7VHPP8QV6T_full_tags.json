@@ -1,0 +1,193 @@
+{
+  "audio_id": "01M0RFPVNJ21SF5Y7VHPP8QV6T",
+  "genre": "electronic",
+  "subgenre": "electronic",
+  "mood": [
+    "神秘",
+    "激昂"
+  ],
+  "instrumentation": [
+    "电吉他",
+    "贝斯",
+    "合成器",
+    "架子鼓",
+    "钢琴"
+  ],
+  "vocal_presence": "instrumental",
+  "quality_assessment": "good",
+  "caption": "这是一首典型的爵士摇摆乐（Swing Jazz）。乐曲由钢琴、贝斯和架子鼓组成的 rhythm section 开场，随后萨克斯管奏出明快活泼的主旋律。整首曲子包含多次主题再现和不同乐器的即兴独奏部分，其中还短暂出现了电吉他和合成器等音色，丰富了音乐层次。整体情绪欢快、充满活力，结尾处乐队合奏将气氛推向高潮后收束。",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 13.84,
+      "label": "前奏",
+      "instruments": [
+        "钢琴",
+        "贝斯",
+        "架子鼓"
+      ],
+      "emotion": "平静",
+      "confidence": 0.95,
+      "reasoning": "钢琴演奏摇摆节奏的伴奏和弦，贝斯进入后提供低音线条，架子鼓以 brushes 演奏轻快的节奏。"
+    },
+    {
+      "start": 13.84,
+      "end": 37.6,
+      "label": "主题呈示",
+      "instruments": [
+        "萨克斯",
+        "钢琴",
+        "贝斯",
+        "架子鼓"
+      ],
+      "emotion": "欢快",
+      "confidence": 0.92,
+      "reasoning": "萨克斯吹奏出明亮、跳跃的主旋律，乐队全奏配合，情绪轻松愉快。"
+    },
+    {
+      "start": 37.6,
+      "end": 56.56,
+      "label": "即兴独奏",
+      "instruments": [
+        "萨克斯",
+        "钢琴",
+        "贝斯",
+        "架子鼓"
+      ],
+      "emotion": "欢快",
+      "confidence": 0.88,
+      "reasoning": "萨克斯进行了一段富有表现力的即兴独奏，乐句流畅且充满变化。"
+    },
+    {
+      "start": 56.56,
+      "end": 80.32,
+      "label": "主题呈示",
+      "instruments": [
+        "萨克斯",
+        "钢琴",
+        "贝斯",
+        "架子鼓"
+      ],
+      "emotion": "欢快",
+      "confidence": 0.9,
+      "reasoning": "主奏乐器回归，重新演奏开头的主题旋律。"
+    },
+    {
+      "start": 80.32,
+      "end": 104.08,
+      "label": "即兴独奏",
+      "instruments": [
+        "萨克斯",
+        "钢琴",
+        "贝斯",
+        "架子鼓"
+      ],
+      "emotion": "欢快",
+      "confidence": 0.85,
+      "reasoning": "萨克斯继续即兴发挥，与乐队互动，节奏感强。"
+    },
+    {
+      "start": 104.08,
+      "end": 127.84,
+      "label": "即兴独奏",
+      "instruments": [
+        "钢琴",
+        "贝斯",
+        "架子鼓"
+      ],
+      "emotion": "激昂",
+      "confidence": 0.82,
+      "reasoning": "萨克斯暂停，钢琴接手进行一段技巧性更强的独奏，节奏加快，情绪推向高潮。"
+    },
+    {
+      "start": 127.84,
+      "end": 151.6,
+      "label": "即兴独奏",
+      "instruments": [
+        "电吉他",
+        "贝斯",
+        "架子鼓"
+      ],
+      "emotion": "紧张",
+      "confidence": 0.78,
+      "reasoning": "音色转为电吉他，演奏带有摇滚或放克色彩的即兴段落，能量感更强。"
+    },
+    {
+      "start": 151.6,
+      "end": 175.36,
+      "label": "即兴独奏",
+      "instruments": [
+        "合成器",
+        "贝斯",
+        "架子鼓"
+      ],
+      "emotion": "神秘",
+      "confidence": 0.75,
+      "reasoning": "音色变为合成器（或电风琴），演奏氛围感较强的即兴乐段，与前段的电吉他形成对比。"
+    },
+    {
+      "start": 175.36,
+      "end": 203.2,
+      "label": "未知段落",
+      "instruments": [
+        "贝斯",
+        "架子鼓"
+      ],
+      "emotion": "舒缓",
+      "confidence": 0.65,
+      "reasoning": "主奏乐器暂时消失，只剩下贝斯和架子鼓在演奏，可能是过渡段或节奏组展示。"
+    },
+    {
+      "start": 203.2,
+      "end": 232.0,
+      "label": "未知段落",
+      "instruments": [
+        "钢琴",
+        "贝斯",
+        "架子鼓"
+      ],
+      "emotion": "平静",
+      "confidence": 0.6,
+      "reasoning": "钢琴再次加入，与贝斯和鼓一起构建一个较为平静的背景，为后续的高潮做准备。"
+    },
+    {
+      "start": 232.0,
+      "end": 243.84,
+      "label": "主题呈示",
+      "instruments": [
+        "萨克斯",
+        "钢琴",
+        "贝斯",
+        "架子鼓"
+      ],
+      "emotion": "欢快",
+      "confidence": 0.93,
+      "reasoning": "萨克斯回归，再次完整地演奏了乐曲的主题旋律。"
+    },
+    {
+      "start": 243.84,
+      "end": 259.6,
+      "label": "尾奏",
+      "instruments": [
+        "萨克斯",
+        "钢琴",
+        "贝斯",
+        "架子鼓"
+      ],
+      "emotion": "欢快",
+      "confidence": 0.9,
+      "reasoning": "乐队全体合奏，重复并发展主题旋律，最后以一个有力的和弦结束全曲。"
+    }
+  ],
+  "fusion": {
+    "mood_source": "l3_golden",
+    "instrumentation_source": "l3_golden",
+    "caption_source": "l3_golden",
+    "genre_source": "deepseek"
+  },
+  "propagated_from": "golden_set",
+  "bpm": 143.6,
+  "key": "G",
+  "duration_sec": 285.86,
+  "snr_db": 32.2
+}

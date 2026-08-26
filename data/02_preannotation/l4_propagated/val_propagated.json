@@ -1,0 +1,146 @@
+{
+  "3CC7E3DF77334AE0B1B2BC3795": {
+    "genre": {
+      "value": "electronic",
+      "source": "val_pseudo_knn",
+      "seed": "CDF8316BBDD2488A877E675E8F",
+      "distance": 0.3198580741882324,
+      "threshold": 0.4
+    }
+  },
+  "01M0E9X1D5FB4ZND9B13XSD71K": {
+    "genre": {
+      "value": "electronic",
+      "source": "val_pseudo_knn",
+      "seed": "01M0RFPVVA13WC4CZK46J56CAR",
+      "distance": 0.3510878086090088,
+      "threshold": 0.4
+    }
+  },
+  "3C6F3F3C4839423DB83F7A55CD": {
+    "genre": {
+      "value": "pop",
+      "source": "val_pseudo_knn",
+      "seed": "8DDE7F1A99A0441C9A1564A6D7",
+      "distance": 0.2920829653739929,
+      "threshold": 0.4
+    }
+  },
+  "01M0E9X162CTB4D15WZQ5D8FVX": {
+    "genre": {
+      "value": "Jazz",
+      "source": "val_pseudo_knn",
+      "seed": "01M0RHT5QBG7MD9CBDYF68TKPY",
+      "distance": 0.37621212005615234,
+      "threshold": 0.4
+    }
+  },
+  "01M0E9X19DMAXGT6QD167G1YJX": {
+    "genre": {
+      "value": "Jazz",
+      "source": "val_pseudo_knn",
+      "seed": "01M0RHT5QBG7MD9CBDYF68TKPY",
+      "distance": 0.3794153332710266,
+      "threshold": 0.4
+    }
+  },
+  "D2098BC896D6450A8E3744528E": {
+    "genre": {
+      "value": "electronic",
+      "source": "val_pseudo_knn",
+      "seed": "01M0RFPVPNNQ8XKY1MCWV09261",
+      "distance": 0.3025026321411133,
+      "threshold": 0.4
+    }
+  },
+  "5CF227BBD8FB42BDA25C4755A1": {
+    "genre": {
+      "value": "hard bop",
+      "source": "val_pseudo_knn",
+      "seed": "3F34DF1B2784408BA60CE8165C",
+      "distance": 0.361430823802948,
+      "threshold": 0.4
+    }
+  },
+  "D0CC3C06BCC643C4AD0737115C": {
+    "genre": {
+      "value": "electronic",
+      "source": "val_pseudo_knn",
+      "seed": "01M0RFPVVA13WC4CZK46J56CAR",
+      "distance": 0.35039258003234863,
+      "threshold": 0.4
+    }
+  },
+  "77CB62FFAEC0446188CA3AE161": {
+    "genre": {
+      "value": "electronic",
+      "source": "val_pseudo_knn",
+      "seed": "870491B93FD04F979A12BC7811",
+      "distance": 0.35332971811294556,
+      "threshold": 0.4
+    }
+  },
+  "3D71C975F9D24E4CB5B77D85FA": {
+    "genre": {
+      "value": "electronic",
+      "source": "val_pseudo_knn",
+      "seed": "1EDDB5EFB16E4A36AFFFAC2132",
+      "distance": 0.3213963508605957,
+      "threshold": 0.4
+    }
+  },
+  "01M0E9X17RZ522YBF6Z913H4VJ": {
+    "genre": {
+      "value": "Jazz",
+      "source": "val_pseudo_knn",
+      "seed": "01M0RHT5QBG7MD9CBDYF68TKPY",
+      "distance": 0.3659442067146301,
+      "threshold": 0.4
+    }
+  },
+  "78250AD45D2842A3AA18C9071D": {
+    "genre": {
+      "value": "electronic",
+      "source": "val_pseudo_knn",
+      "seed": "01M0RFPVY8ZNBRSF3M6KVT1TY2",
+      "distance": 0.37949198484420776,
+      "threshold": 0.4
+    }
+  },
+  "A0F9B5560A194DE5A25A22BD62": {
+    "genre": {
+      "value": "electronic",
+      "source": "val_pseudo_knn",
+      "seed": "01M0RFPVS7VN7C7RPNCZ2XYDFS",
+      "distance": 0.31060564517974854,
+      "threshold": 0.4
+    }
+  },
+  "01M0E9X1AGP5JXX7YEA7NAV25V": {
+    "genre": {
+      "value": "electronic",
+      "source": "val_pseudo_knn",
+      "seed": "01M0RFPVN7FD6R26FDRFX77R9Z",
+      "distance": 0.3264809250831604,
+      "threshold": 0.4
+    }
+  },
+  "594E0C4719E34D6A98B438C503": {
+    "genre": {
+      "value": "pop",
+      "source": "val_pseudo_knn",
+      "seed": "7968BA9684454DD4B1B179643E",
+      "distance": 0.35559630393981934,
+      "threshold": 0.4
+    }
+  },
+  "33EA926BB2D64917AF8A166779": {
+    "genre": {
+      "value": "pop",
+      "source": "val_pseudo_knn",
+      "seed": "E1C4475B60AC4179852278CC60",
+      "distance": 0.36968421936035156,
+      "threshold": 0.4
+    }
+  }
+}

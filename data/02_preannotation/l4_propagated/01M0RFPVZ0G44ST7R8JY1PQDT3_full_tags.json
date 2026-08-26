@@ -1,0 +1,31 @@
+{
+  "audio_id": "01M0RFPVZ0G44ST7R8JY1PQDT3",
+  "genre": "jazz",
+  "subgenre": "fusion",
+  "mood": [
+    "神秘",
+    "激昂"
+  ],
+  "instrumentation": [
+    "电吉他",
+    "贝斯",
+    "合成器",
+    "架子鼓",
+    "钢琴"
+  ],
+  "vocal_presence": "instrumental",
+  "quality_assessment": "good",
+  "caption": "一段充满活力的现代爵士融合乐曲，以强劲的鼓点和丰富的打击乐为骨架，交织着电子音色，营造出紧张而激昂的氛围，展现出一种都市夜色中的即兴张力。",
+  "fusion": {
+    "mood_source": "knn(from 01M0RFPVNJ21SF5Y7VHPP8QV6T, sim=0.921)",
+    "instrumentation_source": "knn(from 01M0RFPVNJ21SF5Y7VHPP8QV6T)",
+    "caption_source": "deepseek",
+    "genre_source": "deepseek"
+  },
+  "propagated_from": "01M0RFPVNJ21SF5Y7VHPP8QV6T",
+  "propagation_similarity": 0.921,
+  "bpm": 129.2,
+  "key": "G",
+  "duration_sec": 443.79,
+  "snr_db": 33.1
+}

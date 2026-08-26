@@ -1,0 +1,31 @@
+{
+  "audio_id": "01M0RFPVXNQE9WKJ0DC1JYWY0C",
+  "genre": "jazz",
+  "subgenre": "modern",
+  "mood": [
+    "神秘",
+    "激昂"
+  ],
+  "instrumentation": [
+    "电吉他",
+    "贝斯",
+    "合成器",
+    "架子鼓",
+    "钢琴"
+  ],
+  "vocal_presence": "instrumental",
+  "quality_assessment": "good",
+  "caption": "一段舒缓的现代爵士乐，以钢琴和萨克斯为主奏，配合轻柔的贝斯和鼓点，营造出宁静而放松的氛围。旋律流畅，和声细腻，适合在静谧的夜晚聆听，让人沉浸其中。",
+  "fusion": {
+    "mood_source": "knn(from 01M0RFPVNJ21SF5Y7VHPP8QV6T, sim=0.833)",
+    "instrumentation_source": "knn(from 01M0RFPVNJ21SF5Y7VHPP8QV6T)",
+    "caption_source": "deepseek",
+    "genre_source": "deepseek"
+  },
+  "propagated_from": "01M0RFPVNJ21SF5Y7VHPP8QV6T",
+  "propagation_similarity": 0.833,
+  "bpm": 89.1,
+  "key": "C",
+  "duration_sec": 297.65,
+  "snr_db": 32.2
+}

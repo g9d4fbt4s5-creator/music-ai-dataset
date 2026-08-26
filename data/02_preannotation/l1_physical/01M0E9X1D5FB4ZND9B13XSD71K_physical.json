@@ -1,0 +1,16 @@
+{
+  "audio_id": "01M0E9X1D5FB4ZND9B13XSD71K",
+  "duration_sec": 98.46,
+  "sample_rate": 48000,
+  "channels": 2,
+  "bpm": 123.05,
+  "lufs": -17.33,
+  "spectral_centroid_mean": 2657.81,
+  "spectral_centroid_std": 1299.87,
+  "zero_crossing_rate_mean": 0.1106,
+  "spectral_rolloff_mean": 5683.98,
+  "rms_mean": 0.120364,
+  "rms_std": 0.067154,
+  "key": "B",
+  "key_strength": 0.5117
+}

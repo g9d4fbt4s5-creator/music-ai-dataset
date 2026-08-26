@@ -1,0 +1,155 @@
+{
+  "genre": "Big Band Jazz",
+  "subgenre": "Swing / Jump Blues",
+  "vocal_presence": "instrumental",
+  "tempo_bpm": 185,
+  "key": "C minor",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 21.5,
+      "label": "Intro",
+      "instruments": [
+        "萨克斯",
+        "小号",
+        "长号",
+        "钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "热情奔放",
+      "confidence": 0.95
+    },
+    {
+      "start": 21.5,
+      "end": 41.0,
+      "label": "主歌",
+      "instruments": [
+        "萨克斯",
+        "小号",
+        "长号",
+        "钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "欢快活泼",
+      "confidence": 0.92
+    },
+    {
+      "start": 41.0,
+      "end": 60.5,
+      "label": "间奏",
+      "instruments": [
+        "钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "轻松愉悦",
+      "confidence": 0.88
+    },
+    {
+      "start": 60.5,
+      "end": 80.0,
+      "label": "副歌",
+      "instruments": [
+        "萨克斯",
+        "小号",
+        "长号",
+        "钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "热情奔放",
+      "confidence": 0.93
+    },
+    {
+      "start": 80.0,
+      "end": 100.0,
+      "label": "桥段",
+      "instruments": [
+        "钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "宁静舒缓",
+      "confidence": 0.85
+    },
+    {
+      "start": 100.0,
+      "end": 120.0,
+      "label": "高潮",
+      "instruments": [
+        "萨克斯",
+        "小号",
+        "长号",
+        "钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "激情澎湃",
+      "confidence": 0.94
+    },
+    {
+      "start": 120.0,
+      "end": 140.0,
+      "label": "独奏",
+      "instruments": [
+        "萨克斯",
+        "钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "自由即兴",
+      "confidence": 0.9
+    },
+    {
+      "start": 140.0,
+      "end": 160.0,
+      "label": "尾声",
+      "instruments": [
+        "萨克斯",
+        "小号",
+        "长号",
+        "钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "辉煌壮丽",
+      "confidence": 0.91
+    }
+  ],
+  "instruments": [
+    "萨克斯",
+    "小号",
+    "长号",
+    "原声钢琴",
+    "低音提琴",
+    "爵士鼓"
+  ],
+  "mood_tags": [
+    "热情",
+    "欢快",
+    "活力",
+    "复古"
+  ],
+  "mood_vad": {
+    "valence": 0.9,
+    "arousal": 0.95,
+    "dominance": 0.8
+  },
+  "caption": "这是一首充满活力的摇摆乐，由完整的爵士大乐队演奏，包含铜管、木管和节奏组，氛围热烈欢快。",
+  "confidence": 0.92,
+  "_raw_text": "{\n  \"genre\": \"Big Band Jazz\",\n  \"subgenre\": \"Swing / Jump Blues\",\n  \"vocal_presence\": \"instrumental\",\n  \"tempo_bpm\": 185,\n  \"key\": \"C minor\",\n  \"segments\": [\n    {\n      \"start\": 0.0,\n      \"end\": 21.5,\n      \"label\": \"Intro\",\n      \"instruments\": [\"萨克斯\", \"小号\", \"长号\", \"钢琴\", \"贝斯\", \"爵士鼓\"],\n      \"mood\": \"热情奔放\",\n      \"confidence\": 0.95\n    },\n    {\n      \"start\": 21.5,\n      \"end\": 41.0,\n      \"label\": \"主歌\",\n      \"instruments\": [\"萨克斯\", \"小号\", \"长号\", \"钢琴\", \"贝斯\", \"爵士鼓\"],\n      \"mood\": \"欢快活泼\",\n      \"confidence\": 0.92\n    },\n    {\n      \"start\": 41.0,\n      \"end\": 60.5,\n      \"label\": \"间奏\",\n      \"instruments\": [\"钢琴\", \"贝斯\", \"爵士鼓\"],\n      \"mood\": \"轻松愉悦\",\n      \"confidence\": 0.88\n    },\n    {\n      \"start\": 60.5,\n      \"end\": 80.0,\n      \"label\": \"副歌\",\n      \"instruments\": [\"萨克斯\", \"小号\", \"长号\", \"钢琴\", \"贝斯\", \"爵士鼓\"],\n      \"mood\": \"热情奔放\",\n      \"confidence\": 0.93\n    },\n    {\n      \"start\": 80.0,\n      \"end\": 100.0,\n      \"label\": \"桥段\",\n      \"instruments\": [\"钢琴\", \"贝斯\", \"爵士鼓\"],\n      \"mood\": \"宁静舒缓\",\n      \"confidence\": 0.85\n    },\n    {\n      \"start\": 100.0,\n      \"end\": 120.0,\n      \"label\": \"高潮\",\n      \"instruments\": [\"萨克斯\", \"小号\", \"长号\", \"钢琴\", \"贝斯\", \"爵士鼓\"],\n      \"mood\": \"激情澎湃\",\n      \"confidence\": 0.94\n    },\n    {\n      \"start\": 120.0,\n      \"end\": 140.0,\n      \"label\": \"独奏\",\n      \"instruments\": [\"萨克斯\", \"钢琴\", \"贝斯\", \"爵士鼓\"],\n      \"mood\": \"自由即兴\",\n      \"confidence\": 0.90\n    },\n    {\n      \"start\": 140.0,\n      \"end\": 160.0,\n      \"label\": \"尾声\",\n      \"instruments\": [\"萨克斯\", \"小号\", \"长号\", \"钢琴\", \"贝斯\", \"爵士鼓\"],\n      \"mood\": \"辉煌壮丽\",\n      \"confidence\": 0.91\n    }\n  ],\n  \"instruments\": [\"萨克斯\", \"小号\", \"长号\", \"原声钢琴\", \"低音提琴\", \"爵士鼓\"],\n  \"mood_tags\": [\"热情\", \"欢快\", \"活力\", \"复古\"],\n  \"mood_vad\": {\"valence\": 0.9, \"arousal\": 0.95, \"dominance\": 0.8},\n  \"caption\": \"这是一首充满活力的摇摆乐，由完整的爵士大乐队演奏，包含铜管、木管和节奏组，氛围热烈欢快。\",\n  \"confidence\": 0.92\n}",
+  "_usage": {
+    "input_tokens": 1503,
+    "input_tokens_details": {
+      "audio_tokens": 1115,
+      "text_tokens": 388
+    },
+    "output_tokens": 854,
+    "output_tokens_details": {
+      "text_tokens": 854
+    },
+    "total_tokens": 2357
+  }
+}

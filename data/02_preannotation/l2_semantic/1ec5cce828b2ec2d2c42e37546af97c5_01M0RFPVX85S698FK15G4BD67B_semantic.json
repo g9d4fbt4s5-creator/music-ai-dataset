@@ -1,0 +1,93 @@
+{
+  "audio_id": "1ec5cce828b2ec2d2c42e37546af97c5_01M0RFPVX85S698FK15G4BD67B",
+  "embedding_dim": 512,
+  "embedding_norm": 1.0,
+  "genre": [
+    {
+      "label": "electronic",
+      "score": 0.25166627764701843
+    },
+    {
+      "label": "hard bop",
+      "score": 0.12613970041275024
+    },
+    {
+      "label": "latin jazz",
+      "score": 0.12028250098228455
+    },
+    {
+      "label": "classical",
+      "score": 0.11764636635780334
+    },
+    {
+      "label": "fusion",
+      "score": 0.11094783246517181
+    }
+  ],
+  "mood": [
+    {
+      "label": "energetic",
+      "score": 0.2264237403869629
+    },
+    {
+      "label": "melancholic",
+      "score": 0.19695232808589935
+    },
+    {
+      "label": "tense",
+      "score": 0.16580042243003845
+    },
+    {
+      "label": "introspective",
+      "score": 0.1426907181739807
+    },
+    {
+      "label": "romantic",
+      "score": 0.13882876932621002
+    }
+  ],
+  "instrumentation": [
+    {
+      "label": "harp",
+      "score": 0.28166115283966064
+    },
+    {
+      "label": "violin",
+      "score": 0.26680269837379456
+    },
+    {
+      "label": "piano",
+      "score": 0.21829304099082947
+    },
+    {
+      "label": "trumpet",
+      "score": 0.1809750348329544
+    },
+    {
+      "label": "flute",
+      "score": 0.15371471643447876
+    }
+  ],
+  "scene": [
+    {
+      "label": "meditation",
+      "score": 0.20513951778411865
+    },
+    {
+      "label": "workout",
+      "score": 0.17973357439041138
+    },
+    {
+      "label": "dance",
+      "score": 0.12651723623275757
+    },
+    {
+      "label": "elevator music",
+      "score": 0.11660192906856537
+    },
+    {
+      "label": "party",
+      "score": 0.09953761845827103
+    }
+  ]
+}

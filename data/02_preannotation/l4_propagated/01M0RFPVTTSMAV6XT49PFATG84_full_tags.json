@@ -1,0 +1,24 @@
+{
+  "audio_id": "01M0RFPVTTSMAV6XT49PFATG84",
+  "genre": "electronic",
+  "subgenre": "idm",
+  "mood": [
+    "relaxed"
+  ],
+  "instrumentation": [],
+  "vocal_presence": "instrumental",
+  "quality_assessment": "good",
+  "caption": "一段充满未来感的电子乐，节奏紧凑而富有张力，合成器音色交织出神秘氛围，鼓点与打击乐层层推进，令人沉浸其中。",
+  "fusion": {
+    "mood_source": "knn(from 01M0RFPVRHY5G2H321MC6ZR7AZ, sim=0.8592)",
+    "instrumentation_source": "knn(from 01M0RFPVRHY5G2H321MC6ZR7AZ)",
+    "caption_source": "deepseek",
+    "genre_source": "deepseek"
+  },
+  "propagated_from": "01M0RFPVRHY5G2H321MC6ZR7AZ",
+  "propagation_similarity": 0.8592,
+  "bpm": 112.3,
+  "key": "D",
+  "duration_sec": 159.92,
+  "snr_db": 32.5
+}

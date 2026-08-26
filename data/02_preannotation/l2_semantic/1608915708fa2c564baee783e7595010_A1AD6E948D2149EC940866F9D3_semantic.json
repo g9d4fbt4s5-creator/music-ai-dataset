@@ -1,0 +1,93 @@
+{
+  "audio_id": "1608915708fa2c564baee783e7595010_A1AD6E948D2149EC940866F9D3",
+  "embedding_dim": 512,
+  "embedding_norm": 1.0,
+  "genre": [
+    {
+      "label": "electronic",
+      "score": 0.20594464242458344
+    },
+    {
+      "label": "cool jazz",
+      "score": 0.2008218765258789
+    },
+    {
+      "label": "hard bop",
+      "score": 0.17750006914138794
+    },
+    {
+      "label": "hip hop",
+      "score": 0.16682538390159607
+    },
+    {
+      "label": "pop",
+      "score": 0.164045512676239
+    }
+  ],
+  "mood": [
+    {
+      "label": "energetic",
+      "score": 0.21118614077568054
+    },
+    {
+      "label": "peaceful",
+      "score": 0.1473696529865265
+    },
+    {
+      "label": "romantic",
+      "score": 0.1166115254163742
+    },
+    {
+      "label": "dreamy",
+      "score": 0.07367906719446182
+    },
+    {
+      "label": "tense",
+      "score": 0.05075085908174515
+    }
+  ],
+  "instrumentation": [
+    {
+      "label": "no vocals",
+      "score": 0.24975447356700897
+    },
+    {
+      "label": "vocals",
+      "score": 0.13842248916625977
+    },
+    {
+      "label": "acoustic guitar",
+      "score": 0.11321519315242767
+    },
+    {
+      "label": "bass",
+      "score": 0.11012807488441467
+    },
+    {
+      "label": "flute",
+      "score": 0.0964621976017952
+    }
+  ],
+  "scene": [
+    {
+      "label": "dance",
+      "score": 0.19919469952583313
+    },
+    {
+      "label": "study",
+      "score": 0.17471499741077423
+    },
+    {
+      "label": "party",
+      "score": 0.1719624400138855
+    },
+    {
+      "label": "meditation",
+      "score": 0.14759907126426697
+    },
+    {
+      "label": "workout",
+      "score": 0.12090054154396057
+    }
+  ]
+}

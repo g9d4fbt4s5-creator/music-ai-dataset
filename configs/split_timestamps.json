@@ -52,5 +52,13 @@
       {"start": "05:05", "title": "Illusion", "artist": "Kira Linn / Linntett"},
       {"start": "13:18", "title": "Women to Sky", "artist": "Kira Linn / Linntett"}
     ]
+  },
+  "fusion_Alive_Hiromi.flac": {
+    "output_prefix": "hiromi_alive",
+    "tracks": [
+      {"start": "00:00", "title": "Deamer", "artist": "Hiromi"},
+      {"start": "08:30", "title": "Seeker", "artist": "Hiromi"},
+      {"start": "15:54", "title": "Warrior", "artist": "Hiromi"}
+    ]
   }
 }

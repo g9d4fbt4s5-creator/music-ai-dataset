@@ -1,0 +1,52 @@
+[
+  {
+    "data": {
+      "audio": "raw_audio/f0/b8/f0b8fba5717578aecd96cb0114ff8ad7_01M0E9X162CTB4D15WZQ5D8FVX.wav",
+      "audio_id": "01M0E9X162CTB4D15WZQ5D8FVX",
+      "music_score": 0.053,
+      "yamnet_class": "?",
+      "duration": 30.0,
+      "focus_note": "⚠️ YAMNet判为非音乐(score=0.053, class=?), 确认是否误杀"
+    }
+  },
+  {
+    "data": {
+      "audio": "raw_audio/62/96/6296d8903f0d52a9225aaafabb1eb449_01M0E9X17RZ522YBF6Z913H4VJ.wav",
+      "audio_id": "01M0E9X17RZ522YBF6Z913H4VJ",
+      "music_score": 0.019,
+      "yamnet_class": "?",
+      "duration": 30.0,
+      "focus_note": "⚠️ YAMNet判为非音乐(score=0.019, class=?), 确认是否误杀"
+    }
+  },
+  {
+    "data": {
+      "audio": "raw_audio/0e/5b/0e5bed0b45b606bc1d1b7678bc07bc70_01M0E9X19DMAXGT6QD167G1YJX.wav",
+      "audio_id": "01M0E9X19DMAXGT6QD167G1YJX",
+      "music_score": 0.098,
+      "yamnet_class": "?",
+      "duration": 30.0,
+      "focus_note": "⚠️ YAMNet判为非音乐(score=0.098, class=?), 确认是否误杀"
+    }
+  },
+  {
+    "data": {
+      "audio": "raw_audio/13/b9/13b90e65b754067abdde582a4439ff52_01M0E9X1AGP5JXX7YEA7NAV25V.wav",
+      "audio_id": "01M0E9X1AGP5JXX7YEA7NAV25V",
+      "music_score": 0.076,
+      "yamnet_class": "?",
+      "duration": 30.0,
+      "focus_note": "⚠️ YAMNet判为非音乐(score=0.076, class=?), 确认是否误杀"
+    }
+  },
+  {
+    "data": {
+      "audio": "raw_audio/e8/fb/e8fb173150cd26420e155e6959acf3f5_01M0E9X1BHAGVNQYTXE4CMNJV0.wav",
+      "audio_id": "01M0E9X1BHAGVNQYTXE4CMNJV0",
+      "music_score": 0.086,
+      "yamnet_class": "?",
+      "duration": 30.0,
+      "focus_note": "⚠️ YAMNet判为非音乐(score=0.086, class=?), 确认是否误杀"
+    }
+  }
+]

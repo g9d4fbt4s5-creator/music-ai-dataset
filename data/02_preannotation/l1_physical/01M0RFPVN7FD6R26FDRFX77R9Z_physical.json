@@ -1,0 +1,16 @@
+{
+  "audio_id": "01M0RFPVN7FD6R26FDRFX77R9Z",
+  "duration_sec": 210.39,
+  "sample_rate": 48000,
+  "channels": 2,
+  "bpm": 103.36,
+  "lufs": -21.11,
+  "spectral_centroid_mean": 937.77,
+  "spectral_centroid_std": 394.24,
+  "zero_crossing_rate_mean": 0.0349,
+  "spectral_rolloff_mean": 1645.24,
+  "rms_mean": 0.076745,
+  "rms_std": 0.049416,
+  "key": "D",
+  "key_strength": 0.7563
+}

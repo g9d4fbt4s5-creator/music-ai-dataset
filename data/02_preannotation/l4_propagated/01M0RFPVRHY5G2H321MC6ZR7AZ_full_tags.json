@@ -1,0 +1,24 @@
+{
+  "audio_id": "01M0RFPVRHY5G2H321MC6ZR7AZ",
+  "genre": "jazz",
+  "subgenre": "swing",
+  "mood": [
+    "relaxed"
+  ],
+  "instrumentation": [],
+  "vocal_presence": "instrumental",
+  "quality_assessment": "good",
+  "caption": "一段充满内省气质的现代爵士乐，以152 BPM的轻快节奏为基底，却流淌着淡淡的忧郁。萨克斯管的即兴如思绪般蜿蜒，钢琴与贝斯的对话细腻而克制，整体在律动与沉思间取得微妙平衡，展现了乐手们精湛的互动与即兴智慧。",
+  "segments": [],
+  "fusion": {
+    "mood_source": "l3_golden",
+    "instrumentation_source": "l3_golden",
+    "caption_source": "l3_golden",
+    "genre_source": "deepseek"
+  },
+  "propagated_from": "golden_set",
+  "bpm": 152.0,
+  "key": "A",
+  "duration_sec": 281.05,
+  "snr_db": 30.6
+}

@@ -1,0 +1,93 @@
+{
+  "audio_id": "e8fb173150cd26420e155e6959acf3f5_01M0E9X1BHAGVNQYTXE4CMNJV0",
+  "embedding_dim": 512,
+  "embedding_norm": 1.0,
+  "genre": [
+    {
+      "label": "folk",
+      "score": 0.153299480676651
+    },
+    {
+      "label": "latin jazz",
+      "score": 0.1268535703420639
+    },
+    {
+      "label": "bebop",
+      "score": 0.115965835750103
+    },
+    {
+      "label": "electronic",
+      "score": 0.08906452357769012
+    },
+    {
+      "label": "cool jazz",
+      "score": 0.08824379742145538
+    }
+  ],
+  "mood": [
+    {
+      "label": "energetic",
+      "score": 0.21885263919830322
+    },
+    {
+      "label": "romantic",
+      "score": 0.13046514987945557
+    },
+    {
+      "label": "peaceful",
+      "score": 0.10418950766324997
+    },
+    {
+      "label": "excited",
+      "score": 0.07342814654111862
+    },
+    {
+      "label": "dreamy",
+      "score": 0.04813674837350845
+    }
+  ],
+  "instrumentation": [
+    {
+      "label": "no vocals",
+      "score": 0.26738160848617554
+    },
+    {
+      "label": "violin",
+      "score": 0.20041534304618835
+    },
+    {
+      "label": "trumpet",
+      "score": 0.18593358993530273
+    },
+    {
+      "label": "vocals",
+      "score": 0.15041418373584747
+    },
+    {
+      "label": "harp",
+      "score": 0.12620189785957336
+    }
+  ],
+  "scene": [
+    {
+      "label": "dance",
+      "score": 0.15033936500549316
+    },
+    {
+      "label": "workout",
+      "score": 0.1412774920463562
+    },
+    {
+      "label": "party",
+      "score": 0.12081515789031982
+    },
+    {
+      "label": "concert live",
+      "score": 0.09865786880254745
+    },
+    {
+      "label": "study",
+      "score": 0.03977212682366371
+    }
+  ]
+}

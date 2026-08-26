@@ -1,0 +1,9 @@
+{
+  "task_id": "qc_snr_calibration_20260825_205428",
+  "task_type": "qc_snr_calibration",
+  "created_at": "2026-08-25T20:54:28.632316",
+  "sample_count": 9,
+  "decision_field": "snr_decision",
+  "description": "SNR阈值校准听检",
+  "template_version": "1.0"
+}

@@ -1,0 +1,16 @@
+{
+  "audio_id": "01M0RFPVX85S698FK15G4BD67B",
+  "duration_sec": 174.36,
+  "sample_rate": 48000,
+  "channels": 2,
+  "bpm": 117.45,
+  "lufs": -23.72,
+  "spectral_centroid_mean": 1928.52,
+  "spectral_centroid_std": 1224.56,
+  "zero_crossing_rate_mean": 0.0828,
+  "spectral_rolloff_mean": 3794.79,
+  "rms_mean": 0.051171,
+  "rms_std": 0.033352,
+  "key": "C",
+  "key_strength": 0.5957
+}

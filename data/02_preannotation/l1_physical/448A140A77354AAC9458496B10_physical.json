@@ -1,0 +1,16 @@
+{
+  "audio_id": "448A140A77354AAC9458496B10",
+  "duration_sec": 201.0,
+  "sample_rate": 48000,
+  "channels": 2,
+  "bpm": 136.0,
+  "lufs": -18.79,
+  "spectral_centroid_mean": 3458.88,
+  "spectral_centroid_std": 1233.66,
+  "zero_crossing_rate_mean": 0.1452,
+  "spectral_rolloff_mean": 7555.84,
+  "rms_mean": 0.116028,
+  "rms_std": 0.069294,
+  "key": "G",
+  "key_strength": 0.6706
+}

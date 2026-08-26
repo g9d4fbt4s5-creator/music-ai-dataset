@@ -1,0 +1,10 @@
+{
+  "lineage_version": "2.0",
+  "dataset_version": "v20260824_083208",
+  "created_at": "2026-08-24T00:32:08.073339+00:00",
+  "updated_at": "2026-08-24T00:32:08.097181+00:00",
+  "operators": [],
+  "splits": {},
+  "upstream_lineage": null,
+  "notes": null
+}

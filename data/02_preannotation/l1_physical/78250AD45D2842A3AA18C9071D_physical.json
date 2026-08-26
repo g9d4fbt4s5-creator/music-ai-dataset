@@ -1,0 +1,16 @@
+{
+  "audio_id": "78250AD45D2842A3AA18C9071D",
+  "duration_sec": 444.0,
+  "sample_rate": 48000,
+  "channels": 2,
+  "bpm": 89.1,
+  "lufs": -18.27,
+  "spectral_centroid_mean": 1433.1,
+  "spectral_centroid_std": 742.63,
+  "zero_crossing_rate_mean": 0.0543,
+  "spectral_rolloff_mean": 3178.6,
+  "rms_mean": 0.114501,
+  "rms_std": 0.072477,
+  "key": "C",
+  "key_strength": 0.5641
+}

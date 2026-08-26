@@ -1,0 +1,587 @@
+[
+  {
+    "id": 11149,
+    "annotations": [
+      {
+        "id": 5531,
+        "completed_by": 1,
+        "result": [
+          {
+            "value": {
+              "choices": [
+                "acceptable"
+              ]
+            },
+            "id": "0h-0tYFS8t",
+            "from_name": "snr_decision",
+            "to_name": "audio",
+            "type": "choices",
+            "origin": "manual"
+          }
+        ],
+        "was_cancelled": false,
+        "ground_truth": false,
+        "created_at": "2026-08-25T13:48:58.036313Z",
+        "updated_at": "2026-08-25T13:48:58.036339Z",
+        "draft_created_at": null,
+        "lead_time": 5.389,
+        "prediction": {},
+        "result_count": 1,
+        "unique_id": "a3c794f2-a1c4-48a9-939e-2f4ac81272f6",
+        "import_id": null,
+        "last_action": null,
+        "bulk_created": false,
+        "task": 11149,
+        "project": 18,
+        "updated_by": 1,
+        "parent_prediction": null,
+        "parent_annotation": null,
+        "last_created_by": null
+      }
+    ],
+    "drafts": [],
+    "predictions": [],
+    "data": {
+      "audio": "/data/local-files/?d=data/00_raw_collect/raw_audio/de/34/de3496908c92f8421727d3e527103b57_01M0E9X1D5FB4ZND9B13XSD71K.mp3",
+      "snr": "16.1",
+      "dr": "29.9",
+      "silence": "17",
+      "source": "legacy_test",
+      "focus_note": ""
+    },
+    "meta": {},
+    "created_at": "2026-08-25T13:46:29.264556Z",
+    "updated_at": "2026-08-25T13:48:58.125326Z",
+    "allow_skip": true,
+    "inner_id": 28,
+    "total_annotations": 1,
+    "cancelled_annotations": 0,
+    "total_predictions": 0,
+    "comment_count": 0,
+    "unresolved_comment_count": 0,
+    "last_comment_updated_at": null,
+    "project": 18,
+    "updated_by": 1,
+    "comment_authors": []
+  },
+  {
+    "id": 11150,
+    "annotations": [
+      {
+        "id": 5532,
+        "completed_by": 1,
+        "result": [
+          {
+            "value": {
+              "choices": [
+                "acceptable"
+              ]
+            },
+            "id": "HusGx3Km4Z",
+            "from_name": "snr_decision",
+            "to_name": "audio",
+            "type": "choices",
+            "origin": "manual"
+          }
+        ],
+        "was_cancelled": false,
+        "ground_truth": false,
+        "created_at": "2026-08-25T13:49:25.857576Z",
+        "updated_at": "2026-08-25T13:49:25.857615Z",
+        "draft_created_at": null,
+        "lead_time": 19.037,
+        "prediction": {},
+        "result_count": 1,
+        "unique_id": "a1cb9b90-c40f-43f8-b2ad-b2baa8d83706",
+        "import_id": null,
+        "last_action": null,
+        "bulk_created": false,
+        "task": 11150,
+        "project": 18,
+        "updated_by": 1,
+        "parent_prediction": null,
+        "parent_annotation": null,
+        "last_created_by": null
+      }
+    ],
+    "drafts": [],
+    "predictions": [],
+    "data": {
+      "audio": "/data/local-files/?d=data/00_raw_collect/raw_audio/3a/95/3a9570be947691c9da7313787e0c3f43_01M0RFPVN7FD6R26FDRFX77R9Z.mp3",
+      "snr": "14.3",
+      "dr": "27.7",
+      "silence": "18",
+      "source": "jazz_collection",
+      "focus_note": ""
+    },
+    "meta": {},
+    "created_at": "2026-08-25T13:46:29.264638Z",
+    "updated_at": "2026-08-25T13:49:25.926652Z",
+    "allow_skip": true,
+    "inner_id": 29,
+    "total_annotations": 1,
+    "cancelled_annotations": 0,
+    "total_predictions": 0,
+    "comment_count": 0,
+    "unresolved_comment_count": 0,
+    "last_comment_updated_at": null,
+    "project": 18,
+    "updated_by": 1,
+    "comment_authors": []
+  },
+  {
+    "id": 11151,
+    "annotations": [
+      {
+        "id": 5533,
+        "completed_by": 1,
+        "result": [
+          {
+            "value": {
+              "choices": [
+                "vintage_normal"
+              ]
+            },
+            "id": "nkzxl157qS",
+            "from_name": "snr_decision",
+            "to_name": "audio",
+            "type": "choices",
+            "origin": "manual"
+          }
+        ],
+        "was_cancelled": false,
+        "ground_truth": false,
+        "created_at": "2026-08-25T13:50:09.817283Z",
+        "updated_at": "2026-08-25T13:50:09.817313Z",
+        "draft_created_at": null,
+        "lead_time": 41.535,
+        "prediction": {},
+        "result_count": 1,
+        "unique_id": "2227b332-7df6-4dac-bba1-deeb45165dce",
+        "import_id": null,
+        "last_action": null,
+        "bulk_created": false,
+        "task": 11151,
+        "project": 18,
+        "updated_by": 1,
+        "parent_prediction": null,
+        "parent_annotation": null,
+        "last_created_by": null
+      }
+    ],
+    "drafts": [],
+    "predictions": [],
+    "data": {
+      "audio": "/data/local-files/?d=data/00_raw_collect/raw_audio/1f/fe/1ffebc2bd5ff8c6fad820477a0d14f58_01M0RFPVP4DRN0N5QYQ124EVEY.mp3",
+      "snr": "14.0",
+      "dr": "43.9",
+      "silence": "66",
+      "source": "jazz_collection",
+      "focus_note": "⚠️ 静音比例66% + DR43.9dB — 可能是长前奏/留白，也可能是文件问题，需确认是否影响聆听"
+    },
+    "meta": {},
+    "created_at": "2026-08-25T13:46:29.264686Z",
+    "updated_at": "2026-08-25T13:50:09.883364Z",
+    "allow_skip": true,
+    "inner_id": 30,
+    "total_annotations": 1,
+    "cancelled_annotations": 0,
+    "total_predictions": 0,
+    "comment_count": 0,
+    "unresolved_comment_count": 0,
+    "last_comment_updated_at": null,
+    "project": 18,
+    "updated_by": 1,
+    "comment_authors": []
+  },
+  {
+    "id": 11152,
+    "annotations": [
+      {
+        "id": 5534,
+        "completed_by": 1,
+        "result": [
+          {
+            "value": {
+              "choices": [
+                "acceptable"
+              ]
+            },
+            "id": "Y8xe4jI9H3",
+            "from_name": "snr_decision",
+            "to_name": "audio",
+            "type": "choices",
+            "origin": "manual"
+          }
+        ],
+        "was_cancelled": false,
+        "ground_truth": false,
+        "created_at": "2026-08-25T13:50:39.031926Z",
+        "updated_at": "2026-08-25T13:50:39.031950Z",
+        "draft_created_at": null,
+        "lead_time": 25.801,
+        "prediction": {},
+        "result_count": 1,
+        "unique_id": "74c1e371-2d7d-4876-a74e-80d87e1125ec",
+        "import_id": null,
+        "last_action": null,
+        "bulk_created": false,
+        "task": 11152,
+        "project": 18,
+        "updated_by": 1,
+        "parent_prediction": null,
+        "parent_annotation": null,
+        "last_created_by": null
+      }
+    ],
+    "drafts": [],
+    "predictions": [],
+    "data": {
+      "audio": "/data/local-files/?d=data/00_raw_collect/raw_audio/51/54/515480a47dbd89441fb385af845590d8_01M0RFPVPNNQ8XKY1MCWV09261.mp3",
+      "snr": "14.1",
+      "dr": "32.1",
+      "silence": "19",
+      "source": "jazz_collection",
+      "focus_note": ""
+    },
+    "meta": {},
+    "created_at": "2026-08-25T13:46:29.265070Z",
+    "updated_at": "2026-08-25T13:50:39.103957Z",
+    "allow_skip": true,
+    "inner_id": 31,
+    "total_annotations": 1,
+    "cancelled_annotations": 0,
+    "total_predictions": 0,
+    "comment_count": 0,
+    "unresolved_comment_count": 0,
+    "last_comment_updated_at": null,
+    "project": 18,
+    "updated_by": 1,
+    "comment_authors": []
+  },
+  {
+    "id": 11153,
+    "annotations": [
+      {
+        "id": 5535,
+        "completed_by": 1,
+        "result": [
+          {
+            "value": {
+              "choices": [
+                "acceptable"
+              ]
+            },
+            "id": "Yuxybp6j_5",
+            "from_name": "snr_decision",
+            "to_name": "audio",
+            "type": "choices",
+            "origin": "manual"
+          }
+        ],
+        "was_cancelled": false,
+        "ground_truth": false,
+        "created_at": "2026-08-25T13:51:01.088722Z",
+        "updated_at": "2026-08-25T13:51:01.088761Z",
+        "draft_created_at": null,
+        "lead_time": 19.592,
+        "prediction": {},
+        "result_count": 1,
+        "unique_id": "1c3f54f7-aabe-4934-bbc1-af132d0f2efd",
+        "import_id": null,
+        "last_action": null,
+        "bulk_created": false,
+        "task": 11153,
+        "project": 18,
+        "updated_by": 1,
+        "parent_prediction": null,
+        "parent_annotation": null,
+        "last_created_by": null
+      }
+    ],
+    "drafts": [],
+    "predictions": [],
+    "data": {
+      "audio": "/data/local-files/?d=data/00_raw_collect/raw_audio/12/d7/12d7299f2ad4bd182c44d1f2aa14ae17_01M0RFPVQSC0HP4QJKKVCQYKCX.mp3",
+      "snr": "14.8",
+      "dr": "28.8",
+      "silence": "16",
+      "source": "jazz_collection",
+      "focus_note": ""
+    },
+    "meta": {},
+    "created_at": "2026-08-25T13:46:29.265208Z",
+    "updated_at": "2026-08-25T13:51:01.163375Z",
+    "allow_skip": true,
+    "inner_id": 32,
+    "total_annotations": 1,
+    "cancelled_annotations": 0,
+    "total_predictions": 0,
+    "comment_count": 0,
+    "unresolved_comment_count": 0,
+    "last_comment_updated_at": null,
+    "project": 18,
+    "updated_by": 1,
+    "comment_authors": []
+  },
+  {
+    "id": 11154,
+    "annotations": [
+      {
+        "id": 5536,
+        "completed_by": 1,
+        "result": [
+          {
+            "value": {
+              "choices": [
+                "acceptable"
+              ]
+            },
+            "id": "jqfZhBXWfV",
+            "from_name": "snr_decision",
+            "to_name": "audio",
+            "type": "choices",
+            "origin": "manual"
+          }
+        ],
+        "was_cancelled": false,
+        "ground_truth": false,
+        "created_at": "2026-08-25T14:01:37.013692Z",
+        "updated_at": "2026-08-25T14:01:37.013721Z",
+        "draft_created_at": "2026-08-25T13:51:38.061161Z",
+        "lead_time": 633.325,
+        "prediction": {},
+        "result_count": 1,
+        "unique_id": "9c9a2226-e847-4457-b21d-70ea38133601",
+        "import_id": null,
+        "last_action": null,
+        "bulk_created": false,
+        "task": 11154,
+        "project": 18,
+        "updated_by": 1,
+        "parent_prediction": null,
+        "parent_annotation": null,
+        "last_created_by": null
+      }
+    ],
+    "drafts": [],
+    "predictions": [],
+    "data": {
+      "audio": "/data/local-files/?d=data/00_raw_collect/raw_audio/02/5e/025ee64371ee3bbdf9718a473863917e_01M0RFPVS7VN7C7RPNCZ2XYDFS.mp3",
+      "snr": "14.9",
+      "dr": "30.2",
+      "silence": "19",
+      "source": "jazz_collection",
+      "focus_note": ""
+    },
+    "meta": {},
+    "created_at": "2026-08-25T13:46:29.265261Z",
+    "updated_at": "2026-08-25T14:01:37.118872Z",
+    "allow_skip": true,
+    "inner_id": 33,
+    "total_annotations": 1,
+    "cancelled_annotations": 0,
+    "total_predictions": 0,
+    "comment_count": 0,
+    "unresolved_comment_count": 0,
+    "last_comment_updated_at": null,
+    "project": 18,
+    "updated_by": 1,
+    "comment_authors": []
+  },
+  {
+    "id": 11155,
+    "annotations": [
+      {
+        "id": 5537,
+        "completed_by": 1,
+        "result": [
+          {
+            "value": {
+              "choices": [
+                "acceptable"
+              ]
+            },
+            "id": "Ezd9p2pbKR",
+            "from_name": "snr_decision",
+            "to_name": "audio",
+            "type": "choices",
+            "origin": "manual"
+          }
+        ],
+        "was_cancelled": false,
+        "ground_truth": false,
+        "created_at": "2026-08-25T14:01:54.453035Z",
+        "updated_at": "2026-08-25T14:01:54.453072Z",
+        "draft_created_at": null,
+        "lead_time": 14.803,
+        "prediction": {},
+        "result_count": 1,
+        "unique_id": "8e7f3b6c-7ca1-4f74-966a-6f9f850d4a85",
+        "import_id": null,
+        "last_action": null,
+        "bulk_created": false,
+        "task": 11155,
+        "project": 18,
+        "updated_by": 1,
+        "parent_prediction": null,
+        "parent_annotation": null,
+        "last_created_by": null
+      }
+    ],
+    "drafts": [],
+    "predictions": [],
+    "data": {
+      "audio": "/data/local-files/?d=data/00_raw_collect/raw_audio/97/e7/97e7206b4c97cb7cfb14fd835065d258_01M0RFPVVA13WC4CZK46J56CAR.mp3",
+      "snr": "13.2",
+      "dr": "30.2",
+      "silence": "26",
+      "source": "jazz_collection",
+      "focus_note": ""
+    },
+    "meta": {},
+    "created_at": "2026-08-25T13:46:29.265335Z",
+    "updated_at": "2026-08-25T14:01:54.511577Z",
+    "allow_skip": true,
+    "inner_id": 34,
+    "total_annotations": 1,
+    "cancelled_annotations": 0,
+    "total_predictions": 0,
+    "comment_count": 0,
+    "unresolved_comment_count": 0,
+    "last_comment_updated_at": null,
+    "project": 18,
+    "updated_by": 1,
+    "comment_authors": []
+  },
+  {
+    "id": 11156,
+    "annotations": [
+      {
+        "id": 5538,
+        "completed_by": 1,
+        "result": [
+          {
+            "value": {
+              "choices": [
+                "acceptable"
+              ]
+            },
+            "id": "bCbwozIdks",
+            "from_name": "snr_decision",
+            "to_name": "audio",
+            "type": "choices",
+            "origin": "manual"
+          }
+        ],
+        "was_cancelled": false,
+        "ground_truth": false,
+        "created_at": "2026-08-25T14:02:05.953220Z",
+        "updated_at": "2026-08-25T14:02:05.953276Z",
+        "draft_created_at": null,
+        "lead_time": 9.153,
+        "prediction": {},
+        "result_count": 1,
+        "unique_id": "5e3751f6-8c80-42a0-b545-af174e0e90de",
+        "import_id": null,
+        "last_action": null,
+        "bulk_created": false,
+        "task": 11156,
+        "project": 18,
+        "updated_by": 1,
+        "parent_prediction": null,
+        "parent_annotation": null,
+        "last_created_by": null
+      }
+    ],
+    "drafts": [],
+    "predictions": [],
+    "data": {
+      "audio": "/data/local-files/?d=data/00_raw_collect/raw_audio/61/b6/61b663c9b13898ba8ad5bcf34e5a7ec6_01M0RFPVY8ZNBRSF3M6KVT1TY2.mp3",
+      "snr": "20.3",
+      "dr": "25.3",
+      "silence": "11",
+      "source": "jazz_collection",
+      "focus_note": ""
+    },
+    "meta": {},
+    "created_at": "2026-08-25T13:46:29.265388Z",
+    "updated_at": "2026-08-25T14:02:06.028325Z",
+    "allow_skip": true,
+    "inner_id": 35,
+    "total_annotations": 1,
+    "cancelled_annotations": 0,
+    "total_predictions": 0,
+    "comment_count": 0,
+    "unresolved_comment_count": 0,
+    "last_comment_updated_at": null,
+    "project": 18,
+    "updated_by": 1,
+    "comment_authors": []
+  },
+  {
+    "id": 11157,
+    "annotations": [
+      {
+        "id": 5539,
+        "completed_by": 1,
+        "result": [
+          {
+            "value": {
+              "choices": [
+                "acceptable"
+              ]
+            },
+            "id": "jf5RwcU0Oz",
+            "from_name": "snr_decision",
+            "to_name": "audio",
+            "type": "choices",
+            "origin": "manual"
+          }
+        ],
+        "was_cancelled": false,
+        "ground_truth": false,
+        "created_at": "2026-08-25T14:02:21.293243Z",
+        "updated_at": "2026-08-25T14:02:21.293288Z",
+        "draft_created_at": null,
+        "lead_time": 12.172,
+        "prediction": {},
+        "result_count": 1,
+        "unique_id": "2c121f47-a81e-492e-ad75-b105ecacc177",
+        "import_id": null,
+        "last_action": null,
+        "bulk_created": false,
+        "task": 11157,
+        "project": 18,
+        "updated_by": 1,
+        "parent_prediction": null,
+        "parent_annotation": null,
+        "last_created_by": null
+      }
+    ],
+    "drafts": [],
+    "predictions": [],
+    "data": {
+      "audio": "/data/local-files/?d=data/00_raw_collect/raw_audio/1f/28/1f288a3aa7005c402657c930677e9cc0_01M0RHT5QBG7MD9CBDYF68TKPY.mp3",
+      "snr": "13.1",
+      "dr": "40.6",
+      "silence": "49",
+      "source": "legacy_test",
+      "focus_note": "⚠️ 静音比例49% + DR40.6dB — 被拒重入样本，需确认是否已修复"
+    },
+    "meta": {},
+    "created_at": "2026-08-25T13:46:29.265438Z",
+    "updated_at": "2026-08-25T14:02:21.342552Z",
+    "allow_skip": true,
+    "inner_id": 36,
+    "total_annotations": 1,
+    "cancelled_annotations": 0,
+    "total_predictions": 0,
+    "comment_count": 0,
+    "unresolved_comment_count": 0,
+    "last_comment_updated_at": null,
+    "project": 18,
+    "updated_by": 1,
+    "comment_authors": []
+  }
+]

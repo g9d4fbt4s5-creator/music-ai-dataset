@@ -1,0 +1,93 @@
+{
+  "audio_id": "b616242566f26ad4ea0bf6327d96471d_A7E56197254D451CB98808C9BD",
+  "embedding_dim": 512,
+  "embedding_norm": 0.9999999403953552,
+  "genre": [
+    {
+      "label": "pop",
+      "score": 0.12346037477254868
+    },
+    {
+      "label": "cool jazz",
+      "score": 0.10217157006263733
+    },
+    {
+      "label": "folk",
+      "score": 0.0818270742893219
+    },
+    {
+      "label": "hard bop",
+      "score": 0.07563871145248413
+    },
+    {
+      "label": "hip hop",
+      "score": 0.060991495847702026
+    }
+  ],
+  "mood": [
+    {
+      "label": "energetic",
+      "score": 0.15464694797992706
+    },
+    {
+      "label": "peaceful",
+      "score": 0.10714948177337646
+    },
+    {
+      "label": "romantic",
+      "score": 0.06320610642433167
+    },
+    {
+      "label": "dreamy",
+      "score": 0.02931412309408188
+    },
+    {
+      "label": "excited",
+      "score": 0.0184570774435997
+    }
+  ],
+  "instrumentation": [
+    {
+      "label": "no vocals",
+      "score": 0.28518661856651306
+    },
+    {
+      "label": "vocals",
+      "score": 0.20726951956748962
+    },
+    {
+      "label": "bass",
+      "score": 0.09201106429100037
+    },
+    {
+      "label": "acoustic guitar",
+      "score": 0.07031841576099396
+    },
+    {
+      "label": "guitar",
+      "score": 0.05399521812796593
+    }
+  ],
+  "scene": [
+    {
+      "label": "study",
+      "score": 0.11978500336408615
+    },
+    {
+      "label": "dance",
+      "score": 0.1016564667224884
+    },
+    {
+      "label": "elevator music",
+      "score": 0.0796794667840004
+    },
+    {
+      "label": "party",
+      "score": 0.07723082602024078
+    },
+    {
+      "label": "meditation",
+      "score": 0.061284951865673065
+    }
+  ]
+}

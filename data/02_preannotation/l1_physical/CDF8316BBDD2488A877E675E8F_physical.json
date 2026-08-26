@@ -1,0 +1,16 @@
+{
+  "audio_id": "CDF8316BBDD2488A877E675E8F",
+  "duration_sec": 261.25,
+  "sample_rate": 48000,
+  "channels": 2,
+  "bpm": 112.35,
+  "lufs": -19.31,
+  "spectral_centroid_mean": 2062.66,
+  "spectral_centroid_std": 768.34,
+  "zero_crossing_rate_mean": 0.0847,
+  "spectral_rolloff_mean": 4439.46,
+  "rms_mean": 0.113566,
+  "rms_std": 0.039824,
+  "key": "F#",
+  "key_strength": 0.701
+}

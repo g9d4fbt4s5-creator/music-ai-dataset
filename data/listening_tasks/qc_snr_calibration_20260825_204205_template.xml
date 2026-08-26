@@ -1,0 +1,13 @@
+<View>
+  <Audio name="audio" value="$audio" zoom="true" waveheight="80" />
+  <Header value="样本信息" size="4" />
+  <Text name="meta" value="SNR: $snr dB | DR: $dr dB | 静音: $silence% | 来源: $source" />
+  <Header value="听检判断" size="4" />
+  <Choices name="snr_decision" toName="audio" choice="single" required="true" showInline="true">
+    <Choice value="acceptable" html="✅ 噪声可接受，质量合格" />
+    <Choice value="vintage_normal" html="🎺 历史录音正常特征" />
+    <Choice value="noise_too_high" html="🔊 噪声过大，影响聆听" />
+    <Choice value="uncertain" html="❓ 不确定" />
+  </Choices>
+  <TextArea name="comment" toName="audio" placeholder="备注（可选）" rows="2" />
+</View>

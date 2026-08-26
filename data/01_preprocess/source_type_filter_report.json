@@ -1,0 +1,26 @@
+{
+  "filtered": true,
+  "mode": "mark_only",
+  "before_count": 85,
+  "after_count": 85,
+  "marked_count": 5,
+  "marked_by_type": {
+    "ace_studio_generated_demucs_vocals": 5
+  },
+  "marked_ids": [
+    "01M0E9X162CTB4D15WZQ5D8FVX",
+    "01M0E9X17RZ522YBF6Z913H4VJ",
+    "01M0E9X19DMAXGT6QD167G1YJX",
+    "01M0E9X1AGP5JXX7YEA7NAV25V",
+    "01M0E9X1BHAGVNQYTXE4CMNJV0"
+  ],
+  "excluded_types_used": [
+    "ace_studio_generated",
+    "ace_studio_generated_demucs_vocals",
+    "ai_generated_vocals",
+    "demucs_vocals",
+    "demucs_vocals_only",
+    "synthetic_dry_vocals"
+  ],
+  "timestamp": "2026-08-26T07:58:27.231168"
+}

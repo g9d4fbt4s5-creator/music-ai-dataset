@@ -1,0 +1,41 @@
+{
+  "total": 84,
+  "splits": {
+    "train": {
+      "count": 59,
+      "ratio": 0.7023809523809523
+    },
+    "val": {
+      "count": 17,
+      "ratio": 0.20238095238095238
+    },
+    "test": {
+      "count": 5,
+      "ratio": 0.05952380952380952
+    },
+    "holdout": {
+      "count": 3,
+      "ratio": 0.03571428571428571
+    }
+  },
+  "split_method": "stratified",
+  "isolate_by": "artist_id",
+  "overlap_audio_ids": [],
+  "source_isolation_passed": true,
+  "main_pool_manifest": "data/00_raw_collect/audio_manifest.csv",
+  "test_pool_manifest": null,
+  "holdout_pool_manifest": null,
+  "train_val_split_ratio": {
+    "train": 0.7,
+    "val": 0.15
+  },
+  "source_isolation_enabled": false,
+  "cross_set_dedup": {
+    "enabled": true,
+    "method": "song_group_id (primary) / fingerprint_similarity (fallback)",
+    "total_removed": 0,
+    "val_removed": 0,
+    "test_removed": 0,
+    "holdout_removed": 0
+  }
+}

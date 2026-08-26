@@ -1,0 +1,31 @@
+{
+  "audio_id": "01M0RFPVWPN4GTHYGPW6JVN04A",
+  "genre": "jazz",
+  "subgenre": "swing",
+  "mood": [
+    "神秘",
+    "激昂"
+  ],
+  "instrumentation": [
+    "电吉他",
+    "贝斯",
+    "合成器",
+    "架子鼓",
+    "钢琴"
+  ],
+  "vocal_presence": "instrumental",
+  "quality_assessment": "good",
+  "caption": "这是一段轻快而富有律动的爵士乐，摇摆节奏中透出惬意与活力。钢琴与萨克斯的对话交织，在贝斯和鼓的稳健支撑下，营造出一种既放松又充满张力的聆听体验，仿佛置身于烟雾缭绕的爵士俱乐部。",
+  "fusion": {
+    "mood_source": "knn(from 01M0RFPVNJ21SF5Y7VHPP8QV6T, sim=0.8507)",
+    "instrumentation_source": "knn(from 01M0RFPVNJ21SF5Y7VHPP8QV6T)",
+    "caption_source": "deepseek",
+    "genre_source": "deepseek"
+  },
+  "propagated_from": "01M0RFPVNJ21SF5Y7VHPP8QV6T",
+  "propagation_similarity": 0.8507,
+  "bpm": 129.2,
+  "key": "G#",
+  "duration_sec": 242.39,
+  "snr_db": 31.3
+}

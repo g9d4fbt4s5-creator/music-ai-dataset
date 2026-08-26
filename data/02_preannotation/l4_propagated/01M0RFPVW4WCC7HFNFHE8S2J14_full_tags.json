@@ -1,0 +1,31 @@
+{
+  "audio_id": "01M0RFPVW4WCC7HFNFHE8S2J14",
+  "genre": "electronic",
+  "subgenre": "downtempo",
+  "mood": [
+    "神秘",
+    "激昂"
+  ],
+  "instrumentation": [
+    "电吉他",
+    "贝斯",
+    "合成器",
+    "架子鼓",
+    "钢琴"
+  ],
+  "vocal_presence": "instrumental",
+  "quality_assessment": "good",
+  "caption": "一段以合成器为主导的电子乐，节奏舒缓而富有律动，营造出神秘而放松的氛围。旋律在键盘的铺陈下缓缓展开，鼓机轻敲出稳定的节拍，整体声音干净清晰，适合深夜聆听或沉浸思考。",
+  "fusion": {
+    "mood_source": "knn(from 01M0RFPVNJ21SF5Y7VHPP8QV6T, sim=0.8615)",
+    "instrumentation_source": "knn(from 01M0RFPVNJ21SF5Y7VHPP8QV6T)",
+    "caption_source": "deepseek",
+    "genre_source": "deepseek"
+  },
+  "propagated_from": "01M0RFPVNJ21SF5Y7VHPP8QV6T",
+  "propagation_similarity": 0.8615,
+  "bpm": 123.0,
+  "key": "E",
+  "duration_sec": 217.49,
+  "snr_db": 32.5
+}

@@ -1,0 +1,93 @@
+{
+  "audio_id": "258454060d359241f2ea3499f91e4fd9_01M0E9X1CNR601CZY38WVQB82E",
+  "embedding_dim": 512,
+  "embedding_norm": 1.0,
+  "genre": [
+    {
+      "label": "hip hop",
+      "score": 0.16141262650489807
+    },
+    {
+      "label": "pop",
+      "score": 0.1568198800086975
+    },
+    {
+      "label": "country",
+      "score": 0.13343654572963715
+    },
+    {
+      "label": "folk",
+      "score": 0.0854003056883812
+    },
+    {
+      "label": "electronic",
+      "score": 0.07571029663085938
+    }
+  ],
+  "mood": [
+    {
+      "label": "relaxed",
+      "score": 0.24220265448093414
+    },
+    {
+      "label": "peaceful",
+      "score": 0.23624132573604584
+    },
+    {
+      "label": "tense",
+      "score": 0.16794723272323608
+    },
+    {
+      "label": "calm",
+      "score": 0.16698965430259705
+    },
+    {
+      "label": "sad",
+      "score": 0.11226402223110199
+    }
+  ],
+  "instrumentation": [
+    {
+      "label": "no vocals",
+      "score": 0.2732528746128082
+    },
+    {
+      "label": "vocals",
+      "score": 0.2212647944688797
+    },
+    {
+      "label": "flute",
+      "score": 0.16423878073692322
+    },
+    {
+      "label": "clarinet",
+      "score": 0.15683433413505554
+    },
+    {
+      "label": "bass",
+      "score": 0.1461409032344818
+    }
+  ],
+  "scene": [
+    {
+      "label": "study",
+      "score": 0.28461840748786926
+    },
+    {
+      "label": "background music",
+      "score": 0.16639992594718933
+    },
+    {
+      "label": "coffee shop",
+      "score": 0.12953615188598633
+    },
+    {
+      "label": "studio recording",
+      "score": 0.12626884877681732
+    },
+    {
+      "label": "concert live",
+      "score": 0.11452936381101608
+    }
+  ]
+}

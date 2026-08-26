@@ -1,0 +1,93 @@
+{
+  "audio_id": "21388d483685392599b87ce59a72e412_8DDE7F1A99A0441C9A1564A6D7",
+  "embedding_dim": 512,
+  "embedding_norm": 1.0,
+  "genre": [
+    {
+      "label": "pop",
+      "score": 0.15197402238845825
+    },
+    {
+      "label": "cool jazz",
+      "score": 0.13832993805408478
+    },
+    {
+      "label": "rock",
+      "score": 0.1371890902519226
+    },
+    {
+      "label": "electronic",
+      "score": 0.12535393238067627
+    },
+    {
+      "label": "latin jazz",
+      "score": 0.12186596542596817
+    }
+  ],
+  "mood": [
+    {
+      "label": "energetic",
+      "score": 0.1976391226053238
+    },
+    {
+      "label": "tense",
+      "score": 0.1077997237443924
+    },
+    {
+      "label": "dreamy",
+      "score": 0.08915944397449493
+    },
+    {
+      "label": "peaceful",
+      "score": 0.08231803774833679
+    },
+    {
+      "label": "romantic",
+      "score": 0.06675352156162262
+    }
+  ],
+  "instrumentation": [
+    {
+      "label": "no vocals",
+      "score": 0.264182448387146
+    },
+    {
+      "label": "vocals",
+      "score": 0.13300557434558868
+    },
+    {
+      "label": "bass",
+      "score": 0.13053227961063385
+    },
+    {
+      "label": "harp",
+      "score": 0.12407108396291733
+    },
+    {
+      "label": "acoustic guitar",
+      "score": 0.09048813581466675
+    }
+  ],
+  "scene": [
+    {
+      "label": "meditation",
+      "score": 0.20255769789218903
+    },
+    {
+      "label": "study",
+      "score": 0.18384742736816406
+    },
+    {
+      "label": "dance",
+      "score": 0.16579803824424744
+    },
+    {
+      "label": "party",
+      "score": 0.09660995751619339
+    },
+    {
+      "label": "elevator music",
+      "score": 0.09177587181329727
+    }
+  ]
+}

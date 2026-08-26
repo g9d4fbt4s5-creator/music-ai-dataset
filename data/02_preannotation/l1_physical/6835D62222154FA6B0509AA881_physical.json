@@ -1,0 +1,16 @@
+{
+  "audio_id": "6835D62222154FA6B0509AA881",
+  "duration_sec": 200.85,
+  "sample_rate": 48000,
+  "channels": 2,
+  "bpm": 103.36,
+  "lufs": -21.46,
+  "spectral_centroid_mean": 1459.16,
+  "spectral_centroid_std": 578.42,
+  "zero_crossing_rate_mean": 0.067,
+  "spectral_rolloff_mean": 2820.81,
+  "rms_mean": 0.077743,
+  "rms_std": 0.039592,
+  "key": "G",
+  "key_strength": 0.6789
+}
