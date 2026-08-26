@@ -191,6 +191,7 @@ def generate_master_for_audio(
     raw_ext: str,
     force: bool = False,
     dry_run: bool = False,
+    raw_path_override: Path = None,
 ) -> Dict:
     """
     为单个音频生成母版
@@ -200,6 +201,7 @@ def generate_master_for_audio(
         raw_ext: 原始文件扩展名
         force: 是否强制重新生成
         dry_run: 预览模式
+        raw_path_override: 直接指定原始文件路径（优先于自动计算）
 
     Returns:
         Dict: 处理结果
@@ -210,7 +212,10 @@ def generate_master_for_audio(
             - master_md5: 母版MD5
             - error: 错误信息
     """
-    raw_path = get_raw_path(audio_id, raw_ext)
+    if raw_path_override is not None:
+        raw_path = raw_path_override
+    else:
+        raw_path = get_raw_path(audio_id, raw_ext)
     master_path = get_master_path(audio_id)
 
     result = {
@@ -349,11 +354,18 @@ def main():
         if pd.isna(raw_ext) or raw_ext == "":
             raw_ext = "wav"
 
+        # 优先使用 manifest 中的 file_relative_path（支持 sha256 命名规则）
+        raw_path_override = None
+        file_rel = row.get("file_relative_path", "")
+        if pd.notna(file_rel) and file_rel != "":
+            raw_path_override = PROJECT_ROOT / "data" / "00_raw_collect" / file_rel
+
         result = generate_master_for_audio(
             audio_id=audio_id,
             raw_ext=str(raw_ext),
             force=args.force,
             dry_run=args.dry_run,
+            raw_path_override=raw_path_override,
         )
         results.append(result)
 
