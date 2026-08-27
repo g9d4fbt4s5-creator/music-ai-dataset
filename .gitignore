@@ -160,3 +160,9 @@ reports/manual/**/*.html
 # essentia / madmom-onnx 是 dev 预览版，PyPI 随时可能移除
 # 下载到本地 wheel_cache 并提交 git，保证环境可复现
 !envs/wheel_cache/**
+
+# ========== 敏感信息（含密码/API key，禁止提交） ==========
+docs/gpu_access.md
+
+# ========== 频繁变化的数据文件（不适合Git跟踪） ==========
+data/00_raw_collect/audio_manifest.csv

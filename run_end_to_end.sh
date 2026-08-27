@@ -182,9 +182,9 @@ echo "GPU实例: ${GPU_SSH_HOST}:${GPU_SSH_PORT}"
 # 自动同步数据到 GPU（P0 根治：不再手动同步）
 sync_to_gpu
 
-# 在 GPU 实例上运行 MERT 嵌入（后台执行，轮询等待）
+# 在 GPU 实例上运行 MERT 嵌入（setsid+nohup+/dev/null，SSH断连不丢失）
 echo "在 GPU 实例上启动 MERT 嵌入..."
-run_on_gpu "source /root/miniconda3/etc/profile.d/conda.sh && conda activate labelstudio-env && nohup python3 scripts/02_preannotation/extract_mert_embedding.py --input-dir data/01_preprocess/processed_master --output data/02_preannotation/l2_embedding --device cuda > logs/mert_embedding.log 2>&1 & disown && echo 'MERT已启动'"
+run_on_gpu "source /root/miniconda3/etc/profile.d/conda.sh && conda activate labelstudio-env && setsid nohup python3 scripts/02_preannotation/extract_mert_embedding.py --input-dir data/01_preprocess/processed_master --output data/02_preannotation/l2_embedding --device cuda > logs/mert_embedding.log 2>&1 < /dev/null & echo \"MERT已启动 PID:\$!\""
 
 # 轮询等待完成（最多等30分钟）
 echo "等待 MERT 嵌入完成..."
@@ -211,9 +211,9 @@ verify_output "MERT数量" 80 "${MERT_COUNT}"
 # =============================================================================
 log_step "5" "L2 CLAP零样本标注（GPU远程执行）"
 
-# 在 GPU 实例上运行 CLAP（自动检测本地模型，不需要手动传 --model-path）
+# 在 GPU 实例上运行 CLAP（setsid+nohup+/dev/null，自动检测本地模型）
 echo "在 GPU 实例上启动 CLAP 零样本标注..."
-run_on_gpu "source /root/miniconda3/etc/profile.d/conda.sh && conda activate labelstudio-env && nohup python3 scripts/02_preannotation/l2_clap_zero_shot.py --input-dir data/01_preprocess/processed_master --output data/02_preannotation/l2_semantic --embedding-output data/02_preannotation/l2_embedding_clap --device cuda --top-k 5 > logs/clap_zero_shot.log 2>&1 & disown && echo 'CLAP已启动'"
+run_on_gpu "source /root/miniconda3/etc/profile.d/conda.sh && conda activate labelstudio-env && setsid nohup python3 scripts/02_preannotation/l2_clap_zero_shot.py --input-dir data/01_preprocess/processed_master --output data/02_preannotation/l2_semantic --embedding-output data/02_preannotation/l2_embedding_clap --device cuda --top-k 5 > logs/clap_zero_shot.log 2>&1 < /dev/null & echo \"CLAP已启动 PID:\$!\""
 
 # 轮询等待完成（最多等30分钟）
 echo "等待 CLAP 零样本标注完成..."
