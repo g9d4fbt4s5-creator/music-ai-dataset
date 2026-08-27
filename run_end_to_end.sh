@@ -67,7 +67,7 @@ verify_output() {
 # =============================================================================
 
 sync_to_gpu() {
-    """同步 L2 步骤所需的文件到 GPU 实例：manifest + QC报告 + 母版文件"""
+    # 同步 L2 步骤所需的文件到 GPU 实例：manifest + QC报告 + 母版文件
     echo "同步数据到 GPU 实例..."
     echo "  1/3 manifest"
     eval ${RSYNC_CMD} "${MANIFEST}" "${GPU_SSH_HOST}:${GPU_REMOTE_ROOT}/data/00_raw_collect/audio_manifest.csv" 2>&1 | tail -2
@@ -79,7 +79,7 @@ sync_to_gpu() {
 }
 
 sync_from_gpu() {
-    """将 L2 结果从 GPU 实例同步回本地：MERT嵌入 + CLAP嵌入 + CLAP语义"""
+    # 将 L2 结果从 GPU 实例同步回本地：MERT嵌入 + CLAP嵌入 + CLAP语义
     local l2_type="$1"  # mert / clap / all
     echo "从 GPU 实例同步 ${l2_type} 结果..."
     if [ "${l2_type}" = "mert" ] || [ "${l2_type}" = "all" ]; then
@@ -93,7 +93,7 @@ sync_from_gpu() {
 }
 
 run_on_gpu() {
-    """在 GPU 实例上执行命令，等待完成并返回退出码"""
+    # 在 GPU 实例上执行命令，等待完成并返回退出码
     local cmd="$1"
     eval ${SSH_CMD} "cd ${GPU_REMOTE_ROOT} && ${cmd}"
     return $?
