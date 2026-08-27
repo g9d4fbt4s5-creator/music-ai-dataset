@@ -33,6 +33,19 @@ RSYNC_CMD="rsync -avz -e 'ssh -p ${GPU_SSH_PORT} -o StrictHostKeyChecking=no'"
 # 使用conda audio环境的python（有librosa/pandas等依赖）
 export PATH="/opt/miniconda3/envs/audio/bin:$PATH"
 
+# ========== 环境自检（跑不过就停，避免后续步骤静默失败） ==========
+echo "=== 环境自检 ==="
+PY_VER=$(python3 --version 2>&1)
+echo "Python: ${PY_VER}"
+python3 -c "import librosa; print(f'librosa: {librosa.__version__}')" || { echo "FATAL: 缺少 librosa，请确认已激活 conda audio 环境"; exit 1; }
+python3 -c "import pandas; print(f'pandas: {pandas.__version__}')" || { echo "FATAL: 缺少 pandas"; exit 1; }
+python3 -c "import numpy; print(f'numpy: {numpy.__version__}')" || { echo "FATAL: 缺少 numpy"; exit 1; }
+python3 -c "import dotenv; print('python-dotenv: ok')" 2>/dev/null || echo "WARN: 缺少 python-dotenv（L3 可能失败）"
+[ -f "${PROJECT_ROOT}/.env" ] || { echo "FATAL: 缺少 .env 文件（API keys 在此）"; exit 1; }
+grep -q "DASHSCOPE_API_KEY" "${PROJECT_ROOT}/.env" || { echo "FATAL: .env 中缺少 DASHSCOPE_API_KEY"; exit 1; }
+echo "✅ 环境自检通过"
+# ==============================================================================
+
 # 颜色输出
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -274,6 +287,32 @@ if [ "${GOLDEN_IN_TRAIN}" -ne 5 ]; then
     log_error "黄金集未全部在train中"
     exit 1
 fi
+
+# artist隔离后处理：train/val冲突artist全部移入train，消除数据泄漏
+echo "=== artist隔离检查 ==="
+python3 << 'PYEOF'
+import pandas as pd
+splits_dir = "data/04_final_dataset/splits/splits"
+train = pd.read_csv(f"{splits_dir}/train.csv")
+val = pd.read_csv(f"{splits_dir}/val.csv")
+val_artists = set(val['artist_id'].dropna())
+conflict = train[train['artist_id'].isin(val_artists)]
+if len(conflict) > 0:
+    print(f"artist隔离修复: {len(conflict)} 首train样本与val冲突，将val中同artist样本移回train")
+    val_conflict = val[val['artist_id'].isin(val_artists)]
+    train = pd.concat([train, val_conflict], ignore_index=True)
+    val = val[~val['artist_id'].isin(val_artists)]
+    train.to_csv(f"{splits_dir}/train.csv", index=False)
+    val.to_csv(f"{splits_dir}/val.csv", index=False)
+    print(f"  修复后: train={len(train)}, val={len(val)}")
+else:
+    print("artist隔离检查通过: 0组冲突")
+PYEOF
+TRAIN_COUNT=$(wc -l < "${SPLITS_DIR}/train.csv" | tr -d ' ')
+TRAIN_COUNT=$((TRAIN_COUNT - 1))
+VAL_COUNT=$(wc -l < "${SPLITS_DIR}/val.csv" | tr -d ' ')
+VAL_COUNT=$((VAL_COUNT - 1))
+echo "artist隔离后: train=${TRAIN_COUNT} 首, val=${VAL_COUNT} 首"
 
 # =============================================================================
 # STEP 7: L3 Qwen-Omni结构标注（黄金集5首）
