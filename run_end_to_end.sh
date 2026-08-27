@@ -22,13 +22,13 @@ LOG_DIR="${PROJECT_ROOT}/logs/end_to_end_$(date +%Y%m%d_%H%M%S)"
 mkdir -p "${LOG_DIR}"
 
 # GPU 实例配置（AutoDL，L2 嵌入需要）
+# SSH 免密已配置（id_rsa + id_ed25519），无需密码
 GPU_SSH_PORT="49530"
 GPU_SSH_HOST="root@connect.westb.seetacloud.com"
-GPU_SSH_PASS="Qi07c/VxBctZ"
 GPU_REMOTE_ROOT="/root/autodl-tmp/music-ai-dataset"
-# SSH 命令前缀（自动接受主机密钥，避免交互）
-SSH_CMD="sshpass -p '${GPU_SSH_PASS}' ssh -p ${GPU_SSH_PORT} -o StrictHostKeyChecking=no -o ConnectTimeout=15 ${GPU_SSH_HOST}"
-RSYNC_CMD="sshpass -p '${GPU_SSH_PASS}' rsync -avz -e 'ssh -p ${GPU_SSH_PORT} -o StrictHostKeyChecking=no'"
+# SSH 命令前缀（免密登录，自动接受主机密钥）
+SSH_CMD="ssh -p ${GPU_SSH_PORT} -o StrictHostKeyChecking=no -o ConnectTimeout=15 ${GPU_SSH_HOST}"
+RSYNC_CMD="rsync -avz -e 'ssh -p ${GPU_SSH_PORT} -o StrictHostKeyChecking=no'"
 
 # 颜色输出
 RED='\033[0;31m'
