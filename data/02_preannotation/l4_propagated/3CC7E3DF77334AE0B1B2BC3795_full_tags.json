@@ -1,0 +1,19 @@
+{
+  "audio_id": "3CC7E3DF77334AE0B1B2BC3795",
+  "fusion": {
+    "genre_source": "knn(from D2098BC896D6450A8E3744528E, dist=0.416)",
+    "mood_source": "deepseek",
+    "instrumentation_source": "deepseek",
+    "caption_source": "deepseek (not_propagated)"
+  },
+  "propagated_from": "D2098BC896D6450A8E3744528E",
+  "propagation_similarity": 0.5838,
+  "propagation_cosine_dist": 0.4162,
+  "genre": "Bossa Nova",
+  "mood": [
+    "relaxed"
+  ],
+  "instrumentation": [],
+  "caption": "",
+  "segments": []
+}

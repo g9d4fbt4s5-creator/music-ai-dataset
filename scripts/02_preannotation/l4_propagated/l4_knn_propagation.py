@@ -145,6 +145,17 @@ def load_golden_labels(golden_dir: str) -> dict:
             list(ann.get("mood_tags", [])) +
             [m for seg in segments for m in (seg.get("mood") or seg.get("emotion") or [])]
         ))
+        # confidence统一为字符串等级（L3输出可能是0-1浮点数，也可能是字符串）
+        raw_conf = ann.get("confidence", "high")
+        if isinstance(raw_conf, (int, float)):
+            if raw_conf >= 0.8:
+                conf_level = "high"
+            elif raw_conf >= 0.5:
+                conf_level = "medium"
+            else:
+                conf_level = "low"
+        else:
+            conf_level = str(raw_conf).lower()
         labels[aid] = {
             "audio_id": aid,
             "segments": segments,
@@ -152,7 +163,7 @@ def load_golden_labels(golden_dir: str) -> dict:
             "genre": ann.get("genre", ""),
             "instruments": instruments[:5],
             "mood": moods[:2],
-            "confidence": ann.get("confidence", "high"),
+            "confidence": conf_level,
             "source": "qwen_omni_golden",
         }
 
@@ -247,7 +258,7 @@ def fuse_single_sample(audio_id: str, is_golden: bool,
 
         # genre 传播
         if golden_label and should_propagate("genre", cosine_dist, golden_label.get("confidence", "high")):
-            # genre 从黄金集的 DeepSeek 标签继承(黄金集也有genre)
+            result["genre"] = golden_label.get("genre", result["genre"])
             propagated_any = True
             fusion["genre_source"] = f"knn(from {nearest_golden_id}, dist={cosine_dist:.3f})"
 

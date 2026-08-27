@@ -1,0 +1,26 @@
+{
+  "audio_id": "1EDDB5EFB16E4A36AFFFAC2132",
+  "fusion": {
+    "genre_source": "knn(from D2098BC896D6450A8E3744528E, dist=0.331)",
+    "mood_source": "knn(from D2098BC896D6450A8E3744528E, dist=0.331)",
+    "instrumentation_source": "knn(from D2098BC896D6450A8E3744528E, dist=0.331)",
+    "caption_source": "deepseek (not_propagated)"
+  },
+  "propagated_from": "D2098BC896D6450A8E3744528E",
+  "propagation_similarity": 0.6691,
+  "propagation_cosine_dist": 0.3309,
+  "genre": "Bossa Nova",
+  "mood": [
+    "放",
+    "宁"
+  ],
+  "instrumentation": [
+    "贝斯",
+    "长号",
+    "原声钢琴",
+    "弦乐组",
+    "爵士鼓"
+  ],
+  "caption": "",
+  "segments": []
+}

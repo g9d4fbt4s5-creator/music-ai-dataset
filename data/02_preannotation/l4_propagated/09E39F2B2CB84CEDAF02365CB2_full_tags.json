@@ -1,0 +1,19 @@
+{
+  "audio_id": "09E39F2B2CB84CEDAF02365CB2",
+  "fusion": {
+    "genre_source": "knn(from E6A98A1C67AC4D9FA1E7437524, dist=0.437)",
+    "mood_source": "deepseek",
+    "instrumentation_source": "deepseek",
+    "caption_source": "deepseek (not_propagated)"
+  },
+  "propagated_from": "E6A98A1C67AC4D9FA1E7437524",
+  "propagation_similarity": 0.5634,
+  "propagation_cosine_dist": 0.4366,
+  "genre": "Soul",
+  "mood": [
+    "relaxed"
+  ],
+  "instrumentation": [],
+  "caption": "",
+  "segments": []
+}

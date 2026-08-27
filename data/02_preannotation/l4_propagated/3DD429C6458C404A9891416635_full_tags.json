@@ -1,0 +1,19 @@
+{
+  "audio_id": "3DD429C6458C404A9891416635",
+  "fusion": {
+    "genre_source": "deepseek",
+    "mood_source": "deepseek",
+    "instrumentation_source": "deepseek",
+    "caption_source": "deepseek (not_propagated)"
+  },
+  "propagated_from": null,
+  "propagation_similarity": null,
+  "propagation_cosine_dist": null,
+  "genre": "jazz",
+  "mood": [
+    "relaxed"
+  ],
+  "instrumentation": [],
+  "caption": "",
+  "segments": []
+}

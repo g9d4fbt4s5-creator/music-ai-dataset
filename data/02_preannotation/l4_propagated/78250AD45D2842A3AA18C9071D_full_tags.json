@@ -1,0 +1,59 @@
+{
+  "audio_id": "78250AD45D2842A3AA18C9071D",
+  "fusion": {
+    "genre_source": "deepseek",
+    "mood_source": "qwen_omni_golden",
+    "instrumentation_source": "qwen_omni_golden",
+    "caption_source": "qwen_omni_golden"
+  },
+  "propagated_from": "golden_set",
+  "propagation_similarity": null,
+  "propagation_cosine_dist": null,
+  "genre": "jazz",
+  "mood": [
+    "欢快",
+    "放"
+  ],
+  "instrumentation": [
+    "钢琴",
+    "贝斯",
+    "爵士鼓"
+  ],
+  "caption": "这是一首轻快活泼的爵士钢琴三重奏，以俏皮的旋律和充满活力的即兴演奏营造出愉悦的氛围。",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 58.2,
+      "label": "前奏",
+      "instruments": [
+        "钢琴"
+      ],
+      "mood": "轻松俏皮",
+      "confidence": 0.95
+    },
+    {
+      "start": 58.2,
+      "end": 133.5,
+      "label": "主歌/主题段",
+      "instruments": [
+        "钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "热情奔放",
+      "confidence": 0.92
+    },
+    {
+      "start": 133.5,
+      "end": 179.8,
+      "label": "即兴独奏",
+      "instruments": [
+        "钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "活力四射",
+      "confidence": 0.9
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "audio_id": "01M0ZV75H12W7ATW11QWSKXC5N",
+  "fusion": {
+    "genre_source": "knn(from 3C6219AB60A24F5B8F101AF353, dist=0.370)",
+    "mood_source": "knn(from 3C6219AB60A24F5B8F101AF353, dist=0.370)",
+    "instrumentation_source": "knn(from 3C6219AB60A24F5B8F101AF353, dist=0.370)",
+    "caption_source": "deepseek (not_propagated)"
+  },
+  "propagated_from": "3C6219AB60A24F5B8F101AF353",
+  "propagation_similarity": 0.6297,
+  "propagation_cosine_dist": 0.3703,
+  "genre": "Cantopop",
+  "mood": [
+    "放",
+    "宁"
+  ],
+  "instrumentation": [
+    "贝斯",
+    "弦乐",
+    "电吉他",
+    "女声",
+    "钢琴"
+  ],
+  "caption": "",
+  "segments": []
+}

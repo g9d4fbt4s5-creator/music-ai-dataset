@@ -1,0 +1,19 @@
+{
+  "audio_id": "01M0ZV75E1JTESWENDMCDN4G3Y",
+  "fusion": {
+    "genre_source": "knn(from D0CC3C06BCC643C4AD0737115C, dist=0.483)",
+    "mood_source": "deepseek",
+    "instrumentation_source": "deepseek",
+    "caption_source": "deepseek (not_propagated)"
+  },
+  "propagated_from": "D0CC3C06BCC643C4AD0737115C",
+  "propagation_similarity": 0.5165,
+  "propagation_cosine_dist": 0.4835,
+  "genre": "Jazz",
+  "mood": [
+    "relaxed"
+  ],
+  "instrumentation": [],
+  "caption": "",
+  "segments": []
+}

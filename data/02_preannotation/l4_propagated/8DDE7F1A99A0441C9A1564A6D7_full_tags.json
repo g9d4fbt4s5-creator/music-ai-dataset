@@ -1,0 +1,24 @@
+{
+  "audio_id": "8DDE7F1A99A0441C9A1564A6D7",
+  "fusion": {
+    "genre_source": "knn(from D0CC3C06BCC643C4AD0737115C, dist=0.383)",
+    "mood_source": "knn(from D0CC3C06BCC643C4AD0737115C, dist=0.383)",
+    "instrumentation_source": "knn(from D0CC3C06BCC643C4AD0737115C, dist=0.383)",
+    "caption_source": "deepseek (not_propagated)"
+  },
+  "propagated_from": "D0CC3C06BCC643C4AD0737115C",
+  "propagation_similarity": 0.617,
+  "propagation_cosine_dist": 0.383,
+  "genre": "Jazz",
+  "mood": [
+    "放",
+    "束"
+  ],
+  "instrumentation": [
+    "原声钢琴",
+    "爵士鼓",
+    "贝斯"
+  ],
+  "caption": "",
+  "segments": []
+}
