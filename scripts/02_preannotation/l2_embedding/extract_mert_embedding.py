@@ -90,7 +90,8 @@ def main():
     audio_extensions = [".mp3", ".wav", ".flac", ".ogg", ".m4a"]
     audio_files = []
     for ext in audio_extensions:
-        audio_files.extend(input_dir.glob(f"*{ext}"))
+        # 使用 rglob 递归查找，支持散列目录结构（xx/yy/xxx.flac）
+        audio_files.extend(input_dir.rglob(f"*{ext}"))
     audio_files = sorted(audio_files)
 
     if args.limit:
@@ -100,7 +101,8 @@ def main():
     logger.info(f"音频文件数: {len(audio_files)}")
 
     if not audio_files:
-        logger.error("未找到音频文件")
+        logger.error(f"未找到音频文件，请检查输入目录: {input_dir}")
+        logger.error("支持的格式: .mp3 .wav .flac .ogg .m4a（递归查找子目录）")
         return
 
     model, feature_extractor = load_mert_model(args.device)

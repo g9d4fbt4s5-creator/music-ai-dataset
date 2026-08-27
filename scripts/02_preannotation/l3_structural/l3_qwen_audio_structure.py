@@ -29,6 +29,13 @@ import base64
 import argparse
 import logging
 import subprocess
+
+# 自动加载项目根目录的 .env（API key 等配置）
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass  # python-dotenv 未安装时跳过，依赖环境变量
 import tempfile
 from pathlib import Path
 from typing import Dict, Optional, Tuple
@@ -293,15 +300,46 @@ def main():
     parser.add_argument("--golden-manifest", type=str, required=True)
     parser.add_argument("--master-dir", type=str, required=True)
     parser.add_argument("--output-dir", type=str, required=True)
-    parser.add_argument("--api-key", type=str, default=os.environ.get("QWEN_OMNI_API_KEY", ""))
+    parser.add_argument("--api-key", type=str, default=None,
+                        help="API key（默认从 .env 的 DASHSCOPE_API_KEY 或 QWEN_OMNI_API_KEY 读取）")
     parser.add_argument("--model", type=str, default="qwen3.5-omni-flash")
     parser.add_argument("--audio-id", type=str, default=None, help="只处理指定 audio_id")
     parser.add_argument("--force", action="store_true", help="覆盖已存在的输出")
     args = parser.parse_args()
 
+    # 自动从环境变量读取 API key（支持 DASHSCOPE_API_KEY 和 QWEN_OMNI_API_KEY）
     if not args.api_key:
-        logger.error("未提供 API key（--api-key 或 QWEN_OMNI_API_KEY 环境变量）")
+        args.api_key = os.environ.get("DASHSCOPE_API_KEY", "") or os.environ.get("QWEN_OMNI_API_KEY", "")
+
+    if not args.api_key:
+        logger.error("未提供 API key。请在 .env 中设置 DASHSCOPE_API_KEY，或用 --api-key 传入")
         sys.exit(1)
+
+    # API key 预检：发一个最小请求验证 key 有效性，避免处理完所有音频才发现 key 无效
+    logger.info("验证 API key 有效性...")
+    try:
+        import requests
+        test_resp = requests.post(
+            "https://dashscope.aliyuncs.com/api/v1/services/aigc/multimodal-generation/generation",
+            headers={
+                "Authorization": f"Bearer {args.api_key}",
+                "Content-Type": "application/json",
+            },
+            json={
+                "model": args.model,
+                "input": {"messages": [{"role": "user", "content": [{"text": "ping"}]}]},
+            },
+            timeout=10,
+        )
+        if test_resp.status_code == 401:
+            logger.error("❌ API key 无效（401 Unauthorized）。请更新 .env 中的 DASHSCOPE_API_KEY")
+            sys.exit(1)
+        elif test_resp.status_code >= 400:
+            logger.warning(f"⚠️ API 预检返回状态码 {test_resp.status_code}，继续尝试...")
+        else:
+            logger.info("✅ API key 验证通过")
+    except requests.exceptions.RequestException as e:
+        logger.warning(f"⚠️ API 预检网络错误: {e}，继续尝试（可能是网络波动）")
 
     output_dir = Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
