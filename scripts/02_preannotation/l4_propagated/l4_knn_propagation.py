@@ -114,34 +114,42 @@ def load_deepseek_labels(deepseek_dir: str) -> dict:
 
 
 def load_golden_labels(golden_dir: str) -> dict:
-    """加载 Qwen-Omni 黄金集结构标注"""
+    """加载 Qwen-Omni 黄金集结构标注（适配L3输出格式 *_l3_qwen.json）"""
     golden_dir = Path(golden_dir)
     labels = {}
 
-    for f in golden_dir.glob("*_structure.json"):
+    # 匹配L3输出格式 *_l3_qwen.json，同时兼容旧格式 *_structure.json
+    files = list(golden_dir.glob("*_l3_qwen.json")) + list(golden_dir.glob("*_structure.json"))
+
+    for f in files:
         with open(f) as fp:
             data = json.load(fp)
+        # L3输出格式：标注在annotation字段里；旧格式顶层直接有标注
+        ann = data.get("annotation", data)
         aid = data.get("audio_id", "")
-        if aid:
-            # 从段落中提取全曲级标签
-            segments = data.get("segments", [])
-            instruments = list(set(
-                inst for seg in segments
-                for inst in (seg.get("instruments") or seg.get("instrument") or [])
-            ))
-            moods = list(set(
-                seg.get("emotion", "") for seg in segments
-                if seg.get("emotion")
-            ))
-            labels[aid] = {
-                "audio_id": aid,
-                "segments": segments,
-                "caption": data.get("caption", ""),
-                "instruments": instruments[:5],
-                "mood": moods[:2],
-                "confidence": "high",  # Qwen-Omni 多模态直接听音频，置信度高
-                "source": "qwen_omni_golden",
-            }
+        if not aid:
+            continue
+        segments = ann.get("segments", [])
+        # 从全曲级+段落级提取乐器（兼容instruments/instrument字段）
+        instruments = list(set(
+            list(ann.get("instruments", [])) +
+            [inst for seg in segments for inst in (seg.get("instruments") or seg.get("instrument") or [])]
+        ))
+        # 从全曲级+段落级提取情绪（兼容mood_tags/mood/emotion字段）
+        moods = list(set(
+            list(ann.get("mood_tags", [])) +
+            [m for seg in segments for m in (seg.get("mood") or seg.get("emotion") or [])]
+        ))
+        labels[aid] = {
+            "audio_id": aid,
+            "segments": segments,
+            "caption": ann.get("caption", ""),
+            "genre": ann.get("genre", ""),
+            "instruments": instruments[:5],
+            "mood": moods[:2],
+            "confidence": ann.get("confidence", "high"),
+            "source": "qwen_omni_golden",
+        }
 
     return labels
 

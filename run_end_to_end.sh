@@ -30,6 +30,9 @@ GPU_REMOTE_ROOT="/root/autodl-tmp/music-ai-dataset"
 SSH_CMD="ssh -p ${GPU_SSH_PORT} -o StrictHostKeyChecking=no -o ConnectTimeout=15 ${GPU_SSH_HOST}"
 RSYNC_CMD="rsync -avz -e 'ssh -p ${GPU_SSH_PORT} -o StrictHostKeyChecking=no'"
 
+# 使用conda audio环境的python（有librosa/pandas等依赖）
+export PATH="/opt/miniconda3/envs/audio/bin:$PATH"
+
 # 颜色输出
 RED='\033[0;31m'
 GREEN='\033[0;32m'
