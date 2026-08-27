@@ -270,6 +270,13 @@ def temporal_split(
     n_train = int(total * train_ratio)
     n_val = int(total * val_ratio)
     n_test = int(total * test_ratio)
+    # 修复：确保 n_train + n_val + n_test <= total，剩余样本加到train（不是holdout）
+    # 避免 int() 截断导致样本溢出到 holdout（ADR-003）
+    allocated = n_train + n_val + n_test
+    if allocated < total:
+        remainder = total - allocated
+        n_train += remainder
+        logger.info(f"temporal划分截断修复: {remainder} 个剩余样本加到train（避免溢出到holdout）")
 
     train_df = df_sorted.iloc[:n_train].copy()
     val_df = df_sorted.iloc[n_train:n_train + n_val].copy()
@@ -402,6 +409,12 @@ def stratified_split(
         n_train = int(n_groups * train_ratio)
         n_val = int(n_groups * val_ratio)
         n_test = int(n_groups * test_ratio)
+        # 修复：确保分配的组数 <= 总组数，剩余组加到train（不是holdout）
+        allocated = n_train + n_val + n_test
+        if allocated < n_groups:
+            remainder = n_groups - allocated
+            n_train += remainder
+            logger.info(f"isolate_by划分截断修复: {remainder} 个剩余组加到train")
 
         train_groups = set(group_names[:n_train])
         val_groups = set(group_names[n_train:n_train+n_val])
@@ -424,6 +437,10 @@ def stratified_split(
             n_train = int(n * train_ratio)
             n_val = int(n * val_ratio)
             n_test = int(n * test_ratio)
+            # 修复：确保分配的样本数 <= 组内总数，剩余样本加到train（不是holdout）
+            allocated = n_train + n_val + n_test
+            if allocated < n:
+                n_train += (n - allocated)
 
             train_parts.append(group.iloc[:n_train])
             val_parts.append(group.iloc[n_train:n_train+n_val])
@@ -442,6 +459,13 @@ def stratified_split(
         n_train = int(total * train_ratio)
         n_val = int(total * val_ratio)
         n_test = int(total * test_ratio)
+        # 修复：确保 n_train + n_val + n_test <= total，剩余样本加到train（不是holdout）
+        # 避免 int() 截断导致样本溢出到 holdout
+        allocated = n_train + n_val + n_test
+        if allocated < total:
+            remainder = total - allocated
+            n_train += remainder  # 剩余样本加到train
+            logger.info(f"划分截断修复: {remainder} 个剩余样本加到train（避免溢出到holdout）")
 
         train_df = df.iloc[:n_train]
         val_df = df.iloc[n_train:n_train+n_val]
@@ -918,9 +942,13 @@ def main():
     parser.add_argument("--output", type=str, default=None,
                         help="输出目录（默认 data/04_final_dataset/v{timestamp}/）")
     parser.add_argument("--train", type=float, default=0.80, help="训练集比例")
-    parser.add_argument("--val", type=float, default=0.10, help="验证集比例")
-    parser.add_argument("--test", type=float, default=0.10, help="测试集比例")
-    parser.add_argument("--holdout", type=float, default=0.01, help="黄金测试集比例")
+    parser.add_argument("--val", type=float, default=0.20, help="验证集比例")
+    parser.add_argument("--test", type=float, default=0.0,
+                        help="从main_pool切分的test比例（不推荐，建议用--test-from独立采集）")
+    parser.add_argument("--holdout", type=float, default=0.0,
+                        help="从main_pool切分的holdout比例（严禁，必须用--holdout-from独立采集）")
+    parser.add_argument("--allow-internal-holdout", action="store_true",
+                        help="⚠️ 危险：允许从main_pool内部切分holdout（仅测试用，生产禁止）")
     parser.add_argument("--stratify-by", type=str, default=None,
                         help="分层字段（如 genre, language）")
     parser.add_argument("--isolate-by", type=str, default=None,
@@ -942,7 +970,7 @@ def main():
     parser.add_argument("--strict", action="store_true",
                         help="严格模式：发现跨池重复 audio_id 时直接报错终止（默认只警告）")
     parser.add_argument("--protect-golden", action="store_true", default=True,
-                        help="黄金集保护：黄金集样本(is_golden=true)不进入 test/holdout/ood，划分时正常分布不特殊处理（默认开启）")
+                        help="黄金集保护：黄金集样本(sample_type=golden_seed或is_golden=true)强制进train，不进入test/holdout/ood（默认开启）")
     parser.add_argument("--qc-report", type=str, default=None,
                         help="QC Gate报告路径，过滤掉final_branch=fail的样本（如2秒超短/非音乐/低质量）")
     parser.add_argument("--source-type-filter", action="store_true", default=True,
@@ -978,6 +1006,25 @@ def main():
     # 加载数据
     input_path = Path(args.input)
     df = load_manifest(input_path)
+
+    # ========== ADR-003 P0: holdout 强制校验 ==========
+    # holdout 必须来自独立采集（--holdout-from），禁止从 main_pool 内部切分
+    if args.holdout > 0 and not args.allow_internal_holdout and not args.holdout_from:
+        logger.error("❌ ADR-003 违规：holdout 必须来自独立采集（--holdout-from），禁止从 main_pool 内部切分")
+        logger.error("   如需临时测试，请加 --allow-internal-holdout（生产环境禁止）")
+        sys.exit(1)
+    if args.holdout > 0 and args.allow_internal_holdout:
+        logger.warning("⚠️  危险模式：--allow-internal-holdout 已开启，holdout 将从 main_pool 内部切分（仅测试用）")
+
+    # ========== ADR-003: challenge_set 分流 ==========
+    # sample_type=challenge_stress_test 的样本在划分前先分流，不进入 train/val/test/holdout
+    challenge_df = pd.DataFrame(columns=df.columns)
+    if "sample_type" in df.columns:
+        challenge_mask = df["sample_type"] == "challenge_stress_test"
+        if challenge_mask.any():
+            challenge_df = df[challenge_mask].copy()
+            df = df[~challenge_mask].copy()
+            logger.info(f"ADR-003: challenge_set 分流 {len(challenge_df)} 首（不参与 train/val/test/holdout 划分）")
 
     # P0: QC Gate过滤 — 排除final_branch=fail的样本（2秒超短/非音乐/低质量等）
     if args.qc_report:
@@ -1303,18 +1350,45 @@ def main():
         else:
             logger.warning(f"  ⚠️  OOD集路径不存在: {ood_from_path}，跳过")
 
-    # 黄金集保护：黄金集样本(is_golden=true)不进入 test/holdout/ood
-    # 黄金集物理上在 main_pool，划分时正常分布（可能进 train 也可能进 val），不特殊处理
-    if args.protect_golden and "is_golden" in df.columns:
-        golden_ids = set(df[df["is_golden"] == True]["audio_id"].tolist()) if "audio_id" in df.columns else set()
+    # 黄金集保护：黄金集样本强制进train，不进入test/holdout/ood
+    # ADR-004: 黄金集是L4 KNN标签传播种子源，必须在train中
+    if args.protect_golden:
+        # 同时检查两种标记方式：is_golden=True 或 sample_type=golden_seed
+        golden_mask = pd.Series(False, index=df.index)
+        if "is_golden" in df.columns:
+            golden_mask = golden_mask | (df["is_golden"] == True)
+        if "sample_type" in df.columns:
+            golden_mask = golden_mask | (df["sample_type"] == "golden_seed")
+        golden_ids = set(df[golden_mask]["audio_id"].tolist()) if "audio_id" in df.columns else set()
+        
         if golden_ids:
-            logger.info(f"黄金集保护：检测到 {len(golden_ids)} 个黄金集样本，确保不进入 test/holdout/ood")
+            logger.info(f"黄金集保护：检测到 {len(golden_ids)} 个黄金集样本，强制进train")
+            
+            # 检查黄金集是否在val/test/holdout中，如果在则移到train
+            for split_name, split_df in [("val", val_df), ("test", test_df), ("holdout", holdout_df)]:
+                if "audio_id" in split_df.columns and len(split_df) > 0:
+                    golden_in_split = set(split_df["audio_id"].tolist()) & golden_ids
+                    if golden_in_split:
+                        logger.info(f"  修复：{split_name} 中有 {len(golden_in_split)} 个黄金集样本，移到train")
+                        # 从该split中移除黄金集
+                        split_df = split_df[~split_df["audio_id"].isin(golden_in_split)]
+                        # 将黄金集加到train
+                        golden_rows = df[df["audio_id"].isin(golden_in_split)]
+                        train_df = pd.concat([train_df, golden_rows], ignore_index=True)
+                        # 更新对应变量
+                        if split_name == "val":
+                            val_df = split_df
+                        elif split_name == "test":
+                            test_df = split_df
+                        elif split_name == "holdout":
+                            holdout_df = split_df
+            
+            # 最终验证：黄金集不应在test/holdout/ood中
             for split_name, split_df in [("test", test_df), ("holdout", holdout_df), ("ood", ood_df)]:
                 if "audio_id" in split_df.columns and len(split_df) > 0:
                     golden_in_split = set(split_df["audio_id"].tolist()) & golden_ids
                     if golden_in_split:
-                        logger.error(f"  ❌ 黄金集保护失败：{split_name} 集中发现 {len(golden_in_split)} 个黄金集样本")
-                        logger.error(f"     前5个: {list(golden_in_split)[:5]}")
+                        logger.error(f"  ❌ 黄金集保护失败：{split_name} 中仍有 {len(golden_in_split)} 个黄金集样本")
                         if args.strict:
                             raise ValueError(f"Golden set leakage: {len(golden_in_split)} golden samples in {split_name}")
 
@@ -1381,6 +1455,46 @@ def main():
     )
     if not artist_isolation_report["is_passed"]:
         logger.warning("artist_id 隔离验证失败！存在跨集合重复，可能导致数据泄漏")
+        # ========== 强制后处理：自动修复artist隔离冲突 ==========
+        # 策略：val/test/holdout中与train冲突的artist样本，全部移回train
+        # 原因：train样本量最大，移动val/test/holdout样本对划分比例影响最小
+        logger.info("=" * 60)
+        logger.info("artist隔离强制修复（自动后处理）")
+        logger.info("=" * 60)
+        train_artists = set(train_df["artist_id"].dropna()) if "artist_id" in train_df.columns else set()
+        train_artists = {x for x in train_artists if not str(x).startswith("unknown_")}
+        total_moved = 0
+        for split_name, split_df in [("val", val_df), ("test", test_df), ("holdout", holdout_df)]:
+            if "artist_id" not in split_df.columns or len(split_df) == 0:
+                continue
+            conflict_mask = split_df["artist_id"].isin(train_artists) & \
+                            ~split_df["artist_id"].astype(str).str.startswith("unknown_")
+            conflict_rows = split_df[conflict_mask]
+            if len(conflict_rows) > 0:
+                logger.info(f"  {split_name}: {len(conflict_rows)} 首冲突artist样本移回train")
+                logger.info(f"    冲突artist: {set(conflict_rows['artist_id'])}")
+                train_df = pd.concat([train_df, conflict_rows], ignore_index=True)
+                if split_name == "val":
+                    val_df = split_df[~conflict_mask]
+                elif split_name == "test":
+                    test_df = split_df[~conflict_mask]
+                elif split_name == "holdout":
+                    holdout_df = split_df[~conflict_mask]
+                total_moved += len(conflict_rows)
+        # 修复后重新验证
+        if total_moved > 0:
+            repair_report = verify_artist_isolation(
+                train_df=train_df, val_df=val_df, test_df=test_df,
+                holdout_df=holdout_df, isolation_col="artist_id",
+            )
+            if repair_report["is_passed"]:
+                logger.info(f"✅ artist隔离修复成功：移动 {total_moved} 首后，0 冲突")
+                artist_isolation_report = repair_report
+                stats["artist_isolation_auto_repaired"] = True
+                stats["artist_isolation_moved_count"] = total_moved
+            else:
+                logger.error(f"❌ artist隔离修复失败：移动 {total_moved} 首后仍有 {repair_report['leak_count']} 组冲突")
+        logger.info("=" * 60)
 
     # 生成统计
     stats = generate_split_stats(train_df, val_df, test_df, holdout_df, args.stratify_by)
@@ -1517,6 +1631,19 @@ def main():
             lineage_logger.print_summary()
         except Exception as e:
             logger.warning(f"血缘记录失败（不影响划分结果）: {e}")
+
+    # ADR-003 P0 硬断言：当 --holdout 0 且未开启 --allow-internal-holdout 时，holdout 必须严格为 0
+    # 防止任何隐藏路径（int截断、跨集去重等）意外向 holdout 写入样本
+    if args.holdout == 0 and not args.allow_internal_holdout and len(holdout_df) > 0:
+        logger.error(f"❌ ADR-003 违规：--holdout 0 但 holdout 中有 {len(holdout_df)} 首样本")
+        logger.error(f"   holdout 样本: {holdout_df['audio_id'].tolist()[:5]}")
+        logger.error(f"   根因排查：可能是 int() 截断溢出或跨集去重逻辑异常")
+        if args.strict:
+            raise ValueError(f"ADR-003 holdout leak: {len(holdout_df)} samples in holdout when --holdout 0")
+        else:
+            logger.warning("非strict模式，自动将holdout样本移到train（建议修复根因）")
+            train_df = pd.concat([train_df, holdout_df], ignore_index=True)
+            holdout_df = pd.DataFrame(columns=holdout_df.columns)
 
     logger.info("")
     logger.info("=" * 60)

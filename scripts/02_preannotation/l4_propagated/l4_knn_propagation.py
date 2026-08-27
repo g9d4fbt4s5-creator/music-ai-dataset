@@ -285,11 +285,41 @@ def fuse_single_sample(audio_id: str, is_golden: bool,
 
 
 def run_l4_fusion(embeddings_dir: str, deepseek_dir: str, golden_dir: str,
-                   output_dir: str, ls_output: str = None):
-    """主流程: L4 传播融合"""
+                   output_dir: str, ls_output: str = None,
+                   exclude_splits: str = None, splits_dir: str = None):
+    """主流程: L4 传播融合
+
+    Args:
+        exclude_splits: 逗号分隔的子集名，如 "test,holdout,ood"，这些子集的样本禁止KNN传播
+        splits_dir: 划分结果目录，包含 train.csv/val.csv/test.csv/holdout_gold.csv/ood.csv
+    """
     print("=" * 60)
     print("L4 传播融合 (KNN + 量化阈值)")
     print("=" * 60)
+
+    # ========== V4防泄漏：加载排除子集 ==========
+    excluded_ids = set()
+    if exclude_splits and splits_dir:
+        splits_path = Path(splits_dir)
+        split_names = [s.strip() for s in exclude_splits.split(",") if s.strip()]
+        for sname in split_names:
+            # 兼容多种文件名: test.csv / holdout_gold.csv / ood.csv
+            candidates = [sname + ".csv", sname + "_gold.csv"]
+            for cand in candidates:
+                fpath = splits_path / cand
+                if fpath.exists():
+                    import pandas as pd
+                    df = pd.read_csv(fpath)
+                    ids = set(df["audio_id"].tolist()) if "audio_id" in df.columns else set()
+                    excluded_ids.update(ids)
+                    print(f"  [防泄漏] 排除 {sname}: {len(ids)} 首 ({cand})")
+                    break
+        if excluded_ids:
+            print(f"  [防泄漏] 总计排除 {len(excluded_ids)} 首，禁止KNN传播")
+        else:
+            print(f"  [防泄漏] 警告: 指定了排除子集但未找到任何文件，将不排除任何样本")
+    elif exclude_splits and not splits_dir:
+        print("  [防泄漏] 警告: 指定了--exclude-splits但未提供--splits-dir，防泄漏不生效")
 
     # 加载数据
     print("\n加载 MERT 嵌入...")
@@ -320,6 +350,7 @@ def run_l4_fusion(embeddings_dir: str, deepseek_dir: str, golden_dir: str,
     golden_count = 0
     knn_count = 0
     deepseek_only_count = 0
+    excluded_count = 0  # V4防泄漏：被排除KNN传播的样本数
 
     for i, audio_id in enumerate(audio_ids):
         is_golden = audio_id in golden_ids
@@ -330,7 +361,11 @@ def run_l4_fusion(embeddings_dir: str, deepseek_dir: str, golden_dir: str,
         cosine_dist = 1.0
         nearest_sim = 0.0
 
-        if not is_golden and golden_indices:
+        # V4防泄漏：test/holdout/ood样本禁止KNN传播
+        is_excluded = audio_id in excluded_ids
+        if is_excluded:
+            golden_label = None  # 不使用黄金集标签
+        elif not is_golden and golden_indices:
             nearest_idx, cosine_dist, nearest_sim = find_nearest_golden(
                 i, golden_indices, sim_matrix
             )
@@ -351,6 +386,9 @@ def run_l4_fusion(embeddings_dir: str, deepseek_dir: str, golden_dir: str,
 
         if is_golden:
             golden_count += 1
+        elif is_excluded:
+            excluded_count += 1
+            deepseek_only_count += 1  # 排除样本也只有DeepSeek标签
         elif result.get("propagated_from"):
             knn_count += 1
         else:
@@ -405,6 +443,12 @@ def run_l4_fusion(embeddings_dir: str, deepseek_dir: str, golden_dir: str,
     print(f"  🌟 黄金集(Qwen-Omni): {golden_count}")
     print(f"  📡 KNN传播: {knn_count}")
     print(f"  🤖 DeepSeek-only: {deepseek_only_count}")
+    if excluded_ids:
+        print(f"  🚫 [防泄漏] 排除KNN传播: {excluded_count} 首 (test/holdout/ood)")
+        if excluded_count == len(excluded_ids):
+            print(f"  ✅ [防泄漏] 验证通过: 所有 {excluded_count} 首排除样本均未被KNN传播")
+        else:
+            print(f"  ❌ [防泄漏] 验证失败: 排除了 {len(excluded_ids)} 首但只有 {excluded_count} 首未传播")
     print(f"\n  融合阈值:")
     print(f"    genre: cosine_dist < {FUSION_CONFIG['genre']['max_cosine_dist']}")
     print(f"    mood: cosine_dist < {FUSION_CONFIG['mood']['max_cosine_dist']} (需high置信度)")
@@ -422,7 +466,12 @@ if __name__ == "__main__":
     parser.add_argument("--l3-golden-dir", required=True, help="Qwen-Omni黄金集目录")
     parser.add_argument("--output-dir", required=True, help="输出融合标签目录")
     parser.add_argument("--ls-output", default=None, help="Label Studio JSONL输出路径")
+    parser.add_argument("--exclude-splits", default=None,
+                        help="V4防泄漏：逗号分隔的子集名，禁止KNN传播，如 'test,holdout,ood'")
+    parser.add_argument("--splits-dir", default=None,
+                        help="划分结果目录（包含train.csv/val.csv/test.csv等），配合--exclude-splits使用")
     args = parser.parse_args()
 
     run_l4_fusion(args.embeddings_dir, args.l4_deepseek_dir, args.l3_golden_dir,
-                  args.output_dir, args.ls_output)
+                  args.output_dir, args.ls_output,
+                  exclude_splits=args.exclude_splits, splits_dir=args.splits_dir)

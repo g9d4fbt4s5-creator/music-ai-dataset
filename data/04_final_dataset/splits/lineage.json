@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "version": "splits",
-  "timestamp": "2026-08-26T23:42:54.307462+08:00",
+  "timestamp": "2026-08-28T00:48:51.807425+08:00",
   "split_method": "stratified",
   "stratify_by": null,
   "isolate_by": "artist_id",
@@ -9,31 +9,31 @@
   "random_seed": 42,
   "splits": {
     "train": {
-      "count": 59,
-      "ratio": 0.7023809523809523
+      "count": 72,
+      "ratio": 0.8888888888888888
     },
     "val": {
-      "count": 17,
-      "ratio": 0.20238095238095238
+      "count": 9,
+      "ratio": 0.1111111111111111
     },
     "test": {
-      "count": 5,
-      "ratio": 0.05952380952380952
+      "count": 0,
+      "ratio": 0.0
     },
     "holdout": {
-      "count": 3,
-      "ratio": 0.03571428571428571
+      "count": 0,
+      "ratio": 0.0
     }
   },
-  "total_samples": 84,
+  "total_samples": 81,
   "checksum_verification": null,
   "upstream": "/Users/m.jian/music_corpus_project/data/00.5_cleaned/reports/v20260824_083208/lineage.json",
   "main_pool_manifest": "data/00_raw_collect/audio_manifest.csv",
   "test_pool_manifest": null,
   "holdout_pool_manifest": null,
   "train_val_split_ratio": {
-    "train": 0.7,
-    "val": 0.15
+    "train": 0.8,
+    "val": 0.2
   },
   "source_isolation_enabled": false,
   "source_isolation_passed": true,

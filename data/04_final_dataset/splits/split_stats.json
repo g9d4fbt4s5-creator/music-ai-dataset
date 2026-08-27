@@ -1,0 +1,30 @@
+{
+  "version": "v2_force_golden_train",
+  "timestamp": "2026-08-27T04:15:59.770375+08:00",
+  "total": 85,
+  "splits": {
+    "train": {
+      "count": 61,
+      "includes_golden": true,
+      "golden_count": 5
+    },
+    "val": {
+      "count": 14
+    },
+    "test": {
+      "count": 7
+    },
+    "holdout": {
+      "count": 3
+    }
+  },
+  "golden_ids": [
+    "E6A98A1C67AC4D9FA1E7437524",
+    "D0CC3C06BCC643C4AD0737115C",
+    "3C6219AB60A24F5B8F101AF353",
+    "78250AD45D2842A3AA18C9071D",
+    "D2098BC896D6450A8E3744528E"
+  ],
+  "artist_isolation_note": "test/holdout中与train冲突的artist已移到val",
+  "random_seed": 42
+}

@@ -1,21 +1,21 @@
 {
-  "total": 84,
+  "total": 81,
   "splits": {
     "train": {
-      "count": 59,
-      "ratio": 0.7023809523809523
+      "count": 72,
+      "ratio": 0.8888888888888888
     },
     "val": {
-      "count": 17,
-      "ratio": 0.20238095238095238
+      "count": 9,
+      "ratio": 0.1111111111111111
     },
     "test": {
-      "count": 5,
-      "ratio": 0.05952380952380952
+      "count": 0,
+      "ratio": 0.0
     },
     "holdout": {
-      "count": 3,
-      "ratio": 0.03571428571428571
+      "count": 0,
+      "ratio": 0.0
     }
   },
   "split_method": "stratified",
@@ -26,8 +26,8 @@
   "test_pool_manifest": null,
   "holdout_pool_manifest": null,
   "train_val_split_ratio": {
-    "train": 0.7,
-    "val": 0.15
+    "train": 0.8,
+    "val": 0.2
   },
   "source_isolation_enabled": false,
   "cross_set_dedup": {
