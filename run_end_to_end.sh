@@ -152,7 +152,6 @@ log_step "2" "母版生成（85首）"
 python3 scripts/01_preprocess/01_generate_master.py \
     --manifest "${MANIFEST}" \
     --qc-report "${QC_REPORT}" \
-    --output-dir "${PROJECT_ROOT}/data/01_preprocess/processed_master" \
     2>&1 | tee "${LOG_DIR}/02_master.log"
 
 MASTER_COUNT=$(find "${PROJECT_ROOT}/data/01_preprocess/processed_master" -name "*.flac" | wc -l | tr -d ' ')
@@ -165,8 +164,8 @@ verify_output "母版数量" 80 "${MASTER_COUNT}"
 log_step "3" "L1物理特征提取（85首）"
 python3 scripts/02_preannotation/l1_physical/l1_physical_features.py \
     --manifest "${MANIFEST}" \
-    --master-dir "${PROJECT_ROOT}/data/01_preprocess/processed_master" \
-    --output-dir "${PROJECT_ROOT}/data/02_preannotation/l1_physical" \
+    --input-dir "${PROJECT_ROOT}/data/01_preprocess/processed_master" \
+    --output "${PROJECT_ROOT}/data/02_preannotation/l1_physical" \
     2>&1 | tee "${LOG_DIR}/03_l1_physical.log"
 
 L1_COUNT=$(find "${PROJECT_ROOT}/data/02_preannotation/l1_physical" -name "*.json" | wc -l | tr -d ' ')
