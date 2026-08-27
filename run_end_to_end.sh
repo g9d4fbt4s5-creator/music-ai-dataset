@@ -189,16 +189,16 @@ sync_to_gpu
 
 # 在 GPU 实例上运行 MERT 嵌入（setsid+nohup+/dev/null，SSH断连不丢失）
 echo "在 GPU 实例上启动 MERT 嵌入..."
-run_on_gpu "source /root/miniconda3/etc/profile.d/conda.sh && conda activate labelstudio-env && setsid nohup python3 scripts/02_preannotation/extract_mert_embedding.py --input-dir data/01_preprocess/processed_master --output data/02_preannotation/l2_embedding --device cuda > logs/mert_embedding.log 2>&1 < /dev/null & echo \"MERT已启动 PID:\$!\""
+run_on_gpu "setsid nohup /root/miniconda3/envs/labelstudio-env/bin/python3 scripts/02_preannotation/extract_mert_embedding.py --input-dir data/01_preprocess/processed_master --output data/02_preannotation/l2_embedding --device cuda > logs/mert_embedding.log 2>&1 < /dev/null & echo \"MERT已启动 PID:\$!\""
 
 # 轮询等待完成（最多等30分钟）
 echo "等待 MERT 嵌入完成..."
 for i in $(seq 1 60); do
     sleep 30
-    MERT_DONE=$(run_on_gpu "ps aux | grep extract_mert | grep -v grep | wc -l" 2>/dev/null || echo "0")
-    MERT_COUNT=$(run_on_gpu "find data/02_preannotation/l2_embedding -name '*.npy' | wc -l" 2>/dev/null || echo "0")
+    MERT_DONE=$(run_on_gpu "ps aux | grep extract_mert | grep -v grep | wc -l" 2>/dev/null | tr -d '[:space:]' || echo "0")
+    MERT_COUNT=$(run_on_gpu "find data/02_preannotation/l2_embedding -name '*.npy' | wc -l" 2>/dev/null | tr -d '[:space:]' || echo "0")
     echo "  [${i}/60] 进程: ${MERT_DONE}, 已完成: ${MERT_COUNT}/84"
-    if [ "${MERT_DONE}" = "0" ] && [ "${MERT_COUNT}" -gt 0 ]; then
+    if [ "${MERT_DONE}" -eq 0 ] && [ "${MERT_COUNT}" -gt 0 ] 2>/dev/null; then
         echo "✅ MERT 嵌入完成"
         break
     fi
@@ -218,16 +218,16 @@ log_step "5" "L2 CLAP零样本标注（GPU远程执行）"
 
 # 在 GPU 实例上运行 CLAP（setsid+nohup+/dev/null，自动检测本地模型）
 echo "在 GPU 实例上启动 CLAP 零样本标注..."
-run_on_gpu "source /root/miniconda3/etc/profile.d/conda.sh && conda activate labelstudio-env && setsid nohup python3 scripts/02_preannotation/l2_clap_zero_shot.py --input-dir data/01_preprocess/processed_master --output data/02_preannotation/l2_semantic --embedding-output data/02_preannotation/l2_embedding_clap --device cuda --top-k 5 > logs/clap_zero_shot.log 2>&1 < /dev/null & echo \"CLAP已启动 PID:\$!\""
+run_on_gpu "setsid nohup /root/miniconda3/envs/labelstudio-env/bin/python3 scripts/02_preannotation/l2_clap_zero_shot.py --input-dir data/01_preprocess/processed_master --output data/02_preannotation/l2_semantic --embedding-output data/02_preannotation/l2_embedding_clap --device cuda --top-k 5 > logs/clap_zero_shot.log 2>&1 < /dev/null & echo \"CLAP已启动 PID:\$!\""
 
 # 轮询等待完成（最多等30分钟）
 echo "等待 CLAP 零样本标注完成..."
 for i in $(seq 1 60); do
     sleep 30
-    CLAP_DONE=$(run_on_gpu "ps aux | grep clap_zero_shot | grep -v grep | wc -l" 2>/dev/null || echo "0")
-    CLAP_COUNT=$(run_on_gpu "find data/02_preannotation/l2_semantic -name '*.json' | wc -l" 2>/dev/null || echo "0")
+    CLAP_DONE=$(run_on_gpu "ps aux | grep clap_zero_shot | grep -v grep | wc -l" 2>/dev/null | tr -d '[:space:]' || echo "0")
+    CLAP_COUNT=$(run_on_gpu "find data/02_preannotation/l2_semantic -name '*.json' | wc -l" 2>/dev/null | tr -d '[:space:]' || echo "0")
     echo "  [${i}/60] 进程: ${CLAP_DONE}, 已完成: ${CLAP_COUNT}/84"
-    if [ "${CLAP_DONE}" = "0" ] && [ "${CLAP_COUNT}" -gt 0 ]; then
+    if [ "${CLAP_DONE}" -eq 0 ] && [ "${CLAP_COUNT}" -gt 0 ] 2>/dev/null; then
         echo "✅ CLAP 零样本标注完成"
         break
     fi
