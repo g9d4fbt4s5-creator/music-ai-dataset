@@ -162,11 +162,17 @@ verify_output "母版数量" 80 "${MASTER_COUNT}"
 # STEP 3: L1物理特征
 # =============================================================================
 log_step "3" "L1物理特征提取（85首）"
-python3 scripts/02_preannotation/l1_physical/l1_physical_features.py \
-    --manifest "${MANIFEST}" \
-    --input-dir "${PROJECT_ROOT}/data/01_preprocess/processed_master" \
-    --output "${PROJECT_ROOT}/data/02_preannotation/l1_physical" \
-    2>&1 | tee "${LOG_DIR}/03_l1_physical.log"
+# 检查已有结果，存在且数量足够则跳过（Mac本地可能缺librosa）
+L1_EXISTING=$(find "${PROJECT_ROOT}/data/02_preannotation/l1_physical" -name "*.json" 2>/dev/null | wc -l | tr -d ' ')
+if [ "${L1_EXISTING}" -ge 80 ]; then
+    echo "L1结果已存在: ${L1_EXISTING} 首，跳过重新生成"
+else
+    python3 scripts/02_preannotation/l1_physical/l1_physical_features.py \
+        --manifest "${MANIFEST}" \
+        --input-dir "${PROJECT_ROOT}/data/01_preprocess/processed_master" \
+        --output "${PROJECT_ROOT}/data/02_preannotation/l1_physical" \
+        2>&1 | tee "${LOG_DIR}/03_l1_physical.log"
+fi
 
 L1_COUNT=$(find "${PROJECT_ROOT}/data/02_preannotation/l1_physical" -name "*.json" | wc -l | tr -d ' ')
 echo "L1物理标签: ${L1_COUNT} 首"
