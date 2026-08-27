@@ -292,12 +292,11 @@ verify_output "L3数量（黄金集5首）" 5 "${L3_COUNT}"
 # =============================================================================
 # STEP 8: L4 KNN传播
 # =============================================================================
-log_step "8" "L4 KNN传播（train拟合，val预测）"
+log_step "8" "L4 KNN传播（融合DeepSeek标签+L3黄金集，KNN传播）"
 python3 scripts/02_preannotation/l4_propagated/l4_knn_propagation.py \
-    --manifest "${MANIFEST}" \
-    --embedding-dir "${PROJECT_ROOT}/data/02_preannotation/l2_embedding" \
-    --l3-dir "${PROJECT_ROOT}/data/02_preannotation/l3_structural" \
-    --splits-dir "${SPLITS_DIR}" \
+    --embeddings-dir "${PROJECT_ROOT}/data/02_preannotation/l2_embedding" \
+    --l4-deepseek-dir "${PROJECT_ROOT}/data/02_preannotation/l4_deepseek" \
+    --l3-golden-dir "${PROJECT_ROOT}/data/02_preannotation/l3_structural" \
     --output-dir "${PROJECT_ROOT}/data/02_preannotation/l4_propagated" \
     2>&1 | tee "${LOG_DIR}/08_l4_knn.log"
 
@@ -307,12 +306,11 @@ echo "L4传播结果: ${L4_COUNT} 首"
 # =============================================================================
 # STEP 9: Stage 5切片（排除黄金集和Challenge）
 # =============================================================================
-log_step "9" "Stage 5训练切片（排除黄金集和Challenge）"
+log_step "9" "Stage 5训练切片（排除黄金集和Challenge，从manifest读取master_path）"
 python3 scripts/05_training_prep/01_audio_chunker.py \
     --manifest "${MANIFEST}" \
     --splits "${SPLITS_DIR}" \
     --only-train-val \
-    --master-dir "${PROJECT_ROOT}/data/01_preprocess/processed_master" \
     --output-dir "${PROJECT_ROOT}/data/05_training_segments" \
     --chunk-sec 15 \
     2>&1 | tee "${LOG_DIR}/09_chunker.log"

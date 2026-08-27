@@ -32,17 +32,33 @@ import subprocess
 
 # 自动加载项目根目录的 .env（API key 等配置）
 # 脚本在 scripts/02_preannotation/l3_structural/ 下，往上3级是项目根
+from pathlib import Path
+_project_root = Path(__file__).resolve().parent.parent.parent.parent
+_env_path = _project_root / ".env"
+
+def _load_env_manually(env_path):
+    """手动解析.env文件，不依赖python-dotenv（Mac沙箱环境可能未安装）"""
+    if not env_path.exists():
+        return
+    with open(env_path, 'r', encoding='utf-8') as f:
+        for line in f:
+            line = line.strip()
+            if not line or line.startswith('#') or '=' not in line:
+                continue
+            key, value = line.split('=', 1)
+            key = key.strip()
+            value = value.strip().strip('"').strip("'")
+            os.environ.setdefault(key, value)
+
 try:
     from dotenv import load_dotenv
-    from pathlib import Path
-    _project_root = Path(__file__).resolve().parent.parent.parent.parent
-    _env_path = _project_root / ".env"
     if _env_path.exists():
         load_dotenv(_env_path)
     else:
         load_dotenv()  # fallback: 从当前目录查找
 except ImportError:
-    pass  # python-dotenv 未安装时跳过，依赖环境变量
+    # python-dotenv 未安装时，手动解析.env
+    _load_env_manually(_env_path)
 import tempfile
 from pathlib import Path
 from typing import Dict, Optional, Tuple
