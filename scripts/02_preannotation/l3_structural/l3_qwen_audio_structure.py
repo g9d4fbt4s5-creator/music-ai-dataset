@@ -31,9 +31,16 @@ import logging
 import subprocess
 
 # 自动加载项目根目录的 .env（API key 等配置）
+# 脚本在 scripts/02_preannotation/l3_structural/ 下，往上3级是项目根
 try:
     from dotenv import load_dotenv
-    load_dotenv()
+    from pathlib import Path
+    _project_root = Path(__file__).resolve().parent.parent.parent.parent
+    _env_path = _project_root / ".env"
+    if _env_path.exists():
+        load_dotenv(_env_path)
+    else:
+        load_dotenv()  # fallback: 从当前目录查找
 except ImportError:
     pass  # python-dotenv 未安装时跳过，依赖环境变量
 import tempfile

@@ -87,7 +87,8 @@ EOF
 | Mac 是代码中心仓 | 改码、commit、push 都在 Mac 完成 |
 | GPU 只 pull 代码 | GPU 上执行 `git pull origin main`，不要在 GPU 上直接改代码 |
 | GPU 数据不进 Git | GPU 上 `data/` 目录是运行时产物，通过 rsync 同步，不做 Git 操作 |
-| 禁止 `git reset --hard` | 除非明确确认要放弃 GPU 上的所有本地修改和数据产物 |
+| **禁止 `git reset --hard`** | 会丢失 GPU 本地所有代码修改，除非明确确认放弃 |
+| **禁止 `git clean -fd`** | 会删除 GPU 上所有未被 Git 跟踪的文件，包括 rsync 过来的数据和 L2 派生产物 |
 
 ## 实例状态检查
 
