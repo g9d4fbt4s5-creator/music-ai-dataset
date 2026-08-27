@@ -307,13 +307,20 @@ echo "L4传播结果: ${L4_COUNT} 首"
 # STEP 9: Stage 5切片（排除黄金集和Challenge）
 # =============================================================================
 log_step "9" "Stage 5训练切片（排除黄金集和Challenge，从manifest读取master_path）"
-python3 scripts/05_training_prep/01_audio_chunker.py \
-    --manifest "${MANIFEST}" \
-    --splits "${SPLITS_DIR}" \
-    --only-train-val \
-    --output-dir "${PROJECT_ROOT}/data/05_training_segments" \
-    --chunk-sec 15 \
-    2>&1 | tee "${LOG_DIR}/09_chunker.log"
+
+# 检查已有结果，存在且数量足够则跳过（Mac本地可能缺librosa）
+SEGMENT_EXISTING=$(find "${PROJECT_ROOT}/data/05_training_segments" -name "*.wav" 2>/dev/null | wc -l | tr -d ' ')
+if [ "${SEGMENT_EXISTING}" -ge 100 ]; then
+    echo "切片结果已存在: ${SEGMENT_EXISTING} 个，跳过重新生成"
+else
+    python3 scripts/05_training_prep/01_audio_chunker.py \
+        --manifest "${MANIFEST}" \
+        --splits "${SPLITS_DIR}" \
+        --only-train-val \
+        --output-dir "${PROJECT_ROOT}/data/05_training_segments" \
+        --chunk-sec 15 \
+        2>&1 | tee "${LOG_DIR}/09_chunker.log"
+fi
 
 # 验证切片数量
 SEGMENT_COUNT=$(find "${PROJECT_ROOT}/data/05_training_segments" -name "*.wav" | wc -l | tr -d ' ')
