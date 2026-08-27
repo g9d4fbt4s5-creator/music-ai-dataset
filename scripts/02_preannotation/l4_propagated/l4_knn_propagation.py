@@ -89,6 +89,11 @@ def load_embeddings(embeddings_dir: str) -> tuple:
 
     for f in sorted(embeddings_dir.glob("*.npy")):
         aid = f.stem.replace("_mert_embedding", "")
+        # MERT嵌入文件名格式: {32位hash}_{audio_id}_mert_embedding.npy
+        # 去掉前面的hash_部分，只保留audio_id
+        parts = aid.split("_", 1)
+        if len(parts) == 2 and len(parts[0]) == 32:  # hash是32位md5
+            aid = parts[1]
         vec = np.load(f)
         if vec.ndim > 1:
             vec = vec.flatten()[:768]
