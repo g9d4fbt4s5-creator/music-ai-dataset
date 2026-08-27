@@ -289,24 +289,42 @@ if [ "${GOLDEN_IN_TRAIN}" -ne 5 ]; then
 fi
 
 # artist隔离后处理：train/val冲突artist全部移入train，消除数据泄漏
+# 注意：train.csv/val.csv只有audio_id列，需要join manifest获取artist_id
+# unknown_前缀的artist不算真实冲突（无法隔离）
 echo "=== artist隔离检查 ==="
 python3 << 'PYEOF'
 import pandas as pd
+manifest = pd.read_csv("data/00_raw_collect/audio_manifest.csv")
 splits_dir = "data/04_final_dataset/splits/splits"
 train = pd.read_csv(f"{splits_dir}/train.csv")
 val = pd.read_csv(f"{splits_dir}/val.csv")
-val_artists = set(val['artist_id'].dropna())
-conflict = train[train['artist_id'].isin(val_artists)]
-if len(conflict) > 0:
-    print(f"artist隔离修复: {len(conflict)} 首train样本与val冲突，将val中同artist样本移回train")
-    val_conflict = val[val['artist_id'].isin(val_artists)]
+
+# join manifest获取artist_id
+id_to_artist = dict(zip(manifest['audio_id'], manifest['artist_id']))
+train['artist_id'] = train['audio_id'].map(id_to_artist)
+val['artist_id'] = val['audio_id'].map(id_to_artist)
+
+# 排除unknown_前缀的artist（无法隔离）
+val_real_artists = set(val[~val['artist_id'].str.startswith('unknown_', na=True)]['artist_id'].dropna())
+conflict_train = train[train['artist_id'].isin(val_real_artists)]
+
+if len(conflict_train) > 0:
+    conflict_artists = set(conflict_train['artist_id'])
+    print(f"artist隔离修复: {len(conflict_train)} 首train样本与val冲突 ({len(conflict_artists)}个artist)")
+    for a in conflict_artists:
+        t_count = len(train[train['artist_id']==a])
+        v_count = len(val[val['artist_id']==a])
+        print(f"  {a}: train={t_count}首, val={v_count}首 → 全部移入train")
+    # 把val中冲突artist的样本移回train
+    val_conflict = val[val['artist_id'].isin(conflict_artists)]
     train = pd.concat([train, val_conflict], ignore_index=True)
-    val = val[~val['artist_id'].isin(val_artists)]
-    train.to_csv(f"{splits_dir}/train.csv", index=False)
-    val.to_csv(f"{splits_dir}/val.csv", index=False)
+    val = val[~val['artist_id'].isin(conflict_artists)]
+    # 保存时只保留audio_id列（与原格式一致）
+    train[['audio_id']].to_csv(f"{splits_dir}/train.csv", index=False)
+    val[['audio_id']].to_csv(f"{splits_dir}/val.csv", index=False)
     print(f"  修复后: train={len(train)}, val={len(val)}")
 else:
-    print("artist隔离检查通过: 0组冲突")
+    print("artist隔离检查通过: 0组真实冲突")
 PYEOF
 TRAIN_COUNT=$(wc -l < "${SPLITS_DIR}/train.csv" | tr -d ' ')
 TRAIN_COUNT=$((TRAIN_COUNT - 1))
