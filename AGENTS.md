@@ -76,3 +76,48 @@
 - 环境配置变更时（如换GPU实例、换conda环境、换API endpoint），立即更新本文件和`docs/gpu_access.md`
 - 发现新的常见错误时，补充到第六节
 - 本文件本身必须被Git跟踪
+
+## 八、验收门禁检查清单（G-01 ~ G-06）
+
+> 任何"修复完成/跑通"的声明，必须通过以下门禁检查。不满足即打回，不接受口头宣称。
+
+### G-01 | 脚本参数与环境一致性
+
+- [ ] 验证包包含每个被调用子脚本的 `--help` 输出
+- [ ] master脚本参数名与 `--help` 输出逐参数一致
+- [ ] 验证包包含 `conda env list` 输出，脚本使用的环境名存在
+- [ ] 涉及GPU的脚本，包含 `docs/gpu_access.md` 中路径的实际 `ls` 验证输出
+
+### G-02 | 验证包完整性（四项缺一不可）
+
+- [ ] **修改清单**：改动的文件名 + 关键函数名/行号（或代码diff片段）
+- [ ] **执行日志**：实际运行命令 + 完整stdout/stderr（不是"运行成功"四个字）
+- [ ] **输出样本**：产出文件的实际内容样本（如L4输出前3条JSON、划分结果train/val/test数量）
+- [ ] **Git commit hash**：已push的commit ID
+
+### G-03 | 端到端真实执行（禁止"跳过复用"冒充跑通）
+
+- [ ] 日志中每步显式标注 `EXEC:`（新生成）或 `SKIP:`（复用已有）
+- [ ] `EXEC:` 步骤数 ≥ 总步骤数的70%
+- [ ] 包含"归档旧产物后从头重跑"的证据（归档目录路径 + 重跑日志）
+- [ ] 核心功能有实际产出（如L4 KNN传播数 > 0，不是"黄金集=5, KNN=0"）
+
+### G-04 | GPU安全红线
+
+- [ ] GPU操作日志中无 `git clean`、`git reset --hard`、`git commit`、`git push`
+- [ ] GPU数据目录（`data/`）通过rsync同步，而非Git pull
+- [ ] GPU上只执行了 `git pull`（代码同步）和rsync（数据同步）
+- **熔断规则**：发现GPU上有 `git clean -fd` 或 `git reset --hard` 执行记录，立即停止验收
+
+### G-05 | 文档无敏感信息
+
+- [ ] `grep -ri "password\|passwd\|api_key\|apikey\|secret\|token\|ssh-rsa\|BEGIN PRIVATE" docs/` 输出为空
+- [ ] 新增/修改文档中无明文密码、API key、SSH私钥
+- [ ] `docs/gpu_access.md` 只含host/port/user/认证方式，不含密码
+
+### G-06 | KNN/传播类修复诊断完整性
+
+- [ ] 包含距离分布诊断：所有样本到最近黄金集的mean/median/p90/max
+- [ ] 包含字段类型检查：黄金集标签关键字段（genre/confidence/instruments）的实际类型和样本值
+- [ ] 包含覆盖度分析：黄金集风格分布 vs 目标样本风格分布
+- [ ] 阈值调整在以上诊断之后进行（不是第一步就调阈值）
