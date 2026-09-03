@@ -195,8 +195,16 @@ def load_l2_semantic(l2_dir: Path) -> Dict[str, Dict]:
     for f in l2_dir.glob("*_semantic.json"):
         with open(f, "r", encoding="utf-8") as fp:
             data = json.load(fp)
-        audio_id = data.get("audio_id", f.stem.replace("_semantic", ""))
-        semantics[audio_id] = data
+        raw_id = data.get("audio_id", f.stem.replace("_semantic", ""))
+        # 提取纯 audio_id（去掉 hash32_ 前缀）
+        if "_" in raw_id:
+            parts = raw_id.split("_")
+            for part in reversed(parts):
+                if len(part) == 26:
+                    raw_id = part
+                    break
+        data["audio_id"] = raw_id
+        semantics[raw_id] = data
     return semantics
 
 
