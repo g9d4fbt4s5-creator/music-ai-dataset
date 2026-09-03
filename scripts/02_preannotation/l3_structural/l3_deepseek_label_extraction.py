@@ -113,7 +113,10 @@ class DeepSeekClient:
         self.last_request_time = 0
 
         if not self.api_key:
-            logger.warning(f"未设置 API Key（环境变量 {config.get('api_key_env')}），将使用模拟模式")
+            raise ValueError(
+                f"未设置 API Key（环境变量 {config.get('api_key_env', 'DEEPSEEK_API_KEY')}）。"
+                f"请设置环境变量或使用 --api-key 参数。禁止在无 API Key 时返回模拟数据。"
+            )
 
     def _wait_for_rate_limit(self):
         """速率限制等待"""
@@ -134,8 +137,7 @@ class DeepSeekClient:
             回复文本，失败返回 None
         """
         if not self.api_key:
-            # 模拟模式：返回模拟结果
-            return self._mock_response(messages)
+            raise RuntimeError("API Key 未设置，禁止调用模拟模式。请设置 DEEPSEEK_API_KEY 环境变量。")
 
         for attempt in range(self.max_retries):
             try:

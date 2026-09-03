@@ -170,6 +170,26 @@ def call_deepseek(api_key: str, prompt: str, max_retries: int = 3) -> Optional[D
 
 # ===================== 数据加载 =====================
 
+def extract_pure_audio_id(raw_id: str) -> str:
+    """
+    从可能包含 hash32_ 前缀的 ID 中提取纯 26 位 audio_id。
+
+    项目中文件名/字段存在两种格式：
+    - 纯 audio_id: 01M0ZV75CA0XZA10YGA99D89XQ (26位)
+    - 带 hash 前缀: 01ce91d81918e3a40377afb2ac95e8c7_3F34DF1B2784408BA60CE8165C
+
+    统一提取最后一个 26 位分段作为纯 audio_id。
+    """
+    if not raw_id:
+        return raw_id
+    if "_" in raw_id:
+        parts = raw_id.split("_")
+        for part in reversed(parts):
+            if len(part) == 26:
+                return part
+    return raw_id
+
+
 def load_l1_features(l1_dir: Path) -> Dict[str, Dict]:
     """加载 L1 物理特征"""
     features = {}
@@ -177,15 +197,9 @@ def load_l1_features(l1_dir: Path) -> Dict[str, Dict]:
         with open(f, "r", encoding="utf-8") as fp:
             data = json.load(fp)
         raw_id = data.get("audio_id", "")
-        # 提取纯 audio_id
-        if "_" in raw_id:
-            parts = raw_id.split("_")
-            for part in reversed(parts):
-                if len(part) == 26:
-                    raw_id = part
-                    break
-        data["audio_id"] = raw_id
-        features[raw_id] = data
+        pure_id = extract_pure_audio_id(raw_id)
+        data["audio_id"] = pure_id
+        features[pure_id] = data
     return features
 
 
@@ -196,15 +210,9 @@ def load_l2_semantic(l2_dir: Path) -> Dict[str, Dict]:
         with open(f, "r", encoding="utf-8") as fp:
             data = json.load(fp)
         raw_id = data.get("audio_id", f.stem.replace("_semantic", ""))
-        # 提取纯 audio_id（去掉 hash32_ 前缀）
-        if "_" in raw_id:
-            parts = raw_id.split("_")
-            for part in reversed(parts):
-                if len(part) == 26:
-                    raw_id = part
-                    break
-        data["audio_id"] = raw_id
-        semantics[raw_id] = data
+        pure_id = extract_pure_audio_id(raw_id)
+        data["audio_id"] = pure_id
+        semantics[pure_id] = data
     return semantics
 
 
