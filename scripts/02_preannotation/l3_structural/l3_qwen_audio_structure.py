@@ -29,6 +29,7 @@ import base64
 import argparse
 import logging
 import subprocess
+import requests
 
 # 自动加载项目根目录的 .env（API key 等配置）
 # 脚本在 scripts/02_preannotation/l3_structural/ 下，往上3级是项目根
