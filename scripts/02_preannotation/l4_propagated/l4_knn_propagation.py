@@ -225,33 +225,38 @@ def fuse_single_sample(audio_id: str, is_golden: bool,
         if key in deepseek_label:
             result[key] = deepseek_label[key]
 
+    # 判断DeepSeek标签是否真实存在（防止空目录时虚构来源）
+    has_ds_genre = bool(deepseek_label.get("genre"))
+    has_ds_mood = bool(deepseek_label.get("mood"))
+    has_ds_instr = bool(deepseek_label.get("instrumentation"))
+
     if is_golden:
         # 黄金集: 用 Qwen-Omni 结果覆盖 DeepSeek
-        result["genre"] = deepseek_label.get("genre", "jazz")
-        result["mood"] = golden_label.get("mood", deepseek_label.get("mood", ["relaxed"]))
+        result["genre"] = golden_label.get("genre", deepseek_label.get("genre", ""))
+        result["mood"] = golden_label.get("mood", deepseek_label.get("mood", []))
         result["instrumentation"] = golden_label.get("instruments", deepseek_label.get("instrumentation", []))
         result["caption"] = golden_label.get("caption", deepseek_label.get("caption", ""))
         result["segments"] = golden_label.get("segments", [])
         result["propagated_from"] = "golden_set"
         result["fusion"] = {
-            "genre_source": "deepseek",
-            "mood_source": "qwen_omni_golden",
-            "instrumentation_source": "qwen_omni_golden",
+            "genre_source": "qwen_omni_golden" if golden_label.get("genre") else ("deepseek" if has_ds_genre else "unlabeled"),
+            "mood_source": "qwen_omni_golden" if golden_label.get("mood") else ("deepseek" if has_ds_mood else "unlabeled"),
+            "instrumentation_source": "qwen_omni_golden" if golden_label.get("instruments") else ("deepseek" if has_ds_instr else "unlabeled"),
             "caption_source": "qwen_omni_golden",
         }
     else:
-        # 非黄金集: 按字段差异化融合
-        result["genre"] = deepseek_label.get("genre", "jazz")
-        result["mood"] = deepseek_label.get("mood", ["relaxed"])
+        # 非黄金集: 按字段差异化融合（空标签时置空，不硬编码兜底）
+        result["genre"] = deepseek_label.get("genre", "")
+        result["mood"] = deepseek_label.get("mood", [])
         result["instrumentation"] = deepseek_label.get("instrumentation", [])
         result["caption"] = deepseek_label.get("caption", "")
         result["segments"] = []  # 非黄金集无段落结构
 
         fusion = {
-            "genre_source": "deepseek",
-            "mood_source": "deepseek",
-            "instrumentation_source": "deepseek",
-            "caption_source": "deepseek (not_propagated)",
+            "genre_source": "deepseek" if has_ds_genre else "unlabeled",
+            "mood_source": "deepseek" if has_ds_mood else "unlabeled",
+            "instrumentation_source": "deepseek" if has_ds_instr else "unlabeled",
+            "caption_source": "deepseek (not_propagated)" if deepseek_label.get("caption") else "unlabeled",
         }
 
         propagated_any = False
@@ -302,12 +307,14 @@ def run_l4_fusion(embeddings_dir: str, deepseek_dir: str, golden_dir: str,
     if exclude_splits and splits_dir:
         splits_path = Path(splits_dir)
         split_names = [s.strip() for s in exclude_splits.split(",") if s.strip()]
+        found_any_file = False
         for sname in split_names:
             # 兼容多种文件名: test.csv / holdout_gold.csv / ood.csv
             candidates = [sname + ".csv", sname + "_gold.csv"]
             for cand in candidates:
                 fpath = splits_path / cand
                 if fpath.exists():
+                    found_any_file = True
                     import pandas as pd
                     df = pd.read_csv(fpath)
                     ids = set(df["audio_id"].tolist()) if "audio_id" in df.columns else set()
@@ -316,6 +323,8 @@ def run_l4_fusion(embeddings_dir: str, deepseek_dir: str, golden_dir: str,
                     break
         if excluded_ids:
             print(f"  [防泄漏] 总计排除 {len(excluded_ids)} 首，禁止KNN传播")
+        elif found_any_file:
+            print(f"  [防泄漏] 排除子集文件存在但0行数据（符合test=0决策），将不排除任何样本")
         else:
             print(f"  [防泄漏] 警告: 指定了排除子集但未找到任何文件，将不排除任何样本")
     elif exclude_splits and not splits_dir:
