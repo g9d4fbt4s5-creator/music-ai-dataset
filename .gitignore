@@ -167,3 +167,20 @@ reports/manual/**/*.html
 .env
 .env.*
 !.env.example
+
+# ========== 可重新生成的预标注派生产物（不提交Git） ==========
+# L1 物理特征（可从母版重新提取）
+data/02_preannotation/l1_physical/
+# L2 MERT嵌入（可从母版重新提取）
+data/02_preannotation/l2_embedding/
+# L2 CLAP语义（可从母版重新提取）
+data/02_preannotation/l2_semantic/
+# L4 KNN传播标签（可从L2+黄金集重新生成）
+data/02_preannotation/l4_propagated/
+# Stage6 训练特征（可从切片重新提取）
+data/stage6_features/
+# 训练切片（可从母版重新生成）
+data/05_training_segments/
+# 注意: audio_manifest.csv 必须保留Git跟踪（数据血缘骨架）
+# 注意: data/04_final_dataset/splits/ 必须保留Git跟踪（划分结果）
+# 注意: data/02_preannotation/ls_preannotations.jsonl 保留（Label Studio预标注）
