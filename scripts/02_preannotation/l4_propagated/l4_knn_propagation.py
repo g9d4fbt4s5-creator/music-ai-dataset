@@ -239,9 +239,9 @@ def fuse_single_sample(audio_id: str, is_golden: bool,
         result["segments"] = golden_label.get("segments", [])
         result["propagated_from"] = "golden_set"
         result["fusion"] = {
-            "genre_source": "qwen_omni_golden" if golden_label.get("genre") else ("deepseek" if has_ds_genre else "unlabeled"),
-            "mood_source": "qwen_omni_golden" if golden_label.get("mood") else ("deepseek" if has_ds_mood else "unlabeled"),
-            "instrumentation_source": "qwen_omni_golden" if golden_label.get("instruments") else ("deepseek" if has_ds_instr else "unlabeled"),
+            "genre_source": "qwen_omni_golden" if golden_label.get("genre") else ("qwen_supplement" if has_ds_genre else "unlabeled"),
+            "mood_source": "qwen_omni_golden" if golden_label.get("mood") else ("qwen_supplement" if has_ds_mood else "unlabeled"),
+            "instrumentation_source": "qwen_omni_golden" if golden_label.get("instruments") else ("qwen_supplement" if has_ds_instr else "unlabeled"),
             "caption_source": "qwen_omni_golden",
         }
     else:
@@ -253,10 +253,10 @@ def fuse_single_sample(audio_id: str, is_golden: bool,
         result["segments"] = []  # 非黄金集无段落结构
 
         fusion = {
-            "genre_source": "deepseek" if has_ds_genre else "unlabeled",
-            "mood_source": "deepseek" if has_ds_mood else "unlabeled",
-            "instrumentation_source": "deepseek" if has_ds_instr else "unlabeled",
-            "caption_source": "deepseek (not_propagated)" if deepseek_label.get("caption") else "unlabeled",
+            "genre_source": "qwen_supplement" if has_ds_genre else "unlabeled",
+            "mood_source": "qwen_supplement" if has_ds_mood else "unlabeled",
+            "instrumentation_source": "qwen_supplement" if has_ds_instr else "unlabeled",
+            "caption_source": "qwen_supplement (not_propagated)" if deepseek_label.get("caption") else "unlabeled",
         }
 
         propagated_any = False
@@ -451,7 +451,7 @@ def run_l4_fusion(embeddings_dir: str, deepseek_dir: str, golden_dir: str,
     print(f"  总计: {len(results)}")
     print(f"  🌟 黄金集(Qwen-Omni): {golden_count}")
     print(f"  📡 KNN传播: {knn_count}")
-    print(f"  🤖 DeepSeek-only: {deepseek_only_count}")
+    print(f"  🤖 Qwen补充标注: {deepseek_only_count}")
     if excluded_ids:
         print(f"  🚫 [防泄漏] 排除KNN传播: {excluded_count} 首 (test/holdout/ood)")
         if excluded_count == len(excluded_ids):
