@@ -1,0 +1,147 @@
+{
+  "genre": "Pop",
+  "subgenre": "Ballad / Cover",
+  "vocal_presence": "vocal",
+  "tempo_bpm": 68,
+  "key": "D major",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 21.3,
+      "label": "前奏",
+      "instruments": [
+        "合成器",
+        "弦乐"
+      ],
+      "mood": "浪漫",
+      "confidence": 0.95
+    },
+    {
+      "start": 21.3,
+      "end": 41.7,
+      "label": "主歌",
+      "instruments": [
+        "钢琴",
+        "贝斯",
+        "鼓",
+        "人声"
+      ],
+      "mood": "深情",
+      "confidence": 0.92
+    },
+    {
+      "start": 41.7,
+      "end": 65.3,
+      "label": "副歌",
+      "instruments": [
+        "钢琴",
+        "贝斯",
+        "鼓",
+        "弦乐",
+        "人声"
+      ],
+      "mood": "热烈",
+      "confidence": 0.94
+    },
+    {
+      "start": 65.3,
+      "end": 88.9,
+      "label": "主歌",
+      "instruments": [
+        "钢琴",
+        "贝斯",
+        "鼓",
+        "人声"
+      ],
+      "mood": "温柔",
+      "confidence": 0.91
+    },
+    {
+      "start": 88.9,
+      "end": 112.5,
+      "label": "副歌",
+      "instruments": [
+        "钢琴",
+        "贝斯",
+        "鼓",
+        "弦乐",
+        "人声"
+      ],
+      "mood": "深情",
+      "confidence": 0.93
+    },
+    {
+      "start": 112.5,
+      "end": 136.1,
+      "label": "桥段",
+      "instruments": [
+        "钢琴",
+        "弦乐",
+        "人声"
+      ],
+      "mood": "坚定",
+      "confidence": 0.89
+    },
+    {
+      "start": 136.1,
+      "end": 156.5,
+      "label": "副歌",
+      "instruments": [
+        "钢琴",
+        "贝斯",
+        "鼓",
+        "弦乐",
+        "人声"
+      ],
+      "mood": "高潮",
+      "confidence": 0.96
+    },
+    {
+      "start": 156.5,
+      "end": 192.0,
+      "label": "尾奏",
+      "instruments": [
+        "钢琴",
+        "弦乐"
+      ],
+      "mood": "宁静",
+      "confidence": 0.9
+    }
+  ],
+  "instruments": [
+    "钢琴",
+    "贝斯",
+    "鼓",
+    "弦乐",
+    "合成器",
+    "人声"
+  ],
+  "mood_tags": [
+    "浪漫",
+    "深情",
+    "怀旧"
+  ],
+  "mood_vad": {
+    "valence": 0.8,
+    "arousal": 0.5,
+    "dominance": 0.6
+  },
+  "caption": "这是一首由男声演唱的流行抒情歌曲，以钢琴和弦乐为主要伴奏，营造出浪漫深情的氛围。",
+  "confidence": 0.92,
+  "_raw_text": "{\n  \"genre\": \"Pop\",\n  \"subgenre\": \"Ballad / Cover\",\n  \"vocal_presence\": \"vocal\",\n  \"tempo_bpm\": 68,\n  \"key\": \"D major\",\n  \"segments\": [\n    {\n      \"start\": 0.0,\n      \"end\": 21.3,\n      \"label\": \"前奏\",\n      \"instruments\": [\"合成器\", \"弦乐\"],\n      \"mood\": \"浪漫\",\n      \"confidence\": 0.95\n    },\n    {\n      \"start\": 21.3,\n      \"end\": 41.7,\n      \"label\": \"主歌\",\n      \"instruments\": [\"钢琴\", \"贝斯\", \"鼓\", \"人声\"],\n      \"mood\": \"深情\",\n      \"confidence\": 0.92\n    },\n    {\n      \"start\": 41.7,\n      \"end\": 65.3,\n      \"label\": \"副歌\",\n      \"instruments\": [\"钢琴\", \"贝斯\", \"鼓\", \"弦乐\", \"人声\"],\n      \"mood\": \"热烈\",\n      \"confidence\": 0.94\n    },\n    {\n      \"start\": 65.3,\n      \"end\": 88.9,\n      \"label\": \"主歌\",\n      \"instruments\": [\"钢琴\", \"贝斯\", \"鼓\", \"人声\"],\n      \"mood\": \"温柔\",\n      \"confidence\": 0.91\n    },\n    {\n      \"start\": 88.9,\n      \"end\": 112.5,\n      \"label\": \"副歌\",\n      \"instruments\": [\"钢琴\", \"贝斯\", \"鼓\", \"弦乐\", \"人声\"],\n      \"mood\": \"深情\",\n      \"confidence\": 0.93\n    },\n    {\n      \"start\": 112.5,\n      \"end\": 136.1,\n      \"label\": \"桥段\",\n      \"instruments\": [\"钢琴\", \"弦乐\", \"人声\"],\n      \"mood\": \"坚定\",\n      \"confidence\": 0.89\n    },\n    {\n      \"start\": 136.1,\n      \"end\": 156.5,\n      \"label\": \"副歌\",\n      \"instruments\": [\"钢琴\", \"贝斯\", \"鼓\", \"弦乐\", \"人声\"],\n      \"mood\": \"高潮\",\n      \"confidence\": 0.96\n    },\n    {\n      \"start\": 156.5,\n      \"end\": 192.0,\n      \"label\": \"尾奏\",\n      \"instruments\": [\"钢琴\", \"弦乐\"],\n      \"mood\": \"宁静\",\n      \"confidence\": 0.90\n    }\n  ],\n  \"instruments\": [\"钢琴\", \"贝斯\", \"鼓\", \"弦乐\", \"合成器\", \"人声\"],\n  \"mood_tags\": [\"浪漫\", \"深情\", \"怀旧\"],\n  \"mood_vad\": {\"valence\": 0.8, \"arousal\": 0.5, \"dominance\": 0.6},\n  \"caption\": \"这是一首由男声演唱的流行抒情歌曲，以钢琴和弦乐为主要伴奏，营造出浪漫深情的氛围。\",\n  \"confidence\": 0.92\n}",
+  "_usage": {
+    "input_tokens": 1734,
+    "input_tokens_details": {
+      "audio_tokens": 1346,
+      "text_tokens": 388
+    },
+    "output_tokens": 798,
+    "output_tokens_details": {
+      "text_tokens": 798
+    },
+    "total_tokens": 2532
+  },
+  "audio_id": "146D04DCF3BB4D56B68F9DD25C",
+  "truncated": false,
+  "source": "qwen_omni_golden"
+}
