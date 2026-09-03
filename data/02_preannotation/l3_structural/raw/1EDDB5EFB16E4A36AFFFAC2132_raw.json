@@ -1,0 +1,142 @@
+{
+  "genre": "Musical Theatre",
+  "subgenre": "Pop Broadway",
+  "vocal_presence": "vocal",
+  "tempo_bpm": 138,
+  "key": "Eb major",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 9.5,
+      "label": "Intro",
+      "instruments": [
+        "原声钢琴",
+        "爵士鼓",
+        "贝斯"
+      ],
+      "mood": "欢快",
+      "confidence": 0.92
+    },
+    {
+      "start": 9.5,
+      "end": 46.0,
+      "label": "Verse 1 & 2",
+      "instruments": [
+        "原声钢琴",
+        "贝斯",
+        "爵士鼓",
+        "铜管组",
+        "弦乐组"
+      ],
+      "mood": "叙事",
+      "confidence": 0.95
+    },
+    {
+      "start": 46.0,
+      "end": 75.5,
+      "label": "Chorus",
+      "instruments": [
+        "原声钢琴",
+        "贝斯",
+        "爵士鼓",
+        "铜管组",
+        "弦乐组",
+        "合唱团"
+      ],
+      "mood": "热情奔放",
+      "confidence": 0.96
+    },
+    {
+      "start": 75.5,
+      "end": 113.0,
+      "label": "Verse 3 & 4",
+      "instruments": [
+        "原声钢琴",
+        "贝斯",
+        "爵士鼓",
+        "铜管组",
+        "弦乐组"
+      ],
+      "mood": "坚定",
+      "confidence": 0.94
+    },
+    {
+      "start": 113.0,
+      "end": 142.5,
+      "label": "Chorus",
+      "instruments": [
+        "原声钢琴",
+        "贝斯",
+        "爵士鼓",
+        "铜管组",
+        "弦乐组",
+        "合唱团"
+      ],
+      "mood": "激昂",
+      "confidence": 0.97
+    },
+    {
+      "start": 142.5,
+      "end": 162.0,
+      "label": "Bridge",
+      "instruments": [
+        "原声钢琴",
+        "贝斯",
+        "爵士鼓",
+        "铜管组",
+        "弦乐组"
+      ],
+      "mood": "充满希望",
+      "confidence": 0.93
+    },
+    {
+      "start": 162.0,
+      "end": 200.0,
+      "label": "Outro",
+      "instruments": [
+        "原声钢琴",
+        "贝斯",
+        "爵士鼓",
+        "铜管组",
+        "弦乐组",
+        "合唱团"
+      ],
+      "mood": "辉煌",
+      "confidence": 0.98
+    }
+  ],
+  "instruments": [
+    "原声钢琴",
+    "贝斯",
+    "爵士鼓",
+    "铜管组",
+    "弦乐组",
+    "合唱团"
+  ],
+  "mood_tags": [
+    "乐观",
+    "励志",
+    "充满活力",
+    "戏剧性"
+  ],
+  "mood_vad": {
+    "valence": 0.9,
+    "arousal": 0.85,
+    "dominance": 0.7
+  },
+  "caption": "这是一首充满活力的百老汇音乐剧歌曲，以欢快的钢琴和宏大的管弦乐为特色，营造出一种乐观、励志且富有戏剧性的氛围。",
+  "confidence": 0.95,
+  "_raw_text": "{\n  \"genre\": \"Musical Theatre\",\n  \"subgenre\": \"Pop Broadway\",\n  \"vocal_presence\": \"vocal\",\n  \"tempo_bpm\": 138,\n  \"key\": \"Eb major\",\n  \"segments\": [\n    {\n      \"start\": 0.0,\n      \"end\": 9.5,\n      \"label\": \"Intro\",\n      \"instruments\": [\"原声钢琴\", \"爵士鼓\", \"贝斯\"],\n      \"mood\": \"欢快\",\n      \"confidence\": 0.92\n    },\n    {\n      \"start\": 9.5,\n      \"end\": 46.0,\n      \"label\": \"Verse 1 & 2\",\n      \"instruments\": [\"原声钢琴\", \"贝斯\", \"爵士鼓\", \"铜管组\", \"弦乐组\"],\n      \"mood\": \"叙事\",\n      \"confidence\": 0.95\n    },\n    {\n      \"start\": 46.0,\n      \"end\": 75.5,\n      \"label\": \"Chorus\",\n      \"instruments\": [\"原声钢琴\", \"贝斯\", \"爵士鼓\", \"铜管组\", \"弦乐组\", \"合唱团\"],\n      \"mood\": \"热情奔放\",\n      \"confidence\": 0.96\n    },\n    {\n      \"start\": 75.5,\n      \"end\": 113.0,\n      \"label\": \"Verse 3 & 4\",\n      \"instruments\": [\"原声钢琴\", \"贝斯\", \"爵士鼓\", \"铜管组\", \"弦乐组\"],\n      \"mood\": \"坚定\",\n      \"confidence\": 0.94\n    },\n    {\n      \"start\": 113.0,\n      \"end\": 142.5,\n      \"label\": \"Chorus\",\n      \"instruments\": [\"原声钢琴\", \"贝斯\", \"爵士鼓\", \"铜管组\", \"弦乐组\", \"合唱团\"],\n      \"mood\": \"激昂\",\n      \"confidence\": 0.97\n    },\n    {\n      \"start\": 142.5,\n      \"end\": 162.0,\n      \"label\": \"Bridge\",\n      \"instruments\": [\"原声钢琴\", \"贝斯\", \"爵士鼓\", \"铜管组\", \"弦乐组\"],\n      \"mood\": \"充满希望\",\n      \"confidence\": 0.93\n    },\n    {\n      \"start\": 162.0,\n      \"end\": 200.0,\n      \"label\": \"Outro\",\n      \"instruments\": [\"原声钢琴\", \"贝斯\", \"爵士鼓\", \"铜管组\", \"弦乐组\", \"合唱团\"],\n      \"mood\": \"辉煌\",\n      \"confidence\": 0.98\n    }\n  ],\n  \"instruments\": [\"原声钢琴\", \"贝斯\", \"爵士鼓\", \"铜管组\", \"弦乐组\", \"合唱团\"],\n  \"mood_tags\": [\"乐观\", \"励志\", \"充满活力\", \"戏剧性\"],\n  \"mood_vad\": {\"valence\": 0.9, \"arousal\": 0.85, \"dominance\": 0.7},\n  \"caption\": \"这是一首充满活力的百老汇音乐剧歌曲，以欢快的钢琴和宏大的管弦乐为特色，营造出一种乐观、励志且富有戏剧性的氛围。\",\n  \"confidence\": 0.95\n}",
+  "_usage": {
+    "input_tokens": 1860,
+    "input_tokens_details": {
+      "audio_tokens": 1472,
+      "text_tokens": 388
+    },
+    "output_tokens": 812,
+    "output_tokens_details": {
+      "text_tokens": 812
+    },
+    "total_tokens": 2672
+  }
+}

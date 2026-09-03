@@ -1,0 +1,87 @@
+{
+  "genre": "Trance",
+  "subgenre": "Progressive Trance",
+  "vocal_presence": "instrumental",
+  "tempo_bpm": 128,
+  "key": "A minor",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 35.0,
+      "label": "Intro",
+      "instruments": [
+        "Synthesizer",
+        "Piano"
+      ],
+      "mood": "Nostalgic",
+      "confidence": 0.9
+    },
+    {
+      "start": 35.0,
+      "end": 78.0,
+      "label": "Build-up",
+      "instruments": [
+        "Synthesizer",
+        "Drum Machine",
+        "Arpeggiator"
+      ],
+      "mood": "Anticipatory",
+      "confidence": 0.95
+    },
+    {
+      "start": 78.0,
+      "end": 145.0,
+      "label": "Main Theme",
+      "instruments": [
+        "Synthesizer",
+        "Drum Machine",
+        "Bass"
+      ],
+      "mood": "Energetic",
+      "confidence": 0.95
+    },
+    {
+      "start": 145.0,
+      "end": 180.0,
+      "label": "Breakdown",
+      "instruments": [
+        "Synthesizer",
+        "Piano"
+      ],
+      "mood": "Euphoric",
+      "confidence": 0.9
+    }
+  ],
+  "instruments": [
+    "Synthesizer",
+    "Drum Machine",
+    "Piano",
+    "Arpeggiator",
+    "Bass"
+  ],
+  "mood_tags": [
+    "energetic",
+    "euphoric",
+    "nostalgic"
+  ],
+  "mood_vad": {
+    "valence": 0.8,
+    "arousal": 0.9,
+    "dominance": 0.7
+  },
+  "caption": "这是一首充满怀旧氛围的渐进式出神舞曲，以合成器和钢琴为主奏乐器，情绪从忧郁逐渐转向热情奔放。",
+  "confidence": 0.9,
+  "_raw_text": "{\n  \"genre\": \"Trance\",\n  \"subgenre\": \"Progressive Trance\",\n  \"vocal_presence\": \"instrumental\",\n  \"tempo_bpm\": 128,\n  \"key\": \"A minor\",\n  \"segments\": [\n    {\n      \"start\": 0.0,\n      \"end\": 35.0,\n      \"label\": \"Intro\",\n      \"instruments\": [\"Synthesizer\", \"Piano\"],\n      \"mood\": \"Nostalgic\",\n      \"confidence\": 0.9\n    },\n    {\n      \"start\": 35.0,\n      \"end\": 78.0,\n      \"label\": \"Build-up\",\n      \"instruments\": [\"Synthesizer\", \"Drum Machine\", \"Arpeggiator\"],\n      \"mood\": \"Anticipatory\",\n      \"confidence\": 0.95\n    },\n    {\n      \"start\": 78.0,\n      \"end\": 145.0,\n      \"label\": \"Main Theme\",\n      \"instruments\": [\"Synthesizer\", \"Drum Machine\", \"Bass\"],\n      \"mood\": \"Energetic\",\n      \"confidence\": 0.95\n    },\n    {\n      \"start\": 145.0,\n      \"end\": 180.0,\n      \"label\": \"Breakdown\",\n      \"instruments\": [\"Synthesizer\", \"Piano\"],\n      \"mood\": \"Euphoric\",\n      \"confidence\": 0.9\n    }\n  ],\n  \"instruments\": [\"Synthesizer\", \"Drum Machine\", \"Piano\", \"Arpeggiator\", \"Bass\"],\n  \"mood_tags\": [\"energetic\", \"euphoric\", \"nostalgic\"],\n  \"mood_vad\": {\n    \"valence\": 0.8,\n    \"arousal\": 0.9,\n    \"dominance\": 0.7\n  },\n  \"caption\": \"这是一首充满怀旧氛围的渐进式出神舞曲，以合成器和钢琴为主奏乐器，情绪从忧郁逐渐转向热情奔放。\",\n  \"confidence\": 0.9\n}",
+  "_usage": {
+    "input_tokens": 1650,
+    "input_tokens_details": {
+      "audio_tokens": 1262,
+      "text_tokens": 388
+    },
+    "output_tokens": 512,
+    "output_tokens_details": {
+      "text_tokens": 512
+    },
+    "total_tokens": 2162
+  }
+}

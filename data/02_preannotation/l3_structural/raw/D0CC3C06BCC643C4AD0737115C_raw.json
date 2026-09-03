@@ -1,0 +1,97 @@
+{
+  "genre": "Jazz",
+  "subgenre": "Fusion",
+  "vocal_presence": "instrumental",
+  "tempo_bpm": 128,
+  "key": "B minor",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 53.0,
+      "label": "前奏",
+      "instruments": [
+        "原声钢琴"
+      ],
+      "mood": "忧郁沉思",
+      "confidence": 0.95
+    },
+    {
+      "start": 53.0,
+      "end": 70.0,
+      "label": "过门",
+      "instruments": [
+        "爵士鼓",
+        "贝斯"
+      ],
+      "mood": "紧张期待",
+      "confidence": 0.9
+    },
+    {
+      "start": 70.0,
+      "end": 148.0,
+      "label": "主部",
+      "instruments": [
+        "原声钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "热情奔放",
+      "confidence": 0.92
+    },
+    {
+      "start": 148.0,
+      "end": 166.0,
+      "label": "独奏",
+      "instruments": [
+        "原声钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "激昂炫技",
+      "confidence": 0.88
+    },
+    {
+      "start": 166.0,
+      "end": 181.0,
+      "label": "尾奏",
+      "instruments": [
+        "原声钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "平静收束",
+      "confidence": 0.9
+    }
+  ],
+  "instruments": [
+    "原声钢琴",
+    "贝斯",
+    "爵士鼓"
+  ],
+  "mood_tags": [
+    "忧郁",
+    "激情",
+    "复杂",
+    "技术流"
+  ],
+  "mood_vad": {
+    "valence": 0.4,
+    "arousal": 0.8,
+    "dominance": 0.7
+  },
+  "caption": "这是一首器乐融合爵士，以忧郁的钢琴前奏开场，随后进入充满活力的即兴演奏部分。",
+  "confidence": 0.85,
+  "_raw_text": "{\n  \"genre\": \"Jazz\",\n  \"subgenre\": \"Fusion\",\n  \"vocal_presence\": \"instrumental\",\n  \"tempo_bpm\": 128,\n  \"key\": \"B minor\",\n  \"segments\": [\n    {\n      \"start\": 0.0,\n      \"end\": 53.0,\n      \"label\": \"前奏\",\n      \"instruments\": [\"原声钢琴\"],\n      \"mood\": \"忧郁沉思\",\n      \"confidence\": 0.95\n    },\n    {\n      \"start\": 53.0,\n      \"end\": 70.0,\n      \"label\": \"过门\",\n      \"instruments\": [\"爵士鼓\", \"贝斯\"],\n      \"mood\": \"紧张期待\",\n      \"confidence\": 0.9\n    },\n    {\n      \"start\": 70.0,\n      \"end\": 148.0,\n      \"label\": \"主部\",\n      \"instruments\": [\"原声钢琴\", \"贝斯\", \"爵士鼓\"],\n      \"mood\": \"热情奔放\",\n      \"confidence\": 0.92\n    },\n    {\n      \"start\": 148.0,\n      \"end\": 166.0,\n      \"label\": \"独奏\",\n      \"instruments\": [\"原声钢琴\", \"贝斯\", \"爵士鼓\"],\n      \"mood\": \"激昂炫技\",\n      \"confidence\": 0.88\n    },\n    {\n      \"start\": 166.0,\n      \"end\": 181.0,\n      \"label\": \"尾奏\",\n      \"instruments\": [\"原声钢琴\", \"贝斯\", \"爵士鼓\"],\n      \"mood\": \"平静收束\",\n      \"confidence\": 0.9\n    }\n  ],\n  \"instruments\": [\"原声钢琴\", \"贝斯\", \"爵士鼓\"],\n  \"mood_tags\": [\"忧郁\", \"激情\", \"复杂\", \"技术流\"],\n  \"mood_vad\": {\"valence\": 0.4, \"arousal\": 0.8, \"dominance\": 0.7},\n  \"caption\": \"这是一首器乐融合爵士，以忧郁的钢琴前奏开场，随后进入充满活力的即兴演奏部分。\",\n  \"confidence\": 0.85\n}",
+  "_usage": {
+    "input_tokens": 1650,
+    "input_tokens_details": {
+      "audio_tokens": 1262,
+      "text_tokens": 388
+    },
+    "output_tokens": 551,
+    "output_tokens_details": {
+      "text_tokens": 551
+    },
+    "total_tokens": 2201
+  }
+}

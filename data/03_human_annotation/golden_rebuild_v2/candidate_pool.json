@@ -1,0 +1,252 @@
+{
+  "version": "v2",
+  "method": "by_artist",
+  "total": 35,
+  "candidates": [
+    {
+      "audio_id": "3E6F4E0EC2024CCD9FE718F847",
+      "artist": "AGA",
+      "duration_sec": 293.0,
+      "filename": "cantonese_playlist_08_AGA-孤雏.flac",
+      "songs_by_artist": 1
+    },
+    {
+      "audio_id": "BEF3CF9662D841528BDB33BFAF",
+      "artist": "AKB48",
+      "duration_sec": 263.04,
+      "filename": "AKB48 - ヘビーローテーション.flac",
+      "songs_by_artist": 1
+    },
+    {
+      "audio_id": "3D71C975F9D24E4CB5B77D85FA",
+      "artist": "Antonio Carlos Jobim",
+      "duration_sec": 132.88,
+      "filename": "jobim_wave_04_Antonio Carlos Jobim-Triste.flac",
+      "songs_by_artist": 4
+    },
+    {
+      "audio_id": "E6A98A1C67AC4D9FA1E7437524",
+      "artist": "Bobby Caldwell",
+      "duration_sec": 283.99,
+      "filename": "rb_playlist_09_Bobby Caldwell-What You Won't Do For Love.flac",
+      "songs_by_artist": 1
+    },
+    {
+      "audio_id": "4AD0681C6347477D8B1E849422",
+      "artist": "Bruno Mars & Anderson .Paak & Silk Sonic",
+      "duration_sec": 241.0,
+      "filename": "rb_playlist_02_Bruno Mars & Anderson .Paak & Silk Sonic-Leave The Door Open.flac",
+      "songs_by_artist": 1
+    },
+    {
+      "audio_id": "B7C8FC27F3C349B0B39EB7D55A",
+      "artist": "Deep Choice",
+      "duration_sec": 362.09,
+      "filename": "【意大利电子⧸梦幻浩室⧸非洲宇宙场景】Welcome To Paradise Vol. III： Italian Dream House 90-94 p05 B2 Deep Choice - Children Trip [BV1Sh4y1z7Yv_p5]_p05.flac",
+      "songs_by_artist": 1
+    },
+    {
+      "audio_id": "DC92B30BB51D42488F02AA203F",
+      "artist": "Don Carlos",
+      "duration_sec": 413.11,
+      "filename": "【意大利电子⧸梦幻浩室⧸非洲宇宙场景】Welcome To Paradise Vol. III： Italian Dream House 90-94 p11 D3 Don Carlos - Ouverture [BV1Sh4y1z7Yv_p11]_p11.flac",
+      "songs_by_artist": 1
+    },
+    {
+      "audio_id": "3C6219AB60A24F5B8F101AF353",
+      "artist": "G.E.M邓紫棋",
+      "duration_sec": 244.64,
+      "filename": "cantonese_playlist_10_G.E.M邓紫棋-喜欢你.flac",
+      "songs_by_artist": 1
+    },
+    {
+      "audio_id": "8E0D1A1B284746B3A1FCE15B41",
+      "artist": "Golem",
+      "duration_sec": 352.15,
+      "filename": "【意大利电子⧸梦幻浩室⧸非洲宇宙场景】Welcome To Paradise Vol. III： Italian Dream House 90-94 p08 C2 Golem - Sun City [BV1Sh4y1z7Yv_p8]_p08.flac",
+      "songs_by_artist": 1
+    },
+    {
+      "audio_id": "3DD429C6458C404A9891416635",
+      "artist": "Green Baize",
+      "duration_sec": 329.96,
+      "filename": "【意大利电子⧸梦幻浩室⧸非洲宇宙场景】Welcome To Paradise Vol. III： Italian Dream House 90-94 p04 B1 Green Baize - Tramp Heart [BV1Sh4y1z7Yv_p4]_p04.flac",
+      "songs_by_artist": 1
+    },
+    {
+      "audio_id": "78250AD45D2842A3AA18C9071D",
+      "artist": "Hiromi",
+      "duration_sec": 444.0,
+      "filename": "hiromi_alive_02_Hiromi-Seeker.flac",
+      "songs_by_artist": 3
+    },
+    {
+      "audio_id": "2996876392774F67887DA90C3E",
+      "artist": "How to count one to ten",
+      "duration_sec": 280.0,
+      "filename": "1st_ep_02_How to count one to ten-at the same time.flac",
+      "songs_by_artist": 3
+    },
+    {
+      "audio_id": "870491B93FD04F979A12BC7811",
+      "artist": "Jacy",
+      "duration_sec": 285.14,
+      "filename": "【意大利电子⧸梦幻浩室⧸非洲宇宙场景】Welcome To Paradise Vol. III： Italian Dream House 90-94 p01 A1 Jacy - Resounding Seashell [BV1Sh4y1z7Yv_p1]_p01.flac",
+      "songs_by_artist": 1
+    },
+    {
+      "audio_id": "9B845A8E8A744BCAA50705D73D",
+      "artist": "Jake Miller & Jabbar Hakeem",
+      "duration_sec": 185.0,
+      "filename": "rb_playlist_06_Jake Miller & Jabbar Hakeem-The Girl That's Underneath.flac",
+      "songs_by_artist": 1
+    },
+    {
+      "audio_id": "F7E5F56ECCCC479589A26A2A10",
+      "artist": "Kiana Ledé",
+      "duration_sec": 220.0,
+      "filename": "rb_playlist_08_Kiana Ledé-EX.flac",
+      "songs_by_artist": 1
+    },
+    {
+      "audio_id": "E1C4475B60AC4179852278CC60",
+      "artist": "Kira Linn & Linntett",
+      "duration_sec": 305.0,
+      "filename": "kira_linn_illusion_01_Kira Linn _ Linntett-Rage.flac",
+      "songs_by_artist": 3
+    },
+    {
+      "audio_id": "1EDDB5EFB16E4A36AFFFAC2132",
+      "artist": "La La Land",
+      "duration_sec": 210.33,
+      "filename": "La La Land - Another Day of Sun.flac",
+      "songs_by_artist": 2
+    },
+    {
+      "audio_id": "9C454BAFCD9A4DF7BC15CC9031",
+      "artist": "Lauv",
+      "duration_sec": 202.0,
+      "filename": "rb_playlist_05_Lauv-Paris in the Rain.flac",
+      "songs_by_artist": 1
+    },
+    {
+      "audio_id": "F905340525194A1A9D838DB885",
+      "artist": "Leo Anibaldi",
+      "duration_sec": 332.28,
+      "filename": "【意大利电子⧸梦幻浩室⧸非洲宇宙场景】Welcome To Paradise Vol. III： Italian Dream House 90-94 p03 A3 Leo Anibaldi - Universal [BV1Sh4y1z7Yv_p3]_p03.flac",
+      "songs_by_artist": 1
+    },
+    {
+      "audio_id": "448A140A77354AAC9458496B10",
+      "artist": "Mariah Carey",
+      "duration_sec": 201.0,
+      "filename": "rb_playlist_07_Mariah Carey-We Belong Together.flac",
+      "songs_by_artist": 1
+    },
+    {
+      "audio_id": "A1AD6E948D2149EC940866F9D3",
+      "artist": "Nelly & Kelly Rowland",
+      "duration_sec": 289.0,
+      "filename": "rb_playlist_03_Nelly & Kelly Rowland-Dilemma.flac",
+      "songs_by_artist": 1
+    },
+    {
+      "audio_id": "7AB4F0B765984F5AAADDDA584A",
+      "artist": "Optik",
+      "duration_sec": 372.47,
+      "filename": "【意大利电子⧸梦幻浩室⧸非洲宇宙场景】Welcome To Paradise Vol. III： Italian Dream House 90-94 p02 A2 Optik - Illusion [BV1Sh4y1z7Yv_p2]_p02.flac",
+      "songs_by_artist": 1
+    },
+    {
+      "audio_id": "3CC7E3DF77334AE0B1B2BC3795",
+      "artist": "SZA",
+      "duration_sec": 200.0,
+      "filename": "rb_playlist_04_SZA-Snooze.flac",
+      "songs_by_artist": 1
+    },
+    {
+      "audio_id": "594E0C4719E34D6A98B438C503",
+      "artist": "Twins",
+      "duration_sec": 208.0,
+      "filename": "cantonese_playlist_06_Twins-下一站天后.flac",
+      "songs_by_artist": 1
+    },
+    {
+      "audio_id": "87A69E31F3DC48429BEB755F06",
+      "artist": "Whitney Houston",
+      "duration_sec": 249.0,
+      "filename": "rb_playlist_01_Whitney Houston-Call You Tonight.flac",
+      "songs_by_artist": 1
+    },
+    {
+      "audio_id": "CDF8316BBDD2488A877E675E8F",
+      "artist": "五月天",
+      "duration_sec": 261.25,
+      "filename": "五月天 - 因为你 所以我.flac",
+      "songs_by_artist": 1
+    },
+    {
+      "audio_id": "7968BA9684454DD4B1B179643E",
+      "artist": "古巨基",
+      "duration_sec": 224.0,
+      "filename": "cantonese_playlist_09_古巨基-爱与诚.flac",
+      "songs_by_artist": 2
+    },
+    {
+      "audio_id": "6835D62222154FA6B0509AA881",
+      "artist": "大贯妙子",
+      "duration_sec": 200.85,
+      "filename": "大贯妙子 - 若き日の望楼.flac",
+      "songs_by_artist": 1
+    },
+    {
+      "audio_id": "146D04DCF3BB4D56B68F9DD25C",
+      "artist": "安德烈波切利",
+      "duration_sec": 213.0,
+      "filename": "安德烈波切利 - Love Me Tender.flac",
+      "songs_by_artist": 1
+    },
+    {
+      "audio_id": "2446DC352B064D65AD61142249",
+      "artist": "容祖儿",
+      "duration_sec": 249.0,
+      "filename": "cantonese_playlist_04_容祖儿-心淡.flac",
+      "songs_by_artist": 1
+    },
+    {
+      "audio_id": "6878BDAC7CD149C6A0AFA5ADD5",
+      "artist": "梁汉文",
+      "duration_sec": 259.0,
+      "filename": "cantonese_playlist_03_梁汉文-七友.flac",
+      "songs_by_artist": 1
+    },
+    {
+      "audio_id": "8384A4DBF2B24CF98148BC9190",
+      "artist": "椎名林檎",
+      "duration_sec": 217.96,
+      "filename": "椎名林檎 - The Creamy Season.flac",
+      "songs_by_artist": 1
+    },
+    {
+      "audio_id": "1C8E3363E3FF4BFBA5189ABCB7",
+      "artist": "谢安琪",
+      "duration_sec": 211.0,
+      "filename": "cantonese_playlist_02_谢安琪-喜帖街.flac",
+      "songs_by_artist": 1
+    },
+    {
+      "audio_id": "09E39F2B2CB84CEDAF02365CB2",
+      "artist": "陈奕迅",
+      "duration_sec": 259.0,
+      "filename": "cantonese_playlist_07_陈奕迅-富士山下.flac",
+      "songs_by_artist": 1
+    },
+    {
+      "audio_id": "0CF65600F4474C71B19A9926EC",
+      "artist": "陈小春",
+      "duration_sec": 235.0,
+      "filename": "cantonese_playlist_05_陈小春-相依为命.flac",
+      "songs_by_artist": 1
+    }
+  ]
+}

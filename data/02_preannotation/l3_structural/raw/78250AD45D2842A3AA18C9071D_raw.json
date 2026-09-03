@@ -1,0 +1,73 @@
+{
+  "genre": "Jazz",
+  "subgenre": "Swing / Piano Trio",
+  "vocal_presence": "instrumental",
+  "tempo_bpm": 145,
+  "key": "C major",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 58.2,
+      "label": "前奏",
+      "instruments": [
+        "钢琴"
+      ],
+      "mood": "轻松俏皮",
+      "confidence": 0.95
+    },
+    {
+      "start": 58.2,
+      "end": 133.5,
+      "label": "主歌/主题段",
+      "instruments": [
+        "钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "热情奔放",
+      "confidence": 0.92
+    },
+    {
+      "start": 133.5,
+      "end": 179.8,
+      "label": "即兴独奏",
+      "instruments": [
+        "钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "活力四射",
+      "confidence": 0.9
+    }
+  ],
+  "instruments": [
+    "钢琴",
+    "贝斯",
+    "爵士鼓"
+  ],
+  "mood_tags": [
+    "欢快",
+    "活泼",
+    "优雅"
+  ],
+  "mood_vad": {
+    "valence": 0.8,
+    "arousal": 0.7,
+    "dominance": 0.6
+  },
+  "caption": "这是一首轻快活泼的爵士钢琴三重奏，以俏皮的旋律和充满活力的即兴演奏营造出愉悦的氛围。",
+  "confidence": 0.9,
+  "_raw_text": "{\n  \"genre\": \"Jazz\",\n  \"subgenre\": \"Swing / Piano Trio\",\n  \"vocal_presence\": \"instrumental\",\n  \"tempo_bpm\": 145,\n  \"key\": \"C major\",\n  \"segments\": [\n    {\n      \"start\": 0.0,\n      \"end\": 58.2,\n      \"label\": \"前奏\",\n      \"instruments\": [\"钢琴\"],\n      \"mood\": \"轻松俏皮\",\n      \"confidence\": 0.95\n    },\n    {\n      \"start\": 58.2,\n      \"end\": 133.5,\n      \"label\": \"主歌/主题段\",\n      \"instruments\": [\"钢琴\", \"贝斯\", \"爵士鼓\"],\n      \"mood\": \"热情奔放\",\n      \"confidence\": 0.92\n    },\n    {\n      \"start\": 133.5,\n      \"end\": 179.8,\n      \"label\": \"即兴独奏\",\n      \"instruments\": [\"钢琴\", \"贝斯\", \"爵士鼓\"],\n      \"mood\": \"活力四射\",\n      \"confidence\": 0.90\n    }\n  ],\n  \"instruments\": [\"钢琴\", \"贝斯\", \"爵士鼓\"],\n  \"mood_tags\": [\"欢快\", \"活泼\", \"优雅\"],\n  \"mood_vad\": {\"valence\": 0.8, \"arousal\": 0.7, \"dominance\": 0.6},\n  \"caption\": \"这是一首轻快活泼的爵士钢琴三重奏，以俏皮的旋律和充满活力的即兴演奏营造出愉悦的氛围。\",\n  \"confidence\": 0.9\n}",
+  "_usage": {
+    "input_tokens": 1650,
+    "input_tokens_details": {
+      "audio_tokens": 1262,
+      "text_tokens": 388
+    },
+    "output_tokens": 397,
+    "output_tokens_details": {
+      "text_tokens": 397
+    },
+    "total_tokens": 2047
+  }
+}

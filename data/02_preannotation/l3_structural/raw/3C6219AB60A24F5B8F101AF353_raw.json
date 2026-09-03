@@ -1,0 +1,174 @@
+{
+  "genre": "Cantopop",
+  "subgenre": "Power Ballad",
+  "vocal_presence": "vocal",
+  "tempo_bpm": 78,
+  "key": "F major",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 12.5,
+      "label": "前奏",
+      "instruments": [
+        "原声钢琴"
+      ],
+      "mood": "宁静舒缓",
+      "confidence": 0.95
+    },
+    {
+      "start": 12.5,
+      "end": 36.4,
+      "label": "主歌",
+      "instruments": [
+        "原声钢琴",
+        "女声"
+      ],
+      "mood": "忧郁沉思",
+      "confidence": 0.92
+    },
+    {
+      "start": 36.4,
+      "end": 56.4,
+      "label": "预副歌",
+      "instruments": [
+        "原声钢琴",
+        "贝斯",
+        "鼓",
+        "女声"
+      ],
+      "mood": "情感递进",
+      "confidence": 0.9
+    },
+    {
+      "start": 56.4,
+      "end": 86.4,
+      "label": "副歌",
+      "instruments": [
+        "电吉他",
+        "贝斯",
+        "爵士鼓",
+        "弦乐组",
+        "女声"
+      ],
+      "mood": "热情奔放",
+      "confidence": 0.95
+    },
+    {
+      "start": 86.4,
+      "end": 106.4,
+      "label": "桥段",
+      "instruments": [
+        "电吉他",
+        "贝斯",
+        "爵士鼓",
+        "弦乐组",
+        "女声"
+      ],
+      "mood": "激昂坚定",
+      "confidence": 0.88
+    },
+    {
+      "start": 106.4,
+      "end": 126.4,
+      "label": "副歌",
+      "instruments": [
+        "电吉他",
+        "贝斯",
+        "爵士鼓",
+        "弦乐组",
+        "女声"
+      ],
+      "mood": "热情奔放",
+      "confidence": 0.95
+    },
+    {
+      "start": 126.4,
+      "end": 153.6,
+      "label": "器乐间奏",
+      "instruments": [
+        "电吉他",
+        "贝斯",
+        "爵士鼓",
+        "弦乐组"
+      ],
+      "mood": "激昂有力",
+      "confidence": 0.9
+    },
+    {
+      "start": 153.6,
+      "end": 174.4,
+      "label": "桥段",
+      "instruments": [
+        "电吉他",
+        "贝斯",
+        "爵士鼓",
+        "弦乐组",
+        "女声"
+      ],
+      "mood": "情感爆发",
+      "confidence": 0.92
+    },
+    {
+      "start": 174.4,
+      "end": 200.8,
+      "label": "副歌",
+      "instruments": [
+        "电吉他",
+        "贝斯",
+        "爵士鼓",
+        "弦乐组",
+        "女声"
+      ],
+      "mood": "热情奔放",
+      "confidence": 0.96
+    },
+    {
+      "start": 200.8,
+      "end": 238.0,
+      "label": "尾声",
+      "instruments": [
+        "电吉他",
+        "贝斯",
+        "爵士鼓",
+        "弦乐组",
+        "女声"
+      ],
+      "mood": "激情渐弱",
+      "confidence": 0.85
+    }
+  ],
+  "instruments": [
+    "原声钢琴",
+    "电吉他",
+    "贝斯",
+    "爵士鼓",
+    "弦乐组",
+    "女声"
+  ],
+  "mood_tags": [
+    "忧郁",
+    "深情",
+    "激昂",
+    "怀旧"
+  ],
+  "mood_vad": {
+    "valence": 0.6,
+    "arousal": 0.8,
+    "dominance": 0.7
+  },
+  "caption": "这是一首充满情感的粤语流行抒情摇滚，以钢琴和弦乐开场，逐渐加入电吉他和强劲的鼓点，营造出从忧郁到激昂的宏大氛围。",
+  "confidence": 0.9,
+  "_raw_text": "{\n  \"genre\": \"Cantopop\",\n  \"subgenre\": \"Power Ballad\",\n  \"vocal_presence\": \"vocal\",\n  \"tempo_bpm\": 78,\n  \"key\": \"F major\",\n  \"segments\": [\n    {\n      \"start\": 0.0,\n      \"end\": 12.5,\n      \"label\": \"前奏\",\n      \"instruments\": [\"原声钢琴\"],\n      \"mood\": \"宁静舒缓\",\n      \"confidence\": 0.95\n    },\n    {\n      \"start\": 12.5,\n      \"end\": 36.4,\n      \"label\": \"主歌\",\n      \"instruments\": [\"原声钢琴\", \"女声\"],\n      \"mood\": \"忧郁沉思\",\n      \"confidence\": 0.92\n    },\n    {\n      \"start\": 36.4,\n      \"end\": 56.4,\n      \"label\": \"预副歌\",\n      \"instruments\": [\"原声钢琴\", \"贝斯\", \"鼓\", \"女声\"],\n      \"mood\": \"情感递进\",\n      \"confidence\": 0.9\n    },\n    {\n      \"start\": 56.4,\n      \"end\": 86.4,\n      \"label\": \"副歌\",\n      \"instruments\": [\"电吉他\", \"贝斯\", \"爵士鼓\", \"弦乐组\", \"女声\"],\n      \"mood\": \"热情奔放\",\n      \"confidence\": 0.95\n    },\n    {\n      \"start\": 86.4,\n      \"end\": 106.4,\n      \"label\": \"桥段\",\n      \"instruments\": [\"电吉他\", \"贝斯\", \"爵士鼓\", \"弦乐组\", \"女声\"],\n      \"mood\": \"激昂坚定\",\n      \"confidence\": 0.88\n    },\n    {\n      \"start\": 106.4,\n      \"end\": 126.4,\n      \"label\": \"副歌\",\n      \"instruments\": [\"电吉他\", \"贝斯\", \"爵士鼓\", \"弦乐组\", \"女声\"],\n      \"mood\": \"热情奔放\",\n      \"confidence\": 0.95\n    },\n    {\n      \"start\": 126.4,\n      \"end\": 153.6,\n      \"label\": \"器乐间奏\",\n      \"instruments\": [\"电吉他\", \"贝斯\", \"爵士鼓\", \"弦乐组\"],\n      \"mood\": \"激昂有力\",\n      \"confidence\": 0.9\n    },\n    {\n      \"start\": 153.6,\n      \"end\": 174.4,\n      \"label\": \"桥段\",\n      \"instruments\": [\"电吉他\", \"贝斯\", \"爵士鼓\", \"弦乐组\", \"女声\"],\n      \"mood\": \"情感爆发\",\n      \"confidence\": 0.92\n    },\n    {\n      \"start\": 174.4,\n      \"end\": 200.8,\n      \"label\": \"副歌\",\n      \"instruments\": [\"电吉他\", \"贝斯\", \"爵士鼓\", \"弦乐组\", \"女声\"],\n      \"mood\": \"热情奔放\",\n      \"confidence\": 0.96\n    },\n    {\n      \"start\": 200.8,\n      \"end\": 238.0,\n      \"label\": \"尾声\",\n      \"instruments\": [\"电吉他\", \"贝斯\", \"爵士鼓\", \"弦乐组\", \"女声\"],\n      \"mood\": \"激情渐弱\",\n      \"confidence\": 0.85\n    }\n  ],\n  \"instruments\": [\"原声钢琴\", \"电吉他\", \"贝斯\", \"爵士鼓\", \"弦乐组\", \"女声\"],\n  \"mood_tags\": [\"忧郁\", \"深情\", \"激昂\", \"怀旧\"],\n  \"mood_vad\": {\"valence\": 0.6, \"arousal\": 0.8, \"dominance\": 0.7},\n  \"caption\": \"这是一首充满情感的粤语流行抒情摇滚，以钢琴和弦乐开场，逐渐加入电吉他和强劲的鼓点，营造出从忧郁到激昂的宏大氛围。\",\n  \"confidence\": 0.9\n}",
+  "_usage": {
+    "input_tokens": 2098,
+    "input_tokens_details": {
+      "audio_tokens": 1710,
+      "text_tokens": 388
+    },
+    "output_tokens": 1019,
+    "output_tokens_details": {
+      "text_tokens": 1019
+    },
+    "total_tokens": 3117
+  }
+}

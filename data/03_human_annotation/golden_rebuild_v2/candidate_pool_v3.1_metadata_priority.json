@@ -1,0 +1,164 @@
+{
+  "version": "v3.1",
+  "method": "kmeans_5cluster_stratified_sampling (metadata_priority)",
+  "silhouette_score": 0.049247656017541885,
+  "cluster_quality": {
+    "0": {
+      "size": 4,
+      "avg_silhouette": 0.17072774469852448
+    },
+    "1": {
+      "size": 33,
+      "avg_silhouette": 0.05392485857009888
+    },
+    "2": {
+      "size": 19,
+      "avg_silhouette": 0.044911690056324005
+    },
+    "3": {
+      "size": 15,
+      "avg_silhouette": 0.051142752170562744
+    },
+    "4": {
+      "size": 13,
+      "avg_silhouette": 0.0041467961855232716
+    }
+  },
+  "candidates": [
+    {
+      "audio_id": "09E39F2B2CB84CEDAF02365CB2",
+      "cluster": 0,
+      "dist": 0.506905734539032,
+      "artist_id": "artist:陈奕迅",
+      "original_filename": "cantonese_playlist_07_陈奕迅-富士山下.flac",
+      "has_metadata": true,
+      "is_representative": true
+    },
+    {
+      "audio_id": "146D04DCF3BB4D56B68F9DD25C",
+      "cluster": 0,
+      "dist": 0.5805876851081848,
+      "artist_id": "artist:安德烈波切利",
+      "original_filename": "安德烈波切利 - Love Me Tender.flac",
+      "has_metadata": true,
+      "is_representative": false
+    },
+    {
+      "audio_id": "E6A98A1C67AC4D9FA1E7437524",
+      "cluster": 0,
+      "dist": 0.5963979363441467,
+      "artist_id": "artist:Bobby Caldwell",
+      "original_filename": "rb_playlist_09_Bobby Caldwell-What You Won't Do For Love.flac",
+      "has_metadata": true,
+      "is_representative": false
+    },
+    {
+      "audio_id": "1EDDB5EFB16E4A36AFFFAC2132",
+      "cluster": 1,
+      "dist": 0.5490738153457642,
+      "artist_id": "artist:La La Land",
+      "original_filename": "La La Land - Another Day of Sun.flac",
+      "has_metadata": true,
+      "is_representative": true
+    },
+    {
+      "audio_id": "2446DC352B064D65AD61142249",
+      "cluster": 1,
+      "dist": 0.5644457340240479,
+      "artist_id": "artist:容祖儿",
+      "original_filename": "cantonese_playlist_04_容祖儿-心淡.flac",
+      "has_metadata": true,
+      "is_representative": false
+    },
+    {
+      "audio_id": "95D0CB9A84B54582AD17E79393",
+      "cluster": 1,
+      "dist": 0.581384539604187,
+      "artist_id": "artist:Kira Linn & Linntett",
+      "original_filename": "kira_linn_illusion_02_Kira Linn _ Linntett-Illusion.flac",
+      "has_metadata": true,
+      "is_representative": false
+    },
+    {
+      "audio_id": "3C6219AB60A24F5B8F101AF353",
+      "cluster": 2,
+      "dist": 0.6464316248893738,
+      "artist_id": "artist:G.E.M邓紫棋",
+      "original_filename": "cantonese_playlist_10_G.E.M邓紫棋-喜欢你.flac",
+      "has_metadata": true,
+      "is_representative": true
+    },
+    {
+      "audio_id": "DC92B30BB51D42488F02AA203F",
+      "cluster": 2,
+      "dist": 0.6925292611122131,
+      "artist_id": "artist:Don Carlos",
+      "original_filename": "【意大利电子⧸梦幻浩室⧸非洲宇宙场景】Welcome To Paradise Vol. III： Italian Dream House 90-94 p11 D3 Don Carlos - Ouverture [BV1Sh4y1z7Yv_p11]_p11.flac",
+      "has_metadata": true,
+      "is_representative": false
+    },
+    {
+      "audio_id": "1C8E3363E3FF4BFBA5189ABCB7",
+      "cluster": 2,
+      "dist": 0.6999937295913696,
+      "artist_id": "artist:谢安琪",
+      "original_filename": "cantonese_playlist_02_谢安琪-喜帖街.flac",
+      "has_metadata": true,
+      "is_representative": false
+    },
+    {
+      "audio_id": "F7E5F56ECCCC479589A26A2A10",
+      "cluster": 3,
+      "dist": 0.5791057348251343,
+      "artist_id": "artist:Kiana Ledé",
+      "original_filename": "rb_playlist_08_Kiana Ledé-EX.flac",
+      "has_metadata": true,
+      "is_representative": true
+    },
+    {
+      "audio_id": "7968BA9684454DD4B1B179643E",
+      "cluster": 3,
+      "dist": 0.6072903871536255,
+      "artist_id": "artist:古巨基",
+      "original_filename": "cantonese_playlist_09_古巨基-爱与诚.flac",
+      "has_metadata": true,
+      "is_representative": false
+    },
+    {
+      "audio_id": "1C69AC77BB3042A4A237DF5966",
+      "cluster": 3,
+      "dist": 0.6144845485687256,
+      "artist_id": "artist:Kira Linn & Linntett",
+      "original_filename": "kira_linn_illusion_03_Kira Linn _ Linntett-Women to Sky.flac",
+      "has_metadata": true,
+      "is_representative": false
+    },
+    {
+      "audio_id": "D2098BC896D6450A8E3744528E",
+      "cluster": 4,
+      "dist": 0.5779646039009094,
+      "artist_id": "artist:Antonio Carlos Jobim",
+      "original_filename": "jobim_wave_03_Antonio Carlos Jobim-Look To The Sky.flac",
+      "has_metadata": true,
+      "is_representative": true
+    },
+    {
+      "audio_id": "3E6F4E0EC2024CCD9FE718F847",
+      "cluster": 4,
+      "dist": 0.6200177669525146,
+      "artist_id": "artist:AGA",
+      "original_filename": "cantonese_playlist_08_AGA-孤雏.flac",
+      "has_metadata": true,
+      "is_representative": false
+    },
+    {
+      "audio_id": "C2AEFEEB56B0454F9AE069B899",
+      "cluster": 4,
+      "dist": 0.622992753982544,
+      "artist_id": "artist:古巨基",
+      "original_filename": "cantonese_playlist_01_古巨基-必杀技.flac",
+      "has_metadata": true,
+      "is_representative": false
+    }
+  ]
+}

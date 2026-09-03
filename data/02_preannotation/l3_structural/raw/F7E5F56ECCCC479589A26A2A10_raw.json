@@ -1,0 +1,149 @@
+{
+  "genre": "Pop",
+  "subgenre": "R&B / Pop Ballad",
+  "vocal_presence": "vocal",
+  "tempo_bpm": 74,
+  "key": "C major",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 16.5,
+      "label": "Intro",
+      "instruments": [
+        "原声钢琴",
+        "人声"
+      ],
+      "mood": "忧郁沉思",
+      "confidence": 0.95
+    },
+    {
+      "start": 16.5,
+      "end": 32.5,
+      "label": "Pre-Chorus",
+      "instruments": [
+        "原声钢琴",
+        "贝斯",
+        "鼓"
+      ],
+      "mood": "渴望",
+      "confidence": 0.9
+    },
+    {
+      "start": 32.5,
+      "end": 61.0,
+      "label": "Chorus",
+      "instruments": [
+        "原声钢琴",
+        "贝斯",
+        "爵士鼓",
+        "合成器"
+      ],
+      "mood": "伤感",
+      "confidence": 0.95
+    },
+    {
+      "start": 61.0,
+      "end": 74.5,
+      "label": "Post-Chorus",
+      "instruments": [
+        "人声",
+        "合成器"
+      ],
+      "mood": "伤感",
+      "confidence": 0.85
+    },
+    {
+      "start": 74.5,
+      "end": 100.5,
+      "label": "Verse 2",
+      "instruments": [
+        "原声钢琴",
+        "贝斯",
+        "鼓"
+      ],
+      "mood": "忧郁沉思",
+      "confidence": 0.9
+    },
+    {
+      "start": 100.5,
+      "end": 129.0,
+      "label": "Chorus",
+      "instruments": [
+        "原声钢琴",
+        "贝斯",
+        "爵士鼓",
+        "合成器"
+      ],
+      "mood": "伤感",
+      "confidence": 0.95
+    },
+    {
+      "start": 129.0,
+      "end": 142.5,
+      "label": "Post-Chorus",
+      "instruments": [
+        "人声",
+        "合成器"
+      ],
+      "mood": "伤感",
+      "confidence": 0.85
+    },
+    {
+      "start": 142.5,
+      "end": 165.5,
+      "label": "Bridge",
+      "instruments": [
+        "原声钢琴",
+        "贝斯",
+        "鼓"
+      ],
+      "mood": "恳切",
+      "confidence": 0.9
+    },
+    {
+      "start": 165.5,
+      "end": 194.0,
+      "label": "Final Chorus & Outro",
+      "instruments": [
+        "原声钢琴",
+        "贝斯",
+        "爵士鼓",
+        "合成器"
+      ],
+      "mood": "伤感",
+      "confidence": 0.95
+    }
+  ],
+  "instruments": [
+    "原声钢琴",
+    "贝斯",
+    "爵士鼓",
+    "合成器",
+    "人声"
+  ],
+  "mood_tags": [
+    "伤感",
+    "忧郁",
+    "沉思"
+  ],
+  "mood_vad": {
+    "valence": 0.3,
+    "arousal": 0.4,
+    "dominance": 0.5
+  },
+  "caption": "这是一首由女声演唱的流行R&B歌曲，以钢琴和电子节拍为主要伴奏，情绪伤感且充满对前任的留恋。",
+  "confidence": 0.95,
+  "_raw_text": "{\n  \"genre\": \"Pop\",\n  \"subgenre\": \"R&B / Pop Ballad\",\n  \"vocal_presence\": \"vocal\",\n  \"tempo_bpm\": 74,\n  \"key\": \"C major\",\n  \"segments\": [\n    {\n      \"start\": 0.0,\n      \"end\": 16.5,\n      \"label\": \"Intro\",\n      \"instruments\": [\"原声钢琴\", \"人声\"],\n      \"mood\": \"忧郁沉思\",\n      \"confidence\": 0.95\n    },\n    {\n      \"start\": 16.5,\n      \"end\": 32.5,\n      \"label\": \"Pre-Chorus\",\n      \"instruments\": [\"原声钢琴\", \"贝斯\", \"鼓\"],\n      \"mood\": \"渴望\",\n      \"confidence\": 0.9\n    },\n    {\n      \"start\": 32.5,\n      \"end\": 61.0,\n      \"label\": \"Chorus\",\n      \"instruments\": [\"原声钢琴\", \"贝斯\", \"爵士鼓\", \"合成器\"],\n      \"mood\": \"伤感\",\n      \"confidence\": 0.95\n    },\n    {\n      \"start\": 61.0,\n      \"end\": 74.5,\n      \"label\": \"Post-Chorus\",\n      \"instruments\": [\"人声\", \"合成器\"],\n      \"mood\": \"伤感\",\n      \"confidence\": 0.85\n    },\n    {\n      \"start\": 74.5,\n      \"end\": 100.5,\n      \"label\": \"Verse 2\",\n      \"instruments\": [\"原声钢琴\", \"贝斯\", \"鼓\"],\n      \"mood\": \"忧郁沉思\",\n      \"confidence\": 0.9\n    },\n    {\n      \"start\": 100.5,\n      \"end\": 129.0,\n      \"label\": \"Chorus\",\n      \"instruments\": [\"原声钢琴\", \"贝斯\", \"爵士鼓\", \"合成器\"],\n      \"mood\": \"伤感\",\n      \"confidence\": 0.95\n    },\n    {\n      \"start\": 129.0,\n      \"end\": 142.5,\n      \"label\": \"Post-Chorus\",\n      \"instruments\": [\"人声\", \"合成器\"],\n      \"mood\": \"伤感\",\n      \"confidence\": 0.85\n    },\n    {\n      \"start\": 142.5,\n      \"end\": 165.5,\n      \"label\": \"Bridge\",\n      \"instruments\": [\"原声钢琴\", \"贝斯\", \"鼓\"],\n      \"mood\": \"恳切\",\n      \"confidence\": 0.9\n    },\n    {\n      \"start\": 165.5,\n      \"end\": 194.0,\n      \"label\": \"Final Chorus & Outro\",\n      \"instruments\": [\"原声钢琴\", \"贝斯\", \"爵士鼓\", \"合成器\"],\n      \"mood\": \"伤感\",\n      \"confidence\": 0.95\n    }\n  ],\n  \"instruments\": [\"原声钢琴\", \"贝斯\", \"爵士鼓\", \"合成器\", \"人声\"],\n  \"mood_tags\": [\"伤感\", \"忧郁\", \"沉思\"],\n  \"mood_vad\": {\"valence\": 0.3, \"arousal\": 0.4, \"dominance\": 0.5},\n  \"caption\": \"这是一首由女声演唱的流行R&B歌曲，以钢琴和电子节拍为主要伴奏，情绪伤感且充满对前任的留恋。\",\n  \"confidence\": 0.95\n}",
+  "_usage": {
+    "input_tokens": 1930,
+    "input_tokens_details": {
+      "audio_tokens": 1542,
+      "text_tokens": 388
+    },
+    "output_tokens": 875,
+    "output_tokens_details": {
+      "text_tokens": 875
+    },
+    "total_tokens": 2805
+  }
+}

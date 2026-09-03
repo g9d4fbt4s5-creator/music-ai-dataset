@@ -1,0 +1,146 @@
+{
+  "genre": "Soul",
+  "subgenre": "Quiet Storm / R&B",
+  "vocal_presence": "vocal",
+  "tempo_bpm": 85,
+  "key": "F# minor",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 12.3,
+      "label": "Intro",
+      "instruments": [
+        "电钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "浪漫",
+      "confidence": 0.95
+    },
+    {
+      "start": 12.3,
+      "end": 32.5,
+      "label": "Verse 1",
+      "instruments": [
+        "电钢琴",
+        "贝斯",
+        "爵士鼓",
+        "人声"
+      ],
+      "mood": "深情",
+      "confidence": 0.92
+    },
+    {
+      "start": 32.5,
+      "end": 56.4,
+      "label": "Pre-Chorus",
+      "instruments": [
+        "电钢琴",
+        "贝斯",
+        "爵士鼓",
+        "人声"
+      ],
+      "mood": "渴望",
+      "confidence": 0.9
+    },
+    {
+      "start": 56.4,
+      "end": 77.2,
+      "label": "Chorus",
+      "instruments": [
+        "电钢琴",
+        "贝斯",
+        "爵士鼓",
+        "铜管组",
+        "人声"
+      ],
+      "mood": "热情",
+      "confidence": 0.94
+    },
+    {
+      "start": 77.2,
+      "end": 101.1,
+      "label": "Verse 2",
+      "instruments": [
+        "电钢琴",
+        "贝斯",
+        "爵士鼓",
+        "人声"
+      ],
+      "mood": "深情",
+      "confidence": 0.91
+    },
+    {
+      "start": 101.1,
+      "end": 124.9,
+      "label": "Pre-Chorus",
+      "instruments": [
+        "电钢琴",
+        "贝斯",
+        "爵士鼓",
+        "人声"
+      ],
+      "mood": "渴望",
+      "confidence": 0.9
+    },
+    {
+      "start": 124.9,
+      "end": 150.0,
+      "label": "Chorus",
+      "instruments": [
+        "电钢琴",
+        "贝斯",
+        "爵士鼓",
+        "铜管组",
+        "人声"
+      ],
+      "mood": "热情",
+      "confidence": 0.93
+    },
+    {
+      "start": 150.0,
+      "end": 175.0,
+      "label": "Outro",
+      "instruments": [
+        "电钢琴",
+        "贝斯",
+        "爵士鼓",
+        "铜管组"
+      ],
+      "mood": "浪漫",
+      "confidence": 0.88
+    }
+  ],
+  "instruments": [
+    "电钢琴",
+    "贝斯",
+    "爵士鼓",
+    "铜管组",
+    "人声"
+  ],
+  "mood_tags": [
+    "浪漫",
+    "深情",
+    "热情"
+  ],
+  "mood_vad": {
+    "valence": 0.8,
+    "arousal": 0.6,
+    "dominance": 0.5
+  },
+  "caption": "这是一首充满深情的灵魂乐，以温暖的电钢琴和流畅的贝斯线为基底，搭配热情的铜管组和深情的男声演唱，营造出浪漫而怀旧的氛围。",
+  "confidence": 0.92,
+  "_raw_text": "{\n  \"genre\": \"Soul\",\n  \"subgenre\": \"Quiet Storm / R&B\",\n  \"vocal_presence\": \"vocal\",\n  \"tempo_bpm\": 85,\n  \"key\": \"F# minor\",\n  \"segments\": [\n    {\n      \"start\": 0.0,\n      \"end\": 12.3,\n      \"label\": \"Intro\",\n      \"instruments\": [\"电钢琴\", \"贝斯\", \"爵士鼓\"],\n      \"mood\": \"浪漫\",\n      \"confidence\": 0.95\n    },\n    {\n      \"start\": 12.3,\n      \"end\": 32.5,\n      \"label\": \"Verse 1\",\n      \"instruments\": [\"电钢琴\", \"贝斯\", \"爵士鼓\", \"人声\"],\n      \"mood\": \"深情\",\n      \"confidence\": 0.92\n    },\n    {\n      \"start\": 32.5,\n      \"end\": 56.4,\n      \"label\": \"Pre-Chorus\",\n      \"instruments\": [\"电钢琴\", \"贝斯\", \"爵士鼓\", \"人声\"],\n      \"mood\": \"渴望\",\n      \"confidence\": 0.90\n    },\n    {\n      \"start\": 56.4,\n      \"end\": 77.2,\n      \"label\": \"Chorus\",\n      \"instruments\": [\"电钢琴\", \"贝斯\", \"爵士鼓\", \"铜管组\", \"人声\"],\n      \"mood\": \"热情\",\n      \"confidence\": 0.94\n    },\n    {\n      \"start\": 77.2,\n      \"end\": 101.1,\n      \"label\": \"Verse 2\",\n      \"instruments\": [\"电钢琴\", \"贝斯\", \"爵士鼓\", \"人声\"],\n      \"mood\": \"深情\",\n      \"confidence\": 0.91\n    },\n    {\n      \"start\": 101.1,\n      \"end\": 124.9,\n      \"label\": \"Pre-Chorus\",\n      \"instruments\": [\"电钢琴\", \"贝斯\", \"爵士鼓\", \"人声\"],\n      \"mood\": \"渴望\",\n      \"confidence\": 0.90\n    },\n    {\n      \"start\": 124.9,\n      \"end\": 150.0,\n      \"label\": \"Chorus\",\n      \"instruments\": [\"电钢琴\", \"贝斯\", \"爵士鼓\", \"铜管组\", \"人声\"],\n      \"mood\": \"热情\",\n      \"confidence\": 0.93\n    },\n    {\n      \"start\": 150.0,\n      \"end\": 175.0,\n      \"label\": \"Outro\",\n      \"instruments\": [\"电钢琴\", \"贝斯\", \"爵士鼓\", \"铜管组\"],\n      \"mood\": \"浪漫\",\n      \"confidence\": 0.88\n    }\n  ],\n  \"instruments\": [\"电钢琴\", \"贝斯\", \"爵士鼓\", \"铜管组\", \"人声\"],\n  \"mood_tags\": [\"浪漫\", \"深情\", \"热情\"],\n  \"mood_vad\": {\n    \"valence\": 0.8,\n    \"arousal\": 0.6,\n    \"dominance\": 0.5\n  },\n  \"caption\": \"这是一首充满深情的灵魂乐，以温暖的电钢琴和流畅的贝斯线为基底，搭配热情的铜管组和深情的男声演唱，营造出浪漫而怀旧的氛围。\",\n  \"confidence\": 0.92\n}",
+  "_usage": {
+    "input_tokens": 1650,
+    "input_tokens_details": {
+      "audio_tokens": 1262,
+      "text_tokens": 388
+    },
+    "output_tokens": 851,
+    "output_tokens_details": {
+      "text_tokens": 851
+    },
+    "total_tokens": 2501
+  }
+}

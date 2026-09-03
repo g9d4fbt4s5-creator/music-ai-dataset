@@ -1,0 +1,156 @@
+{
+  "version": "v3",
+  "method": "kmeans_5cluster_stratified_sampling",
+  "cluster_distribution": {
+    "0": 4,
+    "1": 33,
+    "2": 19,
+    "3": 15,
+    "4": 13
+  },
+  "total_candidates": 15,
+  "representatives": [
+    {
+      "audio_id": "09E39F2B2CB84CEDAF02365CB2",
+      "cluster": 0,
+      "cluster_center_dist": 0.5075875,
+      "original_filename": "cantonese_playlist_07_陈奕迅-富士山下.flac",
+      "is_representative": true
+    },
+    {
+      "audio_id": "1EDDB5EFB16E4A36AFFFAC2132",
+      "cluster": 1,
+      "cluster_center_dist": 0.55249393,
+      "original_filename": "La La Land - Another Day of Sun.flac",
+      "is_representative": true
+    },
+    {
+      "audio_id": "01M0ZV75F15BY8CTHN77XWPNWN",
+      "cluster": 2,
+      "cluster_center_dist": 0.5695101,
+      "original_filename": "01M0ZV75F15BY8CTHN77XWPNWN.wav",
+      "is_representative": true
+    },
+    {
+      "audio_id": "3F34DF1B2784408BA60CE8165C",
+      "cluster": 3,
+      "cluster_center_dist": 0.5775772,
+      "original_filename": "genshin_nata.flac",
+      "is_representative": true
+    },
+    {
+      "audio_id": "D2098BC896D6450A8E3744528E",
+      "cluster": 4,
+      "cluster_center_dist": 0.57785016,
+      "original_filename": "jobim_wave_03_Antonio Carlos Jobim-Look To The Sky.flac",
+      "is_representative": true
+    }
+  ],
+  "candidates": [
+    {
+      "audio_id": "09E39F2B2CB84CEDAF02365CB2",
+      "cluster": 0,
+      "cluster_center_dist": 0.5075875,
+      "original_filename": "cantonese_playlist_07_陈奕迅-富士山下.flac",
+      "is_representative": true
+    },
+    {
+      "audio_id": "146D04DCF3BB4D56B68F9DD25C",
+      "cluster": 0,
+      "cluster_center_dist": 0.5815202,
+      "original_filename": "安德烈波切利 - Love Me Tender.flac",
+      "is_representative": false
+    },
+    {
+      "audio_id": "E6A98A1C67AC4D9FA1E7437524",
+      "cluster": 0,
+      "cluster_center_dist": 0.5979751,
+      "original_filename": "rb_playlist_09_Bobby Caldwell-What You Won't Do For Love.flac",
+      "is_representative": false
+    },
+    {
+      "audio_id": "1EDDB5EFB16E4A36AFFFAC2132",
+      "cluster": 1,
+      "cluster_center_dist": 0.55249393,
+      "original_filename": "La La Land - Another Day of Sun.flac",
+      "is_representative": true
+    },
+    {
+      "audio_id": "2446DC352B064D65AD61142249",
+      "cluster": 1,
+      "cluster_center_dist": 0.56399715,
+      "original_filename": "cantonese_playlist_04_容祖儿-心淡.flac",
+      "is_representative": false
+    },
+    {
+      "audio_id": "95D0CB9A84B54582AD17E79393",
+      "cluster": 1,
+      "cluster_center_dist": 0.58208865,
+      "original_filename": "kira_linn_illusion_02_Kira Linn _ Linntett-Illusion.flac",
+      "is_representative": false
+    },
+    {
+      "audio_id": "01M0ZV75F15BY8CTHN77XWPNWN",
+      "cluster": 2,
+      "cluster_center_dist": 0.5695101,
+      "original_filename": "01M0ZV75F15BY8CTHN77XWPNWN.wav",
+      "is_representative": true
+    },
+    {
+      "audio_id": "01M0ZV75D7YTDKME3ZR6JXN1YH",
+      "cluster": 2,
+      "cluster_center_dist": 0.5853662,
+      "original_filename": "01M0ZV75D7YTDKME3ZR6JXN1YH.wav",
+      "is_representative": false
+    },
+    {
+      "audio_id": "01M0ZV75CA0XZA10YGA99D89XQ",
+      "cluster": 2,
+      "cluster_center_dist": 0.59473026,
+      "original_filename": "01M0ZV75CA0XZA10YGA99D89XQ.mp3",
+      "is_representative": false
+    },
+    {
+      "audio_id": "3F34DF1B2784408BA60CE8165C",
+      "cluster": 3,
+      "cluster_center_dist": 0.5775772,
+      "original_filename": "genshin_nata.flac",
+      "is_representative": true
+    },
+    {
+      "audio_id": "F7E5F56ECCCC479589A26A2A10",
+      "cluster": 3,
+      "cluster_center_dist": 0.5792506,
+      "original_filename": "rb_playlist_08_Kiana Ledé-EX.flac",
+      "is_representative": false
+    },
+    {
+      "audio_id": "7968BA9684454DD4B1B179643E",
+      "cluster": 3,
+      "cluster_center_dist": 0.6077824,
+      "original_filename": "cantonese_playlist_09_古巨基-爱与诚.flac",
+      "is_representative": false
+    },
+    {
+      "audio_id": "D2098BC896D6450A8E3744528E",
+      "cluster": 4,
+      "cluster_center_dist": 0.57785016,
+      "original_filename": "jobim_wave_03_Antonio Carlos Jobim-Look To The Sky.flac",
+      "is_representative": true
+    },
+    {
+      "audio_id": "01M0ZV75PYAVPDFDGZD69DE3YF",
+      "cluster": 4,
+      "cluster_center_dist": 0.5779005,
+      "original_filename": "01M0ZV75PYAVPDFDGZD69DE3YF.mp3",
+      "is_representative": false
+    },
+    {
+      "audio_id": "3C6F3F3C4839423DB83F7A55CD",
+      "cluster": 4,
+      "cluster_center_dist": 0.58055884,
+      "original_filename": "28 (They Long To Be) Close To You.m4a",
+      "is_representative": false
+    }
+  ]
+}

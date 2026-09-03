@@ -1,0 +1,115 @@
+{
+  "audio_id": "D2098BC896D6450A8E3744528E",
+  "model": "qwen3.5-omni-flash",
+  "truncated": false,
+  "annotation": {
+    "genre": "Bossa Nova",
+    "subgenre": "Jazz",
+    "vocal_presence": "instrumental",
+    "tempo_bpm": 120,
+    "key": "A major",
+    "segments": [
+      {
+        "start": 0.0,
+        "end": 32.5,
+        "label": "前奏",
+        "instruments": [
+          "原声钢琴",
+          "贝斯",
+          "爵士鼓",
+          "长号"
+        ],
+        "mood": "宁静舒缓",
+        "confidence": 0.9
+      },
+      {
+        "start": 32.5,
+        "end": 65.0,
+        "label": "主歌",
+        "instruments": [
+          "原声钢琴",
+          "贝斯",
+          "爵士鼓",
+          "长号",
+          "弦乐"
+        ],
+        "mood": "浪漫抒情",
+        "confidence": 0.85
+      },
+      {
+        "start": 65.0,
+        "end": 97.5,
+        "label": "间奏",
+        "instruments": [
+          "原声钢琴",
+          "贝斯",
+          "爵士鼓"
+        ],
+        "mood": "轻松愉悦",
+        "confidence": 0.8
+      },
+      {
+        "start": 97.5,
+        "end": 124.0,
+        "label": "副歌",
+        "instruments": [
+          "原声钢琴",
+          "贝斯",
+          "爵士鼓",
+          "长号",
+          "弦乐"
+        ],
+        "mood": "热情奔放",
+        "confidence": 0.85
+      },
+      {
+        "start": 124.0,
+        "end": 144.0,
+        "label": "尾奏",
+        "instruments": [
+          "原声钢琴",
+          "贝斯",
+          "爵士鼓",
+          "长号",
+          "弦乐"
+        ],
+        "mood": "宁静舒缓",
+        "confidence": 0.9
+      }
+    ],
+    "instruments": [
+      "原声钢琴",
+      "贝斯",
+      "爵士鼓",
+      "长号",
+      "弦乐"
+    ],
+    "mood_tags": [
+      "浪漫",
+      "抒情",
+      "轻松",
+      "优雅"
+    ],
+    "mood_vad": {
+      "valence": 0.7,
+      "arousal": 0.5,
+      "dominance": 0.4
+    },
+    "caption": "这是一首由原声钢琴、贝斯、爵士鼓、长号和弦乐演奏的Bossa Nova风格器乐曲，整体氛围浪漫而优雅。",
+    "confidence": 0.85
+  },
+  "source": "qwen_omni",
+  "usage": {
+    "input_tokens": 1398,
+    "input_tokens_details": {
+      "audio_tokens": 1010,
+      "text_tokens": 388
+    },
+    "output_tokens": 604,
+    "output_tokens_details": {
+      "text_tokens": 604
+    },
+    "total_tokens": 2002
+  },
+  "parse_error": false
+}
