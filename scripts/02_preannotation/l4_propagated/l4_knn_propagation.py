@@ -39,10 +39,10 @@ except ImportError:
 
 # ========== KNN 传播量化阈值（文件顶部常量，500首全量时可微调） ==========
 # cosine_dist = 1 - cosine_sim，距离越小越相似
-DIST_THRESHOLD_GENRE = 0.50          # 流派稳定字段，放宽(85首试点)
-DIST_THRESHOLD_MOOD = 0.40           # 情绪主观，放宽(85首试点)
-DIST_THRESHOLD_INSTRUMENTS = 0.40    # 乐器存在性，放宽(85首试点)
-DIST_THRESHOLD_VOCAL = 0.45          # 人声判定，放宽(85首试点)
+DIST_THRESHOLD_GENRE = 0.40          # 流派稳定字段（默认值，待黄金集重建后再诊断调参）
+DIST_THRESHOLD_MOOD = 0.25           # 情绪主观（默认值，需high置信度）
+DIST_THRESHOLD_INSTRUMENTS = 0.25    # 乐器存在性（默认值）
+DIST_THRESHOLD_VOCAL = 0.45          # 人声判定
 
 # 黄金集标签置信度要求
 GOLD_CONFIDENCE_GENRE = {"high", "medium"}
