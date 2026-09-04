@@ -30,6 +30,7 @@ import argparse
 import logging
 import subprocess
 import requests
+from typing import List, Tuple, Optional, Dict
 
 # 自动加载项目根目录的 .env（API key 等配置）
 # 脚本在 scripts/02_preannotation/l3_structural/ 下，往上3级是项目根
@@ -88,6 +89,8 @@ SYSTEM_PROMPT = """你是一个专业的音乐结构分析专家。请仔细听�
 3. 乐器要具体（如"中音萨克斯"、"原声钢琴"、"爵士鼓"）
 4. 情绪要具体（如"忧郁沉思"、"热情奔放"、"宁静舒缓"）
 5. caption 是一句话描述，包含流派、乐器、情绪、整体氛围
+6. genre 必须是有区分度的风格分类，拒绝泛类。如果该曲更准确属于 Traditional Pop / Ballad / Jazz Fusion / Bossa Nova / Cantopop / R&B / Deep House 等细类，直接写细类，不要写 Pop / Jazz / Rock / Electronic 这类泛类。Pop 只有在曲目确实无法归入任何细类时才允许。
+7. subgenre 必须填写，不能空。如果 genre 已经是细类，subgenre 写更细的子风格或"none"。
 
 输出格式：
 {
@@ -164,43 +167,160 @@ def extract_segment(input_path: str, output_path: str,
 
 def prepare_audio_for_qwen(input_path: str, tmp_dir: Path) -> Tuple[str, bool]:
     """
-    预处理音频为 Qwen-Omni 可用格式
+    预处理音频为 Qwen-Omni 可用格式（优化版：避免冗余转码）
+    逻辑：
+    1. 原文件 <=10MB 且 <=180s → 直接用原文件
+    2. 时长 >180s → 直接从原文件切前180s为MP3（一步完成，不先转整曲）
+    3. 时长 <=180s 但文件 >10MB → 转MP3压缩
     返回: (处理后的文件路径, 是否被截断)
     """
     size_mb = get_file_size_mb(input_path)
     duration = get_audio_duration(input_path)
     logger.info(f"  原始: {size_mb:.1f}MB, {duration:.0f}s")
 
-    # 超长音频截断
     truncated = False
     work_path = input_path
 
+    # 情况1：原文件已经符合要求，直接用
+    if size_mb <= MAX_AUDIO_SIZE_MB and duration <= MAX_AUDIO_DURATION_SEC:
+        logger.info(f"  原文件符合要求，直接使用")
+        return work_path, truncated
+
+    # 情况2：时长 >180s → 直接切前180s为MP3（一步完成）
     if duration > MAX_AUDIO_DURATION_SEC:
-        logger.info(f"  时长 {duration:.0f}s > {MAX_AUDIO_DURATION_SEC}s，取前 {SEGMENT_DURATION_SEC}s")
+        logger.info(f"  时长 {duration:.0f}s > {MAX_AUDIO_DURATION_SEC}s，直接切前 {SEGMENT_DURATION_SEC}s 为MP3")
         seg_path = str(tmp_dir / f"{Path(input_path).stem}_seg{SEGMENT_DURATION_SEC}.mp3")
         if extract_segment(input_path, seg_path, 0, SEGMENT_DURATION_SEC):
             work_path = seg_path
             truncated = True
 
-    # 大文件转 MP3
+    # 情况3：仍 >10MB → 转MP3压缩（仅对短曲大文件）
     if get_file_size_mb(work_path) > MAX_AUDIO_SIZE_MB:
-        logger.info(f"  文件 {get_file_size_mb(work_path):.1f}MB > {MAX_AUDIO_SIZE_MB}MB，转MP3")
+        logger.info(f"  文件 {get_file_size_mb(work_path):.1f}MB > {MAX_AUDIO_SIZE_MB}MB，转MP3压缩")
         mp3_path = str(tmp_dir / f"{Path(work_path).stem}.mp3")
         if convert_to_mp3(work_path, mp3_path):
             work_path = mp3_path
-
-    # 转 MP3 后仍太大，取片段
-    if get_file_size_mb(work_path) > MAX_AUDIO_SIZE_MB:
-        logger.info(f"  仍 {get_file_size_mb(work_path):.1f}MB，取前 {SEGMENT_DURATION_SEC}s")
-        seg_path = str(tmp_dir / f"{Path(work_path).stem}_seg{SEGMENT_DURATION_SEC}.mp3")
-        if extract_segment(work_path, seg_path, 0, SEGMENT_DURATION_SEC):
-            work_path = seg_path
-            truncated = True
 
     final_size = get_file_size_mb(work_path)
     final_dur = get_audio_duration(work_path)
     logger.info(f"  处理后: {final_size:.1f}MB, {final_dur:.0f}s, 截断={truncated}")
     return work_path, truncated
+
+
+# ===================== 分段标注（唯一实现） =====================
+def segment_audio(input_path: str, tmp_dir: Path, segment_duration: int = 180) -> List[Tuple[str, int, int]]:
+    """
+    将长音频切分为多段MP3，返回 [(段路径, 起始秒, 结束秒), ...]
+    直接从原文件切MP3，不先转整曲（避免冗余转码）。
+    """
+    duration = get_audio_duration(input_path)
+    segments = []
+    n_segments = int(duration // segment_duration) + 1
+    for i in range(n_segments):
+        start = i * segment_duration
+        end = min((i + 1) * segment_duration, duration)
+        if end - start < 5:  # 跳过过短的尾段
+            continue
+        seg_path = str(tmp_dir / f"{Path(input_path).stem}_seg{i}_{start}_{int(end)}.mp3")
+        if not Path(seg_path).exists():
+            extract_segment(input_path, seg_path, start, end)
+        if Path(seg_path).exists():
+            segments.append((seg_path, start, end))
+    return segments
+
+
+def merge_segment_results(segment_results: List[Dict], audio_id: str, duration: float) -> Dict:
+    """
+    合并多段标注结果为完整标注（唯一实现）。
+    genre取众数，mood/instruments合并去重，segments偏移时间戳合并。
+    """
+    from collections import Counter
+
+    # genre: 众数
+    genres = [r.get("genre", "") for r in segment_results if r.get("genre")]
+    genre = Counter(genres).most_common(1)[0][0] if genres else ""
+    subgenre = segment_results[0].get("subgenre", "") if segment_results else ""
+
+    # mood: 合并去重（优先mood_tags）
+    moods = []
+    for r in segment_results:
+        for m in (r.get("mood_tags") or r.get("mood") or []):
+            if m not in moods:
+                moods.append(m)
+
+    # instruments: 合并去重
+    instruments = []
+    for r in segment_results:
+        for inst in (r.get("instruments") or r.get("instrumentation") or []):
+            if inst not in instruments:
+                instruments.append(inst)
+
+    # segments: 偏移时间戳合并
+    segments = []
+    for i, r in enumerate(segment_results):
+        offset = i * SEGMENT_DURATION_SEC
+        for seg in r.get("segments", []):
+            seg_copy = dict(seg)
+            seg_copy["start"] = seg.get("start", 0) + offset
+            seg_copy["end"] = seg.get("end", 0) + offset
+            segments.append(seg_copy)
+
+    caption = segment_results[0].get("caption", "") if segment_results else ""
+    confidence = sum(r.get("confidence", 0.8) for r in segment_results) / len(segment_results) if segment_results else 0.85
+
+    return {
+        "audio_id": audio_id,
+        "genre": genre,
+        "subgenre": subgenre,
+        "mood": moods,
+        "mood_tags": moods,
+        "mood_vad": segment_results[0].get("mood_vad", {}) if segment_results else {},
+        "instrumentation": instruments,
+        "vocal_presence": segment_results[0].get("vocal_presence", "") if segment_results else "",
+        "tempo_bpm": segment_results[0].get("tempo_bpm", 0) if segment_results else 0,
+        "key": segment_results[0].get("key", "") if segment_results else "",
+        "caption": caption,
+        "source": "qwen_omni_segmented",
+        "segments": segments,
+        "confidence": confidence,
+        "truncated": False,
+        "segmented": True,
+        "duration_sec": duration,
+    }
+
+
+def annotate_long_audio(input_path: str, api_key: str, tmp_dir: Path, audio_id: str,
+                        segment_duration: int = 180) -> Optional[Dict]:
+    """
+    长音频完整标注流程（唯一实现）：分段 → 逐段调API → 合并。
+    返回合并后的完整标注结果。
+    """
+    duration = get_audio_duration(input_path)
+    segments = segment_audio(input_path, tmp_dir, segment_duration)
+    if not segments:
+        logger.error(f"  分段失败: {audio_id}")
+        return None
+
+    logger.info(f"  切分为 {len(segments)} 段，逐段标注...")
+    segment_results = []
+    for seg_path, start, end in segments:
+        logger.info(f"  段 {start}-{int(end)}s ({get_file_size_mb(seg_path):.1f}MB)")
+        result = call_qwen_omni(seg_path, api_key)
+        if result and not result.get("parse_error"):
+            segment_results.append(result)
+            logger.info(f"    ✅ genre={result.get('genre', '?')}")
+        else:
+            logger.warning(f"    ❌ 段标注失败")
+        time.sleep(0.5)
+
+    if not segment_results:
+        logger.error(f"  所有段标注失败: {audio_id}")
+        return None
+
+    merged = merge_segment_results(segment_results, audio_id, duration)
+    logger.info(f"  合并完成: genre={merged['genre']}, mood={len(merged['mood'])}个, "
+                f"instr={len(merged['instrumentation'])}个, segments={len(merged['segments'])}个")
+    return merged
 
 
 # ===================== API 调用 =====================

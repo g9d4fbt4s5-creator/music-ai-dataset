@@ -49,41 +49,72 @@ def load_manifest() -> Dict[str, Dict]:
 
 
 def load_ids() -> List[str]:
-    """加载 30 首 audio_id 列表"""
-    with open(IDS_FILE, "r") as f:
-        return [line.strip() for line in f if line.strip()]
+    """加载 30 首 audio_id 列表（硬编码，不依赖临时文件）"""
+    return [
+        "01M0ZV75DMQARXEX90GT35FWFK", "01M0ZV75E1JTESWENDMCDN4G3Y",
+        "01M0ZV75G09FTTEQQQTF6049DN", "01M0ZV75GA4AQAY1KNJ0PD68GQ",
+        "01M0ZV75GQPN21PZZESQBZA47M", "01M0ZV75HFQNAS9VNCF717E4MC",
+        "01M0ZV75HXBGQX8HM75G0WXBPV", "01M0ZV75JBZS380KPKJWHTNXY4",
+        "01M0ZV75JR9WA49NP41EP3A7TT", "01M0ZV75K7K5Y26V3WCRQ9QA8Z",
+        "01M0ZV75KMG8AH943Q16ZAG4J7", "01M0ZV75MCZDA2T7FAXRDPVDA9",
+        "01M0ZV75NNJ2TC50HQCKGNFFF7", "01M0ZV75P30AE55Y0VFH0J44WC",
+        "01M0ZV75PJG0F27RP7YANG0ZGW", "2996876392774F67887DA90C3E",
+        "364CBB655E7D4A90B83A060A39", "3DD429C6458C404A9891416635",
+        "6835D62222154FA6B0509AA881", "6878BDAC7CD149C6A0AFA5ADD5",
+        "78250AD45D2842A3AA18C9071D", "818C48C49AE547DCBC6D3D9B43",
+        "8E0D1A1B284746B3A1FCE15B41", "924CF2535CAB4C48A485EF4845",
+        "9B845A8E8A744BCAA50705D73D", "9C454BAFCD9A4DF7BC15CC9031",
+        "A0F9B5560A194DE5A25A22BD62", "AA089CC166EF4DE8AA78014AD9",
+        "B7C8FC27F3C349B0B39EB7D55A", "E6A98A1C67AC4D9FA1E7437524",
+    ]
 
 
 def convert_to_l4_format(qwen_result: Dict, audio_id: str) -> Dict:
     """
-    将 Qwen-Omni 输出转换为 L4 load_deepseek_labels 期望的格式。
-    L4 期望: genre(字符串), mood(列表), instrumentation(列表), caption(字符串), audio_id
+    将 Qwen-Omni 输出完整转换为 L4 期望格式。
+    完整提取所有字段，不遗漏 subgenre/vocal_presence/tempo_bpm/key/mood_tags/mood_vad 等。
     """
-    # Qwen 输出的字段名可能是 instruments 或 instrumentation
+    # 乐器：instruments 或 instrumentation
     instr = qwen_result.get("instruments") or qwen_result.get("instrumentation") or []
     if isinstance(instr, str):
         instr = [instr]
 
-    mood = qwen_result.get("mood") or qwen_result.get("moods") or []
+    # 情绪：优先 mood_tags（Qwen标准字段），其次 mood/moods
+    mood = qwen_result.get("mood_tags") or qwen_result.get("mood") or qwen_result.get("moods") or []
     if isinstance(mood, str):
         mood = [mood]
+    # 如果mood为空但segments里有，从segments提取
+    if not mood:
+        for seg in qwen_result.get("segments", []):
+            m = seg.get("mood", "")
+            if m and m not in mood:
+                mood.append(m)
 
+    # 流派：主genre + subgenre
     genre = qwen_result.get("genre", "")
     if isinstance(genre, list):
         genre = genre[0] if genre else ""
+    subgenre = qwen_result.get("subgenre", "")
 
     caption = qwen_result.get("caption", "") or qwen_result.get("description", "")
 
-    return {
+    result = {
         "audio_id": audio_id,
         "genre": genre,
+        "subgenre": subgenre,
         "mood": mood,
+        "mood_tags": qwen_result.get("mood_tags", []),
+        "mood_vad": qwen_result.get("mood_vad", {}),
         "instrumentation": instr,
+        "vocal_presence": qwen_result.get("vocal_presence", ""),
+        "tempo_bpm": qwen_result.get("tempo_bpm", 0),
+        "key": qwen_result.get("key", ""),
         "caption": caption,
         "source": "qwen_omni_supplement",
         "segments": qwen_result.get("segments", []),
         "confidence": qwen_result.get("confidence", 0.8),
     }
+    return result
 
 
 def main():
