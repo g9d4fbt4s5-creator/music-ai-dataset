@@ -447,6 +447,180 @@ def check_reproducibility(project_root: str) -> tuple[bool, list[str]]:
 
 
 # =====================================================================
+# T2 dry-run 重放对账
+# =====================================================================
+def _sha256_of_file(path: str) -> str:
+    import hashlib
+    h = hashlib.sha256()
+    with open(path, "rb") as f:
+        for chunk in iter(lambda: f.read(8192), b""):
+            h.update(chunk)
+    return h.hexdigest()[:16]
+
+
+def _canon(obj) -> str:
+    """规范化 JSON 串，用于逐字段稳定比对。"""
+    return json.dumps(obj, sort_keys=True, ensure_ascii=False)
+
+
+def _diff_entry(a: dict, b: dict) -> list[dict]:
+    """对单个样本逐字段比对，返回字段级差异列表。"""
+    out = []
+    keys = set(a) | set(b)
+    for k in sorted(keys):
+        va, vb = a.get(k, "<MISSING>"), b.get(k, "<MISSING>")
+        if _canon(va) != _canon(vb):
+            out.append({
+                "field": k,
+                "current": str(va)[:120],
+                "replayed": str(vb)[:120],
+            })
+    return out
+
+
+def generate_reconciliation_report(project_root: str, report_dir: str) -> dict:
+    """
+    T2 dry-run 重放对账：以现有 L3 产物为唯一输入，在临时目录重放 L4 融合/多标签转换/裁决写入，
+    与已验收的 genre_unified_final.json 和 l4_unified/ 逐字段对账。
+    全程不调用 Qwen / 文本LLM API（run_pipeline 只做本地文件读取与纯计算）。
+    产出 JSON（机器可读）+ Markdown（人读）对账报告。
+    """
+    import datetime
+    preann = os.path.join(project_root, "data", "02_preannotation")
+    os.makedirs(report_dir, exist_ok=True)
+
+    # ---- 1. 输入指纹（证明只用现有 L3 产物，输入固定）----
+    inputs = {}
+    tl_path = os.path.join(preann, "genre_text_llm_annotations.json")
+    inputs["genre_text_llm_annotations.json"] = {
+        "role": "P0文本LLM标注", "n": len(load_json(tl_path)), "sha256_16": _sha256_of_file(tl_path)}
+    for cfg in ("user_rulings.json", "layered_conflict_resolutions.json",
+                "qwen_reannotation_manifest.json", "genre_annotation_plan.json"):
+        p = os.path.join(preann, cfg)
+        if os.path.exists(p):
+            inputs[cfg] = {"role": "配置", "sha256_16": _sha256_of_file(p)}
+    inputs["l4_deepseek/"] = {
+        "role": "P1 Qwen标注(目录名为历史遗留)",
+        "n_files": len(glob.glob(os.path.join(preann, "l4_deepseek", "*_text_labels.json")))}
+    inputs["l3_structural/"] = {
+        "role": "黄金集Qwen精标(优先覆盖)",
+        "n_files": len(glob.glob(os.path.join(preann, "l3_structural", "*_l3_qwen.json")))}
+
+    # ---- 2. 静态证明 run_pipeline 无网络调用 ----
+    src = open(__file__, encoding="utf-8").read()
+    network_symbols = ["requests.", "http.client", "urllib.request", "socket.", "dashscope", "openai", "api_key"]
+    used_in_run = [s for s in network_symbols if s in src.split("def run_pipeline")[1].split("def ")[0]]
+    api_claim = {
+        "qwen_omni_calls": 0, "text_llm_calls": 0,
+        "network_symbols_in_run_pipeline": used_in_run,
+        "note": "dry-run仅读取现有L3 JSON产物并做纯本地融合计算，无任何网络/API调用",
+    }
+
+    # ---- 3. 临时目录重放 ----
+    current_final = load_json(os.path.join(preann, "genre_unified_final.json"))
+    with tempfile.TemporaryDirectory() as tmp:
+        res = run_pipeline(project_root, out_dir=tmp)
+        replayed_final = res["final"]
+
+        # 3a. 汇总文件逐字段对账
+        sum_total, sum_match = len(current_final), 0
+        field_total, field_match = 0, 0
+        sum_mismatches = []
+        id_set_match = set(current_final) == set(replayed_final)
+        for aid in current_final:
+            a, b = current_final.get(aid, {}), replayed_final.get(aid, {})
+            diffs = _diff_entry(a, b)
+            field_total += len(set(a) | set(b))
+            if not diffs:
+                sum_match += 1
+                field_match += len(set(a) | set(b))
+            else:
+                field_match += len(set(a) | set(b)) - len(diffs)
+                for d in diffs:
+                    sum_mismatches.append({"audio_id": aid, "title": a.get("title", ""), **d})
+
+        # 3b. l4_unified 逐首文件对账
+        cur_dir = os.path.join(preann, "l4_unified")
+        rep_dir = os.path.join(tmp, "l4_unified")
+        cur_files = sorted(glob.glob(os.path.join(cur_dir, "*_unified_tags.json")))
+        file_total, file_match = len(cur_files), 0
+        file_mismatches = []
+        for cf in cur_files:
+            name = os.path.basename(cf)
+            rf = os.path.join(rep_dir, name)
+            if not os.path.exists(rf):
+                file_mismatches.append({"file": name, "reason": "重放缺失该文件"})
+                continue
+            a, b = load_json(cf), load_json(rf)
+            # 逐首文件只比对数据字段（l4_version/deprecated_note 等元字段也应一致）
+            diffs = _diff_entry(a, b)
+            if not diffs:
+                file_match += 1
+            else:
+                file_mismatches.append({"file": name, "fields": diffs})
+
+    overall = (sum_match == sum_total and file_match == file_total and id_set_match)
+
+    report = {
+        "report_name": "T2_dryrun_reconciliation",
+        "generated_at": datetime.datetime.now().isoformat(timespec="seconds"),
+        "method": "以现有L3产物为输入，临时目录dry-run重放L4，逐字段对账，不重调任何API",
+        "api_calls": api_claim,
+        "inputs_fingerprint": inputs,
+        "replay_stats": res["stats"],
+        "reconciliation": {
+            "id_set_match": id_set_match,
+            "genre_unified_final": {
+                "samples_total": sum_total, "samples_match": sum_match,
+                "fields_compared": field_total, "fields_match": field_match,
+                "mismatches": sum_mismatches,
+            },
+            "l4_unified_dir": {
+                "files_total": file_total, "files_match": file_match,
+                "mismatches": file_mismatches,
+            },
+            "fully_consistent": overall,
+            "match_rate": "100%" if overall else f"{(sum_match+file_match)/(sum_total+file_total)*100:.1f}%",
+        },
+    }
+
+    json_path = os.path.join(report_dir, "t2_dryrun_reconciliation.json")
+    with open(json_path, "w", encoding="utf-8") as f:
+        json.dump(report, f, ensure_ascii=False, indent=2)
+
+    # Markdown 版
+    md = []
+    md.append("# T2 Dry-Run 重放对账报告\n")
+    md.append(f"- 生成时间：{report['generated_at']}")
+    md.append(f"- 方法：{report['method']}")
+    md.append(f"- Qwen API 调用：**{api_claim['qwen_omni_calls']}**；文本LLM API 调用：**{api_claim['text_llm_calls']}**")
+    md.append(f"- run_pipeline 内网络符号：{api_claim['network_symbols_in_run_pipeline'] or '无'}\n")
+    md.append("## 输入指纹（现有 L3 产物，未重新生成）\n")
+    md.append("| 输入 | 角色 | 数量 | sha256(16) |")
+    md.append("|------|------|------|-----------|")
+    for name, meta in inputs.items():
+        md.append(f"| {name} | {meta.get('role','')} | {meta.get('n', meta.get('n_files','-'))} | {meta.get('sha256_16','-')} |")
+    rc = report["reconciliation"]
+    md.append("\n## 对账结果\n")
+    md.append("| 对账层 | 总数 | 一致 | 结果 |")
+    md.append("|--------|------|------|------|")
+    md.append(f"| genre_unified_final.json（样本） | {sum_total} | {sum_match} | {'✅' if sum_match==sum_total else '❌'} |")
+    md.append(f"| genre_unified_final.json（字段） | {field_total} | {field_match} | {'✅' if field_match==field_total else '❌'} |")
+    md.append(f"| l4_unified/（逐首文件） | {file_total} | {file_match} | {'✅' if file_match==file_total else '❌'} |")
+    md.append(f"\n**样本ID集合一致：{'✅' if id_set_match else '❌'}**")
+    md.append(f"\n### 总结论：{'✅ 100% 一致，封装合格' if overall else '❌ 存在差异，打回'}\n")
+    if not overall:
+        md.append("### 差异清单\n")
+        for m in (sum_mismatches + [{"audio_id": x.get("file"), "field": str(x)[:100]} for x in file_mismatches])[:50]:
+            md.append(f"- {m}")
+    md_path = os.path.join(report_dir, "t2_dryrun_reconciliation.md")
+    with open(md_path, "w", encoding="utf-8") as f:
+        f.write("\n".join(md))
+
+    return report, json_path, md_path
+
+
+# =====================================================================
 # CLI
 # =====================================================================
 def main():
@@ -454,6 +628,8 @@ def main():
     ap.add_argument("--project-root", default=os.path.expanduser("~/music_corpus_project"))
     ap.add_argument("--verify", action="store_true", help="只验证当前产物")
     ap.add_argument("--check-repro", action="store_true", help="重跑并与现产物比对（复现性测试）")
+    ap.add_argument("--reconcile", action="store_true",
+                    help="T2 dry-run重放对账，产出JSON+MD对账报告到reports/，不调任何API")
     args = ap.parse_args()
 
     if args.verify:
@@ -474,6 +650,26 @@ def main():
             print(f"❌ 复现性测试失败，{len(diffs)} 处差异:")
             for d in diffs:
                 print(f"  - {d}")
+            sys.exit(1)
+        return
+
+    if args.reconcile:
+        report_dir = os.path.join(args.project_root, "reports", "t2_reconciliation")
+        report, json_path, md_path = generate_reconciliation_report(args.project_root, report_dir)
+        rc = report["reconciliation"]
+        gu = rc["genre_unified_final"]
+        lu = rc["l4_unified_dir"]
+        print("=" * 60)
+        print("T2 Dry-Run 重放对账（不调任何API）")
+        print("=" * 60)
+        print(f"  Qwen/文本LLM API调用: {report['api_calls']['qwen_omni_calls']}/{report['api_calls']['text_llm_calls']}")
+        print(f"  汇总样本: {gu['samples_match']}/{gu['samples_total']} 一致；字段 {gu['fields_match']}/{gu['fields_compared']}")
+        print(f"  逐首文件: {lu['files_match']}/{lu['files_total']} 一致")
+        print(f"  ID集合一致: {rc['id_set_match']}")
+        print(f"  总结论: {'✅ 100%一致，封装合格' if rc['fully_consistent'] else '❌ 存在差异'}")
+        print(f"  报告: {json_path}")
+        print(f"        {md_path}")
+        if not rc["fully_consistent"]:
             sys.exit(1)
         return
 

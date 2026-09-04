@@ -1,0 +1,65 @@
+{
+  "report_name": "T2_dryrun_reconciliation",
+  "generated_at": "2026-09-04T14:43:08",
+  "method": "以现有L3产物为输入，临时目录dry-run重放L4，逐字段对账，不重调任何API",
+  "api_calls": {
+    "qwen_omni_calls": 0,
+    "text_llm_calls": 0,
+    "network_symbols_in_run_pipeline": [],
+    "note": "dry-run仅读取现有L3 JSON产物并做纯本地融合计算，无任何网络/API调用"
+  },
+  "inputs_fingerprint": {
+    "genre_text_llm_annotations.json": {
+      "role": "P0文本LLM标注",
+      "n": 58,
+      "sha256_16": "07e94c224cece2f9"
+    },
+    "user_rulings.json": {
+      "role": "配置",
+      "sha256_16": "56e35f8800cd5c72"
+    },
+    "layered_conflict_resolutions.json": {
+      "role": "配置",
+      "sha256_16": "0e9b3622b081e222"
+    },
+    "qwen_reannotation_manifest.json": {
+      "role": "配置",
+      "sha256_16": "8464c71657887391"
+    },
+    "genre_annotation_plan.json": {
+      "role": "配置",
+      "sha256_16": "49df9c763362754a"
+    },
+    "l4_deepseek/": {
+      "role": "P1 Qwen标注(目录名为历史遗留)",
+      "n_files": 77
+    },
+    "l3_structural/": {
+      "role": "黄金集Qwen精标(优先覆盖)",
+      "n_files": 5
+    }
+  },
+  "replay_stats": {
+    "P1": 21,
+    "EXCLUDED": 5,
+    "P0": 58,
+    "user_ruled": 6
+  },
+  "reconciliation": {
+    "id_set_match": true,
+    "genre_unified_final": {
+      "samples_total": 84,
+      "samples_match": 84,
+      "fields_compared": 905,
+      "fields_match": 905,
+      "mismatches": []
+    },
+    "l4_unified_dir": {
+      "files_total": 84,
+      "files_match": 84,
+      "mismatches": []
+    },
+    "fully_consistent": true,
+    "match_rate": "100%"
+  }
+}
