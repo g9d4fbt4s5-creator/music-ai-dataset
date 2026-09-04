@@ -1,0 +1,42 @@
+{
+  "version": "v2",
+  "k_neighbors": 3,
+  "vote_majority": 2,
+  "initial_golden_count": 5,
+  "final_seed_pool_count": 21,
+  "rounds": [
+    {
+      "round": 1,
+      "seed_pool_size": 5,
+      "knn_propagated": 0,
+      "qwen_supplement": 50,
+      "unlabeled": 29,
+      "coverage": 0.0595,
+      "consistency_rate": 0.0,
+      "consistency_detail": {
+        "total_knn": 0,
+        "has_qwen": 0,
+        "consistent": 0,
+        "conflict": 0
+      },
+      "conflicts": []
+    },
+    {
+      "round": 2,
+      "seed_pool_size": 21,
+      "knn_propagated": 0,
+      "qwen_supplement": 34,
+      "unlabeled": 29,
+      "coverage": 0.25,
+      "consistency_rate": 0.0,
+      "consistency_detail": {
+        "total_knn": 0,
+        "has_qwen": 0,
+        "consistent": 0,
+        "conflict": 0
+      },
+      "conflicts": []
+    }
+  ],
+  "conclusion": "迭代 2 轮，一致率 0.0% → 0.0%，种子池 5 → 21 首"
+}
