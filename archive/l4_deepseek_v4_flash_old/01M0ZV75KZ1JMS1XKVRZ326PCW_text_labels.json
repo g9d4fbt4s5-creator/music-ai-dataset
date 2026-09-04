@@ -1,0 +1,23 @@
+{
+  "genre": "electronic",
+  "genre_candidates": [
+    "electronic",
+    "hard bop",
+    "classical"
+  ],
+  "mood": [
+    "energetic",
+    "tense"
+  ],
+  "instrumentation": [
+    "piano",
+    "trumpet",
+    "violin"
+  ],
+  "scene": "dance",
+  "vocal_presence": "instrumental",
+  "tempo_description": "中速",
+  "caption": "An energetic electronic instrumental piece with piano, trumpet, and violin, suitable for dancing.",
+  "audio_id": "01M0ZV75KZ1JMS1XKVRZ326PCW",
+  "source": "deepseek_v4_flash"
+}

@@ -1,0 +1,23 @@
+{
+  "genre": "electronic pop",
+  "genre_candidates": [
+    "electronic",
+    "pop",
+    "cool jazz"
+  ],
+  "mood": [
+    "energetic",
+    "dreamy"
+  ],
+  "instrumentation": [
+    "bass",
+    "harp",
+    "violin"
+  ],
+  "scene": "workout",
+  "vocal_presence": "instrumental",
+  "tempo_description": "中快速",
+  "caption": "An energetic electronic pop instrumental with bass, harp, and violin, featuring a dreamy atmosphere at a medium-fast tempo.",
+  "audio_id": "3E6F4E0EC2024CCD9FE718F847",
+  "source": "deepseek_v4_flash"
+}

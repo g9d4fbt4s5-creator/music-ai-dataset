@@ -1,0 +1,264 @@
+{
+  "audio_id": "01M0ZV75FJ5XT8F2BWAWABTQ0P",
+  "genre": "Jazz Fusion",
+  "subgenre": "Post-Bop",
+  "mood": [
+    "忧郁",
+    "沉思",
+    "激情",
+    "自由",
+    "热情",
+    "即兴",
+    "活力",
+    "复杂",
+    "欢快"
+  ],
+  "mood_tags": [
+    "忧郁",
+    "沉思",
+    "激情",
+    "自由",
+    "热情",
+    "即兴",
+    "活力",
+    "复杂",
+    "欢快"
+  ],
+  "mood_vad": {
+    "valence": 0.4,
+    "arousal": 0.7,
+    "dominance": 0.6
+  },
+  "instrumentation": [
+    "原声钢琴",
+    "低音提琴",
+    "爵士鼓",
+    "中音萨克斯",
+    "电贝斯"
+  ],
+  "vocal_presence": "instrumental",
+  "tempo_bpm": 120,
+  "key": "G minor",
+  "caption": "这是一首融合了抒情与即兴元素的爵士融合乐曲，以忧郁的钢琴和深沉的低音提琴开场，随后中音萨克斯加入带来深情的旋律，整体氛围从沉思逐渐转向热烈奔放。",
+  "source": "qwen_omni_supplement",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 32.5,
+      "label": "前奏",
+      "instruments": [
+        "原声钢琴",
+        "低音提琴",
+        "爵士鼓"
+      ],
+      "mood": "忧郁沉思",
+      "confidence": 0.9
+    },
+    {
+      "start": 32.5,
+      "end": 61.0,
+      "label": "主歌",
+      "instruments": [
+        "中音萨克斯",
+        "原声钢琴",
+        "低音提琴",
+        "爵士鼓"
+      ],
+      "mood": "抒情叙事",
+      "confidence": 0.85
+    },
+    {
+      "start": 61.0,
+      "end": 90.0,
+      "label": "过渡段",
+      "instruments": [
+        "原声钢琴",
+        "低音提琴",
+        "爵士鼓"
+      ],
+      "mood": "紧张激昂",
+      "confidence": 0.8
+    },
+    {
+      "start": 90.0,
+      "end": 120.0,
+      "label": "高潮",
+      "instruments": [
+        "中音萨克斯",
+        "原声钢琴",
+        "低音提琴",
+        "爵士鼓"
+      ],
+      "mood": "热情奔放",
+      "confidence": 0.9
+    },
+    {
+      "start": 120.0,
+      "end": 181.0,
+      "label": "尾声",
+      "instruments": [
+        "低音提琴",
+        "爵士鼓"
+      ],
+      "mood": "宁静舒缓",
+      "confidence": 0.75
+    },
+    {
+      "start": 180.0,
+      "end": 212.5,
+      "label": "前奏",
+      "instruments": [
+        "原声钢琴",
+        "电贝斯",
+        "爵士鼓"
+      ],
+      "mood": "宁静舒缓",
+      "confidence": 0.9
+    },
+    {
+      "start": 212.5,
+      "end": 267.0,
+      "label": "主题陈述",
+      "instruments": [
+        "原声钢琴",
+        "电贝斯",
+        "爵士鼓"
+      ],
+      "mood": "轻松愉悦",
+      "confidence": 0.95
+    },
+    {
+      "start": 267.0,
+      "end": 320.0,
+      "label": "即兴段落一",
+      "instruments": [
+        "原声钢琴",
+        "电贝斯",
+        "爵士鼓"
+      ],
+      "mood": "热情奔放",
+      "confidence": 0.92
+    },
+    {
+      "start": 320.0,
+      "end": 375.0,
+      "label": "即兴段落二",
+      "instruments": [
+        "中音萨克斯",
+        "原声钢琴",
+        "电贝斯",
+        "爵士鼓"
+      ],
+      "mood": "热烈激昂",
+      "confidence": 0.9
+    },
+    {
+      "start": 375.0,
+      "end": 425.0,
+      "label": "高潮段落",
+      "instruments": [
+        "中音萨克斯",
+        "原声钢琴",
+        "电贝斯",
+        "爵士鼓"
+      ],
+      "mood": "激情澎湃",
+      "confidence": 0.95
+    },
+    {
+      "start": 425.0,
+      "end": 480.0,
+      "label": "独奏与收尾",
+      "instruments": [
+        "中音萨克斯",
+        "原声钢琴",
+        "电贝斯",
+        "爵士鼓"
+      ],
+      "mood": "自由随性",
+      "confidence": 0.88
+    },
+    {
+      "start": 480.0,
+      "end": 526.0,
+      "label": "尾声",
+      "instruments": [
+        "原声钢琴",
+        "电贝斯",
+        "爵士鼓"
+      ],
+      "mood": "平静收束",
+      "confidence": 0.9
+    },
+    {
+      "start": 360.0,
+      "end": 383.5,
+      "label": "主题陈述",
+      "instruments": [
+        "中音萨克斯",
+        "原声钢琴",
+        "电贝斯",
+        "爵士鼓"
+      ],
+      "mood": "轻松愉悦",
+      "confidence": 0.92
+    },
+    {
+      "start": 383.5,
+      "end": 407.0,
+      "label": "发展段",
+      "instruments": [
+        "中音萨克斯",
+        "原声钢琴",
+        "电贝斯",
+        "爵士鼓"
+      ],
+      "mood": "热情奔放",
+      "confidence": 0.88
+    },
+    {
+      "start": 407.0,
+      "end": 424.5,
+      "label": "即兴独奏",
+      "instruments": [
+        "中音萨克斯",
+        "原声钢琴",
+        "电贝斯",
+        "爵士鼓"
+      ],
+      "mood": "自由随性",
+      "confidence": 0.9
+    },
+    {
+      "start": 424.5,
+      "end": 476.0,
+      "label": "高潮与变奏",
+      "instruments": [
+        "中音萨克斯",
+        "原声钢琴",
+        "电贝斯",
+        "爵士鼓"
+      ],
+      "mood": "激昂热烈",
+      "confidence": 0.91
+    },
+    {
+      "start": 476.0,
+      "end": 503.0,
+      "label": "尾声",
+      "instruments": [
+        "中音萨克斯",
+        "原声钢琴",
+        "电贝斯",
+        "爵士鼓"
+      ],
+      "mood": "宁静舒缓",
+      "confidence": 0.89
+    }
+  ],
+  "confidence": 0.8833333333333333,
+  "truncated": false,
+  "segmented": true,
+  "duration_sec": 526.341229,
+  "reannotated_from": "deepseek_v4_flash"
+}

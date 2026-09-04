@@ -1,0 +1,26 @@
+{
+  "genre": "electronic",
+  "genre_candidates": [
+    "electronic",
+    "bebop",
+    "latin jazz"
+  ],
+  "mood": [
+    "introspective",
+    "melancholic",
+    "romantic"
+  ],
+  "instrumentation": [
+    "violin",
+    "clarinet",
+    "trumpet",
+    "bass",
+    "harp"
+  ],
+  "scene": "study",
+  "vocal_presence": "instrumental",
+  "tempo_description": "中速",
+  "caption": "A melancholic electronic instrumental piece with violin, clarinet, trumpet, bass, and harp, at a moderate tempo, suitable for study.",
+  "audio_id": "95D0CB9A84B54582AD17E79393",
+  "source": "deepseek_v4_flash"
+}

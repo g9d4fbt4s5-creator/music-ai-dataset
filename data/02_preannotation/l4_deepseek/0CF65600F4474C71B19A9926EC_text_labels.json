@@ -1,0 +1,23 @@
+{
+  "genre": "pop",
+  "genre_candidates": [
+    "pop",
+    "cool jazz",
+    "folk"
+  ],
+  "mood": [
+    "energetic",
+    "peaceful"
+  ],
+  "instrumentation": [
+    "bass",
+    "violin",
+    "acoustic guitar"
+  ],
+  "scene": "party",
+  "vocal_presence": "instrumental",
+  "tempo_description": "中速",
+  "caption": "An energetic pop instrumental piece with bass, violin, and acoustic guitar, suitable for a party atmosphere.",
+  "audio_id": "0CF65600F4474C71B19A9926EC",
+  "source": "deepseek_v4_flash"
+}

@@ -1,0 +1,246 @@
+{
+  "audio_id": "01M0ZV75EF73YWR1X5V3MHVA3A",
+  "genre": "Jazz Fusion",
+  "subgenre": "Acid Jazz",
+  "mood": [
+    "Groovy",
+    "Smooth",
+    "Energetic",
+    "热情",
+    "自由",
+    "活力",
+    "技巧",
+    "即兴",
+    "复杂"
+  ],
+  "mood_tags": [
+    "Groovy",
+    "Smooth",
+    "Energetic",
+    "热情",
+    "自由",
+    "活力",
+    "技巧",
+    "即兴",
+    "复杂"
+  ],
+  "mood_vad": {
+    "valence": 0.7,
+    "arousal": 0.6,
+    "dominance": 0.5
+  },
+  "instrumentation": [
+    "Saxophone",
+    "Electric Piano",
+    "Electric Bass",
+    "Drums",
+    "Synthesizer",
+    "原声钢琴",
+    "中音萨克斯",
+    "电贝斯",
+    "爵士鼓"
+  ],
+  "vocal_presence": "instrumental",
+  "tempo_bpm": 128,
+  "key": "F minor",
+  "caption": "这是一首融合了爵士与放克元素的器乐曲，以流畅的萨克斯风旋律和律动感十足的贝斯线为特色，营造出轻松而充满活力的氛围。",
+  "source": "qwen_omni_supplement",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 45.0,
+      "label": "Intro",
+      "instruments": [
+        "Electric Bass",
+        "Drums",
+        "Synthesizer"
+      ],
+      "mood": "Groovy",
+      "confidence": 0.9
+    },
+    {
+      "start": 45.0,
+      "end": 120.0,
+      "label": "Verse",
+      "instruments": [
+        "Saxophone",
+        "Electric Piano",
+        "Bass",
+        "Drums"
+      ],
+      "mood": "Smooth",
+      "confidence": 0.85
+    },
+    {
+      "start": 120.0,
+      "end": 180.0,
+      "label": "Chorus",
+      "instruments": [
+        "Saxophone",
+        "Electric Piano",
+        "Bass",
+        "Drums"
+      ],
+      "mood": "Energetic",
+      "confidence": 0.9
+    },
+    {
+      "start": 180.0,
+      "end": 194.5,
+      "label": "主题呈现",
+      "instruments": [
+        "原声钢琴",
+        "中音萨克斯",
+        "电贝斯",
+        "爵士鼓"
+      ],
+      "mood": "热情奔放",
+      "confidence": 0.92
+    },
+    {
+      "start": 194.5,
+      "end": 210.0,
+      "label": "过渡段",
+      "instruments": [
+        "原声钢琴",
+        "电贝斯",
+        "爵士鼓"
+      ],
+      "mood": "宁静舒缓",
+      "confidence": 0.88
+    },
+    {
+      "start": 210.0,
+      "end": 240.0,
+      "label": "即兴段落",
+      "instruments": [
+        "原声钢琴",
+        "中音萨克斯",
+        "电贝斯",
+        "爵士鼓"
+      ],
+      "mood": "自由随性",
+      "confidence": 0.85
+    },
+    {
+      "start": 240.0,
+      "end": 270.0,
+      "label": "节奏强化",
+      "instruments": [
+        "原声钢琴",
+        "中音萨克斯",
+        "电贝斯",
+        "爵士鼓"
+      ],
+      "mood": "活力四射",
+      "confidence": 0.9
+    },
+    {
+      "start": 270.0,
+      "end": 300.0,
+      "label": "旋律再现",
+      "instruments": [
+        "原声钢琴",
+        "中音萨克斯",
+        "电贝斯",
+        "爵士鼓"
+      ],
+      "mood": "优雅从容",
+      "confidence": 0.87
+    },
+    {
+      "start": 300.0,
+      "end": 330.0,
+      "label": "高潮迭起",
+      "instruments": [
+        "原声钢琴",
+        "中音萨克斯",
+        "电贝斯",
+        "爵士鼓"
+      ],
+      "mood": "激昂澎湃",
+      "confidence": 0.93
+    },
+    {
+      "start": 330.0,
+      "end": 360.0,
+      "label": "独奏展示",
+      "instruments": [
+        "原声钢琴",
+        "中音萨克斯",
+        "电贝斯",
+        "爵士鼓"
+      ],
+      "mood": "技巧炫目",
+      "confidence": 0.89
+    },
+    {
+      "start": 360.0,
+      "end": 390.0,
+      "label": "能量爆发",
+      "instruments": [
+        "原声钢琴",
+        "中音萨克斯",
+        "电贝斯",
+        "爵士鼓"
+      ],
+      "mood": "热烈激昂",
+      "confidence": 0.91
+    },
+    {
+      "start": 390.0,
+      "end": 420.0,
+      "label": "尾声渐弱",
+      "instruments": [
+        "原声钢琴",
+        "中音萨克斯",
+        "电贝斯",
+        "爵士鼓"
+      ],
+      "mood": "平静收束",
+      "confidence": 0.86
+    },
+    {
+      "start": 360.0,
+      "end": 382.5,
+      "label": "Intro",
+      "instruments": [
+        "原声钢琴",
+        "电贝斯",
+        "爵士鼓"
+      ],
+      "mood": "热情奔放",
+      "confidence": 0.95
+    },
+    {
+      "start": 382.5,
+      "end": 405.0,
+      "label": "Solo",
+      "instruments": [
+        "中音萨克斯",
+        "原声钢琴",
+        "电贝斯",
+        "爵士鼓"
+      ],
+      "mood": "自由即兴",
+      "confidence": 0.9
+    },
+    {
+      "start": 405.0,
+      "end": 428.0,
+      "label": "Outro",
+      "instruments": [
+        "原声钢琴",
+        "电贝斯",
+        "爵士鼓"
+      ],
+      "mood": "宁静舒缓",
+      "confidence": 0.85
+    }
+  ],
+  "confidence": 0.8866666666666667,
+  "truncated": false,
+  "segmented": true,
+  "duration_sec": 440.4245,
+  "reannotated_from": "deepseek_v4_flash"
+}

@@ -1,0 +1,23 @@
+{
+  "genre": "electronic",
+  "genre_candidates": [
+    "electronic",
+    "folk",
+    "pop"
+  ],
+  "mood": [
+    "energetic",
+    "peaceful"
+  ],
+  "instrumentation": [
+    "acoustic guitar",
+    "violin",
+    "harp"
+  ],
+  "scene": "study",
+  "vocal_presence": "instrumental",
+  "tempo_description": "中速",
+  "caption": "An energetic electronic instrumental piece with acoustic guitar, violin, and harp, suitable for studying.",
+  "audio_id": "1EDDB5EFB16E4A36AFFFAC2132",
+  "source": "deepseek_v4_flash"
+}

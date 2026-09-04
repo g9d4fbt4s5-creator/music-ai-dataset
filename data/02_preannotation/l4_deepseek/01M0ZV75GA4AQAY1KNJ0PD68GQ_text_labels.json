@@ -1,0 +1,98 @@
+{
+  "audio_id": "01M0ZV75GA4AQAY1KNJ0PD68GQ",
+  "genre": "Trip-Hop",
+  "subgenre": "Downtempo",
+  "mood": [
+    "Chill",
+    "Hypnotic",
+    "Mysterious",
+    "Introspective"
+  ],
+  "mood_tags": [
+    "Chill",
+    "Hypnotic",
+    "Mysterious",
+    "Introspective"
+  ],
+  "mood_vad": {
+    "valence": 0.4,
+    "arousal": 0.3,
+    "dominance": 0.5
+  },
+  "instrumentation": [
+    "Synth Bass",
+    "Drum Machine",
+    "Synth Pad",
+    "Vocal Sample",
+    "Synth Lead"
+  ],
+  "vocal_presence": "instrumental",
+  "tempo_bpm": 90,
+  "key": "C minor",
+  "caption": "这是一首带有神秘氛围的器乐Trip-Hop曲目，以深沉的合成器贝斯和循环的鼓点营造出催眠般的律动。",
+  "source": "qwen_omni_supplement",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 8.5,
+      "label": "Intro",
+      "instruments": [
+        "Synth Bass",
+        "Drum Machine"
+      ],
+      "mood": "Mysterious",
+      "confidence": 0.9
+    },
+    {
+      "start": 8.5,
+      "end": 47.0,
+      "label": "Main Groove",
+      "instruments": [
+        "Synth Bass",
+        "Drum Machine",
+        "Synth Pad",
+        "Vocal Sample"
+      ],
+      "mood": "Hypnotic",
+      "confidence": 0.95
+    },
+    {
+      "start": 47.0,
+      "end": 132.0,
+      "label": "Breakdown",
+      "instruments": [
+        "Drum Machine",
+        "Synth Bass",
+        "Synth Lead"
+      ],
+      "mood": "Introspective",
+      "confidence": 0.85
+    },
+    {
+      "start": 132.0,
+      "end": 242.0,
+      "label": "Extended Groove",
+      "instruments": [
+        "Synth Bass",
+        "Drum Machine",
+        "Synth Pad",
+        "Vocal Sample"
+      ],
+      "mood": "Chill",
+      "confidence": 0.9
+    },
+    {
+      "start": 242.0,
+      "end": 258.0,
+      "label": "Outro",
+      "instruments": [
+        "Synth Bass",
+        "Drum Machine"
+      ],
+      "mood": "Fading",
+      "confidence": 0.9
+    }
+  ],
+  "confidence": 0.9,
+  "truncated": false
+}

@@ -1,0 +1,282 @@
+{
+  "audio_id": "01M0ZV75N3CVB5WH17V4GCGDQ3",
+  "genre": "Jazz Fusion",
+  "subgenre": "Post-Bop",
+  "mood": [
+    "热情",
+    "活力",
+    "即兴",
+    "复杂",
+    "忧郁",
+    "沉思",
+    "自由",
+    "激烈",
+    "实验性",
+    "紧张",
+    "狂热",
+    "平静"
+  ],
+  "mood_tags": [
+    "热情",
+    "活力",
+    "即兴",
+    "复杂",
+    "忧郁",
+    "沉思",
+    "自由",
+    "激烈",
+    "实验性",
+    "紧张",
+    "狂热",
+    "平静"
+  ],
+  "mood_vad": {
+    "valence": 0.8,
+    "arousal": 0.9,
+    "dominance": 0.7
+  },
+  "instrumentation": [
+    "原声钢琴",
+    "贝斯",
+    "爵士鼓",
+    "中音萨克斯",
+    "低音提琴",
+    "钢琴"
+  ],
+  "vocal_presence": "instrumental",
+  "tempo_bpm": 128,
+  "key": "D minor",
+  "caption": "这是一首充满活力的爵士融合乐曲，以原声钢琴、贝斯和爵士鼓为基底，中音萨克斯进行华丽即兴演奏，整体氛围热情奔放且富有层次感。",
+  "source": "qwen_omni_supplement",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 15.5,
+      "label": "前奏",
+      "instruments": [
+        "原声钢琴",
+        "爵士鼓",
+        "贝斯"
+      ],
+      "mood": "热情奔放",
+      "confidence": 0.92
+    },
+    {
+      "start": 15.5,
+      "end": 32.0,
+      "label": "主歌",
+      "instruments": [
+        "中音萨克斯",
+        "原声钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "欢快活泼",
+      "confidence": 0.88
+    },
+    {
+      "start": 32.0,
+      "end": 48.5,
+      "label": "副歌",
+      "instruments": [
+        "中音萨克斯",
+        "原声钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "热情奔放",
+      "confidence": 0.9
+    },
+    {
+      "start": 48.5,
+      "end": 65.0,
+      "label": "独奏",
+      "instruments": [
+        "中音萨克斯",
+        "原声钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "自由即兴",
+      "confidence": 0.85
+    },
+    {
+      "start": 65.0,
+      "end": 81.5,
+      "label": "桥段",
+      "instruments": [
+        "中音萨克斯",
+        "原声钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "紧张激昂",
+      "confidence": 0.87
+    },
+    {
+      "start": 81.5,
+      "end": 105.0,
+      "label": "高潮",
+      "instruments": [
+        "中音萨克斯",
+        "原声钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "激情澎湃",
+      "confidence": 0.91
+    },
+    {
+      "start": 105.0,
+      "end": 120.0,
+      "label": "尾声",
+      "instruments": [
+        "中音萨克斯",
+        "原声钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "逐渐平静",
+      "confidence": 0.89
+    },
+    {
+      "start": 120.0,
+      "end": 181.0,
+      "label": "器乐间奏",
+      "instruments": [
+        "原声钢琴",
+        "贝斯"
+      ],
+      "mood": "宁静舒缓",
+      "confidence": 0.93
+    },
+    {
+      "start": 180.0,
+      "end": 235.0,
+      "label": "前奏与主题呈现",
+      "instruments": [
+        "原声钢琴",
+        "低音提琴"
+      ],
+      "mood": "忧郁沉思",
+      "confidence": 0.92
+    },
+    {
+      "start": 235.0,
+      "end": 315.0,
+      "label": "节奏进入与律动发展",
+      "instruments": [
+        "原声钢琴",
+        "低音提琴",
+        "爵士鼓"
+      ],
+      "mood": "慵懒摇摆",
+      "confidence": 0.88
+    },
+    {
+      "start": 315.0,
+      "end": 400.0,
+      "label": "即兴独奏段落",
+      "instruments": [
+        "原声钢琴",
+        "低音提琴",
+        "爵士鼓"
+      ],
+      "mood": "自由探索",
+      "confidence": 0.85
+    },
+    {
+      "start": 400.0,
+      "end": 450.0,
+      "label": "萨克斯风独奏",
+      "instruments": [
+        "中音萨克斯",
+        "低音提琴",
+        "爵士鼓"
+      ],
+      "mood": "狂野激烈",
+      "confidence": 0.9
+    },
+    {
+      "start": 450.0,
+      "end": 482.0,
+      "label": "高潮与结尾",
+      "instruments": [
+        "原声钢琴",
+        "低音提琴",
+        "爵士鼓",
+        "中音萨克斯"
+      ],
+      "mood": "紧张爆发后归于平静",
+      "confidence": 0.87
+    },
+    {
+      "start": 360.0,
+      "end": 383.5,
+      "label": "前奏",
+      "instruments": [
+        "钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "紧张",
+      "confidence": 0.9
+    },
+    {
+      "start": 383.5,
+      "end": 405.0,
+      "label": "主歌",
+      "instruments": [
+        "中音萨克斯",
+        "钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "自由即兴",
+      "confidence": 0.85
+    },
+    {
+      "start": 405.0,
+      "end": 425.0,
+      "label": "独奏",
+      "instruments": [
+        "中音萨克斯",
+        "钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "激烈",
+      "confidence": 0.9
+    },
+    {
+      "start": 425.0,
+      "end": 450.0,
+      "label": "高潮",
+      "instruments": [
+        "中音萨克斯",
+        "钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "狂热",
+      "confidence": 0.95
+    },
+    {
+      "start": 450.0,
+      "end": 475.0,
+      "label": "尾声",
+      "instruments": [
+        "钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "平静",
+      "confidence": 0.8
+    }
+  ],
+  "confidence": 0.8866666666666667,
+  "truncated": false,
+  "segmented": true,
+  "duration_sec": 481.733333,
+  "reannotated_from": "deepseek_v4_flash"
+}

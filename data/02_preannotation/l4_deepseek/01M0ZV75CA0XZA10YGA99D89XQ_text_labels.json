@@ -1,0 +1,345 @@
+{
+  "audio_id": "01M0ZV75CA0XZA10YGA99D89XQ",
+  "genre": "Jazz",
+  "subgenre": "Bebop",
+  "mood": [
+    "热情",
+    "活力",
+    "即兴",
+    "欢快",
+    "energetic",
+    "improvisational",
+    "sophisticated",
+    "复杂",
+    "慵懒",
+    "律动",
+    "激昂"
+  ],
+  "mood_tags": [
+    "热情",
+    "活力",
+    "即兴",
+    "欢快",
+    "energetic",
+    "improvisational",
+    "sophisticated",
+    "复杂",
+    "慵懒",
+    "律动",
+    "激昂"
+  ],
+  "mood_vad": {
+    "valence": 0.8,
+    "arousal": 0.9,
+    "dominance": 0.7
+  },
+  "instrumentation": [
+    "中音萨克斯",
+    "原声钢琴",
+    "贝斯",
+    "爵士鼓",
+    "Piano",
+    "Bass",
+    "Drums",
+    "Saxophone",
+    "低音提琴"
+  ],
+  "vocal_presence": "instrumental",
+  "tempo_bpm": 180,
+  "key": "G minor",
+  "caption": "这是一首充满活力的比波普爵士乐，以中音萨克斯为主奏乐器，展现了高超的即兴演奏技巧。",
+  "source": "qwen_omni_supplement",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 21.5,
+      "label": "Intro",
+      "instruments": [
+        "原声钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "轻快",
+      "confidence": 0.9
+    },
+    {
+      "start": 21.5,
+      "end": 41.0,
+      "label": "Theme A",
+      "instruments": [
+        "中音萨克斯",
+        "原声钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "热情奔放",
+      "confidence": 0.95
+    },
+    {
+      "start": 41.0,
+      "end": 60.5,
+      "label": "Theme B",
+      "instruments": [
+        "中音萨克斯",
+        "原声钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "活力四射",
+      "confidence": 0.9
+    },
+    {
+      "start": 60.5,
+      "end": 80.0,
+      "label": "Bridge",
+      "instruments": [
+        "中音萨克斯",
+        "原声钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "紧张",
+      "confidence": 0.85
+    },
+    {
+      "start": 80.0,
+      "end": 100.0,
+      "label": "Solo Section",
+      "instruments": [
+        "中音萨克斯",
+        "原声钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "即兴自由",
+      "confidence": 0.9
+    },
+    {
+      "start": 100.0,
+      "end": 120.0,
+      "label": "Solo Section",
+      "instruments": [
+        "中音萨克斯",
+        "原声钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "即兴自由",
+      "confidence": 0.9
+    },
+    {
+      "start": 120.0,
+      "end": 140.0,
+      "label": "Solo Section",
+      "instruments": [
+        "中音萨克斯",
+        "原声钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "即兴自由",
+      "confidence": 0.9
+    },
+    {
+      "start": 140.0,
+      "end": 160.0,
+      "label": "Solo Section",
+      "instruments": [
+        "中音萨克斯",
+        "原声钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "即兴自由",
+      "confidence": 0.9
+    },
+    {
+      "start": 160.0,
+      "end": 180.0,
+      "label": "Outro",
+      "instruments": [
+        "中音萨克斯",
+        "原声钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "欢快",
+      "confidence": 0.9
+    },
+    {
+      "start": 180.0,
+      "end": 205.0,
+      "label": "Intro",
+      "instruments": [
+        "Piano",
+        "Bass",
+        "Drums"
+      ],
+      "mood": "Energetic",
+      "confidence": 0.9
+    },
+    {
+      "start": 205.0,
+      "end": 240.0,
+      "label": "Head",
+      "instruments": [
+        "Piano",
+        "Bass",
+        "Drums",
+        "Saxophone"
+      ],
+      "mood": "Upbeat",
+      "confidence": 0.95
+    },
+    {
+      "start": 240.0,
+      "end": 320.0,
+      "label": "Solo Section",
+      "instruments": [
+        "Saxophone",
+        "Piano",
+        "Bass",
+        "Drums"
+      ],
+      "mood": "Intense",
+      "confidence": 0.9
+    },
+    {
+      "start": 320.0,
+      "end": 420.0,
+      "label": "Interlude",
+      "instruments": [
+        "Bass",
+        "Drums"
+      ],
+      "mood": "Groovy",
+      "confidence": 0.85
+    },
+    {
+      "start": 420.0,
+      "end": 540.0,
+      "label": "Outro",
+      "instruments": [
+        "Saxophone",
+        "Piano",
+        "Bass",
+        "Drums"
+      ],
+      "mood": "Relaxed",
+      "confidence": 0.9
+    },
+    {
+      "start": 360.0,
+      "end": 416.0,
+      "label": "Intro",
+      "instruments": [
+        "原声钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "神秘悬疑",
+      "confidence": 0.9
+    },
+    {
+      "start": 416.0,
+      "end": 540.0,
+      "label": "Main Theme",
+      "instruments": [
+        "中音萨克斯",
+        "原声钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "热情奔放",
+      "confidence": 0.95
+    },
+    {
+      "start": 540.0,
+      "end": 630.0,
+      "label": "Interlude",
+      "instruments": [
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "宁静舒缓",
+      "confidence": 0.85
+    },
+    {
+      "start": 630.0,
+      "end": 689.0,
+      "label": "Climax",
+      "instruments": [
+        "中音萨克斯",
+        "原声钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "激烈激昂",
+      "confidence": 0.95
+    },
+    {
+      "start": 540.0,
+      "end": 572.5,
+      "label": "前奏",
+      "instruments": [
+        "原声钢琴",
+        "低音提琴"
+      ],
+      "mood": "慵懒沉思",
+      "confidence": 0.9
+    },
+    {
+      "start": 572.5,
+      "end": 614.0,
+      "label": "主歌",
+      "instruments": [
+        "低音提琴",
+        "爵士鼓"
+      ],
+      "mood": "律动",
+      "confidence": 0.85
+    },
+    {
+      "start": 614.0,
+      "end": 640.0,
+      "label": "过渡",
+      "instruments": [
+        "低音提琴",
+        "爵士鼓"
+      ],
+      "mood": "紧张",
+      "confidence": 0.8
+    },
+    {
+      "start": 640.0,
+      "end": 665.0,
+      "label": "副歌",
+      "instruments": [
+        "中音萨克斯",
+        "原声钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "热情奔放",
+      "confidence": 0.95
+    },
+    {
+      "start": 665.0,
+      "end": 685.0,
+      "label": "高潮",
+      "instruments": [
+        "中音萨克斯",
+        "原声钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "激昂",
+      "confidence": 0.9
+    }
+  ],
+  "confidence": 0.895,
+  "truncated": false,
+  "segmented": true,
+  "duration_sec": 688.4,
+  "reannotated_from": "deepseek_v4_flash"
+}

@@ -1,0 +1,23 @@
+{
+  "genre": "latin jazz",
+  "genre_candidates": [
+    "latin jazz",
+    "bebop",
+    "electronic"
+  ],
+  "mood": [
+    "energetic",
+    "romantic"
+  ],
+  "instrumentation": [
+    "trumpet",
+    "bass",
+    "saxophone"
+  ],
+  "scene": "dance",
+  "vocal_presence": "instrumental",
+  "tempo_description": "中快速",
+  "caption": "An energetic latin jazz instrumental piece featuring trumpet and saxophone, with a driving bass line, suitable for dancing.",
+  "audio_id": "01M0ZV75MN54813KGGWVFJA864",
+  "source": "deepseek_v4_flash"
+}

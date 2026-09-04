@@ -1,0 +1,122 @@
+{
+  "audio_id": "8E0D1A1B284746B3A1FCE15B41",
+  "genre": "House",
+  "subgenre": "Tech House",
+  "mood": [
+    "energetic",
+    "driving",
+    "hypnotic",
+    "euphoric"
+  ],
+  "mood_tags": [
+    "energetic",
+    "driving",
+    "hypnotic",
+    "euphoric"
+  ],
+  "mood_vad": {
+    "valence": 0.7,
+    "arousal": 0.9,
+    "dominance": 0.8
+  },
+  "instrumentation": [
+    "Drum machine",
+    "Synth bass",
+    "Synthesizer",
+    "Percussion",
+    "Vocal samples"
+  ],
+  "vocal_presence": "instrumental",
+  "tempo_bpm": 124,
+  "key": "Eb minor",
+  "caption": "这是一首充满活力的电子舞曲，融合了浩室和科技浩室元素，以强劲的节拍和重复的合成器旋律营造出令人振奋的氛围。",
+  "source": "qwen_omni_supplement",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 32.5,
+      "label": "Intro",
+      "instruments": [
+        "Drum machine",
+        "Synth bass",
+        "Synthesizer"
+      ],
+      "mood": "Energetic",
+      "confidence": 0.9
+    },
+    {
+      "start": 32.5,
+      "end": 60.0,
+      "label": "Build-up",
+      "instruments": [
+        "Drum machine",
+        "Synth bass",
+        "Synthesizer",
+        "Percussion"
+      ],
+      "mood": "Anticipatory",
+      "confidence": 0.85
+    },
+    {
+      "start": 60.0,
+      "end": 120.0,
+      "label": "Main Groove",
+      "instruments": [
+        "Drum machine",
+        "Synth bass",
+        "Synthesizer"
+      ],
+      "mood": "Driving",
+      "confidence": 0.9
+    },
+    {
+      "start": 120.0,
+      "end": 180.0,
+      "label": "Breakdown",
+      "instruments": [
+        "Synthesizer",
+        "Pads"
+      ],
+      "mood": "Atmospheric",
+      "confidence": 0.8
+    },
+    {
+      "start": 180.0,
+      "end": 240.0,
+      "label": "Drop",
+      "instruments": [
+        "Drum machine",
+        "Synth bass",
+        "Synthesizer"
+      ],
+      "mood": "Euphoric",
+      "confidence": 0.9
+    },
+    {
+      "start": 240.0,
+      "end": 300.0,
+      "label": "Variation",
+      "instruments": [
+        "Drum machine",
+        "Synth bass",
+        "Synthesizer",
+        "Vocal samples"
+      ],
+      "mood": "Hypnotic",
+      "confidence": 0.85
+    },
+    {
+      "start": 300.0,
+      "end": 352.7,
+      "label": "Outro",
+      "instruments": [
+        "Synthesizer",
+        "Pads"
+      ],
+      "mood": "Relaxing",
+      "confidence": 0.8
+    }
+  ],
+  "confidence": 0.9,
+  "truncated": false
+}

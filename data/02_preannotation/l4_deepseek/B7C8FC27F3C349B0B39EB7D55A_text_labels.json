@@ -1,0 +1,93 @@
+{
+  "audio_id": "B7C8FC27F3C349B0B39EB7D55A",
+  "genre": "Deep House",
+  "subgenre": "Progressive House",
+  "mood": [
+    "热情",
+    "忧郁",
+    "平静"
+  ],
+  "mood_tags": [
+    "热情",
+    "忧郁",
+    "平静"
+  ],
+  "mood_vad": {
+    "valence": 0.6,
+    "arousal": 0.7,
+    "dominance": 0.6
+  },
+  "instrumentation": [
+    "合成器",
+    "电子鼓",
+    "贝斯"
+  ],
+  "vocal_presence": "instrumental",
+  "tempo_bpm": 124,
+  "key": "A minor",
+  "caption": "这是一首深浩室风格的纯音乐，以合成器和电子鼓为主要乐器，营造出热情奔放又略带忧郁的氛围。",
+  "source": "qwen_omni_supplement",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 55.0,
+      "label": "Intro",
+      "instruments": [
+        "合成器",
+        "电子鼓",
+        "贝斯"
+      ],
+      "mood": "宁静",
+      "confidence": 0.9
+    },
+    {
+      "start": 55.0,
+      "end": 130.0,
+      "label": "Build-up",
+      "instruments": [
+        "合成器",
+        "电子鼓",
+        "贝斯"
+      ],
+      "mood": "热情奔放",
+      "confidence": 0.85
+    },
+    {
+      "start": 130.0,
+      "end": 200.0,
+      "label": "Main Groove",
+      "instruments": [
+        "合成器",
+        "电子鼓",
+        "贝斯"
+      ],
+      "mood": "热情奔放",
+      "confidence": 0.9
+    },
+    {
+      "start": 200.0,
+      "end": 270.0,
+      "label": "Breakdown",
+      "instruments": [
+        "合成器",
+        "电子鼓"
+      ],
+      "mood": "忧郁沉思",
+      "confidence": 0.8
+    },
+    {
+      "start": 270.0,
+      "end": 362.0,
+      "label": "Outro",
+      "instruments": [
+        "合成器",
+        "电子鼓",
+        "贝斯"
+      ],
+      "mood": "平静",
+      "confidence": 0.85
+    }
+  ],
+  "confidence": 0.85,
+  "truncated": false
+}

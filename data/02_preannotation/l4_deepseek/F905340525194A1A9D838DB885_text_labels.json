@@ -1,0 +1,24 @@
+{
+  "genre": "cool jazz",
+  "genre_candidates": [
+    "cool jazz",
+    "hard bop",
+    "electronic"
+  ],
+  "mood": [
+    "introspective",
+    "romantic"
+  ],
+  "instrumentation": [
+    "trumpet",
+    "clarinet",
+    "flute",
+    "violin"
+  ],
+  "scene": "party",
+  "vocal_presence": "instrumental",
+  "tempo_description": "中速",
+  "caption": "A cool jazz instrumental piece featuring trumpet, clarinet, and flute, with an introspective and romantic mood at a moderate tempo.",
+  "audio_id": "F905340525194A1A9D838DB885",
+  "source": "deepseek_v4_flash"
+}

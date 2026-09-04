@@ -1,0 +1,25 @@
+{
+  "genre": "electronic",
+  "genre_candidates": [
+    "electronic",
+    "latin jazz",
+    "cool jazz"
+  ],
+  "mood": [
+    "energetic",
+    "introspective"
+  ],
+  "instrumentation": [
+    "violin",
+    "trumpet",
+    "clarinet",
+    "harp",
+    "flute"
+  ],
+  "scene": "dance",
+  "vocal_presence": "instrumental",
+  "tempo_description": "中快速",
+  "caption": "An energetic electronic instrumental piece with a moderate-fast tempo, featuring violin, trumpet, clarinet, harp, and flute, suitable for dancing.",
+  "audio_id": "33EA926BB2D64917AF8A166779",
+  "source": "deepseek_v4_flash"
+}

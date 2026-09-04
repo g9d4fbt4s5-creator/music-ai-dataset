@@ -1,0 +1,139 @@
+{
+  "audio_id": "01M0ZV75E1JTESWENDMCDN4G3Y",
+  "genre": "Jazz Fusion",
+  "subgenre": "Funky Jazz",
+  "mood": [
+    "热情",
+    "律动",
+    "活泼",
+    "即兴"
+  ],
+  "mood_tags": [
+    "热情",
+    "律动",
+    "活泼",
+    "即兴"
+  ],
+  "mood_vad": {
+    "valence": 0.8,
+    "arousal": 0.9,
+    "dominance": 0.7
+  },
+  "instrumentation": [
+    "中音萨克斯",
+    "电钢琴",
+    "电贝斯",
+    "爵士鼓"
+  ],
+  "vocal_presence": "instrumental",
+  "tempo_bpm": 138,
+  "key": "G minor",
+  "caption": "这是一首充满活力的融合爵士乐，以中音萨克斯为主奏，搭配电钢琴、贝斯和爵士鼓，营造出热情奔放的都市氛围。",
+  "source": "qwen_omni_supplement",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 12.5,
+      "label": "Intro",
+      "instruments": [
+        "电钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "律动",
+      "confidence": 0.9
+    },
+    {
+      "start": 12.5,
+      "end": 41.5,
+      "label": "主题A",
+      "instruments": [
+        "中音萨克斯",
+        "电钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "热情奔放",
+      "confidence": 0.95
+    },
+    {
+      "start": 41.5,
+      "end": 56.0,
+      "label": "主题B",
+      "instruments": [
+        "中音萨克斯",
+        "电钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "轻松愉快",
+      "confidence": 0.9
+    },
+    {
+      "start": 56.0,
+      "end": 87.0,
+      "label": "主题A再现",
+      "instruments": [
+        "中音萨克斯",
+        "电钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "热情奔放",
+      "confidence": 0.9
+    },
+    {
+      "start": 87.0,
+      "end": 146.5,
+      "label": "即兴段1",
+      "instruments": [
+        "中音萨克斯",
+        "电钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "自由随性",
+      "confidence": 0.85
+    },
+    {
+      "start": 146.5,
+      "end": 210.5,
+      "label": "即兴段2",
+      "instruments": [
+        "电钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "活力四射",
+      "confidence": 0.88
+    },
+    {
+      "start": 210.5,
+      "end": 248.0,
+      "label": "主题A再现",
+      "instruments": [
+        "中音萨克斯",
+        "电钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "热情奔放",
+      "confidence": 0.9
+    },
+    {
+      "start": 248.0,
+      "end": 260.0,
+      "label": "尾声",
+      "instruments": [
+        "中音萨克斯",
+        "电钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "渐弱收尾",
+      "confidence": 0.9
+    }
+  ],
+  "confidence": 0.92,
+  "truncated": false
+}

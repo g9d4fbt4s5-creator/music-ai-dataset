@@ -1,0 +1,24 @@
+{
+  "genre": "latin jazz",
+  "genre_candidates": [
+    "latin jazz",
+    "pop",
+    "electronic"
+  ],
+  "mood": [
+    "energetic",
+    "excited"
+  ],
+  "instrumentation": [
+    "trumpet",
+    "saxophone",
+    "flute",
+    "violin"
+  ],
+  "scene": "party",
+  "vocal_presence": "instrumental",
+  "tempo_description": "中快速",
+  "caption": "An energetic latin jazz instrumental piece featuring trumpet, saxophone, and flute, with a lively tempo suitable for a party atmosphere.",
+  "audio_id": "D0CC3C06BCC643C4AD0737115C",
+  "source": "deepseek_v4_flash"
+}

@@ -1,0 +1,119 @@
+{
+  "audio_id": "2996876392774F67887DA90C3E",
+  "genre": "Post-Rock",
+  "subgenre": "Instrumental Rock",
+  "mood": [
+    "宁静",
+    "热情",
+    "激昂",
+    "宏大"
+  ],
+  "mood_tags": [
+    "宁静",
+    "热情",
+    "激昂",
+    "宏大"
+  ],
+  "mood_vad": {
+    "valence": 0.7,
+    "arousal": 0.8,
+    "dominance": 0.6
+  },
+  "instrumentation": [
+    "电吉他",
+    "贝斯",
+    "鼓",
+    "合成器"
+  ],
+  "vocal_presence": "instrumental",
+  "tempo_bpm": 150,
+  "key": "D major",
+  "caption": "这是一首后摇滚风格的纯音乐，以电吉他、贝斯和鼓为主要乐器，情绪从宁静逐渐过渡到激昂和宏大。",
+  "source": "qwen_omni_supplement",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 32.5,
+      "label": "前奏",
+      "instruments": [
+        "电吉他",
+        "合成器"
+      ],
+      "mood": "宁静",
+      "confidence": 0.9
+    },
+    {
+      "start": 32.5,
+      "end": 54.0,
+      "label": "主歌",
+      "instruments": [
+        "电吉他",
+        "贝斯",
+        "鼓"
+      ],
+      "mood": "轻快",
+      "confidence": 0.85
+    },
+    {
+      "start": 54.0,
+      "end": 76.0,
+      "label": "副歌",
+      "instruments": [
+        "电吉他",
+        "贝斯",
+        "鼓"
+      ],
+      "mood": "热情奔放",
+      "confidence": 0.9
+    },
+    {
+      "start": 76.0,
+      "end": 154.0,
+      "label": "桥段",
+      "instruments": [
+        "电吉他",
+        "贝斯",
+        "鼓"
+      ],
+      "mood": "激昂",
+      "confidence": 0.88
+    },
+    {
+      "start": 154.0,
+      "end": 174.0,
+      "label": "间奏",
+      "instruments": [
+        "电吉他",
+        "贝斯",
+        "鼓"
+      ],
+      "mood": "紧张",
+      "confidence": 0.82
+    },
+    {
+      "start": 174.0,
+      "end": 240.0,
+      "label": "高潮",
+      "instruments": [
+        "电吉他",
+        "贝斯",
+        "鼓"
+      ],
+      "mood": "宏大",
+      "confidence": 0.95
+    },
+    {
+      "start": 240.0,
+      "end": 280.0,
+      "label": "尾声",
+      "instruments": [
+        "电吉他",
+        "合成器"
+      ],
+      "mood": "平静",
+      "confidence": 0.9
+    }
+  ],
+  "confidence": 0.88,
+  "truncated": false
+}

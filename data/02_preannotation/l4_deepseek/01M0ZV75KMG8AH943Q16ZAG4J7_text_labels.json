@@ -1,0 +1,152 @@
+{
+  "audio_id": "01M0ZV75KMG8AH943Q16ZAG4J7",
+  "genre": "Big Band Jazz",
+  "subgenre": "Swing / Jump Blues",
+  "mood": [
+    "活泼",
+    "热情",
+    "欢快",
+    "俏皮"
+  ],
+  "mood_tags": [
+    "活泼",
+    "热情",
+    "欢快",
+    "俏皮"
+  ],
+  "mood_vad": {
+    "valence": 0.9,
+    "arousal": 0.9,
+    "dominance": 0.8
+  },
+  "instrumentation": [
+    "小号",
+    "长号",
+    "萨克斯管",
+    "钢琴",
+    "低音提琴",
+    "爵士鼓"
+  ],
+  "vocal_presence": "instrumental",
+  "tempo_bpm": 185,
+  "key": "A minor",
+  "caption": "这是一首充满活力的摇摆乐，以铜管乐器和节奏组为主，营造出一种复古而欢快的氛围。",
+  "source": "qwen_omni_supplement",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 21.5,
+      "label": "Intro",
+      "instruments": [
+        "小号",
+        "长号",
+        "萨克斯管",
+        "钢琴",
+        "低音提琴",
+        "爵士鼓"
+      ],
+      "mood": "活泼",
+      "confidence": 0.95
+    },
+    {
+      "start": 21.5,
+      "end": 42.0,
+      "label": "Main Theme A",
+      "instruments": [
+        "小号",
+        "长号",
+        "萨克斯管",
+        "钢琴",
+        "低音提琴",
+        "爵士鼓"
+      ],
+      "mood": "热情奔放",
+      "confidence": 0.92
+    },
+    {
+      "start": 42.0,
+      "end": 63.0,
+      "label": "Rhythm Section Break",
+      "instruments": [
+        "低音提琴",
+        "爵士鼓",
+        "钢琴"
+      ],
+      "mood": "俏皮",
+      "confidence": 0.88
+    },
+    {
+      "start": 63.0,
+      "end": 84.0,
+      "label": "Main Theme B",
+      "instruments": [
+        "小号",
+        "长号",
+        "萨克斯管",
+        "钢琴",
+        "低音提琴",
+        "爵士鼓"
+      ],
+      "mood": "欢快",
+      "confidence": 0.9
+    },
+    {
+      "start": 84.0,
+      "end": 105.0,
+      "label": "Bridge",
+      "instruments": [
+        "萨克斯管",
+        "钢琴",
+        "低音提琴",
+        "爵士鼓"
+      ],
+      "mood": "紧张",
+      "confidence": 0.85
+    },
+    {
+      "start": 105.0,
+      "end": 125.0,
+      "label": "Solo Section",
+      "instruments": [
+        "萨克斯管",
+        "钢琴",
+        "低音提琴",
+        "爵士鼓"
+      ],
+      "mood": "即兴",
+      "confidence": 0.9
+    },
+    {
+      "start": 125.0,
+      "end": 140.0,
+      "label": "Climax",
+      "instruments": [
+        "小号",
+        "长号",
+        "萨克斯管",
+        "钢琴",
+        "低音提琴",
+        "爵士鼓"
+      ],
+      "mood": "激昂",
+      "confidence": 0.93
+    },
+    {
+      "start": 140.0,
+      "end": 159.7,
+      "label": "Outro",
+      "instruments": [
+        "小号",
+        "长号",
+        "萨克斯管",
+        "钢琴",
+        "低音提琴",
+        "爵士鼓"
+      ],
+      "mood": "辉煌",
+      "confidence": 0.91
+    }
+  ],
+  "confidence": 0.9,
+  "truncated": false
+}

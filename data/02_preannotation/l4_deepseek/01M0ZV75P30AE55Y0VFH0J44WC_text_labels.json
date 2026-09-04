@@ -1,0 +1,62 @@
+{
+  "audio_id": "01M0ZV75P30AE55Y0VFH0J44WC",
+  "genre": "Pop",
+  "subgenre": "Ballad",
+  "mood": [
+    "温柔",
+    "深情",
+    "浪漫"
+  ],
+  "mood_tags": [
+    "温柔",
+    "深情",
+    "浪漫"
+  ],
+  "mood_vad": {
+    "valence": 0.8,
+    "arousal": 0.4,
+    "dominance": 0.6
+  },
+  "instrumentation": [
+    "人声"
+  ],
+  "vocal_presence": "vocal",
+  "tempo_bpm": 72,
+  "key": "C major",
+  "caption": "这是一首温柔的流行抒情歌曲，以纯净的人声演绎，充满深情与浪漫的氛围。",
+  "source": "qwen_omni_supplement",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 15.8,
+      "label": "主歌",
+      "instruments": [
+        "人声"
+      ],
+      "mood": "温柔深情",
+      "confidence": 0.95
+    },
+    {
+      "start": 15.8,
+      "end": 24.5,
+      "label": "副歌",
+      "instruments": [
+        "人声"
+      ],
+      "mood": "温暖感动",
+      "confidence": 0.92
+    },
+    {
+      "start": 24.5,
+      "end": 36.0,
+      "label": "过渡段",
+      "instruments": [
+        "人声"
+      ],
+      "mood": "深情延续",
+      "confidence": 0.88
+    }
+  ],
+  "confidence": 0.9,
+  "truncated": false
+}

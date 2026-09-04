@@ -1,0 +1,23 @@
+{
+  "genre": "electronic pop",
+  "genre_candidates": [
+    "electronic",
+    "pop",
+    "bebop"
+  ],
+  "mood": [
+    "energetic",
+    "introspective"
+  ],
+  "instrumentation": [
+    "violin",
+    "harp",
+    "acoustic guitar"
+  ],
+  "scene": "party",
+  "vocal_presence": "instrumental",
+  "tempo_description": "快速",
+  "caption": "An energetic electronic pop instrumental with violin, harp, and acoustic guitar, suitable for a party.",
+  "audio_id": "01M0ZV75PYAVPDFDGZD69DE3YF",
+  "source": "deepseek_v4_flash"
+}

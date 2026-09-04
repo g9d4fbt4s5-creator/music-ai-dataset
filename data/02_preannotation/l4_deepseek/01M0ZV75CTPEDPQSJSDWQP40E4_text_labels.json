@@ -1,0 +1,122 @@
+{
+  "audio_id": "01M0ZV75CTPEDPQSJSDWQP40E4",
+  "genre": "Jazz Fusion",
+  "subgenre": "Free Jazz / Avant-Garde Jazz",
+  "mood": [
+    "狂野",
+    "激进",
+    "实验性",
+    "戏剧化"
+  ],
+  "mood_tags": [
+    "狂野",
+    "激进",
+    "实验性",
+    "戏剧化"
+  ],
+  "mood_vad": {
+    "valence": 0.2,
+    "arousal": 0.9,
+    "dominance": 0.7
+  },
+  "instrumentation": [
+    "萨克斯",
+    "钢琴",
+    "贝斯",
+    "爵士鼓"
+  ],
+  "vocal_presence": "instrumental",
+  "tempo_bpm": 145,
+  "key": "C minor",
+  "caption": "这是一首充满实验精神的自由爵士融合乐曲，以狂野的萨克斯独奏、复杂的钢琴和弦以及极具张力的节奏组为核心，营造出一种混乱而充满活力的听觉体验。",
+  "source": "qwen_omni_supplement",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 32.5,
+      "label": "主题呈现",
+      "instruments": [
+        "萨克斯",
+        "钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "狂野激昂",
+      "confidence": 0.95
+    },
+    {
+      "start": 32.5,
+      "end": 52.0,
+      "label": "间奏",
+      "instruments": [
+        "钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "紧张悬疑",
+      "confidence": 0.85
+    },
+    {
+      "start": 52.0,
+      "end": 90.0,
+      "label": "自由即兴",
+      "instruments": [
+        "萨克斯"
+      ],
+      "mood": "怪诞戏谑",
+      "confidence": 0.9
+    },
+    {
+      "start": 90.0,
+      "end": 175.0,
+      "label": "高潮段落",
+      "instruments": [
+        "萨克斯",
+        "钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "激烈冲突",
+      "confidence": 0.92
+    },
+    {
+      "start": 175.0,
+      "end": 236.0,
+      "label": "独奏与过渡",
+      "instruments": [
+        "钢琴",
+        "萨克斯"
+      ],
+      "mood": "沉思忧郁",
+      "confidence": 0.88
+    },
+    {
+      "start": 236.0,
+      "end": 290.0,
+      "label": "节奏驱动",
+      "instruments": [
+        "钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "律动摇摆",
+      "confidence": 0.87
+    },
+    {
+      "start": 290.0,
+      "end": 308.0,
+      "label": "终章",
+      "instruments": [
+        "萨克斯",
+        "钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "爆发终结",
+      "confidence": 0.93
+    }
+  ],
+  "confidence": 0.9,
+  "truncated": false,
+  "reannotated_from": "deepseek_v4_flash"
+}

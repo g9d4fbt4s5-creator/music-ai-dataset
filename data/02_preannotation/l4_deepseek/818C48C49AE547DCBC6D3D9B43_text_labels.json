@@ -1,0 +1,108 @@
+{
+  "audio_id": "818C48C49AE547DCBC6D3D9B43",
+  "genre": "Trance",
+  "subgenre": "Progressive Trance",
+  "mood": [
+    "energetic",
+    "euphoric",
+    "driving",
+    "atmospheric"
+  ],
+  "mood_tags": [
+    "energetic",
+    "euphoric",
+    "driving",
+    "atmospheric"
+  ],
+  "mood_vad": {
+    "valence": 0.7,
+    "arousal": 0.8,
+    "dominance": 0.6
+  },
+  "instrumentation": [
+    "Synthesizer",
+    "Drum Machine",
+    "Arpeggiator",
+    "Synth Bass"
+  ],
+  "vocal_presence": "instrumental",
+  "tempo_bpm": 130,
+  "key": "Bb minor",
+  "caption": "这是一首渐进式出神舞曲，以合成器、鼓机和琶音器为主，营造出充满活力和令人振奋的氛围。",
+  "source": "qwen_omni_supplement",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 28.5,
+      "label": "Intro",
+      "instruments": [
+        "Synth Pad",
+        "Arpeggiator"
+      ],
+      "mood": "Atmospheric",
+      "confidence": 0.95
+    },
+    {
+      "start": 28.5,
+      "end": 60.0,
+      "label": "Build-up",
+      "instruments": [
+        "Drum Machine",
+        "Synth Bass",
+        "Lead Synth"
+      ],
+      "mood": "Anticipatory",
+      "confidence": 0.92
+    },
+    {
+      "start": 60.0,
+      "end": 140.0,
+      "label": "First Drop",
+      "instruments": [
+        "Drum Machine",
+        "Synth Bass",
+        "Lead Synth",
+        "Pads"
+      ],
+      "mood": "Energetic",
+      "confidence": 0.94
+    },
+    {
+      "start": 140.0,
+      "end": 200.0,
+      "label": "Breakdown",
+      "instruments": [
+        "Synth Pads",
+        "Melodic Lead"
+      ],
+      "mood": "Euphoric",
+      "confidence": 0.91
+    },
+    {
+      "start": 200.0,
+      "end": 270.0,
+      "label": "Second Build & Drop",
+      "instruments": [
+        "Drum Machine",
+        "Synth Bass",
+        "Lead Synth",
+        "Arpeggiator"
+      ],
+      "mood": "Driving",
+      "confidence": 0.93
+    },
+    {
+      "start": 270.0,
+      "end": 332.0,
+      "label": "Outro",
+      "instruments": [
+        "Synth Pads",
+        "Arpeggiator"
+      ],
+      "mood": "Relaxing",
+      "confidence": 0.9
+    }
+  ],
+  "confidence": 0.92,
+  "truncated": false
+}

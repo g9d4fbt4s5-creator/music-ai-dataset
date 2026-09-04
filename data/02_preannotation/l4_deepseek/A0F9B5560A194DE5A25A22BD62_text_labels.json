@@ -1,0 +1,128 @@
+{
+  "audio_id": "A0F9B5560A194DE5A25A22BD62",
+  "genre": "Jazz",
+  "subgenre": "Bossa Nova / Latin Jazz",
+  "mood": [
+    "轻松",
+    "愉悦",
+    "浪漫",
+    "优雅"
+  ],
+  "mood_tags": [
+    "轻松",
+    "愉悦",
+    "浪漫",
+    "优雅"
+  ],
+  "mood_vad": {
+    "valence": 0.8,
+    "arousal": 0.6,
+    "dominance": 0.5
+  },
+  "instrumentation": [
+    "原声钢琴",
+    "贝斯",
+    "爵士鼓",
+    "尼龙弦吉他",
+    "长笛",
+    "弦乐组"
+  ],
+  "vocal_presence": "instrumental",
+  "tempo_bpm": 128,
+  "key": "A major",
+  "caption": "这是一首充满活力的巴西波萨诺瓦风格爵士乐曲，以原声钢琴、贝斯和鼓为核心，辅以长笛和弦乐，营造出轻松愉悦且浪漫的氛围。",
+  "source": "qwen_omni_supplement",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 43.5,
+      "label": "主题呈现",
+      "instruments": [
+        "原声钢琴",
+        "贝斯",
+        "爵士鼓",
+        "尼龙弦吉他"
+      ],
+      "mood": "轻松愉悦",
+      "confidence": 0.95
+    },
+    {
+      "start": 43.5,
+      "end": 72.0,
+      "label": "间奏",
+      "instruments": [
+        "原声钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "热情奔放",
+      "confidence": 0.9
+    },
+    {
+      "start": 72.0,
+      "end": 112.5,
+      "label": "弦乐引入",
+      "instruments": [
+        "原声钢琴",
+        "贝斯",
+        "爵士鼓",
+        "弦乐组"
+      ],
+      "mood": "宏大抒情",
+      "confidence": 0.88
+    },
+    {
+      "start": 112.5,
+      "end": 162.0,
+      "label": "主题再现",
+      "instruments": [
+        "原声钢琴",
+        "贝斯",
+        "爵士鼓",
+        "长笛"
+      ],
+      "mood": "浪漫优雅",
+      "confidence": 0.92
+    },
+    {
+      "start": 162.0,
+      "end": 207.0,
+      "label": "钢琴独奏",
+      "instruments": [
+        "原声钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "技巧炫技",
+      "confidence": 0.85
+    },
+    {
+      "start": 207.0,
+      "end": 252.0,
+      "label": "长笛独奏",
+      "instruments": [
+        "长笛",
+        "原声钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "温柔舒缓",
+      "confidence": 0.9
+    },
+    {
+      "start": 252.0,
+      "end": 304.0,
+      "label": "尾声",
+      "instruments": [
+        "原声钢琴",
+        "贝斯",
+        "爵士鼓",
+        "弦乐组"
+      ],
+      "mood": "宁静收尾",
+      "confidence": 0.93
+    }
+  ],
+  "confidence": 0.9,
+  "truncated": false
+}

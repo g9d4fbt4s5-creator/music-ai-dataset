@@ -1,0 +1,22 @@
+{
+  "genre": "cool jazz",
+  "genre_candidates": [
+    "cool jazz",
+    "pop",
+    "blues"
+  ],
+  "mood": [
+    "peaceful",
+    "romantic"
+  ],
+  "instrumentation": [
+    "acoustic guitar",
+    "bass"
+  ],
+  "scene": "elevator music",
+  "vocal_presence": "instrumental",
+  "tempo_description": "中速",
+  "caption": "A cool jazz instrumental piece with acoustic guitar and bass, peaceful and romantic, at a medium tempo, suitable for elevator music.",
+  "audio_id": "146D04DCF3BB4D56B68F9DD25C",
+  "source": "deepseek_v4_flash"
+}

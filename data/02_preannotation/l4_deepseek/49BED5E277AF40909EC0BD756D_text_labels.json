@@ -1,0 +1,25 @@
+{
+  "genre": "electronic pop",
+  "genre_candidates": [
+    "pop",
+    "electronic",
+    "fusion"
+  ],
+  "mood": [
+    "energetic",
+    "romantic",
+    "dreamy"
+  ],
+  "instrumentation": [
+    "piano",
+    "violin",
+    "trumpet",
+    "acoustic guitar"
+  ],
+  "scene": "party",
+  "vocal_presence": "instrumental",
+  "tempo_description": "中速",
+  "caption": "An energetic electronic pop instrumental with piano, violin, trumpet, and acoustic guitar, evoking a romantic and dreamy mood at a medium tempo.",
+  "audio_id": "49BED5E277AF40909EC0BD756D",
+  "source": "deepseek_v4_flash"
+}

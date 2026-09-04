@@ -1,0 +1,23 @@
+{
+  "genre": "latin jazz",
+  "genre_candidates": [
+    "electronic",
+    "pop",
+    "latin jazz"
+  ],
+  "mood": [
+    "energetic",
+    "romantic"
+  ],
+  "instrumentation": [
+    "double bass",
+    "acoustic guitar",
+    "violin"
+  ],
+  "scene": "study",
+  "vocal_presence": "instrumental",
+  "tempo_description": "中速",
+  "caption": "An energetic latin jazz instrumental piece featuring double bass, acoustic guitar, and violin, with a romantic and introspective mood, suitable for study or meditation.",
+  "audio_id": "E1C4475B60AC4179852278CC60",
+  "source": "deepseek_v4_flash"
+}

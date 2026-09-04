@@ -1,0 +1,59 @@
+{
+  "audio_id": "01M0ZV75MN54813KGGWVFJA864",
+  "genre": "Jazz",
+  "subgenre": "Cool Jazz",
+  "mood": [
+    "忧郁",
+    "沉思",
+    "慵懒"
+  ],
+  "mood_tags": [
+    "忧郁",
+    "沉思",
+    "慵懒"
+  ],
+  "mood_vad": {
+    "valence": 0.3,
+    "arousal": 0.4,
+    "dominance": 0.5
+  },
+  "instrumentation": [
+    "中音萨克斯",
+    "原声钢琴",
+    "低音提琴",
+    "爵士鼓"
+  ],
+  "vocal_presence": "instrumental",
+  "tempo_bpm": 68,
+  "key": "C minor",
+  "caption": "这是一首由中音萨克斯主导的冷爵士乐，氛围忧郁而沉思，结尾处融入嘈杂的人声环境音。",
+  "source": "qwen_omni_supplement",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 104.5,
+      "label": "主奏段落",
+      "instruments": [
+        "中音萨克斯",
+        "原声钢琴",
+        "低音提琴",
+        "爵士鼓"
+      ],
+      "mood": "忧郁沉思",
+      "confidence": 0.92
+    },
+    {
+      "start": 104.5,
+      "end": 137.0,
+      "label": "环境音效",
+      "instruments": [
+        "人声"
+      ],
+      "mood": "嘈杂喧闹",
+      "confidence": 0.85
+    }
+  ],
+  "confidence": 0.88,
+  "truncated": false,
+  "reannotated_from": "deepseek_v4_flash"
+}

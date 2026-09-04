@@ -1,0 +1,23 @@
+{
+  "genre": "cool jazz",
+  "genre_candidates": [
+    "cool jazz",
+    "hard bop",
+    "pop"
+  ],
+  "mood": [
+    "peaceful",
+    "romantic"
+  ],
+  "instrumentation": [
+    "trumpet",
+    "acoustic guitar",
+    "guitar"
+  ],
+  "scene": "study",
+  "vocal_presence": "instrumental",
+  "tempo_description": "中速",
+  "caption": "A cool jazz instrumental piece featuring trumpet and acoustic guitar, with a peaceful and romantic mood at a medium tempo.",
+  "audio_id": "8384A4DBF2B24CF98148BC9190",
+  "source": "deepseek_v4_flash"
+}

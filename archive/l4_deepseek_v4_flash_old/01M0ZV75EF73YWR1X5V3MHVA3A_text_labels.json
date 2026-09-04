@@ -1,0 +1,25 @@
+{
+  "genre": "electronic pop",
+  "genre_candidates": [
+    "electronic",
+    "pop",
+    "swing"
+  ],
+  "mood": [
+    "energetic",
+    "romantic"
+  ],
+  "instrumentation": [
+    "violin",
+    "flute",
+    "trumpet",
+    "double bass",
+    "bass"
+  ],
+  "scene": "workout",
+  "vocal_presence": "instrumental",
+  "tempo_description": "中快速",
+  "caption": "An energetic electronic pop instrumental with violin, flute, trumpet, and bass, featuring a romantic undertone and a driving tempo.",
+  "audio_id": "01M0ZV75EF73YWR1X5V3MHVA3A",
+  "source": "deepseek_v4_flash"
+}

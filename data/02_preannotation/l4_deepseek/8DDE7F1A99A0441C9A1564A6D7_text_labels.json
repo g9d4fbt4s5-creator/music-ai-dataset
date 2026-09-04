@@ -1,0 +1,23 @@
+{
+  "genre": "cool jazz",
+  "genre_candidates": [
+    "cool jazz",
+    "pop",
+    "rock"
+  ],
+  "mood": [
+    "peaceful",
+    "tense"
+  ],
+  "instrumentation": [
+    "acoustic guitar",
+    "bass",
+    "harp"
+  ],
+  "scene": "study",
+  "vocal_presence": "instrumental",
+  "tempo_description": "慢速",
+  "caption": "A slow, peaceful cool jazz instrumental featuring acoustic guitar, bass, and harp, suitable for study or meditation.",
+  "audio_id": "8DDE7F1A99A0441C9A1564A6D7",
+  "source": "deepseek_v4_flash"
+}

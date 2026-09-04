@@ -1,0 +1,144 @@
+{
+  "audio_id": "E6A98A1C67AC4D9FA1E7437524",
+  "genre": "Soul",
+  "subgenre": "Quiet Storm / R&B",
+  "mood": [
+    "浪漫",
+    "深情",
+    "热情"
+  ],
+  "mood_tags": [
+    "浪漫",
+    "深情",
+    "热情"
+  ],
+  "mood_vad": {
+    "valence": 0.8,
+    "arousal": 0.5,
+    "dominance": 0.6
+  },
+  "instrumentation": [
+    "电钢琴",
+    "贝斯",
+    "爵士鼓",
+    "铜管组",
+    "人声"
+  ],
+  "vocal_presence": "vocal",
+  "tempo_bpm": 84,
+  "key": "F# major",
+  "caption": "这是一首充满深情的灵魂乐，以温暖的电钢琴、律动的贝斯和铜管组为特色，营造出浪漫而热情的氛围。",
+  "source": "qwen_omni_supplement",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 12.5,
+      "label": "Intro",
+      "instruments": [
+        "电钢琴",
+        "贝斯",
+        "爵士鼓",
+        "铜管组"
+      ],
+      "mood": "浪漫",
+      "confidence": 0.95
+    },
+    {
+      "start": 12.5,
+      "end": 31.7,
+      "label": "Verse 1",
+      "instruments": [
+        "电钢琴",
+        "贝斯",
+        "爵士鼓",
+        "人声"
+      ],
+      "mood": "深情",
+      "confidence": 0.92
+    },
+    {
+      "start": 31.7,
+      "end": 56.2,
+      "label": "Chorus",
+      "instruments": [
+        "电钢琴",
+        "贝斯",
+        "爵士鼓",
+        "铜管组",
+        "人声"
+      ],
+      "mood": "热情",
+      "confidence": 0.94
+    },
+    {
+      "start": 56.2,
+      "end": 77.5,
+      "label": "Bridge",
+      "instruments": [
+        "电钢琴",
+        "贝斯",
+        "爵士鼓",
+        "人声"
+      ],
+      "mood": "沉思",
+      "confidence": 0.88
+    },
+    {
+      "start": 77.5,
+      "end": 102.0,
+      "label": "Chorus",
+      "instruments": [
+        "电钢琴",
+        "贝斯",
+        "爵士鼓",
+        "铜管组",
+        "人声"
+      ],
+      "mood": "热情",
+      "confidence": 0.93
+    },
+    {
+      "start": 102.0,
+      "end": 124.5,
+      "label": "Bridge",
+      "instruments": [
+        "电钢琴",
+        "贝斯",
+        "爵士鼓",
+        "人声"
+      ],
+      "mood": "沉思",
+      "confidence": 0.89
+    },
+    {
+      "start": 124.5,
+      "end": 150.0,
+      "label": "Chorus",
+      "instruments": [
+        "电钢琴",
+        "贝斯",
+        "爵士鼓",
+        "铜管组",
+        "人声"
+      ],
+      "mood": "热情",
+      "confidence": 0.94
+    },
+    {
+      "start": 150.0,
+      "end": 174.5,
+      "label": "Outro",
+      "instruments": [
+        "电钢琴",
+        "贝斯",
+        "爵士鼓",
+        "铜管组",
+        "人声"
+      ],
+      "mood": "浪漫",
+      "confidence": 0.91
+    }
+  ],
+  "confidence": 0.92,
+  "truncated": false
+}

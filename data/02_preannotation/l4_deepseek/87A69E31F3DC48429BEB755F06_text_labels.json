@@ -1,0 +1,23 @@
+{
+  "genre": "hip hop",
+  "genre_candidates": [
+    "hip hop",
+    "cool jazz",
+    "electronic"
+  ],
+  "mood": [
+    "energetic",
+    "peaceful"
+  ],
+  "instrumentation": [
+    "bass",
+    "trumpet",
+    "flute"
+  ],
+  "scene": "party",
+  "vocal_presence": "instrumental",
+  "tempo_description": "中速",
+  "caption": "A mid-tempo hip hop instrumental with bass, trumpet, and flute, creating an energetic yet peaceful atmosphere suitable for a party.",
+  "audio_id": "87A69E31F3DC48429BEB755F06",
+  "source": "deepseek_v4_flash"
+}

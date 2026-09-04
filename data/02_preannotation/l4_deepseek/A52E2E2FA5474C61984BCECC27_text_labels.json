@@ -1,0 +1,24 @@
+{
+  "genre": "latin jazz",
+  "genre_candidates": [
+    "latin jazz",
+    "electronic",
+    "pop"
+  ],
+  "mood": [
+    "energetic",
+    "romantic"
+  ],
+  "instrumentation": [
+    "piano",
+    "bass",
+    "violin",
+    "harp"
+  ],
+  "scene": "study",
+  "vocal_presence": "instrumental",
+  "tempo_description": "中快速",
+  "caption": "An energetic latin jazz instrumental piece with piano, bass, violin, and harp, suitable for study.",
+  "audio_id": "A52E2E2FA5474C61984BCECC27",
+  "source": "deepseek_v4_flash"
+}

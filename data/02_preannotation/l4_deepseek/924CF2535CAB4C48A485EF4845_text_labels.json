@@ -1,0 +1,115 @@
+{
+  "audio_id": "924CF2535CAB4C48A485EF4845",
+  "genre": "House",
+  "subgenre": "Progressive House",
+  "mood": [
+    "energetic",
+    "euphoric",
+    "uplifting"
+  ],
+  "mood_tags": [
+    "energetic",
+    "euphoric",
+    "uplifting"
+  ],
+  "mood_vad": {
+    "valence": 0.8,
+    "arousal": 0.9,
+    "dominance": 0.7
+  },
+  "instrumentation": [
+    "Drum machine",
+    "Synthesizer",
+    "Bass synthesizer",
+    "Piano"
+  ],
+  "vocal_presence": "instrumental",
+  "tempo_bpm": 126,
+  "key": "C major",
+  "caption": "这是一首充满活力的 progressive house 纯音乐，以明亮的合成器旋律和强劲的鼓点营造出令人振奋的舞池氛围。",
+  "source": "qwen_omni_supplement",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 32.5,
+      "label": "Intro",
+      "instruments": [
+        "Drum machine",
+        "Synthesizer"
+      ],
+      "mood": "Anticipatory",
+      "confidence": 0.9
+    },
+    {
+      "start": 32.5,
+      "end": 61.0,
+      "label": "Build-up",
+      "instruments": [
+        "Drum machine",
+        "Synthesizer",
+        "Bass synthesizer"
+      ],
+      "mood": "Energetic",
+      "confidence": 0.85
+    },
+    {
+      "start": 61.0,
+      "end": 162.0,
+      "label": "Main Theme",
+      "instruments": [
+        "Drum machine",
+        "Synthesizer",
+        "Bass synthesizer"
+      ],
+      "mood": "Euphoric",
+      "confidence": 0.9
+    },
+    {
+      "start": 162.0,
+      "end": 182.0,
+      "label": "Breakdown",
+      "instruments": [
+        "Synthesizer",
+        "Piano"
+      ],
+      "mood": "Reflective",
+      "confidence": 0.8
+    },
+    {
+      "start": 182.0,
+      "end": 244.0,
+      "label": "Main Theme",
+      "instruments": [
+        "Drum machine",
+        "Synthesizer",
+        "Bass synthesizer"
+      ],
+      "mood": "Euphoric",
+      "confidence": 0.9
+    },
+    {
+      "start": 244.0,
+      "end": 305.0,
+      "label": "Bridge",
+      "instruments": [
+        "Synthesizer",
+        "Piano"
+      ],
+      "mood": "Uplifting",
+      "confidence": 0.85
+    },
+    {
+      "start": 305.0,
+      "end": 367.0,
+      "label": "Outro",
+      "instruments": [
+        "Drum machine",
+        "Synthesizer"
+      ],
+      "mood": "Relaxed",
+      "confidence": 0.9
+    }
+  ],
+  "confidence": 0.9,
+  "truncated": false
+}

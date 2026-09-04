@@ -1,0 +1,24 @@
+{
+  "genre": "latin jazz",
+  "genre_candidates": [
+    "electronic",
+    "latin jazz",
+    "folk"
+  ],
+  "mood": [
+    "energetic",
+    "dreamy"
+  ],
+  "instrumentation": [
+    "piano",
+    "violin",
+    "flute",
+    "harp"
+  ],
+  "scene": "elevator music",
+  "vocal_presence": "instrumental",
+  "tempo_description": "中速",
+  "caption": "A medium-tempo latin jazz piece with piano, violin, flute, and harp, creating an energetic yet dreamy atmosphere, suitable for elevator music.",
+  "audio_id": "3FF351D346274F6C8DC078C78A",
+  "source": "deepseek_v4_flash"
+}

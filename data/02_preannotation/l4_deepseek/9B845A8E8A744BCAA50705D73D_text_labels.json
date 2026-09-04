@@ -1,0 +1,163 @@
+{
+  "audio_id": "9B845A8E8A744BCAA50705D73D",
+  "genre": "Pop",
+  "subgenre": "Dance-pop / Electropop",
+  "mood": [
+    "自信",
+    "时尚",
+    "热情",
+    "质问"
+  ],
+  "mood_tags": [
+    "自信",
+    "时尚",
+    "热情",
+    "质问"
+  ],
+  "mood_vad": {
+    "valence": 0.7,
+    "arousal": 0.8,
+    "dominance": 0.6
+  },
+  "instrumentation": [
+    "合成器",
+    "电吉他",
+    "钢琴",
+    "贝斯",
+    "电子鼓",
+    "人声"
+  ],
+  "vocal_presence": "vocal",
+  "tempo_bpm": 120,
+  "key": "A major",
+  "caption": "这是一首充满活力的流行舞曲，以明亮的合成器和动感的节拍为特色，表达了希望看到明星真实一面的情感。",
+  "source": "qwen_omni_supplement",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 9.5,
+      "label": "Intro",
+      "instruments": [
+        "合成器",
+        "人声采样"
+      ],
+      "mood": "时尚",
+      "confidence": 0.95
+    },
+    {
+      "start": 9.5,
+      "end": 34.8,
+      "label": "Verse 1",
+      "instruments": [
+        "钢琴",
+        "贝斯",
+        "鼓",
+        "人声"
+      ],
+      "mood": "自信",
+      "confidence": 0.92
+    },
+    {
+      "start": 34.8,
+      "end": 47.5,
+      "label": "Pre-Chorus",
+      "instruments": [
+        "钢琴",
+        "贝斯",
+        "鼓",
+        "人声"
+      ],
+      "mood": "质问",
+      "confidence": 0.9
+    },
+    {
+      "start": 47.5,
+      "end": 72.8,
+      "label": "Chorus",
+      "instruments": [
+        "合成器",
+        "贝斯",
+        "电子鼓",
+        "人声"
+      ],
+      "mood": "热情奔放",
+      "confidence": 0.95
+    },
+    {
+      "start": 72.8,
+      "end": 100.6,
+      "label": "Verse 2",
+      "instruments": [
+        "钢琴",
+        "贝斯",
+        "鼓",
+        "人声"
+      ],
+      "mood": "自信",
+      "confidence": 0.9
+    },
+    {
+      "start": 100.6,
+      "end": 113.2,
+      "label": "Pre-Chorus",
+      "instruments": [
+        "钢琴",
+        "贝斯",
+        "鼓",
+        "人声"
+      ],
+      "mood": "质问",
+      "confidence": 0.9
+    },
+    {
+      "start": 113.2,
+      "end": 138.5,
+      "label": "Chorus",
+      "instruments": [
+        "合成器",
+        "贝斯",
+        "电子鼓",
+        "人声"
+      ],
+      "mood": "热情奔放",
+      "confidence": 0.95
+    },
+    {
+      "start": 138.5,
+      "end": 151.1,
+      "label": "Bridge",
+      "instruments": [
+        "嘻哈鼓点",
+        "人声"
+      ],
+      "mood": "真诚",
+      "confidence": 0.88
+    },
+    {
+      "start": 151.1,
+      "end": 176.4,
+      "label": "Chorus",
+      "instruments": [
+        "合成器",
+        "贝斯",
+        "电子鼓",
+        "人声"
+      ],
+      "mood": "热情奔放",
+      "confidence": 0.95
+    },
+    {
+      "start": 176.4,
+      "end": 185.0,
+      "label": "Outro",
+      "instruments": [
+        "合成器",
+        "人声采样"
+      ],
+      "mood": "时尚",
+      "confidence": 0.9
+    }
+  ],
+  "confidence": 0.9,
+  "truncated": false
+}

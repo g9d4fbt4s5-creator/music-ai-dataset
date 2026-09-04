@@ -1,0 +1,25 @@
+{
+  "genre": "cool jazz",
+  "genre_candidates": [
+    "cool jazz",
+    "pop",
+    "electronic"
+  ],
+  "mood": [
+    "energetic",
+    "romantic",
+    "dreamy"
+  ],
+  "instrumentation": [
+    "bass",
+    "trumpet",
+    "harp",
+    "acoustic guitar"
+  ],
+  "scene": "party",
+  "vocal_presence": "instrumental",
+  "tempo_description": "中快速",
+  "caption": "An energetic cool jazz instrumental piece featuring bass, trumpet, harp, and acoustic guitar, with a romantic and dreamy mood, suitable for a party.",
+  "audio_id": "F7E5F56ECCCC479589A26A2A10",
+  "source": "deepseek_v4_flash"
+}

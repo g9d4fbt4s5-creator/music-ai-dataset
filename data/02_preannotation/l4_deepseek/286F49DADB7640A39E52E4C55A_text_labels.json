@@ -1,0 +1,23 @@
+{
+  "genre": "folk",
+  "genre_candidates": [
+    "folk",
+    "electronic",
+    "classical"
+  ],
+  "mood": [
+    "peaceful",
+    "dreamy"
+  ],
+  "instrumentation": [
+    "violin",
+    "harp",
+    "bass"
+  ],
+  "scene": "meditation",
+  "vocal_presence": "instrumental",
+  "tempo_description": "中速",
+  "caption": "A peaceful folk instrumental piece featuring violin and harp, with a dreamy atmosphere and a moderate tempo, suitable for meditation.",
+  "audio_id": "286F49DADB7640A39E52E4C55A",
+  "source": "deepseek_v4_flash"
+}

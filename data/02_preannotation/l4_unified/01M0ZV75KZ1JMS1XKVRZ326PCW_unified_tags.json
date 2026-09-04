@@ -1,16 +1,18 @@
 {
   "audio_id": "01M0ZV75KZ1JMS1XKVRZ326PCW",
-  "genre": "",
-  "sub_genres": [],
-  "source": "deepseek_v4_flash_invalid",
-  "source_priority": "P1_needs_reannotate",
-  "confidence": 0.0,
+  "genre": "New Age",
+  "sub_genres": [
+    "Ambient"
+  ],
+  "source": "qwen_omni_supplement",
+  "source_priority": "P1",
+  "confidence": 0.88,
   "title": "unknown",
   "artist": "unknown",
   "reference": "needs_qwen_reannotate",
   "knn_propagated": false,
   "l4_version": "unified_v2_layered_resolution",
   "deprecated_knn_note": "KNN传播已从L4移除，一致率0%，详见archive/l4_knn_legacy/DEPRECATED.md",
-  "needs_reannotate": true,
-  "reannotate_reason": "deepseek_v4_flash残留，已判定质量差，需Qwen重标"
+  "reannotated": true,
+  "reannotated_from": "deepseek_v4_flash"
 }

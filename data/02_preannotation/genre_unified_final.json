@@ -826,14 +826,19 @@
     "reference": "Wikipedia/Discogs"
   },
   "01M0ZV75FJ5XT8F2BWAWABTQ0P": {
-    "primary_genre": "",
-    "sub_genres": [],
-    "source": "deepseek_v4_flash_invalid",
-    "source_priority": "P1_needs_reannotate",
-    "confidence": 0.0,
+    "primary_genre": "Jazz Fusion",
+    "sub_genres": [
+      "Post-Bop"
+    ],
+    "source": "qwen_omni_supplement",
+    "source_priority": "P1",
+    "confidence": 0.8833333333333333,
     "title": "unknown",
     "artist": "unknown",
-    "reference": "needs_qwen_reannotate"
+    "reference": "needs_qwen_reannotate",
+    "reannotated": true,
+    "reannotated_from": "deepseek_v4_flash",
+    "segmented": true
   },
   "01M0ZV75JBZS380KPKJWHTNXY4": {
     "primary_genre": "Art Pop",
@@ -846,14 +851,18 @@
     "reference": "qwen_omni_audio"
   },
   "01M0ZV75KZ1JMS1XKVRZ326PCW": {
-    "primary_genre": "",
-    "sub_genres": [],
-    "source": "deepseek_v4_flash_invalid",
-    "source_priority": "P1_needs_reannotate",
-    "confidence": 0.0,
+    "primary_genre": "New Age",
+    "sub_genres": [
+      "Ambient"
+    ],
+    "source": "qwen_omni_supplement",
+    "source_priority": "P1",
+    "confidence": 0.88,
     "title": "unknown",
     "artist": "unknown",
-    "reference": "needs_qwen_reannotate"
+    "reference": "needs_qwen_reannotate",
+    "reannotated": true,
+    "reannotated_from": "deepseek_v4_flash"
   },
   "01M0ZV75KMG8AH943Q16ZAG4J7": {
     "primary_genre": "Big Band Jazz",
@@ -866,14 +875,18 @@
     "reference": "qwen_omni_audio"
   },
   "01M0ZV75PYAVPDFDGZD69DE3YF": {
-    "primary_genre": "",
-    "sub_genres": [],
-    "source": "deepseek_v4_flash_invalid",
-    "source_priority": "P1_needs_reannotate",
-    "confidence": 0.0,
+    "primary_genre": "Jazz",
+    "sub_genres": [
+      "Bebop"
+    ],
+    "source": "qwen_omni_supplement",
+    "source_priority": "P1",
+    "confidence": 0.85,
     "title": "unknown",
     "artist": "unknown",
-    "reference": "needs_qwen_reannotate"
+    "reference": "needs_qwen_reannotate",
+    "reannotated": true,
+    "reannotated_from": "deepseek_v4_flash"
   },
   "01M0ZV75JR9WA49NP41EP3A7TT": {
     "primary_genre": "Trip-Hop",
@@ -896,14 +909,19 @@
     "reference": "qwen_omni_audio"
   },
   "01M0ZV75EF73YWR1X5V3MHVA3A": {
-    "primary_genre": "",
-    "sub_genres": [],
-    "source": "deepseek_v4_flash_invalid",
-    "source_priority": "P1_needs_reannotate",
-    "confidence": 0.0,
+    "primary_genre": "Jazz Fusion",
+    "sub_genres": [
+      "Acid Jazz"
+    ],
+    "source": "qwen_omni_supplement",
+    "source_priority": "P1",
+    "confidence": 0.8866666666666667,
     "title": "unknown",
     "artist": "unknown",
-    "reference": "needs_qwen_reannotate"
+    "reference": "needs_qwen_reannotate",
+    "reannotated": true,
+    "reannotated_from": "deepseek_v4_flash",
+    "segmented": true
   },
   "01M0ZV75G09FTTEQQQTF6049DN": {
     "primary_genre": "New Age",
@@ -936,24 +954,33 @@
     "reference": "qwen_omni_audio"
   },
   "01M0ZV75CA0XZA10YGA99D89XQ": {
-    "primary_genre": "",
-    "sub_genres": [],
-    "source": "deepseek_v4_flash_invalid",
-    "source_priority": "P1_needs_reannotate",
-    "confidence": 0.0,
+    "primary_genre": "Jazz",
+    "sub_genres": [
+      "Bebop"
+    ],
+    "source": "qwen_omni_supplement",
+    "source_priority": "P1",
+    "confidence": 0.895,
     "title": "unknown",
     "artist": "unknown",
-    "reference": "needs_qwen_reannotate"
+    "reference": "needs_qwen_reannotate",
+    "reannotated": true,
+    "reannotated_from": "deepseek_v4_flash",
+    "segmented": true
   },
   "01M0ZV75MN54813KGGWVFJA864": {
-    "primary_genre": "",
-    "sub_genres": [],
-    "source": "deepseek_v4_flash_invalid",
-    "source_priority": "P1_needs_reannotate",
-    "confidence": 0.0,
+    "primary_genre": "Jazz",
+    "sub_genres": [
+      "Cool Jazz"
+    ],
+    "source": "qwen_omni_supplement",
+    "source_priority": "P1",
+    "confidence": 0.88,
     "title": "unknown",
     "artist": "unknown",
-    "reference": "needs_qwen_reannotate"
+    "reference": "needs_qwen_reannotate",
+    "reannotated": true,
+    "reannotated_from": "deepseek_v4_flash"
   },
   "01M0ZV75HFQNAS9VNCF717E4MC": {
     "primary_genre": "Jazz",
@@ -976,14 +1003,19 @@
     "reference": "qwen_omni_audio"
   },
   "01M0ZV75CTPEDPQSJSDWQP40E4": {
-    "primary_genre": "",
-    "sub_genres": [],
-    "source": "deepseek_v4_flash_invalid",
-    "source_priority": "P1_needs_reannotate",
-    "confidence": 0.0,
+    "primary_genre": "Jazz Fusion",
+    "sub_genres": [
+      "Free Jazz",
+      "Avant-Garde Jazz"
+    ],
+    "source": "qwen_omni_supplement",
+    "source_priority": "P1",
+    "confidence": 0.9,
     "title": "unknown",
     "artist": "unknown",
-    "reference": "needs_qwen_reannotate"
+    "reference": "needs_qwen_reannotate",
+    "reannotated": true,
+    "reannotated_from": "deepseek_v4_flash"
   },
   "01M0ZV75DMQARXEX90GT35FWFK": {
     "primary_genre": "Jazz",
@@ -996,14 +1028,19 @@
     "reference": "qwen_omni_audio"
   },
   "01M0ZV75N3CVB5WH17V4GCGDQ3": {
-    "primary_genre": "",
-    "sub_genres": [],
-    "source": "deepseek_v4_flash_invalid",
-    "source_priority": "P1_needs_reannotate",
-    "confidence": 0.0,
+    "primary_genre": "Jazz Fusion",
+    "sub_genres": [
+      "Post-Bop"
+    ],
+    "source": "qwen_omni_supplement",
+    "source_priority": "P1",
+    "confidence": 0.8866666666666667,
     "title": "unknown",
     "artist": "unknown",
-    "reference": "needs_qwen_reannotate"
+    "reference": "needs_qwen_reannotate",
+    "reannotated": true,
+    "reannotated_from": "deepseek_v4_flash",
+    "segmented": true
   },
   "01M0ZV75E1JTESWENDMCDN4G3Y": {
     "primary_genre": "Jazz",
@@ -1026,14 +1063,18 @@
     "reference": "qwen_omni_audio"
   },
   "01M0ZV75H12W7ATW11QWSKXC5N": {
-    "primary_genre": "",
-    "sub_genres": [],
-    "source": "deepseek_v4_flash_invalid",
-    "source_priority": "P1_needs_reannotate",
-    "confidence": 0.0,
+    "primary_genre": "Blues",
+    "sub_genres": [
+      "Electric Blues"
+    ],
+    "source": "qwen_omni_supplement",
+    "source_priority": "P1",
+    "confidence": 0.9,
     "title": "unknown",
     "artist": "unknown",
-    "reference": "needs_qwen_reannotate"
+    "reference": "needs_qwen_reannotate",
+    "reannotated": true,
+    "reannotated_from": "deepseek_v4_flash"
   },
   "01M0ZV75D7YTDKME3ZR6JXN1YH": {
     "primary_genre": "EXCLUDED",

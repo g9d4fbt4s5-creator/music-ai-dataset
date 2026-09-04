@@ -1,0 +1,25 @@
+{
+  "genre": "latin jazz",
+  "genre_candidates": [
+    "electronic",
+    "latin jazz",
+    "classical"
+  ],
+  "mood": [
+    "energetic",
+    "romantic"
+  ],
+  "instrumentation": [
+    "piano",
+    "double bass",
+    "violin",
+    "clarinet",
+    "harp"
+  ],
+  "scene": "study",
+  "vocal_presence": "instrumental",
+  "tempo_description": "中速",
+  "caption": "A medium-tempo latin jazz piece featuring piano, double bass, and strings, with an energetic yet romantic mood, suitable for study.",
+  "audio_id": "01M0ZV75N3CVB5WH17V4GCGDQ3",
+  "source": "deepseek_v4_flash"
+}

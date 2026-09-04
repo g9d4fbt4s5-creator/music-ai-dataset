@@ -1,0 +1,24 @@
+{
+  "genre": "electronic",
+  "genre_candidates": [
+    "electronic",
+    "cool jazz",
+    "pop"
+  ],
+  "mood": [
+    "energetic",
+    "romantic"
+  ],
+  "instrumentation": [
+    "bass",
+    "violin",
+    "acoustic guitar",
+    "harp"
+  ],
+  "scene": "dance",
+  "vocal_presence": "instrumental",
+  "tempo_description": "中快速",
+  "caption": "An energetic electronic instrumental piece with bass, violin, acoustic guitar, and harp, suitable for dancing.",
+  "audio_id": "C2AEFEEB56B0454F9AE069B899",
+  "source": "deepseek_v4_flash"
+}

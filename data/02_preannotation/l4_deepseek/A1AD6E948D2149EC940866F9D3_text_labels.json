@@ -1,0 +1,23 @@
+{
+  "genre": "cool jazz",
+  "genre_candidates": [
+    "cool jazz",
+    "electronic",
+    "pop"
+  ],
+  "mood": [
+    "energetic",
+    "peaceful"
+  ],
+  "instrumentation": [
+    "bass",
+    "acoustic guitar",
+    "violin"
+  ],
+  "scene": "study",
+  "vocal_presence": "instrumental",
+  "tempo_description": "快速",
+  "caption": "A fast-paced cool jazz instrumental piece featuring bass, acoustic guitar, and violin, with an energetic yet peaceful mood, suitable for studying.",
+  "audio_id": "A1AD6E948D2149EC940866F9D3",
+  "source": "deepseek_v4_flash"
+}

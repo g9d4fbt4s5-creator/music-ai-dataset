@@ -1,0 +1,23 @@
+{
+  "genre": "latin jazz",
+  "genre_candidates": [
+    "latin jazz",
+    "electronic",
+    "blues"
+  ],
+  "mood": [
+    "energetic",
+    "romantic"
+  ],
+  "instrumentation": [
+    "trumpet",
+    "saxophone",
+    "double bass"
+  ],
+  "scene": "dance",
+  "vocal_presence": "instrumental",
+  "tempo_description": "中快速",
+  "caption": "An energetic latin jazz instrumental with trumpet and saxophone melodies over a driving double bass, perfect for dancing.",
+  "audio_id": "01M0ZV75CA0XZA10YGA99D89XQ",
+  "source": "deepseek_v4_flash"
+}

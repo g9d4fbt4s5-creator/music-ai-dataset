@@ -1,0 +1,98 @@
+{
+  "audio_id": "364CBB655E7D4A90B83A060A39",
+  "genre": "Pop",
+  "subgenre": "Ballad / Soundtrack",
+  "mood": [
+    "浪漫",
+    "希望",
+    "温柔"
+  ],
+  "mood_tags": [
+    "浪漫",
+    "希望",
+    "温柔"
+  ],
+  "mood_vad": {
+    "valence": 0.8,
+    "arousal": 0.5,
+    "dominance": 0.4
+  },
+  "instrumentation": [
+    "钢琴",
+    "人声"
+  ],
+  "vocal_presence": "vocal",
+  "tempo_bpm": 120,
+  "key": "F major",
+  "caption": "这是一首由钢琴伴奏的男女对唱流行抒情曲，氛围浪漫且充满希望。",
+  "source": "qwen_omni_supplement",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 8.7,
+      "label": "前奏",
+      "instruments": [
+        "钢琴"
+      ],
+      "mood": "宁静舒缓",
+      "confidence": 0.95
+    },
+    {
+      "start": 8.7,
+      "end": 34.6,
+      "label": "主歌",
+      "instruments": [
+        "钢琴",
+        "人声"
+      ],
+      "mood": "温柔期待",
+      "confidence": 0.92
+    },
+    {
+      "start": 34.6,
+      "end": 59.9,
+      "label": "副歌",
+      "instruments": [
+        "钢琴",
+        "人声"
+      ],
+      "mood": "充满希望",
+      "confidence": 0.9
+    },
+    {
+      "start": 59.9,
+      "end": 86.9,
+      "label": "桥段",
+      "instruments": [
+        "钢琴",
+        "人声"
+      ],
+      "mood": "热情奔放",
+      "confidence": 0.88
+    },
+    {
+      "start": 86.9,
+      "end": 113.3,
+      "label": "副歌",
+      "instruments": [
+        "钢琴",
+        "人声"
+      ],
+      "mood": "坚定执着",
+      "confidence": 0.9
+    },
+    {
+      "start": 113.3,
+      "end": 127.8,
+      "label": "尾声",
+      "instruments": [
+        "钢琴",
+        "人声"
+      ],
+      "mood": "浪漫温馨",
+      "confidence": 0.93
+    }
+  ],
+  "confidence": 0.9,
+  "truncated": false
+}

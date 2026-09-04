@@ -1,0 +1,23 @@
+{
+  "genre": "bebop",
+  "genre_candidates": [
+    "bebop",
+    "latin jazz",
+    "electronic"
+  ],
+  "mood": [
+    "introspective",
+    "dreamy"
+  ],
+  "instrumentation": [
+    "trumpet",
+    "violin",
+    "flute"
+  ],
+  "scene": "elevator music",
+  "vocal_presence": "instrumental",
+  "tempo_description": "中速",
+  "caption": "A mid-tempo bebop instrumental featuring trumpet, violin, and flute, with an introspective and dreamy mood, suitable for elevator music.",
+  "audio_id": "01M0ZV75H12W7ATW11QWSKXC5N",
+  "source": "deepseek_v4_flash"
+}

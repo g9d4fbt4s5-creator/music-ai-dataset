@@ -1,0 +1,23 @@
+{
+  "genre": "latin jazz",
+  "genre_candidates": [
+    "latin jazz",
+    "cool jazz",
+    "electronic"
+  ],
+  "mood": [
+    "introspective",
+    "romantic"
+  ],
+  "instrumentation": [
+    "trumpet",
+    "saxophone",
+    "clarinet"
+  ],
+  "scene": "study",
+  "vocal_presence": "instrumental",
+  "tempo_description": "中速",
+  "caption": "A mellow latin jazz instrumental piece featuring trumpet and saxophone, with an introspective and romantic mood at a medium tempo, suitable for study sessions.",
+  "audio_id": "3C6F3F3C4839423DB83F7A55CD",
+  "source": "deepseek_v4_flash"
+}

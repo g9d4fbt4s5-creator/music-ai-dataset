@@ -1,0 +1,108 @@
+{
+  "audio_id": "01M0ZV75JBZS380KPKJWHTNXY4",
+  "genre": "Art Pop",
+  "subgenre": "Alternative / Indie",
+  "mood": [
+    "压抑",
+    "戏剧化",
+    "黑暗",
+    "张力"
+  ],
+  "mood_tags": [
+    "压抑",
+    "戏剧化",
+    "黑暗",
+    "张力"
+  ],
+  "mood_vad": {
+    "valence": 0.2,
+    "arousal": 0.8,
+    "dominance": 0.6
+  },
+  "instrumentation": [
+    "原声钢琴",
+    "贝斯",
+    "爵士鼓"
+  ],
+  "vocal_presence": "vocal",
+  "tempo_bpm": 120,
+  "key": "E minor",
+  "caption": "这是一首充满戏剧张力的艺术流行歌曲，以钢琴、贝斯和鼓为伴奏，女歌手用极具表现力的嗓音演绎了关于死亡与囚禁的黑暗叙事。",
+  "source": "qwen_omni_supplement",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 6.5,
+      "label": "前奏",
+      "instruments": [
+        "原声钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "忧郁沉思",
+      "confidence": 0.9
+    },
+    {
+      "start": 6.5,
+      "end": 32.0,
+      "label": "主歌",
+      "instruments": [
+        "原声钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "叙事压抑",
+      "confidence": 0.85
+    },
+    {
+      "start": 32.0,
+      "end": 54.0,
+      "label": "预副歌",
+      "instruments": [
+        "原声钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "紧张焦虑",
+      "confidence": 0.88
+    },
+    {
+      "start": 54.0,
+      "end": 71.5,
+      "label": "副歌",
+      "instruments": [
+        "原声钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "激烈爆发",
+      "confidence": 0.92
+    },
+    {
+      "start": 71.5,
+      "end": 87.0,
+      "label": "桥段",
+      "instruments": [
+        "原声钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "绝望挣扎",
+      "confidence": 0.9
+    },
+    {
+      "start": 87.0,
+      "end": 98.0,
+      "label": "尾声",
+      "instruments": [
+        "原声钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "戏剧性收尾",
+      "confidence": 0.85
+    }
+  ],
+  "confidence": 0.88,
+  "truncated": false
+}

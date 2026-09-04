@@ -1,0 +1,23 @@
+{
+  "genre": "latin jazz",
+  "genre_candidates": [
+    "latin jazz",
+    "cool jazz",
+    "pop"
+  ],
+  "mood": [
+    "energetic",
+    "excited"
+  ],
+  "instrumentation": [
+    "trumpet",
+    "flute",
+    "violin"
+  ],
+  "scene": "dance",
+  "vocal_presence": "instrumental",
+  "tempo_description": "中快速",
+  "caption": "An energetic latin jazz instrumental piece featuring trumpet, flute, and violin, with a danceable groove at a medium-fast tempo.",
+  "audio_id": "4AD0681C6347477D8B1E849422",
+  "source": "deepseek_v4_flash"
+}

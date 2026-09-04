@@ -1,0 +1,24 @@
+{
+  "genre": "fusion",
+  "genre_candidates": [
+    "fusion",
+    "cool jazz",
+    "pop"
+  ],
+  "mood": [
+    "energetic",
+    "tense",
+    "dreamy"
+  ],
+  "instrumentation": [
+    "bass",
+    "harp",
+    "violin"
+  ],
+  "scene": "dance",
+  "vocal_presence": "instrumental",
+  "tempo_description": "中速",
+  "caption": "A fusion piece with bass, harp, and violin, energetic and tense, suitable for dancing.",
+  "audio_id": "2446DC352B064D65AD61142249",
+  "source": "deepseek_v4_flash"
+}

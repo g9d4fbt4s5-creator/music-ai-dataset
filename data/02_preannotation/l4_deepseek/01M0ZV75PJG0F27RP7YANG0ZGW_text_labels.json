@@ -1,0 +1,205 @@
+{
+  "audio_id": "01M0ZV75PJG0F27RP7YANG0ZGW",
+  "genre": "Jazz",
+  "subgenre": "Latin Jazz / Salsa Jazz",
+  "mood": [
+    "热情",
+    "奔放",
+    "活力"
+  ],
+  "mood_tags": [
+    "热情",
+    "奔放",
+    "活力"
+  ],
+  "mood_vad": {
+    "valence": 0.9,
+    "arousal": 0.9,
+    "dominance": 0.8
+  },
+  "instrumentation": [
+    "钢琴",
+    "贝斯",
+    "爵士鼓",
+    "长号",
+    "小号",
+    "中音萨克斯",
+    "原声吉他"
+  ],
+  "vocal_presence": "instrumental",
+  "tempo_bpm": 132,
+  "key": "Db minor",
+  "caption": "这是一首充满活力的拉丁爵士乐，以热情的钢琴和贝斯为基底，搭配激昂的铜管乐器与即兴的萨克斯独奏，营造出热烈奔放的派对氛围。",
+  "source": "qwen_omni_supplement",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 12.5,
+      "label": "Intro",
+      "instruments": [
+        "钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "热情奔放",
+      "confidence": 0.9
+    },
+    {
+      "start": 12.5,
+      "end": 41.0,
+      "label": "Main Theme A",
+      "instruments": [
+        "钢琴",
+        "贝斯",
+        "爵士鼓",
+        "长号",
+        "小号"
+      ],
+      "mood": "热情奔放",
+      "confidence": 0.95
+    },
+    {
+      "start": 41.0,
+      "end": 72.5,
+      "label": "Saxophone Solo",
+      "instruments": [
+        "钢琴",
+        "贝斯",
+        "爵士鼓",
+        "长号",
+        "小号",
+        "中音萨克斯"
+      ],
+      "mood": "热情奔放",
+      "confidence": 0.9
+    },
+    {
+      "start": 72.5,
+      "end": 100.0,
+      "label": "Main Theme B",
+      "instruments": [
+        "钢琴",
+        "贝斯",
+        "爵士鼓",
+        "长号",
+        "小号"
+      ],
+      "mood": "热情奔放",
+      "confidence": 0.95
+    },
+    {
+      "start": 100.0,
+      "end": 128.5,
+      "label": "Saxophone Solo",
+      "instruments": [
+        "钢琴",
+        "贝斯",
+        "爵士鼓",
+        "长号",
+        "小号",
+        "中音萨克斯"
+      ],
+      "mood": "热情奔放",
+      "confidence": 0.9
+    },
+    {
+      "start": 128.5,
+      "end": 155.0,
+      "label": "Piano Solo",
+      "instruments": [
+        "钢琴",
+        "贝斯",
+        "爵士鼓",
+        "长号",
+        "小号"
+      ],
+      "mood": "热情奔放",
+      "confidence": 0.9
+    },
+    {
+      "start": 155.0,
+      "end": 182.5,
+      "label": "Drum & Bass Breakdown",
+      "instruments": [
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "紧张",
+      "confidence": 0.85
+    },
+    {
+      "start": 182.5,
+      "end": 210.0,
+      "label": "Guitar Solo",
+      "instruments": [
+        "钢琴",
+        "贝斯",
+        "爵士鼓",
+        "长号",
+        "小号",
+        "原声吉他"
+      ],
+      "mood": "热情奔放",
+      "confidence": 0.9
+    },
+    {
+      "start": 210.0,
+      "end": 237.5,
+      "label": "Main Theme C",
+      "instruments": [
+        "钢琴",
+        "贝斯",
+        "爵士鼓",
+        "长号",
+        "小号"
+      ],
+      "mood": "热情奔放",
+      "confidence": 0.95
+    },
+    {
+      "start": 237.5,
+      "end": 265.0,
+      "label": "Saxophone Solo",
+      "instruments": [
+        "钢琴",
+        "贝斯",
+        "爵士鼓",
+        "长号",
+        "小号",
+        "中音萨克斯"
+      ],
+      "mood": "热情奔放",
+      "confidence": 0.9
+    },
+    {
+      "start": 265.0,
+      "end": 292.5,
+      "label": "Main Theme D",
+      "instruments": [
+        "钢琴",
+        "贝斯",
+        "爵士鼓",
+        "长号",
+        "小号"
+      ],
+      "mood": "热情奔放",
+      "confidence": 0.95
+    },
+    {
+      "start": 292.5,
+      "end": 320.0,
+      "label": "Outro",
+      "instruments": [
+        "钢琴",
+        "贝斯",
+        "爵士鼓",
+        "长号",
+        "小号"
+      ],
+      "mood": "热情奔放",
+      "confidence": 0.9
+    }
+  ],
+  "confidence": 0.92,
+  "truncated": false
+}

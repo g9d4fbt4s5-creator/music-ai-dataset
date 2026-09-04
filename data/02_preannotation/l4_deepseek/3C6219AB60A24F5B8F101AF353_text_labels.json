@@ -1,0 +1,23 @@
+{
+  "genre": "cool jazz",
+  "genre_candidates": [
+    "cool jazz",
+    "swing",
+    "pop"
+  ],
+  "mood": [
+    "peaceful",
+    "romantic"
+  ],
+  "instrumentation": [
+    "trumpet",
+    "bass",
+    "violin"
+  ],
+  "scene": "study",
+  "vocal_presence": "instrumental",
+  "tempo_description": "慢速",
+  "caption": "A slow, peaceful cool jazz instrumental piece featuring trumpet, bass, and violin, suitable for study or relaxation.",
+  "audio_id": "3C6219AB60A24F5B8F101AF353",
+  "source": "deepseek_v4_flash"
+}

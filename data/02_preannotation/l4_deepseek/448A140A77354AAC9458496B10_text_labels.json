@@ -1,0 +1,24 @@
+{
+  "genre": "electronic",
+  "genre_candidates": [
+    "electronic",
+    "cool jazz",
+    "latin jazz"
+  ],
+  "mood": [
+    "energetic",
+    "happy"
+  ],
+  "instrumentation": [
+    "harp",
+    "trumpet",
+    "clarinet",
+    "bass"
+  ],
+  "scene": "party",
+  "vocal_presence": "instrumental",
+  "tempo_description": "中快速",
+  "caption": "An energetic electronic instrumental piece with harp, trumpet, clarinet, and bass, suitable for a party atmosphere.",
+  "audio_id": "448A140A77354AAC9458496B10",
+  "source": "deepseek_v4_flash"
+}

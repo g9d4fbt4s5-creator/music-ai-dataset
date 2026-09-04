@@ -1,0 +1,143 @@
+{
+  "audio_id": "6878BDAC7CD149C6A0AFA5ADD5",
+  "genre": "Cantopop",
+  "subgenre": "Pop Ballad",
+  "mood": [
+    "sentimental",
+    "melancholic",
+    "emotional"
+  ],
+  "mood_tags": [
+    "sentimental",
+    "melancholic",
+    "emotional"
+  ],
+  "mood_vad": {
+    "valence": 0.3,
+    "arousal": 0.6,
+    "dominance": 0.4
+  },
+  "instrumentation": [
+    "piano",
+    "acoustic guitar",
+    "drums",
+    "strings",
+    "male vocals"
+  ],
+  "vocal_presence": "vocal",
+  "tempo_bpm": 100,
+  "key": "Bb major",
+  "caption": "这是一首由男声演唱的伤感流行歌曲，以钢琴和弦乐为主要伴奏。",
+  "source": "qwen_omni_supplement",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 32.48,
+      "label": "Intro",
+      "instruments": [
+        "piano",
+        "strings"
+      ],
+      "mood": "sentimental",
+      "confidence": 0.95
+    },
+    {
+      "start": 32.48,
+      "end": 56.72,
+      "label": "verse",
+      "instruments": [
+        "piano",
+        "acoustic guitar",
+        "drums",
+        "male vocals"
+      ],
+      "mood": "melancholic",
+      "confidence": 0.92
+    },
+    {
+      "start": 56.72,
+      "end": 88.48,
+      "label": "chorus",
+      "instruments": [
+        "piano",
+        "acoustic guitar",
+        "drums",
+        "strings",
+        "male vocals"
+      ],
+      "mood": "emotional",
+      "confidence": 0.94
+    },
+    {
+      "start": 88.48,
+      "end": 115.36,
+      "label": "chorus",
+      "instruments": [
+        "piano",
+        "acoustic guitar",
+        "drums",
+        "strings",
+        "male vocals"
+      ],
+      "mood": "emotional",
+      "confidence": 0.94
+    },
+    {
+      "start": 115.36,
+      "end": 138.88,
+      "label": "verse",
+      "instruments": [
+        "piano",
+        "acoustic guitar",
+        "drums",
+        "male vocals"
+      ],
+      "mood": "melancholic",
+      "confidence": 0.92
+    },
+    {
+      "start": 138.88,
+      "end": 173.12,
+      "label": "chorus",
+      "instruments": [
+        "piano",
+        "acoustic guitar",
+        "drums",
+        "strings",
+        "male vocals"
+      ],
+      "mood": "emotional",
+      "confidence": 0.94
+    },
+    {
+      "start": 173.12,
+      "end": 211.28,
+      "label": "chorus",
+      "instruments": [
+        "piano",
+        "acoustic guitar",
+        "drums",
+        "strings",
+        "male vocals"
+      ],
+      "mood": "emotional",
+      "confidence": 0.94
+    },
+    {
+      "start": 211.28,
+      "end": 245.28,
+      "label": "bridge",
+      "instruments": [
+        "piano",
+        "acoustic guitar",
+        "drums",
+        "strings",
+        "male vocals"
+      ],
+      "mood": "reflective",
+      "confidence": 0.9
+    }
+  ],
+  "confidence": 0.9,
+  "truncated": false
+}

@@ -1,0 +1,141 @@
+{
+  "audio_id": "01M0ZV75G09FTTEQQQTF6049DN",
+  "genre": "Lounge",
+  "subgenre": "Chillout",
+  "mood": [
+    "慵懒",
+    "放松",
+    "舒缓",
+    "宁静"
+  ],
+  "mood_tags": [
+    "慵懒",
+    "放松",
+    "舒缓",
+    "宁静"
+  ],
+  "mood_vad": {
+    "valence": 0.6,
+    "arousal": 0.4,
+    "dominance": 0.5
+  },
+  "instrumentation": [
+    "合成器",
+    "电子鼓",
+    "贝斯",
+    "环境音效"
+  ],
+  "vocal_presence": "instrumental",
+  "tempo_bpm": 128,
+  "key": "A minor",
+  "caption": "这是一首融合了自然环境音效的弛放音乐，以合成器和电子鼓为主要乐器，营造出慵懒放松的整体氛围。",
+  "source": "qwen_omni_supplement",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 13.5,
+      "label": "前奏",
+      "instruments": [
+        "环境音效",
+        "合成器"
+      ],
+      "mood": "宁静",
+      "confidence": 0.95
+    },
+    {
+      "start": 13.5,
+      "end": 45.0,
+      "label": "主歌",
+      "instruments": [
+        "合成器",
+        "电子鼓",
+        "贝斯"
+      ],
+      "mood": "慵懒",
+      "confidence": 0.9
+    },
+    {
+      "start": 45.0,
+      "end": 75.0,
+      "label": "副歌",
+      "instruments": [
+        "合成器",
+        "电子鼓",
+        "贝斯"
+      ],
+      "mood": "放松",
+      "confidence": 0.85
+    },
+    {
+      "start": 75.0,
+      "end": 105.0,
+      "label": "桥段",
+      "instruments": [
+        "合成器",
+        "电子鼓"
+      ],
+      "mood": "舒缓",
+      "confidence": 0.8
+    },
+    {
+      "start": 105.0,
+      "end": 135.0,
+      "label": "主歌",
+      "instruments": [
+        "合成器",
+        "电子鼓",
+        "贝斯"
+      ],
+      "mood": "慵懒",
+      "confidence": 0.85
+    },
+    {
+      "start": 135.0,
+      "end": 165.0,
+      "label": "副歌",
+      "instruments": [
+        "合成器",
+        "电子鼓",
+        "贝斯"
+      ],
+      "mood": "放松",
+      "confidence": 0.85
+    },
+    {
+      "start": 165.0,
+      "end": 195.0,
+      "label": "桥段",
+      "instruments": [
+        "合成器",
+        "电子鼓"
+      ],
+      "mood": "舒缓",
+      "confidence": 0.8
+    },
+    {
+      "start": 195.0,
+      "end": 225.0,
+      "label": "主歌",
+      "instruments": [
+        "合成器",
+        "电子鼓",
+        "贝斯"
+      ],
+      "mood": "慵懒",
+      "confidence": 0.85
+    },
+    {
+      "start": 225.0,
+      "end": 250.0,
+      "label": "尾奏",
+      "instruments": [
+        "合成器",
+        "环境音效"
+      ],
+      "mood": "宁静",
+      "confidence": 0.9
+    }
+  ],
+  "confidence": 0.85,
+  "truncated": false
+}

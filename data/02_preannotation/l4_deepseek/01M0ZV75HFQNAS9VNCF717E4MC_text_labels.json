@@ -1,0 +1,186 @@
+{
+  "audio_id": "01M0ZV75HFQNAS9VNCF717E4MC",
+  "genre": "Jazz",
+  "mood": [],
+  "instrumentation": [
+    "saxophone",
+    "organ",
+    "bass",
+    "drums",
+    "电风琴",
+    "电贝斯",
+    "爵士鼓",
+    "铜管组",
+    "萨克斯",
+    "钢琴",
+    "贝斯"
+  ],
+  "caption": "这是一首充满活力的爵士融合乐，以萨克斯风为主奏乐器，搭配 organ、贝斯和鼓，营造出热情奔放的氛围。",
+  "source": "qwen_omni_segmented",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 36.5,
+      "label": "Intro",
+      "instruments": [
+        "saxophone",
+        "organ",
+        "bass",
+        "drums"
+      ],
+      "mood": "groovy",
+      "confidence": 0.9
+    },
+    {
+      "start": 36.5,
+      "end": 54.5,
+      "label": "Chorus",
+      "instruments": [
+        "saxophone",
+        "trumpet",
+        "organ",
+        "bass",
+        "drums"
+      ],
+      "mood": "energetic",
+      "confidence": 0.9
+    },
+    {
+      "start": 54.5,
+      "end": 145.5,
+      "label": "Solo",
+      "instruments": [
+        "saxophone",
+        "organ",
+        "bass",
+        "drums"
+      ],
+      "mood": "improvisational",
+      "confidence": 0.95
+    },
+    {
+      "start": 145.5,
+      "end": 181.0,
+      "label": "Outro",
+      "instruments": [
+        "organ",
+        "bass",
+        "drums"
+      ],
+      "mood": "relaxed",
+      "confidence": 0.85
+    },
+    {
+      "start": 180.0,
+      "end": 212.5,
+      "label": "主题A段",
+      "instruments": [
+        "电风琴",
+        "电贝斯",
+        "爵士鼓"
+      ],
+      "mood": "热情奔放",
+      "confidence": 0.9
+    },
+    {
+      "start": 212.5,
+      "end": 234.0,
+      "label": "主题B段",
+      "instruments": [
+        "电风琴",
+        "电贝斯",
+        "爵士鼓",
+        "铜管组"
+      ],
+      "mood": "活力四射",
+      "confidence": 0.85
+    },
+    {
+      "start": 234.0,
+      "end": 254.0,
+      "label": "过门段落",
+      "instruments": [
+        "电贝斯",
+        "爵士鼓"
+      ],
+      "mood": "律动",
+      "confidence": 0.8
+    },
+    {
+      "start": 254.0,
+      "end": 294.0,
+      "label": "主题A段再现",
+      "instruments": [
+        "电风琴",
+        "电贝斯",
+        "爵士鼓"
+      ],
+      "mood": "热情奔放",
+      "confidence": 0.9
+    },
+    {
+      "start": 294.0,
+      "end": 324.0,
+      "label": "主题B段再现",
+      "instruments": [
+        "电风琴",
+        "电贝斯",
+        "爵士鼓",
+        "铜管组"
+      ],
+      "mood": "活力四射",
+      "confidence": 0.85
+    },
+    {
+      "start": 324.0,
+      "end": 360.0,
+      "label": "鼓独奏",
+      "instruments": [
+        "爵士鼓"
+      ],
+      "mood": "激烈炫技",
+      "confidence": 0.95
+    },
+    {
+      "start": 360.0,
+      "end": 402.5,
+      "label": "鼓独奏 (Drum Solo)",
+      "instruments": [
+        "爵士鼓"
+      ],
+      "mood": "热情奔放",
+      "confidence": 0.95
+    },
+    {
+      "start": 402.5,
+      "end": 423.0,
+      "label": "主部主题 (Main Theme)",
+      "instruments": [
+        "萨克斯",
+        "钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "活泼欢快",
+      "confidence": 0.9
+    },
+    {
+      "start": 423.0,
+      "end": 443.0,
+      "label": "高潮段落 (Climax)",
+      "instruments": [
+        "铜管组",
+        "萨克斯",
+        "钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "气势磅礴",
+      "confidence": 0.92
+    }
+  ],
+  "confidence": 0.85,
+  "truncated": false,
+  "segmented": true,
+  "duration_sec": 443.794292
+}

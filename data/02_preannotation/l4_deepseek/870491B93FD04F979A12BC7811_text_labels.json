@@ -1,0 +1,24 @@
+{
+  "genre": "electronic",
+  "genre_candidates": [
+    "electronic",
+    "hard bop",
+    "hip hop"
+  ],
+  "mood": [
+    "energetic",
+    "introspective"
+  ],
+  "instrumentation": [
+    "drums",
+    "violin",
+    "acoustic guitar",
+    "flute"
+  ],
+  "scene": "dance",
+  "vocal_presence": "instrumental",
+  "tempo_description": "中速",
+  "caption": "An energetic electronic instrumental piece with drums, violin, acoustic guitar, and flute, suitable for dancing.",
+  "audio_id": "870491B93FD04F979A12BC7811",
+  "source": "deepseek_v4_flash"
+}

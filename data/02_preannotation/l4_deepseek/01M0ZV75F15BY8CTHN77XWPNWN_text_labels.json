@@ -1,0 +1,24 @@
+{
+  "genre": "latin jazz",
+  "genre_candidates": [
+    "latin jazz",
+    "pop",
+    "electronic"
+  ],
+  "mood": [
+    "energetic",
+    "peaceful",
+    "relaxed"
+  ],
+  "instrumentation": [
+    "trumpet",
+    "harp",
+    "clarinet"
+  ],
+  "scene": "party",
+  "vocal_presence": "instrumental",
+  "tempo_description": "中速",
+  "caption": "A lively latin jazz instrumental piece featuring trumpet, harp, and clarinet, with an energetic yet relaxed mood suitable for a party.",
+  "audio_id": "01M0ZV75F15BY8CTHN77XWPNWN",
+  "source": "deepseek_v4_flash"
+}

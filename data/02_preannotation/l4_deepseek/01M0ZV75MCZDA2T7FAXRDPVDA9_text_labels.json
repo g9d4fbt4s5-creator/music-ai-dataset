@@ -1,0 +1,137 @@
+{
+  "audio_id": "01M0ZV75MCZDA2T7FAXRDPVDA9",
+  "genre": "Jazz",
+  "subgenre": "Fusion",
+  "mood": [
+    "energetic",
+    "groovy",
+    "improvisational"
+  ],
+  "mood_tags": [
+    "energetic",
+    "groovy",
+    "improvisational"
+  ],
+  "mood_vad": {
+    "valence": 0.7,
+    "arousal": 0.8,
+    "dominance": 0.6
+  },
+  "instrumentation": [
+    "Saxophone",
+    "Electric Piano",
+    "Bass",
+    "Drums"
+  ],
+  "vocal_presence": "instrumental",
+  "tempo_bpm": 145,
+  "key": "A minor",
+  "caption": "这是一首充满活力的融合爵士乐，以萨克斯风、电钢琴、贝斯和鼓为主要乐器，营造出热情奔放的氛围。",
+  "source": "qwen_omni_supplement",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 32.5,
+      "label": "Intro",
+      "instruments": [
+        "Electric Piano",
+        "Bass",
+        "Drums"
+      ],
+      "mood": "Groovy",
+      "confidence": 0.9
+    },
+    {
+      "start": 32.5,
+      "end": 64.0,
+      "label": "Theme A",
+      "instruments": [
+        "Saxophone",
+        "Electric Piano",
+        "Bass",
+        "Drums"
+      ],
+      "mood": "Energetic",
+      "confidence": 0.95
+    },
+    {
+      "start": 64.0,
+      "end": 97.0,
+      "label": "Theme B",
+      "instruments": [
+        "Saxophone",
+        "Electric Piano",
+        "Bass",
+        "Drums"
+      ],
+      "mood": "Upbeat",
+      "confidence": 0.92
+    },
+    {
+      "start": 97.0,
+      "end": 130.0,
+      "label": "Solo Section",
+      "instruments": [
+        "Saxophone",
+        "Electric Piano",
+        "Bass",
+        "Drums"
+      ],
+      "mood": "Improvisational",
+      "confidence": 0.88
+    },
+    {
+      "start": 130.0,
+      "end": 163.0,
+      "label": "Bridge",
+      "instruments": [
+        "Electric Piano",
+        "Bass",
+        "Drums"
+      ],
+      "mood": "Dynamic",
+      "confidence": 0.85
+    },
+    {
+      "start": 163.0,
+      "end": 196.0,
+      "label": "Solo Section",
+      "instruments": [
+        "Saxophone",
+        "Electric Piano",
+        "Bass",
+        "Drums"
+      ],
+      "mood": "Intense",
+      "confidence": 0.9
+    },
+    {
+      "start": 196.0,
+      "end": 229.0,
+      "label": "Theme A Return",
+      "instruments": [
+        "Saxophone",
+        "Electric Piano",
+        "Bass",
+        "Drums"
+      ],
+      "mood": "Lively",
+      "confidence": 0.93
+    },
+    {
+      "start": 229.0,
+      "end": 262.0,
+      "label": "Outro",
+      "instruments": [
+        "Saxophone",
+        "Electric Piano",
+        "Bass",
+        "Drums"
+      ],
+      "mood": "Fading",
+      "confidence": 0.87
+    }
+  ],
+  "confidence": 0.9,
+  "truncated": false
+}

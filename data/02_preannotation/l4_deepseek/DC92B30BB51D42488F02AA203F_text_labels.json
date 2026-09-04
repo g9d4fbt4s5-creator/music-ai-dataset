@@ -1,0 +1,23 @@
+{
+  "genre": "electronic",
+  "genre_candidates": [
+    "electronic",
+    "cool jazz",
+    "free jazz"
+  ],
+  "mood": [
+    "energetic",
+    "dreamy"
+  ],
+  "instrumentation": [
+    "acoustic guitar",
+    "violin",
+    "bass"
+  ],
+  "scene": "party",
+  "vocal_presence": "instrumental",
+  "tempo_description": "中速",
+  "caption": "An energetic electronic track with acoustic guitar, violin, and bass, featuring a dreamy atmosphere, suitable for a party.",
+  "audio_id": "DC92B30BB51D42488F02AA203F",
+  "source": "deepseek_v4_flash"
+}

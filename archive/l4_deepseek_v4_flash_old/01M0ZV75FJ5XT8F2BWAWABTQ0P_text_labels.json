@@ -1,0 +1,25 @@
+{
+  "genre": "latin jazz",
+  "genre_candidates": [
+    "latin jazz",
+    "cool jazz",
+    "electronic"
+  ],
+  "mood": [
+    "introspective",
+    "romantic"
+  ],
+  "instrumentation": [
+    "saxophone",
+    "trumpet",
+    "bass",
+    "clarinet",
+    "violin"
+  ],
+  "scene": "meditation",
+  "vocal_presence": "instrumental",
+  "tempo_description": "慢速",
+  "caption": "A slow, introspective latin jazz piece featuring saxophone and trumpet, with a romantic and meditative atmosphere.",
+  "audio_id": "01M0ZV75FJ5XT8F2BWAWABTQ0P",
+  "source": "deepseek_v4_flash"
+}

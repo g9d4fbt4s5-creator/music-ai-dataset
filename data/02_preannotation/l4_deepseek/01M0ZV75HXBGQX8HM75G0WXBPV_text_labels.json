@@ -1,0 +1,139 @@
+{
+  "audio_id": "01M0ZV75HXBGQX8HM75G0WXBPV",
+  "genre": "Jazz",
+  "subgenre": "Fusion / Latin Jazz",
+  "mood": [
+    "热情",
+    "活泼",
+    "自由",
+    "激情"
+  ],
+  "mood_tags": [
+    "热情",
+    "活泼",
+    "自由",
+    "激情"
+  ],
+  "mood_vad": {
+    "valence": 0.8,
+    "arousal": 0.9,
+    "dominance": 0.7
+  },
+  "instrumentation": [
+    "中音萨克斯",
+    "原声钢琴",
+    "电贝斯",
+    "爵士鼓"
+  ],
+  "vocal_presence": "instrumental",
+  "tempo_bpm": 130,
+  "key": "G minor",
+  "caption": "这是一首充满活力的拉丁融合爵士乐，以热情的中音萨克斯为主导，搭配流畅的钢琴、律动的贝斯和复杂的鼓点，营造出一种自由奔放且富有感染力的氛围。",
+  "source": "qwen_omni_supplement",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 20.0,
+      "label": "Intro",
+      "instruments": [
+        "原声钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "轻松",
+      "confidence": 0.95
+    },
+    {
+      "start": 20.0,
+      "end": 40.0,
+      "label": "主题A",
+      "instruments": [
+        "中音萨克斯",
+        "原声钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "热情",
+      "confidence": 0.92
+    },
+    {
+      "start": 40.0,
+      "end": 60.0,
+      "label": "主题B",
+      "instruments": [
+        "中音萨克斯",
+        "原声钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "活泼",
+      "confidence": 0.88
+    },
+    {
+      "start": 60.0,
+      "end": 120.0,
+      "label": "即兴演奏",
+      "instruments": [
+        "中音萨克斯",
+        "原声钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "自由奔放",
+      "confidence": 0.9
+    },
+    {
+      "start": 120.0,
+      "end": 170.0,
+      "label": "主题再现",
+      "instruments": [
+        "中音萨克斯",
+        "原声钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "热情",
+      "confidence": 0.91
+    },
+    {
+      "start": 170.0,
+      "end": 240.0,
+      "label": "器乐独奏",
+      "instruments": [
+        "原声钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "沉思",
+      "confidence": 0.85
+    },
+    {
+      "start": 240.0,
+      "end": 280.0,
+      "label": "高潮",
+      "instruments": [
+        "中音萨克斯",
+        "原声钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "激情澎湃",
+      "confidence": 0.93
+    },
+    {
+      "start": 280.0,
+      "end": 300.0,
+      "label": "结尾",
+      "instruments": [
+        "中音萨克斯",
+        "原声钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "宁静",
+      "confidence": 0.94
+    }
+  ],
+  "confidence": 0.9,
+  "truncated": false
+}

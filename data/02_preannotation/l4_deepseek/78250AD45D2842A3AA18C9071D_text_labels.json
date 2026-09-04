@@ -1,0 +1,187 @@
+{
+  "audio_id": "78250AD45D2842A3AA18C9071D",
+  "genre": "Jazz",
+  "mood": [],
+  "instrumentation": [
+    "Piano",
+    "Double Bass",
+    "Drums",
+    "原声钢琴",
+    "电贝斯",
+    "爵士鼓"
+  ],
+  "caption": "这是一首充满活力的爵士钢琴三重奏，以欢快的旋律和即兴演奏为特色。",
+  "source": "qwen_omni_segmented",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 59.0,
+      "label": "Intro",
+      "instruments": [
+        "Piano"
+      ],
+      "mood": "Playful",
+      "confidence": 0.9
+    },
+    {
+      "start": 59.0,
+      "end": 140.0,
+      "label": "Head",
+      "instruments": [
+        "Piano",
+        "Double Bass",
+        "Drums"
+      ],
+      "mood": "Energetic",
+      "confidence": 0.95
+    },
+    {
+      "start": 140.0,
+      "end": 180.0,
+      "label": "Solo",
+      "instruments": [
+        "Piano",
+        "Double Bass",
+        "Drums"
+      ],
+      "mood": "Lively",
+      "confidence": 0.9
+    },
+    {
+      "start": 180.0,
+      "end": 195.0,
+      "label": "Intro",
+      "instruments": [
+        "Piano",
+        "Double Bass",
+        "Drums"
+      ],
+      "mood": "Energetic",
+      "confidence": 0.9
+    },
+    {
+      "start": 195.0,
+      "end": 225.0,
+      "label": "Head (Theme)",
+      "instruments": [
+        "Piano",
+        "Double Bass",
+        "Drums"
+      ],
+      "mood": "Upbeat",
+      "confidence": 0.95
+    },
+    {
+      "start": 225.0,
+      "end": 255.0,
+      "label": "Solo Section",
+      "instruments": [
+        "Piano",
+        "Double Bass",
+        "Drums"
+      ],
+      "mood": "Intense",
+      "confidence": 0.9
+    },
+    {
+      "start": 255.0,
+      "end": 285.0,
+      "label": "Solo Section",
+      "instruments": [
+        "Piano",
+        "Double Bass",
+        "Drums"
+      ],
+      "mood": "Passionate",
+      "confidence": 0.9
+    },
+    {
+      "start": 285.0,
+      "end": 315.0,
+      "label": "Solo Section",
+      "instruments": [
+        "Piano",
+        "Double Bass",
+        "Drums"
+      ],
+      "mood": "Funky",
+      "confidence": 0.85
+    },
+    {
+      "start": 315.0,
+      "end": 345.0,
+      "label": "Outro",
+      "instruments": [
+        "Piano",
+        "Double Bass",
+        "Drums"
+      ],
+      "mood": "Relaxed",
+      "confidence": 0.9
+    },
+    {
+      "start": 360.0,
+      "end": 376.8,
+      "label": "主题段 (Theme)",
+      "instruments": [
+        "原声钢琴",
+        "电贝斯",
+        "爵士鼓"
+      ],
+      "mood": "轻松活泼",
+      "confidence": 0.92
+    },
+    {
+      "start": 376.8,
+      "end": 394.5,
+      "label": "即兴段 (Solo A)",
+      "instruments": [
+        "原声钢琴",
+        "电贝斯",
+        "爵士鼓"
+      ],
+      "mood": "热情奔放",
+      "confidence": 0.88
+    },
+    {
+      "start": 394.5,
+      "end": 412.2,
+      "label": "即兴段 (Solo B)",
+      "instruments": [
+        "原声钢琴",
+        "电贝斯",
+        "爵士鼓"
+      ],
+      "mood": "俏皮灵动",
+      "confidence": 0.85
+    },
+    {
+      "start": 412.2,
+      "end": 430.0,
+      "label": "即兴段 (Solo C)",
+      "instruments": [
+        "原声钢琴",
+        "电贝斯",
+        "爵士鼓"
+      ],
+      "mood": "能量充沛",
+      "confidence": 0.9
+    },
+    {
+      "start": 430.0,
+      "end": 440.0,
+      "label": "高潮与结尾 (Climax & Outro)",
+      "instruments": [
+        "原声钢琴",
+        "电贝斯",
+        "爵士鼓"
+      ],
+      "mood": "激昂有力",
+      "confidence": 0.95
+    }
+  ],
+  "confidence": 0.85,
+  "truncated": false,
+  "segmented": true,
+  "duration_sec": 444.0
+}

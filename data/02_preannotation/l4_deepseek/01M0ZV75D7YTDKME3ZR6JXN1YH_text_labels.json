@@ -1,0 +1,23 @@
+{
+  "genre": "bebop",
+  "genre_candidates": [
+    "bebop",
+    "pop",
+    "electronic"
+  ],
+  "mood": [
+    "energetic",
+    "excited"
+  ],
+  "instrumentation": [
+    "trumpet",
+    "bass",
+    "trombone"
+  ],
+  "scene": "party",
+  "vocal_presence": "instrumental",
+  "tempo_description": "快速",
+  "caption": "A fast-paced bebop instrumental featuring trumpet, bass, and trombone, with an energetic and excited mood, suitable for a party atmosphere.",
+  "audio_id": "01M0ZV75D7YTDKME3ZR6JXN1YH",
+  "source": "deepseek_v4_flash"
+}
