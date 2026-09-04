@@ -30,14 +30,18 @@
     "sub_genres": [
       "J-pop",
       "Adult Contemporary",
-      "Jazz Fusion"
+      "Jazz Fusion",
+      "Vocal Jazz",
+      "Ballad"
     ],
     "source": "text_llm_search",
     "source_priority": "P0",
     "confidence": 0.9,
     "title": "若き日の望楼",
     "artist": "大贯妙子 (Taeko Onuki)",
-    "reference": "Discogs/J-pop百科"
+    "reference": "Discogs/J-pop百科",
+    "resolution": "category1_text_llm_primary_qwen_subgenre_merged",
+    "resolution_note": "伪冲突：Qwen subgenre已包含文本LLM答案，主标签用文本LLM，subgenre合并Qwen"
   },
   "8E0D1A1B284746B3A1FCE15B41": {
     "primary_genre": "Dream House",
@@ -57,14 +61,17 @@
     "sub_genres": [
       "Soundtrack",
       "Jazz",
-      "Show Tunes"
+      "Show Tunes",
+      "Ballad"
     ],
     "source": "text_llm_search",
     "source_priority": "P0",
     "confidence": 0.95,
     "title": "City of Stars",
     "artist": "La La Land Cast",
-    "reference": "Wikipedia"
+    "reference": "Wikipedia",
+    "resolution": "category1_text_llm_primary_qwen_subgenre_merged",
+    "resolution_note": "伪冲突：Qwen subgenre已包含文本LLM答案，主标签用文本LLM，subgenre合并Qwen"
   },
   "AA089CC166EF4DE8AA78014AD9": {
     "primary_genre": "Ambient",
@@ -77,7 +84,18 @@
     "confidence": 0.6,
     "title": "How to count one to ten - windmill",
     "artist": "Unknown (ambient/experimental)",
-    "reference": "文件名推断"
+    "reference": "文件名推断",
+    "resolution": "pending_human_review",
+    "resolution_note": "真冲突：文本LLM=Ambient vs Qwen=Post-Rock，需用户听后裁决",
+    "candidate_labels": {
+      "text_llm": "Ambient",
+      "text_llm_sub": [
+        "Experimental",
+        "Drone"
+      ],
+      "qwen": "Post-Rock",
+      "qwen_subgenre": "Instrumental Rock"
+    }
   },
   "DC92B30BB51D42488F02AA203F": {
     "primary_genre": "Italo House",
@@ -91,7 +109,19 @@
     "confidence": 0.9,
     "title": "Ouverture",
     "artist": "Don Carlos",
-    "reference": "Discogs"
+    "reference": "Discogs",
+    "resolution": "pending_human_review",
+    "resolution_note": "真冲突：文本LLM=Italo House vs Qwen=Trance，需用户听后裁决",
+    "candidate_labels": {
+      "text_llm": "Italo House",
+      "text_llm_sub": [
+        "Dream House",
+        "Deep House",
+        "Trance"
+      ],
+      "qwen": "Trance",
+      "qwen_subgenre": ""
+    }
   },
   "49BED5E277AF40909EC0BD756D": {
     "primary_genre": "Dream House",
@@ -110,14 +140,17 @@
     "primary_genre": "Bossa Nova",
     "sub_genres": [
       "Latin Jazz",
-      "MPB"
+      "MPB",
+      "Bossa Nova"
     ],
     "source": "text_llm_search",
     "source_priority": "P0",
     "confidence": 0.95,
     "title": "The Red Blouse",
     "artist": "Antonio Carlos Jobim",
-    "reference": "Discogs"
+    "reference": "Discogs",
+    "resolution": "category1_text_llm_primary_qwen_subgenre_merged",
+    "resolution_note": "伪冲突：Qwen subgenre已包含文本LLM答案，主标签用文本LLM，subgenre合并Qwen"
   },
   "A52E2E2FA5474C61984BCECC27": {
     "primary_genre": "Experimental",
@@ -143,7 +176,18 @@
     "confidence": 0.6,
     "title": "How to count one to ten - at the same time",
     "artist": "Unknown (ambient/experimental)",
-    "reference": "文件名推断"
+    "reference": "文件名推断",
+    "resolution": "pending_human_review",
+    "resolution_note": "真冲突：文本LLM=Ambient vs Qwen=Post-Rock，需用户听后裁决",
+    "candidate_labels": {
+      "text_llm": "Ambient",
+      "text_llm_sub": [
+        "Experimental",
+        "Drone"
+      ],
+      "qwen": "Post-Rock",
+      "qwen_subgenre": "Instrumental Rock"
+    }
   },
   "3CC7E3DF77334AE0B1B2BC3795": {
     "primary_genre": "R&B",
@@ -239,14 +283,19 @@
   "F7E5F56ECCCC479589A26A2A10": {
     "primary_genre": "R&B",
     "sub_genres": [
-      "Contemporary R&B"
+      "Pop",
+      "Contemporary R&B",
+      "R&B",
+      "Pop Ballad"
     ],
     "source": "text_llm_search",
     "source_priority": "P0",
     "confidence": 0.9,
     "title": "EX",
     "artist": "Kiana Ledé",
-    "reference": "Discogs/Genius"
+    "reference": "Discogs/Genius",
+    "resolution": "category2_text_llm_primary_qwen_as_subgenre",
+    "resolution_note": "社会定义vs听觉判断：主标签用文本LLM（社会共识），Qwen标签进subgenre"
   },
   "D2098BC896D6450A8E3744528E": {
     "primary_genre": "Bossa Nova",
@@ -305,14 +354,17 @@
     "primary_genre": "Dream House",
     "sub_genres": [
       "Italo House",
-      "Deep House"
+      "Deep House",
+      "Progressive House"
     ],
     "source": "text_llm_search",
     "source_priority": "P0",
     "confidence": 0.85,
     "title": "Welcome To Paradise Vol. III (track 5)",
     "artist": "Various (Italian Dream House)",
-    "reference": "Discogs"
+    "reference": "Discogs",
+    "resolution": "category1_text_llm_primary_qwen_subgenre_merged",
+    "resolution_note": "伪冲突：Qwen subgenre已包含文本LLM答案，主标签用文本LLM，subgenre合并Qwen"
   },
   "3E6F4E0EC2024CCD9FE718F847": {
     "primary_genre": "Cantopop",
@@ -368,14 +420,17 @@
     "primary_genre": "Dream House",
     "sub_genres": [
       "Italo House",
-      "Deep House"
+      "Deep House",
+      "Progressive House"
     ],
     "source": "text_llm_search",
     "source_priority": "P0",
     "confidence": 0.85,
     "title": "Welcome To Paradise Vol. III (track 4)",
     "artist": "Various (Italian Dream House)",
-    "reference": "Discogs"
+    "reference": "Discogs",
+    "resolution": "category1_text_llm_primary_qwen_subgenre_merged",
+    "resolution_note": "伪冲突：Qwen subgenre已包含文本LLM答案，主标签用文本LLM，subgenre合并Qwen"
   },
   "5CF227BBD8FB42BDA25C4755A1": {
     "primary_genre": "Jazz Fusion",
@@ -525,14 +580,17 @@
     "sub_genres": [
       "Traditional Pop",
       "Orchestral Ballad",
-      "Vocal"
+      "Vocal",
+      "Ballad"
     ],
     "source": "text_llm_search",
     "source_priority": "P0",
     "confidence": 0.95,
     "title": "Love Me Tender",
     "artist": "Andrea Bocelli",
-    "reference": "Wikipedia/Discogs (Passione, David Foster)"
+    "reference": "Wikipedia/Discogs (Passione, David Foster)",
+    "resolution": "category2_text_llm_primary_qwen_as_subgenre",
+    "resolution_note": "社会定义vs听觉判断：主标签用文本LLM（社会共识），Qwen标签进subgenre"
   },
   "1EDDB5EFB16E4A36AFFFAC2132": {
     "primary_genre": "Musical Theatre",
@@ -564,14 +622,17 @@
     "primary_genre": "Pop",
     "sub_genres": [
       "Electropop",
-      "R&B"
+      "R&B",
+      "Pop R&B"
     ],
     "source": "text_llm_search",
     "source_priority": "P0",
     "confidence": 0.85,
     "title": "Paris in the Rain",
     "artist": "Lauv",
-    "reference": "Discogs"
+    "reference": "Discogs",
+    "resolution": "category1_text_llm_primary_qwen_subgenre_merged",
+    "resolution_note": "伪冲突：Qwen subgenre已包含文本LLM答案，主标签用文本LLM，subgenre合并Qwen"
   },
   "8DDE7F1A99A0441C9A1564A6D7": {
     "primary_genre": "Soft Rock",
@@ -649,7 +710,18 @@
     "confidence": 0.85,
     "title": "Welcome To Paradise Vol. III (track 7)",
     "artist": "Various (Italian Dream House)",
-    "reference": "Discogs"
+    "reference": "Discogs",
+    "resolution": "pending_human_review",
+    "resolution_note": "真冲突：文本LLM=Dream House vs Qwen=Trance，需用户听后裁决",
+    "candidate_labels": {
+      "text_llm": "Dream House",
+      "text_llm_sub": [
+        "Italo House",
+        "Deep House"
+      ],
+      "qwen": "Trance",
+      "qwen_subgenre": "Progressive Trance"
+    }
   },
   "A1AD6E948D2149EC940866F9D3": {
     "primary_genre": "Hip Hop",

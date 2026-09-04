@@ -2,7 +2,10 @@
   "audio_id": "F7E5F56ECCCC479589A26A2A10",
   "genre": "R&B",
   "sub_genres": [
-    "Contemporary R&B"
+    "Pop",
+    "Contemporary R&B",
+    "R&B",
+    "Pop Ballad"
   ],
   "source": "text_llm_search",
   "source_priority": "P0",
@@ -11,6 +14,8 @@
   "artist": "Kiana Ledé",
   "reference": "Discogs/Genius",
   "knn_propagated": false,
-  "l4_version": "unified_v1_text_llm_plus_qwen",
-  "deprecated_knn_note": "KNN传播已从L4移除，一致率0%，详见archive/l4_knn_legacy/DEPRECATED.md"
+  "l4_version": "unified_v2_layered_resolution",
+  "deprecated_knn_note": "KNN传播已从L4移除，一致率0%，详见archive/l4_knn_legacy/DEPRECATED.md",
+  "resolution": "category2_text_llm_primary_qwen_as_subgenre",
+  "resolution_note": "社会定义vs听觉判断：主标签用文本LLM（社会共识），Qwen标签进subgenre"
 }

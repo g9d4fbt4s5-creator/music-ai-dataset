@@ -12,6 +12,17 @@
   "artist": "Unknown (ambient/experimental)",
   "reference": "文件名推断",
   "knn_propagated": false,
-  "l4_version": "unified_v1_text_llm_plus_qwen",
-  "deprecated_knn_note": "KNN传播已从L4移除，一致率0%，详见archive/l4_knn_legacy/DEPRECATED.md"
+  "l4_version": "unified_v2_layered_resolution",
+  "deprecated_knn_note": "KNN传播已从L4移除，一致率0%，详见archive/l4_knn_legacy/DEPRECATED.md",
+  "resolution": "pending_human_review",
+  "resolution_note": "真冲突：文本LLM=Ambient vs Qwen=Post-Rock，需用户听后裁决",
+  "candidate_labels": {
+    "text_llm": "Ambient",
+    "text_llm_sub": [
+      "Experimental",
+      "Drone"
+    ],
+    "qwen": "Post-Rock",
+    "qwen_subgenre": "Instrumental Rock"
+  }
 }

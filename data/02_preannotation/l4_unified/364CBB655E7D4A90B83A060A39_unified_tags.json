@@ -4,7 +4,8 @@
   "sub_genres": [
     "Soundtrack",
     "Jazz",
-    "Show Tunes"
+    "Show Tunes",
+    "Ballad"
   ],
   "source": "text_llm_search",
   "source_priority": "P0",
@@ -13,6 +14,8 @@
   "artist": "La La Land Cast",
   "reference": "Wikipedia",
   "knn_propagated": false,
-  "l4_version": "unified_v1_text_llm_plus_qwen",
-  "deprecated_knn_note": "KNN传播已从L4移除，一致率0%，详见archive/l4_knn_legacy/DEPRECATED.md"
+  "l4_version": "unified_v2_layered_resolution",
+  "deprecated_knn_note": "KNN传播已从L4移除，一致率0%，详见archive/l4_knn_legacy/DEPRECATED.md",
+  "resolution": "category1_text_llm_primary_qwen_subgenre_merged",
+  "resolution_note": "伪冲突：Qwen subgenre已包含文本LLM答案，主标签用文本LLM，subgenre合并Qwen"
 }
