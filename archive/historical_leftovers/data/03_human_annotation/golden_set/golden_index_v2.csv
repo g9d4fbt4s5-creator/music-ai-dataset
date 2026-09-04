@@ -1,0 +1,6 @@
+audio_id,artist_id,original_filename,duration_sec,cluster_id,golden_version
+E6A98A1C67AC4D9FA1E7437524,artist:Bobby Caldwell,rb_playlist_09_Bobby Caldwell-What You Won't Do For Love.flac,283.99,0,v2.0_hdbscan_stratified
+3C6219AB60A24F5B8F101AF353,artist:G.E.M邓紫棋,cantonese_playlist_10_G.E.M邓紫棋-喜欢你.flac,244.64,2,v2.0_hdbscan_stratified
+D2098BC896D6450A8E3744528E,artist:Antonio Carlos Jobim,jobim_wave_03_Antonio Carlos Jobim-Look To The Sky.flac,144.0,4,v2.0_hdbscan_stratified
+78250AD45D2842A3AA18C9071D,artist:Hiromi,hiromi_alive_02_Hiromi-Seeker.flac,444.0,2,v2.0_hdbscan_stratified
+D0CC3C06BCC643C4AD0737115C,artist:Hiromi,hiromi_alive_03_Hiromi-Warrior.flac,540.69,1,v2.0_hdbscan_stratified

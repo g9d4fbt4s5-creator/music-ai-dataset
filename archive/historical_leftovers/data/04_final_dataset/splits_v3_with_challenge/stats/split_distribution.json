@@ -1,0 +1,40 @@
+{
+  "total": 82,
+  "splits": {
+    "train": {
+      "count": 65,
+      "ratio": 0.7926829268292683
+    },
+    "val": {
+      "count": 16,
+      "ratio": 0.1951219512195122
+    },
+    "test": {
+      "count": 0,
+      "ratio": 0.0
+    },
+    "holdout": {
+      "count": 1,
+      "ratio": 0.012195121951219513
+    }
+  },
+  "split_method": "random",
+  "overlap_audio_ids": [],
+  "source_isolation_passed": true,
+  "main_pool_manifest": "data/00_raw_collect/audio_manifest.csv",
+  "test_pool_manifest": null,
+  "holdout_pool_manifest": null,
+  "train_val_split_ratio": {
+    "train": 0.8,
+    "val": 0.2
+  },
+  "source_isolation_enabled": false,
+  "cross_set_dedup": {
+    "enabled": true,
+    "method": "song_group_id (primary) / fingerprint_similarity (fallback)",
+    "total_removed": 0,
+    "val_removed": 0,
+    "test_removed": 0,
+    "holdout_removed": 0
+  }
+}

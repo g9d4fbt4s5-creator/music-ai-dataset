@@ -1,0 +1,7 @@
+{
+  "manifest_path": "data/00_raw_collect/audio_manifest.csv",
+  "manifest_sha256": "3b5c85597826cb61fce0ca22037cd8072bf5b3cdabf624950da8cb499a42ca2b",
+  "manifest_size_bytes": 54589,
+  "manifest_mtime": "2026-08-27T05:27:55.022153+08:00",
+  "note": "训练脚本读取时，通过audio_id到此manifest查找实际路径；如果manifest被更新或移动，需重新生成此版本"
+}

@@ -1,0 +1,41 @@
+{
+  "schema_version": "1.0",
+  "version": "splits_v3_with_challenge",
+  "timestamp": "2026-08-27T05:24:51.606713+08:00",
+  "split_method": "random",
+  "stratify_by": null,
+  "isolate_by": null,
+  "temporal_by": null,
+  "random_seed": 42,
+  "splits": {
+    "train": {
+      "count": 65,
+      "ratio": 0.7926829268292683
+    },
+    "val": {
+      "count": 16,
+      "ratio": 0.1951219512195122
+    },
+    "test": {
+      "count": 0,
+      "ratio": 0.0
+    },
+    "holdout": {
+      "count": 1,
+      "ratio": 0.012195121951219513
+    }
+  },
+  "total_samples": 82,
+  "checksum_verification": null,
+  "upstream": "/Users/m.jian/music_corpus_project/data/00.5_cleaned/reports/v20260824_083208/lineage.json",
+  "main_pool_manifest": "data/00_raw_collect/audio_manifest.csv",
+  "test_pool_manifest": null,
+  "holdout_pool_manifest": null,
+  "train_val_split_ratio": {
+    "train": 0.8,
+    "val": 0.2
+  },
+  "source_isolation_enabled": false,
+  "source_isolation_passed": true,
+  "overlap_audio_ids": []
+}
