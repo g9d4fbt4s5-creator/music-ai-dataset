@@ -1,6 +1,6 @@
 {
   "report_name": "T2_dryrun_reconciliation",
-  "generated_at": "2026-09-04T14:43:08",
+  "generated_at": "2026-09-04T15:50:41",
   "method": "以现有L3产物为输入，临时目录dry-run重放L4，逐字段对账，不重调任何API",
   "api_calls": {
     "qwen_omni_calls": 0,
