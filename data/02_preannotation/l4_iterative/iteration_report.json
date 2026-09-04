@@ -1,0 +1,73 @@
+{
+  "initial_golden_count": 5,
+  "final_seed_pool_count": 21,
+  "rounds": [
+    {
+      "round": 1,
+      "seed_pool_size": 5,
+      "total": 84,
+      "golden": 5,
+      "knn_propagated": 18,
+      "qwen_supplement": 32,
+      "unlabeled": 29,
+      "coverage": 0.2738,
+      "genre_dist": {
+        "Bossa Nova": 15,
+        "Jazz": 9,
+        "Pop": 6,
+        "Cantopop": 5,
+        "Trance": 3,
+        "Post-Rock": 2,
+        "House": 2,
+        "Deep House": 2,
+        "Trip-Hop": 2,
+        "bebop": 1
+      }
+    },
+    {
+      "round": 2,
+      "seed_pool_size": 21,
+      "total": 84,
+      "golden": 21,
+      "knn_propagated": 24,
+      "qwen_supplement": 17,
+      "unlabeled": 22,
+      "coverage": 0.5357,
+      "genre_dist": {
+        "latin jazz": 16,
+        "cool jazz": 14,
+        "Jazz": 9,
+        "Pop": 5,
+        "Post-Rock": 2,
+        "House": 2,
+        "Deep House": 2,
+        "Trip-Hop": 2,
+        "bebop": 1,
+        "New Age": 1
+      }
+    },
+    {
+      "round": 3,
+      "seed_pool_size": 21,
+      "total": 84,
+      "golden": 21,
+      "knn_propagated": 24,
+      "qwen_supplement": 17,
+      "unlabeled": 22,
+      "coverage": 0.5357,
+      "genre_dist": {
+        "latin jazz": 16,
+        "cool jazz": 14,
+        "Jazz": 9,
+        "Pop": 5,
+        "Post-Rock": 2,
+        "House": 2,
+        "Deep House": 2,
+        "Trip-Hop": 2,
+        "bebop": 1,
+        "New Age": 1
+      }
+    }
+  ],
+  "conclusion": "迭代 3 轮，覆盖率从 27.4% → 53.6% (提升 +26.2%)，种子池从 5 → 21 首"
+}
