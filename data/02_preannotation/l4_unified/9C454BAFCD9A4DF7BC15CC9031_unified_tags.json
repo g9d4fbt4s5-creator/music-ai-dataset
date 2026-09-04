@@ -13,8 +13,43 @@
   "artist": "Lauv",
   "reference": "Discogs",
   "knn_propagated": false,
-  "l4_version": "unified_v2_layered_resolution",
+  "l4_version": "unified_v3_multi_label",
   "deprecated_knn_note": "KNN传播已从L4移除，一致率0%，详见archive/l4_knn_legacy/DEPRECATED.md",
   "resolution": "category1_text_llm_primary_qwen_subgenre_merged",
-  "resolution_note": "伪冲突：Qwen subgenre已包含文本LLM答案，主标签用文本LLM，subgenre合并Qwen"
+  "resolution_note": "伪冲突：Qwen subgenre已包含文本LLM答案，主标签用文本LLM，subgenre合并Qwen",
+  "genres": [
+    {
+      "label": "Pop",
+      "source": "text_llm_search",
+      "source_priority": "P0",
+      "weight": 1.0,
+      "confidence": 0.85
+    },
+    {
+      "label": "Electropop",
+      "source": "text_llm_search",
+      "source_priority": "P0",
+      "weight": 0.7,
+      "confidence": 0.68,
+      "tag_type": "subgenre"
+    },
+    {
+      "label": "R&B",
+      "source": "text_llm_search",
+      "source_priority": "P0",
+      "weight": 0.7,
+      "confidence": 0.68,
+      "tag_type": "subgenre"
+    },
+    {
+      "label": "R&B",
+      "source": "qwen_omni",
+      "source_priority": "P1",
+      "weight": 0.8,
+      "confidence": 0.92
+    }
+  ],
+  "primary_genre": "Pop",
+  "multi_label": true,
+  "label_selection": "human_review_pending"
 }

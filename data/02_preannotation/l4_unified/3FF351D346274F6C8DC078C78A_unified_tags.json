@@ -12,6 +12,34 @@
   "artist": "Unknown (ambient/experimental)",
   "reference": "文件名推断",
   "knn_propagated": false,
-  "l4_version": "unified_v2_layered_resolution",
-  "deprecated_knn_note": "KNN传播已从L4移除，一致率0%，详见archive/l4_knn_legacy/DEPRECATED.md"
+  "l4_version": "unified_v3_multi_label",
+  "deprecated_knn_note": "KNN传播已从L4移除，一致率0%，详见archive/l4_knn_legacy/DEPRECATED.md",
+  "genres": [
+    {
+      "label": "Ambient",
+      "source": "text_llm_search",
+      "source_priority": "P0",
+      "weight": 1.0,
+      "confidence": 0.6
+    },
+    {
+      "label": "Experimental",
+      "source": "text_llm_search",
+      "source_priority": "P0",
+      "weight": 0.7,
+      "confidence": 0.48,
+      "tag_type": "subgenre"
+    },
+    {
+      "label": "Drone",
+      "source": "text_llm_search",
+      "source_priority": "P0",
+      "weight": 0.7,
+      "confidence": 0.48,
+      "tag_type": "subgenre"
+    }
+  ],
+  "primary_genre": "Ambient",
+  "multi_label": true,
+  "label_selection": "human_review_pending"
 }

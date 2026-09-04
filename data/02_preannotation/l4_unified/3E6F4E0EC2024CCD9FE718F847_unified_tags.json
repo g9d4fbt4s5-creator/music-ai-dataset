@@ -12,6 +12,34 @@
   "artist": "AGA",
   "reference": "HK音乐百科",
   "knn_propagated": false,
-  "l4_version": "unified_v2_layered_resolution",
-  "deprecated_knn_note": "KNN传播已从L4移除，一致率0%，详见archive/l4_knn_legacy/DEPRECATED.md"
+  "l4_version": "unified_v3_multi_label",
+  "deprecated_knn_note": "KNN传播已从L4移除，一致率0%，详见archive/l4_knn_legacy/DEPRECATED.md",
+  "genres": [
+    {
+      "label": "Cantopop",
+      "source": "text_llm_search",
+      "source_priority": "P0",
+      "weight": 1.0,
+      "confidence": 0.9
+    },
+    {
+      "label": "Pop Ballad",
+      "source": "text_llm_search",
+      "source_priority": "P0",
+      "weight": 0.7,
+      "confidence": 0.7200000000000001,
+      "tag_type": "subgenre"
+    },
+    {
+      "label": "R&B",
+      "source": "text_llm_search",
+      "source_priority": "P0",
+      "weight": 0.7,
+      "confidence": 0.7200000000000001,
+      "tag_type": "subgenre"
+    }
+  ],
+  "primary_genre": "Cantopop",
+  "multi_label": true,
+  "label_selection": "human_review_pending"
 }

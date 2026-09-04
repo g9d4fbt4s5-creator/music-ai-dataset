@@ -12,7 +12,7 @@
   "artist": "Unknown (ambient/experimental)",
   "reference": "文件名推断",
   "knn_propagated": false,
-  "l4_version": "unified_v2_layered_resolution",
+  "l4_version": "unified_v3_multi_label",
   "deprecated_knn_note": "KNN传播已从L4移除，一致率0%，详见archive/l4_knn_legacy/DEPRECATED.md",
   "resolution": "pending_human_review",
   "resolution_note": "真冲突：文本LLM=Ambient vs Qwen=Post-Rock，需用户听后裁决",
@@ -24,5 +24,43 @@
     ],
     "qwen": "Post-Rock",
     "qwen_subgenre": "Instrumental Rock"
-  }
+  },
+  "genres": [
+    {
+      "label": "Ambient",
+      "source": "text_llm_search",
+      "source_priority": "P0",
+      "weight": 0.0,
+      "confidence": 0.6,
+      "rejected": true,
+      "reject_reason": "低置信文件名推断，不采信；以Qwen听音频结果为准",
+      "note": "保留原推断记录供人看"
+    },
+    {
+      "label": "Experimental",
+      "source": "text_llm_search",
+      "source_priority": "P0",
+      "weight": 0.7,
+      "confidence": 0.48,
+      "tag_type": "subgenre"
+    },
+    {
+      "label": "Drone",
+      "source": "text_llm_search",
+      "source_priority": "P0",
+      "weight": 0.7,
+      "confidence": 0.48,
+      "tag_type": "subgenre"
+    },
+    {
+      "label": "Post-Rock",
+      "source": "qwen_omni",
+      "source_priority": "P1",
+      "weight": 0.8,
+      "confidence": 0.88
+    }
+  ],
+  "primary_genre": "Post-Rock",
+  "multi_label": true,
+  "label_selection": "human_review_pending"
 }

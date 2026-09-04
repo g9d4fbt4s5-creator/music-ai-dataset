@@ -13,6 +13,42 @@
   "artist": "Bobby Caldwell",
   "reference": "Wikipedia/AllMusic",
   "knn_propagated": false,
-  "l4_version": "unified_v2_layered_resolution",
-  "deprecated_knn_note": "KNN传播已从L4移除，一致率0%，详见archive/l4_knn_legacy/DEPRECATED.md"
+  "l4_version": "unified_v3_multi_label",
+  "deprecated_knn_note": "KNN传播已从L4移除，一致率0%，详见archive/l4_knn_legacy/DEPRECATED.md",
+  "genres": [
+    {
+      "label": "Soul",
+      "source": "text_llm_search",
+      "source_priority": "P0",
+      "weight": 1.0,
+      "confidence": 0.95
+    },
+    {
+      "label": "Blue-Eyed Soul",
+      "source": "text_llm_search",
+      "source_priority": "P0",
+      "weight": 0.7,
+      "confidence": 0.76,
+      "tag_type": "subgenre"
+    },
+    {
+      "label": "Smooth Jazz",
+      "source": "text_llm_search",
+      "source_priority": "P0",
+      "weight": 0.7,
+      "confidence": 0.76,
+      "tag_type": "subgenre"
+    },
+    {
+      "label": "R&B",
+      "source": "text_llm_search",
+      "source_priority": "P0",
+      "weight": 0.7,
+      "confidence": 0.76,
+      "tag_type": "subgenre"
+    }
+  ],
+  "primary_genre": "Soul",
+  "multi_label": true,
+  "label_selection": "human_review_pending"
 }

@@ -15,8 +15,51 @@
   "artist": "大贯妙子 (Taeko Onuki)",
   "reference": "Discogs/J-pop百科",
   "knn_propagated": false,
-  "l4_version": "unified_v2_layered_resolution",
+  "l4_version": "unified_v3_multi_label",
   "deprecated_knn_note": "KNN传播已从L4移除，一致率0%，详见archive/l4_knn_legacy/DEPRECATED.md",
   "resolution": "category1_text_llm_primary_qwen_subgenre_merged",
-  "resolution_note": "伪冲突：Qwen subgenre已包含文本LLM答案，主标签用文本LLM，subgenre合并Qwen"
+  "resolution_note": "伪冲突：Qwen subgenre已包含文本LLM答案，主标签用文本LLM，subgenre合并Qwen",
+  "genres": [
+    {
+      "label": "City Pop",
+      "source": "text_llm_search",
+      "source_priority": "P0",
+      "weight": 1.0,
+      "confidence": 0.9
+    },
+    {
+      "label": "J-pop",
+      "source": "text_llm_search",
+      "source_priority": "P0",
+      "weight": 0.7,
+      "confidence": 0.7200000000000001,
+      "tag_type": "subgenre"
+    },
+    {
+      "label": "Adult Contemporary",
+      "source": "text_llm_search",
+      "source_priority": "P0",
+      "weight": 0.7,
+      "confidence": 0.7200000000000001,
+      "tag_type": "subgenre"
+    },
+    {
+      "label": "Jazz Fusion",
+      "source": "text_llm_search",
+      "source_priority": "P0",
+      "weight": 0.7,
+      "confidence": 0.7200000000000001,
+      "tag_type": "subgenre"
+    },
+    {
+      "label": "Jazz",
+      "source": "qwen_omni",
+      "source_priority": "P1",
+      "weight": 0.8,
+      "confidence": 0.9
+    }
+  ],
+  "primary_genre": "City Pop",
+  "multi_label": true,
+  "label_selection": "human_review_pending"
 }
