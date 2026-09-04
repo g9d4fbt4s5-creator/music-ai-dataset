@@ -1,6 +1,5 @@
 {
   "78250AD45D2842A3AA18C9071D": {
-    "primary_genre": "Jazz Fusion",
     "sub_genres": [
       "Post-Bop",
       "Contemporary Jazz"
@@ -37,10 +36,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "1C69AC77BB3042A4A237DF5966": {
-    "primary_genre": "Jazz",
     "sub_genres": [
       "Contemporary Jazz",
       "Vocal Jazz"
@@ -77,10 +75,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "6835D62222154FA6B0509AA881": {
-    "primary_genre": "City Pop",
     "sub_genres": [
       "J-pop",
       "Adult Contemporary",
@@ -137,10 +134,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "8E0D1A1B284746B3A1FCE15B41": {
-    "primary_genre": "Dream House",
     "sub_genres": [
       "Italo House",
       "Deep House"
@@ -177,10 +173,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "364CBB655E7D4A90B83A060A39": {
-    "primary_genre": "Musical Theatre",
     "sub_genres": [
       "Soundtrack",
       "Jazz",
@@ -236,10 +231,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "AA089CC166EF4DE8AA78014AD9": {
-    "primary_genre": "Post-Rock",
     "sub_genres": [
       "Experimental",
       "Drone"
@@ -269,8 +263,15 @@
         "weight": 0.0,
         "confidence": 0.6,
         "rejected": true,
-        "reject_reason": "低置信文件名推断，不采信；以Qwen听音频结果为准",
-        "note": "保留原推断记录供人看"
+        "reject_reason": "低置信文件名推断，不采信；用户认定以Qwen Post-Rock为准"
+      },
+      {
+        "label": "Post-Rock",
+        "source": "qwen_omni",
+        "source_priority": "P1",
+        "weight": 0.8,
+        "confidence": 0.9,
+        "user_ruling": "用户认定"
       },
       {
         "label": "Experimental",
@@ -287,20 +288,14 @@
         "weight": 0.7,
         "confidence": 0.48,
         "tag_type": "subgenre"
-      },
-      {
-        "label": "Post-Rock",
-        "source": "qwen_omni",
-        "source_priority": "P1",
-        "weight": 0.8,
-        "confidence": 0.9
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked",
+    "user_ruling": "用户认定Post-Rock，Ambient低置信文件名推断不采信",
+    "ruled_by": "user"
   },
   "DC92B30BB51D42488F02AA203F": {
-    "primary_genre": "Italo House",
     "sub_genres": [
       "Dream House",
       "Deep House",
@@ -330,45 +325,24 @@
         "source": "text_llm_search",
         "source_priority": "P0",
         "weight": 1.0,
-        "confidence": 0.9
-      },
-      {
-        "label": "Dream House",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.7200000000000001,
-        "tag_type": "subgenre"
-      },
-      {
-        "label": "Deep House",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.7200000000000001,
-        "tag_type": "subgenre"
-      },
-      {
-        "label": "Trance",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.7200000000000001,
-        "tag_type": "subgenre"
+        "confidence": 0.85,
+        "user_ruling": "用户认定兼容不冲突"
       },
       {
         "label": "Trance",
         "source": "qwen_omni",
         "source_priority": "P1",
         "weight": 0.8,
-        "confidence": 0.88
+        "confidence": 0.85,
+        "user_ruling": "用户认定兼容不冲突"
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked",
+    "user_ruling": "用户认定Italo House和Trance兼容不冲突，两者并存",
+    "ruled_by": "user"
   },
   "49BED5E277AF40909EC0BD756D": {
-    "primary_genre": "Dream House",
     "sub_genres": [
       "Italo House",
       "Deep House"
@@ -405,10 +379,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "A0F9B5560A194DE5A25A22BD62": {
-    "primary_genre": "Bossa Nova",
     "sub_genres": [
       "Latin Jazz",
       "MPB",
@@ -455,10 +428,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "A52E2E2FA5474C61984BCECC27": {
-    "primary_genre": "Experimental",
     "sub_genres": [
       "Free Jazz",
       "Avant-Garde"
@@ -495,10 +467,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "2996876392774F67887DA90C3E": {
-    "primary_genre": "Post-Rock",
     "sub_genres": [
       "Experimental",
       "Drone"
@@ -528,8 +499,15 @@
         "weight": 0.0,
         "confidence": 0.6,
         "rejected": true,
-        "reject_reason": "低置信文件名推断，不采信；以Qwen听音频结果为准",
-        "note": "保留原推断记录供人看"
+        "reject_reason": "低置信文件名推断，不采信；用户认定以Qwen Post-Rock为准"
+      },
+      {
+        "label": "Post-Rock",
+        "source": "qwen_omni",
+        "source_priority": "P1",
+        "weight": 0.8,
+        "confidence": 0.88,
+        "user_ruling": "用户认定"
       },
       {
         "label": "Experimental",
@@ -546,20 +524,14 @@
         "weight": 0.7,
         "confidence": 0.48,
         "tag_type": "subgenre"
-      },
-      {
-        "label": "Post-Rock",
-        "source": "qwen_omni",
-        "source_priority": "P1",
-        "weight": 0.8,
-        "confidence": 0.88
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked",
+    "user_ruling": "用户认定Post-Rock，Ambient低置信文件名推断不采信",
+    "ruled_by": "user"
   },
   "3CC7E3DF77334AE0B1B2BC3795": {
-    "primary_genre": "R&B",
     "sub_genres": [
       "Alternative R&B",
       "Neo-Soul"
@@ -596,10 +568,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "A1CC7E194F30411980025EA378": {
-    "primary_genre": "Dream House",
     "sub_genres": [
       "Italo House",
       "Deep House"
@@ -636,10 +607,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "3C6F3F3C4839423DB83F7A55CD": {
-    "primary_genre": "Soft Rock",
     "sub_genres": [
       "Adult Contemporary",
       "Pop"
@@ -676,10 +646,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "3C6219AB60A24F5B8F101AF353": {
-    "primary_genre": "Cantopop",
     "sub_genres": [
       "Pop Ballad"
     ],
@@ -707,10 +676,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "33EA926BB2D64917AF8A166779": {
-    "primary_genre": "Bossa Nova",
     "sub_genres": [
       "Latin Jazz",
       "MPB"
@@ -747,10 +715,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "4AD0681C6347477D8B1E849422": {
-    "primary_genre": "R&B",
     "sub_genres": [
       "Soul",
       "Philly Soul"
@@ -787,10 +754,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "870491B93FD04F979A12BC7811": {
-    "primary_genre": "Dream House",
     "sub_genres": [
       "Italo House",
       "Deep House",
@@ -836,10 +802,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "F7E5F56ECCCC479589A26A2A10": {
-    "primary_genre": "R&B",
     "sub_genres": [
       "Pop",
       "Contemporary R&B",
@@ -879,10 +844,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "D2098BC896D6450A8E3744528E": {
-    "primary_genre": "Bossa Nova",
     "sub_genres": [
       "Latin Jazz",
       "MPB"
@@ -919,10 +883,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "BEF3CF9662D841528BDB33BFAF": {
-    "primary_genre": "J-pop",
     "sub_genres": [
       "Idol Pop",
       "Dance-Pop"
@@ -959,10 +922,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "3F34DF1B2784408BA60CE8165C": {
-    "primary_genre": "Game Soundtrack",
     "sub_genres": [
       "Orchestral",
       "World Music",
@@ -1008,10 +970,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "D0CC3C06BCC643C4AD0737115C": {
-    "primary_genre": "Jazz Fusion",
     "sub_genres": [
       "Post-Bop",
       "Contemporary Jazz"
@@ -1048,10 +1009,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "B7C8FC27F3C349B0B39EB7D55A": {
-    "primary_genre": "Dream House",
     "sub_genres": [
       "Italo House",
       "Deep House",
@@ -1098,10 +1058,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "3E6F4E0EC2024CCD9FE718F847": {
-    "primary_genre": "Cantopop",
     "sub_genres": [
       "Pop Ballad",
       "R&B"
@@ -1138,10 +1097,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "7968BA9684454DD4B1B179643E": {
-    "primary_genre": "Cantopop",
     "sub_genres": [
       "Pop Ballad"
     ],
@@ -1169,10 +1127,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "95D0CB9A84B54582AD17E79393": {
-    "primary_genre": "Jazz",
     "sub_genres": [
       "Contemporary Jazz",
       "Vocal Jazz"
@@ -1209,10 +1166,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "6878BDAC7CD149C6A0AFA5ADD5": {
-    "primary_genre": "Cantopop",
     "sub_genres": [
       "Pop Ballad"
     ],
@@ -1240,10 +1196,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "3DD429C6458C404A9891416635": {
-    "primary_genre": "Dream House",
     "sub_genres": [
       "Italo House",
       "Deep House",
@@ -1290,10 +1245,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "5CF227BBD8FB42BDA25C4755A1": {
-    "primary_genre": "Jazz Fusion",
     "sub_genres": [
       "Post-Bop",
       "Contemporary Jazz"
@@ -1330,10 +1284,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "A7E56197254D451CB98808C9BD": {
-    "primary_genre": "Adult Contemporary",
     "sub_genres": [
       "Soft Rock",
       "Pop"
@@ -1370,10 +1323,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "CDF8316BBDD2488A877E675E8F": {
-    "primary_genre": "Mandopop",
     "sub_genres": [
       "Pop Rock",
       "Taiwanese Pop"
@@ -1410,10 +1362,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "25A0003CEA50409D88B8362568": {
-    "primary_genre": "Experimental",
     "sub_genres": [
       "Free Jazz",
       "Avant-Garde"
@@ -1450,10 +1401,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "7AB4F0B765984F5AAADDDA584A": {
-    "primary_genre": "Dream House",
     "sub_genres": [
       "Italo House",
       "Deep House"
@@ -1490,10 +1440,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "1C8E3363E3FF4BFBA5189ABCB7": {
-    "primary_genre": "Cantopop",
     "sub_genres": [
       "Pop Ballad"
     ],
@@ -1521,10 +1470,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "286F49DADB7640A39E52E4C55A": {
-    "primary_genre": "Chinese Folk",
     "sub_genres": [
       "Folk",
       "World Music",
@@ -1570,10 +1518,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "9B845A8E8A744BCAA50705D73D": {
-    "primary_genre": "Pop Rap",
     "sub_genres": [
       "Hip Hop",
       "Pop"
@@ -1610,10 +1557,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "E6A98A1C67AC4D9FA1E7437524": {
-    "primary_genre": "Soul",
     "sub_genres": [
       "Blue-Eyed Soul",
       "Smooth Jazz",
@@ -1659,10 +1605,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "77CB62FFAEC0446188CA3AE161": {
-    "primary_genre": "Experimental",
     "sub_genres": [
       "Free Improvisation",
       "Noise"
@@ -1699,10 +1644,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "2446DC352B064D65AD61142249": {
-    "primary_genre": "Cantopop",
     "sub_genres": [
       "Pop Ballad"
     ],
@@ -1730,10 +1674,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "146D04DCF3BB4D56B68F9DD25C": {
-    "primary_genre": "Classical Crossover",
     "sub_genres": [
       "Traditional Pop",
       "Orchestral Ballad",
@@ -1754,45 +1697,24 @@
         "source": "text_llm_search",
         "source_priority": "P0",
         "weight": 1.0,
-        "confidence": 0.95
-      },
-      {
-        "label": "Traditional Pop",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.76,
-        "tag_type": "subgenre"
-      },
-      {
-        "label": "Orchestral Ballad",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.76,
-        "tag_type": "subgenre"
-      },
-      {
-        "label": "Vocal",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.76,
-        "tag_type": "subgenre"
+        "confidence": 0.95,
+        "user_ruling": "用户认定更贴切"
       },
       {
         "label": "Traditional Pop",
         "source": "qwen_omni",
         "source_priority": "P1",
         "weight": 0.8,
-        "confidence": 0.92
+        "confidence": 0.92,
+        "user_ruling": "用户认定也对"
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked",
+    "user_ruling": "用户认定Classical Crossover更贴切，Traditional Pop也对，两者并存",
+    "ruled_by": "user"
   },
   "1EDDB5EFB16E4A36AFFFAC2132": {
-    "primary_genre": "Musical Theatre",
     "sub_genres": [
       "Soundtrack",
       "Jazz",
@@ -1838,10 +1760,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "594E0C4719E34D6A98B438C503": {
-    "primary_genre": "Cantopop",
     "sub_genres": [
       "Pop"
     ],
@@ -1869,10 +1790,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "9C454BAFCD9A4DF7BC15CC9031": {
-    "primary_genre": "Pop",
     "sub_genres": [
       "Electropop",
       "R&B",
@@ -1919,10 +1839,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "8DDE7F1A99A0441C9A1564A6D7": {
-    "primary_genre": "Soft Rock",
     "sub_genres": [
       "Adult Contemporary",
       "Pop"
@@ -1959,10 +1878,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "448A140A77354AAC9458496B10": {
-    "primary_genre": "R&B",
     "sub_genres": [
       "Pop R&B",
       "Adult Contemporary"
@@ -1999,10 +1917,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "3FF351D346274F6C8DC078C78A": {
-    "primary_genre": "Ambient",
     "sub_genres": [
       "Experimental",
       "Drone"
@@ -2039,10 +1956,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "E1C4475B60AC4179852278CC60": {
-    "primary_genre": "Jazz",
     "sub_genres": [
       "Contemporary Jazz",
       "Vocal Jazz"
@@ -2079,10 +1995,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "3D71C975F9D24E4CB5B77D85FA": {
-    "primary_genre": "Bossa Nova",
     "sub_genres": [
       "Latin Jazz",
       "MPB"
@@ -2119,10 +2034,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "818C48C49AE547DCBC6D3D9B43": {
-    "primary_genre": "Dream House",
     "sub_genres": [
       "Italo House",
       "Deep House"
@@ -2150,14 +2064,23 @@
         "source": "text_llm_search",
         "source_priority": "P0",
         "weight": 1.0,
-        "confidence": 0.85
+        "confidence": 0.85,
+        "user_ruling": "用户认定兼容不冲突"
+      },
+      {
+        "label": "Trance",
+        "source": "qwen_omni",
+        "source_priority": "P1",
+        "weight": 0.8,
+        "confidence": 0.85,
+        "user_ruling": "用户认定兼容不冲突"
       },
       {
         "label": "Italo House",
         "source": "text_llm_search",
         "source_priority": "P0",
         "weight": 0.7,
-        "confidence": 0.68,
+        "confidence": 0.8,
         "tag_type": "subgenre"
       },
       {
@@ -2165,22 +2088,24 @@
         "source": "text_llm_search",
         "source_priority": "P0",
         "weight": 0.7,
-        "confidence": 0.68,
+        "confidence": 0.8,
         "tag_type": "subgenre"
       },
       {
-        "label": "Trance",
-        "source": "qwen_omni",
-        "source_priority": "P1",
-        "weight": 0.8,
-        "confidence": 0.92
+        "label": "Progressive House",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.8,
+        "tag_type": "subgenre"
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked",
+    "user_ruling": "用户认定Dream House和Trance兼容不冲突，两者并存",
+    "ruled_by": "user"
   },
   "A1AD6E948D2149EC940866F9D3": {
-    "primary_genre": "Hip Hop",
     "sub_genres": [
       "R&B",
       "Pop Rap"
@@ -2217,10 +2142,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "924CF2535CAB4C48A485EF4845": {
-    "primary_genre": "Dream House",
     "sub_genres": [
       "Italo House",
       "Deep House"
@@ -2257,10 +2181,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "09E39F2B2CB84CEDAF02365CB2": {
-    "primary_genre": "Cantopop",
     "sub_genres": [
       "Pop Ballad"
     ],
@@ -2288,10 +2211,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "87A69E31F3DC48429BEB755F06": {
-    "primary_genre": "R&B",
     "sub_genres": [
       "Contemporary R&B",
       "Pop"
@@ -2328,10 +2250,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "0CF65600F4474C71B19A9926EC": {
-    "primary_genre": "Cantopop",
     "sub_genres": [
       "Pop"
     ],
@@ -2359,10 +2280,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "F905340525194A1A9D838DB885": {
-    "primary_genre": "Dream House",
     "sub_genres": [
       "Italo House",
       "Deep House"
@@ -2399,10 +2319,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "C2AEFEEB56B0454F9AE069B899": {
-    "primary_genre": "Cantopop",
     "sub_genres": [
       "Pop Ballad"
     ],
@@ -2430,10 +2349,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "8384A4DBF2B24CF98148BC9190": {
-    "primary_genre": "J-pop",
     "sub_genres": [
       "Alternative Pop",
       "Jazz",
@@ -2479,10 +2397,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "01M0ZV75FJ5XT8F2BWAWABTQ0P": {
-    "primary_genre": "Jazz Fusion",
     "sub_genres": [
       "Post-Bop"
     ],
@@ -2513,10 +2430,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "01M0ZV75JBZS380KPKJWHTNXY4": {
-    "primary_genre": "Art Pop",
     "sub_genres": [],
     "source": "qwen_omni_supplement",
     "source_priority": "P1",
@@ -2550,10 +2466,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "01M0ZV75KZ1JMS1XKVRZ326PCW": {
-    "primary_genre": "New Age",
     "sub_genres": [
       "Ambient"
     ],
@@ -2583,10 +2498,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "01M0ZV75KMG8AH943Q16ZAG4J7": {
-    "primary_genre": "Big Band Jazz",
     "sub_genres": [],
     "source": "qwen_omni_supplement",
     "source_priority": "P1",
@@ -2620,10 +2534,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "01M0ZV75PYAVPDFDGZD69DE3YF": {
-    "primary_genre": "Jazz",
     "sub_genres": [
       "Bebop"
     ],
@@ -2653,10 +2566,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "01M0ZV75JR9WA49NP41EP3A7TT": {
-    "primary_genre": "Trip-Hop",
     "sub_genres": [],
     "source": "qwen_omni_supplement",
     "source_priority": "P1",
@@ -2690,10 +2602,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "01M0ZV75HXBGQX8HM75G0WXBPV": {
-    "primary_genre": "Jazz",
     "sub_genres": [],
     "source": "qwen_omni_supplement",
     "source_priority": "P1",
@@ -2727,10 +2638,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "01M0ZV75EF73YWR1X5V3MHVA3A": {
-    "primary_genre": "Jazz Fusion",
     "sub_genres": [
       "Acid Jazz"
     ],
@@ -2761,10 +2671,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "01M0ZV75G09FTTEQQQTF6049DN": {
-    "primary_genre": "Lounge",
     "sub_genres": [],
     "source": "qwen_omni_supplement",
     "source_priority": "P1",
@@ -2790,10 +2699,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "01M0ZV75GQPN21PZZESQBZA47M": {
-    "primary_genre": "Jazz Hop",
     "sub_genres": [],
     "source": "qwen_omni_supplement",
     "source_priority": "P1",
@@ -2827,10 +2735,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "01M0ZV75MCZDA2T7FAXRDPVDA9": {
-    "primary_genre": "Jazz",
     "sub_genres": [],
     "source": "qwen_omni_supplement",
     "source_priority": "P1",
@@ -2856,10 +2763,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "01M0ZV75CA0XZA10YGA99D89XQ": {
-    "primary_genre": "Jazz",
     "sub_genres": [
       "Bebop"
     ],
@@ -2890,10 +2796,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "01M0ZV75MN54813KGGWVFJA864": {
-    "primary_genre": "Jazz",
     "sub_genres": [
       "Cool Jazz"
     ],
@@ -2923,10 +2828,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "01M0ZV75HFQNAS9VNCF717E4MC": {
-    "primary_genre": "Jazz",
     "sub_genres": [],
     "source": "qwen_omni_segmented",
     "source_priority": "P1",
@@ -2944,10 +2848,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "01M0ZV75PJG0F27RP7YANG0ZGW": {
-    "primary_genre": "Jazz",
     "sub_genres": [],
     "source": "qwen_omni_supplement",
     "source_priority": "P1",
@@ -2981,10 +2884,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "01M0ZV75CTPEDPQSJSDWQP40E4": {
-    "primary_genre": "Jazz Fusion",
     "sub_genres": [
       "Free Jazz",
       "Avant-Garde Jazz"
@@ -3023,10 +2925,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "01M0ZV75DMQARXEX90GT35FWFK": {
-    "primary_genre": "Latin Jazz",
     "sub_genres": [],
     "source": "qwen_omni_supplement",
     "source_priority": "P1",
@@ -3052,10 +2953,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "01M0ZV75N3CVB5WH17V4GCGDQ3": {
-    "primary_genre": "Jazz Fusion",
     "sub_genres": [
       "Post-Bop"
     ],
@@ -3086,10 +2986,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "01M0ZV75E1JTESWENDMCDN4G3Y": {
-    "primary_genre": "Jazz Fusion",
     "sub_genres": [],
     "source": "qwen_omni_supplement",
     "source_priority": "P1",
@@ -3115,10 +3014,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "01M0ZV75GA4AQAY1KNJ0PD68GQ": {
-    "primary_genre": "Trip-Hop",
     "sub_genres": [],
     "source": "qwen_omni_supplement",
     "source_priority": "P1",
@@ -3144,10 +3042,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "01M0ZV75H12W7ATW11QWSKXC5N": {
-    "primary_genre": "Blues",
     "sub_genres": [
       "Electric Blues"
     ],
@@ -3177,10 +3074,9 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "01M0ZV75D7YTDKME3ZR6JXN1YH": {
-    "primary_genre": "",
     "sub_genres": [],
     "source": "ace_studio_generated",
     "source_priority": "EXCLUDED",
@@ -3190,10 +3086,9 @@
     "reference": "ace_studio_exclude_list",
     "genres": [],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "01M0ZV75K7K5Y26V3WCRQ9QA8Z": {
-    "primary_genre": "",
     "sub_genres": [],
     "source": "ace_studio_generated",
     "source_priority": "EXCLUDED",
@@ -3203,10 +3098,9 @@
     "reference": "ace_studio_exclude_list",
     "genres": [],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "01M0ZV75P30AE55Y0VFH0J44WC": {
-    "primary_genre": "",
     "sub_genres": [],
     "source": "ace_studio_generated",
     "source_priority": "EXCLUDED",
@@ -3216,10 +3110,9 @@
     "reference": "ace_studio_exclude_list",
     "genres": [],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "01M0ZV75F15BY8CTHN77XWPNWN": {
-    "primary_genre": "",
     "sub_genres": [],
     "source": "ace_studio_generated",
     "source_priority": "EXCLUDED",
@@ -3229,10 +3122,9 @@
     "reference": "ace_studio_exclude_list",
     "genres": [],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   },
   "01M0ZV75NNJ2TC50HQCKGNFFF7": {
-    "primary_genre": "",
     "sub_genres": [],
     "source": "ace_studio_generated",
     "source_priority": "EXCLUDED",
@@ -3242,6 +3134,6 @@
     "reference": "ace_studio_exclude_list",
     "genres": [],
     "multi_label": true,
-    "label_selection": "human_review_pending"
+    "label_selection": "locked"
   }
 }

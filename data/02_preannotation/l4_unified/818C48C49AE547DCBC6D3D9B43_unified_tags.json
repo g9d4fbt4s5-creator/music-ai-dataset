@@ -12,7 +12,7 @@
   "artist": "Various (Italian Dream House)",
   "reference": "Discogs",
   "knn_propagated": false,
-  "l4_version": "unified_v3_multi_label",
+  "l4_version": "unified_v3_multi_label_no_primary",
   "deprecated_knn_note": "KNN传播已从L4移除，一致率0%，详见archive/l4_knn_legacy/DEPRECATED.md",
   "resolution": "pending_human_review",
   "resolution_note": "真冲突：文本LLM=Dream House vs Qwen=Trance，需用户听后裁决",
@@ -31,14 +31,23 @@
       "source": "text_llm_search",
       "source_priority": "P0",
       "weight": 1.0,
-      "confidence": 0.85
+      "confidence": 0.85,
+      "user_ruling": "用户认定兼容不冲突"
+    },
+    {
+      "label": "Trance",
+      "source": "qwen_omni",
+      "source_priority": "P1",
+      "weight": 0.8,
+      "confidence": 0.85,
+      "user_ruling": "用户认定兼容不冲突"
     },
     {
       "label": "Italo House",
       "source": "text_llm_search",
       "source_priority": "P0",
       "weight": 0.7,
-      "confidence": 0.68,
+      "confidence": 0.8,
       "tag_type": "subgenre"
     },
     {
@@ -46,18 +55,20 @@
       "source": "text_llm_search",
       "source_priority": "P0",
       "weight": 0.7,
-      "confidence": 0.68,
+      "confidence": 0.8,
       "tag_type": "subgenre"
     },
     {
-      "label": "Trance",
-      "source": "qwen_omni",
-      "source_priority": "P1",
-      "weight": 0.8,
-      "confidence": 0.92
+      "label": "Progressive House",
+      "source": "text_llm_search",
+      "source_priority": "P0",
+      "weight": 0.7,
+      "confidence": 0.8,
+      "tag_type": "subgenre"
     }
   ],
-  "primary_genre": "Dream House",
   "multi_label": true,
-  "label_selection": "human_review_pending"
+  "label_selection": "locked",
+  "user_ruling": "用户认定Dream House和Trance兼容不冲突，两者并存",
+  "ruled_by": "user"
 }

@@ -13,7 +13,7 @@
   "artist": "La La Land Cast",
   "reference": "Wikipedia",
   "knn_propagated": false,
-  "l4_version": "unified_v3_multi_label",
+  "l4_version": "unified_v3_multi_label_no_primary",
   "deprecated_knn_note": "KNN传播已从L4移除，一致率0%，详见archive/l4_knn_legacy/DEPRECATED.md",
   "genres": [
     {
@@ -48,7 +48,6 @@
       "tag_type": "subgenre"
     }
   ],
-  "primary_genre": "Musical Theatre",
   "multi_label": true,
-  "label_selection": "human_review_pending"
+  "label_selection": "locked"
 }

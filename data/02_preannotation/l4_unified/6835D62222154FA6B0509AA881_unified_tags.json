@@ -15,7 +15,7 @@
   "artist": "大贯妙子 (Taeko Onuki)",
   "reference": "Discogs/J-pop百科",
   "knn_propagated": false,
-  "l4_version": "unified_v3_multi_label",
+  "l4_version": "unified_v3_multi_label_no_primary",
   "deprecated_knn_note": "KNN传播已从L4移除，一致率0%，详见archive/l4_knn_legacy/DEPRECATED.md",
   "resolution": "category1_text_llm_primary_qwen_subgenre_merged",
   "resolution_note": "伪冲突：Qwen subgenre已包含文本LLM答案，主标签用文本LLM，subgenre合并Qwen",
@@ -59,7 +59,6 @@
       "confidence": 0.9
     }
   ],
-  "primary_genre": "City Pop",
   "multi_label": true,
-  "label_selection": "human_review_pending"
+  "label_selection": "locked"
 }

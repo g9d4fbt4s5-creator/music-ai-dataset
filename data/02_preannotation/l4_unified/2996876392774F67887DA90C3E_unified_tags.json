@@ -12,7 +12,7 @@
   "artist": "Unknown (ambient/experimental)",
   "reference": "文件名推断",
   "knn_propagated": false,
-  "l4_version": "unified_v3_multi_label",
+  "l4_version": "unified_v3_multi_label_no_primary",
   "deprecated_knn_note": "KNN传播已从L4移除，一致率0%，详见archive/l4_knn_legacy/DEPRECATED.md",
   "resolution": "pending_human_review",
   "resolution_note": "真冲突：文本LLM=Ambient vs Qwen=Post-Rock，需用户听后裁决",
@@ -33,8 +33,15 @@
       "weight": 0.0,
       "confidence": 0.6,
       "rejected": true,
-      "reject_reason": "低置信文件名推断，不采信；以Qwen听音频结果为准",
-      "note": "保留原推断记录供人看"
+      "reject_reason": "低置信文件名推断，不采信；用户认定以Qwen Post-Rock为准"
+    },
+    {
+      "label": "Post-Rock",
+      "source": "qwen_omni",
+      "source_priority": "P1",
+      "weight": 0.8,
+      "confidence": 0.88,
+      "user_ruling": "用户认定"
     },
     {
       "label": "Experimental",
@@ -51,16 +58,10 @@
       "weight": 0.7,
       "confidence": 0.48,
       "tag_type": "subgenre"
-    },
-    {
-      "label": "Post-Rock",
-      "source": "qwen_omni",
-      "source_priority": "P1",
-      "weight": 0.8,
-      "confidence": 0.88
     }
   ],
-  "primary_genre": "Post-Rock",
   "multi_label": true,
-  "label_selection": "human_review_pending"
+  "label_selection": "locked",
+  "user_ruling": "用户认定Post-Rock，Ambient低置信文件名推断不采信",
+  "ruled_by": "user"
 }
