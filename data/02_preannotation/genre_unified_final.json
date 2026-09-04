@@ -1935,8 +1935,27 @@
         "label": "Ambient",
         "source": "text_llm_search",
         "source_priority": "P0",
-        "weight": 1.0,
-        "confidence": 0.6
+        "weight": 0.0,
+        "confidence": 0.6,
+        "rejected": true,
+        "reject_reason": "低置信文件名推断，不采信；用户认定以Qwen听音频结果为准"
+      },
+      {
+        "label": "Post-Rock",
+        "source": "qwen_omni",
+        "source_priority": "P1",
+        "weight": 0.8,
+        "confidence": 0.85,
+        "user_ruling": "用户认定",
+        "note": "Qwen subgenre，与同曲另两段一致"
+      },
+      {
+        "label": "Indie Rock",
+        "source": "qwen_omni",
+        "source_priority": "P1",
+        "weight": 0.8,
+        "confidence": 0.85,
+        "note": "Qwen主genre，与Post-Rock并存"
       },
       {
         "label": "Experimental",
@@ -1956,7 +1975,12 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "locked"
+    "label_selection": "locked",
+    "user_ruling": "用户认定Post-Rock，Ambient低置信文件名推断不采信（与同曲另两段at the same time/windmill同样处理）",
+    "ruled_by": "user",
+    "reannotated": true,
+    "reannotated_from": "deepseek_v4_flash",
+    "segmented": true
   },
   "E1C4475B60AC4179852278CC60": {
     "sub_genres": [

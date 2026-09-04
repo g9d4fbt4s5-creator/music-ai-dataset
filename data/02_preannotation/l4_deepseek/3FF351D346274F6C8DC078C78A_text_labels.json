@@ -1,24 +1,185 @@
 {
-  "genre": "latin jazz",
-  "genre_candidates": [
-    "electronic",
-    "latin jazz",
-    "folk"
-  ],
-  "mood": [
-    "energetic",
-    "dreamy"
-  ],
-  "instrumentation": [
-    "piano",
-    "violin",
-    "flute",
-    "harp"
-  ],
-  "scene": "elevator music",
-  "vocal_presence": "instrumental",
-  "tempo_description": "中速",
-  "caption": "A medium-tempo latin jazz piece with piano, violin, flute, and harp, creating an energetic yet dreamy atmosphere, suitable for elevator music.",
   "audio_id": "3FF351D346274F6C8DC078C78A",
-  "source": "deepseek_v4_flash"
+  "genre": "Indie Rock",
+  "subgenre": "Post-Rock",
+  "mood": [
+    "轻快",
+    "热情",
+    "激昂",
+    "复杂",
+    "动态"
+  ],
+  "mood_tags": [
+    "轻快",
+    "热情",
+    "激昂",
+    "复杂",
+    "动态"
+  ],
+  "mood_vad": {
+    "valence": 0.7,
+    "arousal": 0.8,
+    "dominance": 0.6
+  },
+  "instrumentation": [
+    "电吉他",
+    "贝斯",
+    "爵士鼓",
+    "原声钢琴"
+  ],
+  "vocal_presence": "instrumental",
+  "tempo_bpm": 120,
+  "key": "C major",
+  "caption": "这是一首充满活力的器乐摇滚，以电吉他、贝斯和爵士鼓为主，情绪从平静逐渐转向热烈。",
+  "source": "qwen_omni_supplement",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 13.5,
+      "label": "前奏",
+      "instruments": [
+        "电吉他"
+      ],
+      "mood": "平静",
+      "confidence": 0.9
+    },
+    {
+      "start": 13.5,
+      "end": 44.0,
+      "label": "主歌",
+      "instruments": [
+        "电吉他",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "轻快",
+      "confidence": 0.85
+    },
+    {
+      "start": 44.0,
+      "end": 56.0,
+      "label": "过门",
+      "instruments": [
+        "电吉他",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "激昂",
+      "confidence": 0.8
+    },
+    {
+      "start": 56.0,
+      "end": 89.0,
+      "label": "副歌",
+      "instruments": [
+        "电吉他",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "热情奔放",
+      "confidence": 0.9
+    },
+    {
+      "start": 89.0,
+      "end": 105.0,
+      "label": "桥段",
+      "instruments": [
+        "电吉他",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "舒缓",
+      "confidence": 0.75
+    },
+    {
+      "start": 105.0,
+      "end": 121.0,
+      "label": "过门",
+      "instruments": [
+        "电吉他",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "激昂",
+      "confidence": 0.8
+    },
+    {
+      "start": 121.0,
+      "end": 149.0,
+      "label": "高潮",
+      "instruments": [
+        "电吉他",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "热烈",
+      "confidence": 0.9
+    },
+    {
+      "start": 149.0,
+      "end": 181.0,
+      "label": "尾声",
+      "instruments": [
+        "电吉他",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "宁静",
+      "confidence": 0.85
+    },
+    {
+      "start": 180.0,
+      "end": 220.5,
+      "label": "前奏",
+      "instruments": [
+        "原声钢琴",
+        "电吉他",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "宁静舒缓",
+      "confidence": 0.9
+    },
+    {
+      "start": 220.5,
+      "end": 269.0,
+      "label": "主歌",
+      "instruments": [
+        "电吉他",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "热情奔放",
+      "confidence": 0.85
+    },
+    {
+      "start": 269.0,
+      "end": 309.5,
+      "label": "桥段",
+      "instruments": [
+        "电吉他",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "激昂紧张",
+      "confidence": 0.9
+    },
+    {
+      "start": 309.5,
+      "end": 322.0,
+      "label": "尾声",
+      "instruments": [
+        "电吉他",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "平静释然",
+      "confidence": 0.88
+    }
+  ],
+  "confidence": 0.85,
+  "truncated": false,
+  "segmented": true,
+  "duration_sec": 341.0,
+  "reannotated_from": "deepseek_v4_flash"
 }
