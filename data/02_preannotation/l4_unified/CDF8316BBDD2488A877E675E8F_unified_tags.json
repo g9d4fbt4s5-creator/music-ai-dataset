@@ -1,6 +1,4 @@
 {
-  "audio_id": "CDF8316BBDD2488A877E675E8F",
-  "genre": "Mandopop",
   "sub_genres": [
     "Pop Rock",
     "Taiwanese Pop"
@@ -11,9 +9,6 @@
   "title": "因为你 所以我",
   "artist": "五月天",
   "reference": "Wikipedia",
-  "knn_propagated": false,
-  "l4_version": "unified_v3_multi_label_no_primary",
-  "deprecated_knn_note": "KNN传播已从L4移除，一致率0%，详见archive/l4_knn_legacy/DEPRECATED.md",
   "genres": [
     {
       "label": "Mandopop",
@@ -40,5 +35,9 @@
     }
   ],
   "multi_label": true,
-  "label_selection": "locked"
+  "label_selection": "locked",
+  "audio_id": "CDF8316BBDD2488A877E675E8F",
+  "knn_propagated": false,
+  "l4_version": "unified_v3_multi_label_no_primary",
+  "deprecated_knn_note": "KNN传播已从L4移除，一致率0%，详见archive/l4_knn_legacy/DEPRECATED.md"
 }

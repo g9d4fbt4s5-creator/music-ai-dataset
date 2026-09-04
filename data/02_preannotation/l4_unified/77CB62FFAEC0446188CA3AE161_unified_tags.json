@@ -1,6 +1,4 @@
 {
-  "audio_id": "77CB62FFAEC0446188CA3AE161",
-  "genre": "Experimental",
   "sub_genres": [
     "Free Improvisation",
     "Noise"
@@ -11,9 +9,6 @@
   "title": "Zitterschlagzeug",
   "artist": "Unknown (German experimental)",
   "reference": "文件名推断(German: 颤抖鼓)",
-  "knn_propagated": false,
-  "l4_version": "unified_v3_multi_label_no_primary",
-  "deprecated_knn_note": "KNN传播已从L4移除，一致率0%，详见archive/l4_knn_legacy/DEPRECATED.md",
   "genres": [
     {
       "label": "Experimental",
@@ -40,5 +35,9 @@
     }
   ],
   "multi_label": true,
-  "label_selection": "locked"
+  "label_selection": "locked",
+  "audio_id": "77CB62FFAEC0446188CA3AE161",
+  "knn_propagated": false,
+  "l4_version": "unified_v3_multi_label_no_primary",
+  "deprecated_knn_note": "KNN传播已从L4移除，一致率0%，详见archive/l4_knn_legacy/DEPRECATED.md"
 }

@@ -1,6 +1,4 @@
 {
-  "audio_id": "DC92B30BB51D42488F02AA203F",
-  "genre": "Italo House",
   "sub_genres": [
     "Dream House",
     "Deep House",
@@ -12,21 +10,6 @@
   "title": "Ouverture",
   "artist": "Don Carlos",
   "reference": "Discogs",
-  "knn_propagated": false,
-  "l4_version": "unified_v3_multi_label_no_primary",
-  "deprecated_knn_note": "KNN传播已从L4移除，一致率0%，详见archive/l4_knn_legacy/DEPRECATED.md",
-  "resolution": "pending_human_review",
-  "resolution_note": "真冲突：文本LLM=Italo House vs Qwen=Trance，需用户听后裁决",
-  "candidate_labels": {
-    "text_llm": "Italo House",
-    "text_llm_sub": [
-      "Dream House",
-      "Deep House",
-      "Trance"
-    ],
-    "qwen": "Trance",
-    "qwen_subgenre": ""
-  },
   "genres": [
     {
       "label": "Italo House",
@@ -46,7 +29,23 @@
     }
   ],
   "multi_label": true,
-  "label_selection": "locked",
+  "resolution": "pending_human_review",
+  "resolution_note": "真冲突：文本LLM=Italo House vs Qwen=Trance，需用户听后裁决",
+  "candidate_labels": {
+    "text_llm": "Italo House",
+    "text_llm_sub": [
+      "Dream House",
+      "Deep House",
+      "Trance"
+    ],
+    "qwen": "Trance",
+    "qwen_subgenre": ""
+  },
   "user_ruling": "用户认定Italo House和Trance兼容不冲突，两者并存",
-  "ruled_by": "user"
+  "ruled_by": "user",
+  "label_selection": "locked",
+  "audio_id": "DC92B30BB51D42488F02AA203F",
+  "knn_propagated": false,
+  "l4_version": "unified_v3_multi_label_no_primary",
+  "deprecated_knn_note": "KNN传播已从L4移除，一致率0%，详见archive/l4_knn_legacy/DEPRECATED.md"
 }

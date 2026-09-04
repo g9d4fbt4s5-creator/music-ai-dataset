@@ -1,6 +1,4 @@
 {
-  "audio_id": "01M0ZV75CA0XZA10YGA99D89XQ",
-  "genre": "Jazz",
   "sub_genres": [
     "Bebop"
   ],
@@ -10,12 +8,6 @@
   "title": "unknown",
   "artist": "unknown",
   "reference": "needs_qwen_reannotate",
-  "knn_propagated": false,
-  "l4_version": "unified_v3_multi_label_no_primary",
-  "deprecated_knn_note": "KNN传播已从L4移除，一致率0%，详见archive/l4_knn_legacy/DEPRECATED.md",
-  "reannotated": true,
-  "reannotated_from": "deepseek_v4_flash",
-  "segmented": true,
   "genres": [
     {
       "label": "Jazz",
@@ -34,5 +26,12 @@
     }
   ],
   "multi_label": true,
-  "label_selection": "locked"
+  "reannotated": true,
+  "reannotated_from": "deepseek_v4_flash",
+  "segmented": true,
+  "label_selection": "locked",
+  "audio_id": "01M0ZV75CA0XZA10YGA99D89XQ",
+  "knn_propagated": false,
+  "l4_version": "unified_v3_multi_label_no_primary",
+  "deprecated_knn_note": "KNN传播已从L4移除，一致率0%，详见archive/l4_knn_legacy/DEPRECATED.md"
 }

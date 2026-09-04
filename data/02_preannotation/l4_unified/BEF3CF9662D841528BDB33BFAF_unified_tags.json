@@ -1,6 +1,4 @@
 {
-  "audio_id": "BEF3CF9662D841528BDB33BFAF",
-  "genre": "J-pop",
   "sub_genres": [
     "Idol Pop",
     "Dance-Pop"
@@ -11,9 +9,6 @@
   "title": "ヘビーローテーション (Heavy Rotation)",
   "artist": "AKB48",
   "reference": "Wikipedia",
-  "knn_propagated": false,
-  "l4_version": "unified_v3_multi_label_no_primary",
-  "deprecated_knn_note": "KNN传播已从L4移除，一致率0%，详见archive/l4_knn_legacy/DEPRECATED.md",
   "genres": [
     {
       "label": "J-pop",
@@ -40,5 +35,9 @@
     }
   ],
   "multi_label": true,
-  "label_selection": "locked"
+  "label_selection": "locked",
+  "audio_id": "BEF3CF9662D841528BDB33BFAF",
+  "knn_propagated": false,
+  "l4_version": "unified_v3_multi_label_no_primary",
+  "deprecated_knn_note": "KNN传播已从L4移除，一致率0%，详见archive/l4_knn_legacy/DEPRECATED.md"
 }

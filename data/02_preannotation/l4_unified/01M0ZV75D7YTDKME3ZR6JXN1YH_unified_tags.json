@@ -1,6 +1,4 @@
 {
-  "audio_id": "01M0ZV75D7YTDKME3ZR6JXN1YH",
-  "genre": "EXCLUDED",
   "sub_genres": [],
   "source": "ace_studio_generated",
   "source_priority": "EXCLUDED",
@@ -8,12 +6,13 @@
   "title": "ACE generated",
   "artist": "ACE Studio",
   "reference": "ace_studio_exclude_list",
+  "genres": [],
+  "multi_label": true,
+  "label_selection": "locked",
+  "audio_id": "01M0ZV75D7YTDKME3ZR6JXN1YH",
   "knn_propagated": false,
   "l4_version": "unified_v3_multi_label_no_primary",
   "deprecated_knn_note": "KNN传播已从L4移除，一致率0%，详见archive/l4_knn_legacy/DEPRECATED.md",
   "excluded": true,
-  "exclude_reason": "ACE Studio generated (demucs_vocals)",
-  "genres": [],
-  "multi_label": true,
-  "label_selection": "locked"
+  "exclude_reason": "ACE Studio generated (demucs_vocals)"
 }

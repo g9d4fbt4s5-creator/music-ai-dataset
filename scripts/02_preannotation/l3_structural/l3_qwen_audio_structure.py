@@ -289,6 +289,53 @@ def merge_segment_results(segment_results: List[Dict], audio_id: str, duration: 
     }
 
 
+def convert_to_l4_format(qwen_result: Dict, audio_id: str) -> Dict:
+    """
+    将 Qwen-Omni 单段输出完整转换为 L4 期望格式（唯一实现，从一次性脚本上收）。
+    完整提取所有字段，不遗漏 subgenre/vocal_presence/tempo_bpm/key/mood_tags/mood_vad。
+    """
+    # 乐器：instruments 或 instrumentation
+    instr = qwen_result.get("instruments") or qwen_result.get("instrumentation") or []
+    if isinstance(instr, str):
+        instr = [instr]
+
+    # 情绪：优先 mood_tags（Qwen标准字段），其次 mood/moods
+    mood = qwen_result.get("mood_tags") or qwen_result.get("mood") or qwen_result.get("moods") or []
+    if isinstance(mood, str):
+        mood = [mood]
+    # mood为空时从segments提取
+    if not mood:
+        for seg in qwen_result.get("segments", []):
+            m = seg.get("mood", "")
+            if m and m not in mood:
+                mood.append(m)
+
+    # 流派：主genre + subgenre
+    genre = qwen_result.get("genre", "")
+    if isinstance(genre, list):
+        genre = genre[0] if genre else ""
+    subgenre = qwen_result.get("subgenre", "")
+
+    caption = qwen_result.get("caption", "") or qwen_result.get("description", "")
+
+    return {
+        "audio_id": audio_id,
+        "genre": genre,
+        "subgenre": subgenre,
+        "mood": mood,
+        "mood_tags": qwen_result.get("mood_tags", []),
+        "mood_vad": qwen_result.get("mood_vad", {}),
+        "instrumentation": instr,
+        "vocal_presence": qwen_result.get("vocal_presence", ""),
+        "tempo_bpm": qwen_result.get("tempo_bpm", 0),
+        "key": qwen_result.get("key", ""),
+        "caption": caption,
+        "source": "qwen_omni_supplement",
+        "segments": qwen_result.get("segments", []),
+        "confidence": qwen_result.get("confidence", 0.8),
+    }
+
+
 def annotate_long_audio(input_path: str, api_key: str, tmp_dir: Path, audio_id: str,
                         segment_duration: int = 180) -> Optional[Dict]:
     """

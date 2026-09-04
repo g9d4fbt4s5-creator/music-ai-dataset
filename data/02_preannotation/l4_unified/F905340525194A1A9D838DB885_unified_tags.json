@@ -1,6 +1,4 @@
 {
-  "audio_id": "F905340525194A1A9D838DB885",
-  "genre": "Dream House",
   "sub_genres": [
     "Italo House",
     "Deep House"
@@ -11,9 +9,6 @@
   "title": "Welcome To Paradise Vol. III (track 3)",
   "artist": "Various (Italian Dream House)",
   "reference": "Discogs",
-  "knn_propagated": false,
-  "l4_version": "unified_v3_multi_label_no_primary",
-  "deprecated_knn_note": "KNN传播已从L4移除，一致率0%，详见archive/l4_knn_legacy/DEPRECATED.md",
   "genres": [
     {
       "label": "Dream House",
@@ -40,5 +35,9 @@
     }
   ],
   "multi_label": true,
-  "label_selection": "locked"
+  "label_selection": "locked",
+  "audio_id": "F905340525194A1A9D838DB885",
+  "knn_propagated": false,
+  "l4_version": "unified_v3_multi_label_no_primary",
+  "deprecated_knn_note": "KNN传播已从L4移除，一致率0%，详见archive/l4_knn_legacy/DEPRECATED.md"
 }

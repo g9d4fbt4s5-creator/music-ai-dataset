@@ -1,6 +1,4 @@
 {
-  "audio_id": "A1AD6E948D2149EC940866F9D3",
-  "genre": "Hip Hop",
   "sub_genres": [
     "R&B",
     "Pop Rap"
@@ -11,9 +9,6 @@
   "title": "Dilemma",
   "artist": "Nelly ft. Kelly Rowland",
   "reference": "Wikipedia",
-  "knn_propagated": false,
-  "l4_version": "unified_v3_multi_label_no_primary",
-  "deprecated_knn_note": "KNN传播已从L4移除，一致率0%，详见archive/l4_knn_legacy/DEPRECATED.md",
   "genres": [
     {
       "label": "Hip Hop",
@@ -40,5 +35,9 @@
     }
   ],
   "multi_label": true,
-  "label_selection": "locked"
+  "label_selection": "locked",
+  "audio_id": "A1AD6E948D2149EC940866F9D3",
+  "knn_propagated": false,
+  "l4_version": "unified_v3_multi_label_no_primary",
+  "deprecated_knn_note": "KNN传播已从L4移除，一致率0%，详见archive/l4_knn_legacy/DEPRECATED.md"
 }

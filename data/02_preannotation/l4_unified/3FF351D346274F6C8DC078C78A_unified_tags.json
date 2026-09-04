@@ -1,6 +1,4 @@
 {
-  "audio_id": "3FF351D346274F6C8DC078C78A",
-  "genre": "Ambient",
   "sub_genres": [
     "Experimental",
     "Drone"
@@ -11,9 +9,6 @@
   "title": "How to count one to ten - a siesta",
   "artist": "Unknown (ambient/experimental)",
   "reference": "文件名推断",
-  "knn_propagated": false,
-  "l4_version": "unified_v3_multi_label_no_primary",
-  "deprecated_knn_note": "KNN传播已从L4移除，一致率0%，详见archive/l4_knn_legacy/DEPRECATED.md",
   "genres": [
     {
       "label": "Ambient",
@@ -59,10 +54,14 @@
     }
   ],
   "multi_label": true,
-  "label_selection": "locked",
-  "user_ruling": "用户认定Post-Rock，Ambient低置信文件名推断不采信（与同曲另两段at the same time/windmill同样处理）",
-  "ruled_by": "user",
   "reannotated": true,
   "reannotated_from": "deepseek_v4_flash",
-  "segmented": true
+  "segmented": true,
+  "user_ruling": "用户认定Post-Rock，Ambient低置信文件名推断不采信（与同曲另两段at the same time/windmill同样处理）",
+  "ruled_by": "user",
+  "label_selection": "locked",
+  "audio_id": "3FF351D346274F6C8DC078C78A",
+  "knn_propagated": false,
+  "l4_version": "unified_v3_multi_label_no_primary",
+  "deprecated_knn_note": "KNN传播已从L4移除，一致率0%，详见archive/l4_knn_legacy/DEPRECATED.md"
 }

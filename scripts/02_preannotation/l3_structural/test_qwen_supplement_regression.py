@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-qwen_supplement_30.py 回归测试
+Qwen-Omni 标注核心库回归测试（指向正式模块 l3_qwen_audio_structure，不依赖任何一次性脚本）
 测试用例：
 1. convert_to_l4_format: 完整字段提取（subgenre/vocal_presence/tempo_bpm/key/mood_tags/mood_vad）
-2. merge_segment_results（来自l3_qwen_audio_structure）: 超10MB长音频分段标注后合并正确
+2. merge_segment_results: 超10MB长音频分段标注后合并正确
 3. prepare_audio_for_qwen: 超10MB文件处理后truncated状态正确
 """
 import sys, json, tempfile
@@ -11,8 +11,12 @@ from pathlib import Path
 from collections import Counter
 
 sys.path.insert(0, str(Path(__file__).parent))
-from qwen_supplement_30 import convert_to_l4_format
-from l3_qwen_audio_structure import merge_segment_results, prepare_audio_for_qwen, get_file_size_mb
+from l3_qwen_audio_structure import (
+    convert_to_l4_format,
+    merge_segment_results,
+    prepare_audio_for_qwen,
+    get_file_size_mb,
+)
 
 PASS = 0
 FAIL = 0

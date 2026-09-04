@@ -1,6 +1,4 @@
 {
-  "audio_id": "95D0CB9A84B54582AD17E79393",
-  "genre": "Jazz",
   "sub_genres": [
     "Contemporary Jazz",
     "Vocal Jazz"
@@ -11,9 +9,6 @@
   "title": "Illusion",
   "artist": "Kira Linn / Linntett",
   "reference": "Discogs",
-  "knn_propagated": false,
-  "l4_version": "unified_v3_multi_label_no_primary",
-  "deprecated_knn_note": "KNN传播已从L4移除，一致率0%，详见archive/l4_knn_legacy/DEPRECATED.md",
   "genres": [
     {
       "label": "Jazz",
@@ -40,5 +35,9 @@
     }
   ],
   "multi_label": true,
-  "label_selection": "locked"
+  "label_selection": "locked",
+  "audio_id": "95D0CB9A84B54582AD17E79393",
+  "knn_propagated": false,
+  "l4_version": "unified_v3_multi_label_no_primary",
+  "deprecated_knn_note": "KNN传播已从L4移除，一致率0%，详见archive/l4_knn_legacy/DEPRECATED.md"
 }

@@ -1,0 +1,74 @@
+{
+  "_comment": "用户人工裁决配置。genre_annotation_pipeline.py 读取此文件应用用户裁定。新增裁决只需改此文件，不改代码。",
+  "_schema": {
+    "ruling": "顶层裁决说明（写入 user_ruling 字段）",
+    "labels": "该样本最终的多标签列表，每项含 label/source/source_priority/weight/confidence，可选 rejected/reject_reason/user_ruling/tag_type/note"
+  },
+  "_weights": {
+    "P0_text_llm_primary": 1.0,
+    "P0_text_llm_subgenre": 0.7,
+    "P1_qwen_primary": 0.8,
+    "P1_qwen_subgenre": 0.6,
+    "rejected": 0.0
+  },
+  "rulings": {
+    "146D04DCF3BB4D56B68F9DD25C": {
+      "title": "Love Me Tender (Andrea Bocelli)",
+      "ruling": "用户认定Classical Crossover更贴切，Traditional Pop也对，两者并存",
+      "labels": [
+        {"label": "Classical Crossover", "source": "text_llm_search", "source_priority": "P0", "weight": 1.0, "confidence": 0.95, "user_ruling": "用户认定更贴切"},
+        {"label": "Traditional Pop", "source": "qwen_omni", "source_priority": "P1", "weight": 0.8, "confidence": 0.92, "user_ruling": "用户认定也对"}
+      ]
+    },
+    "2996876392774F67887DA90C3E": {
+      "title": "How to count one to ten - at the same time",
+      "ruling": "用户认定Post-Rock，Ambient低置信文件名推断不采信",
+      "labels": [
+        {"label": "Ambient", "source": "text_llm_search", "source_priority": "P0", "weight": 0.0, "confidence": 0.6, "rejected": true, "reject_reason": "低置信文件名推断，不采信；用户认定以Qwen Post-Rock为准"},
+        {"label": "Post-Rock", "source": "qwen_omni", "source_priority": "P1", "weight": 0.8, "confidence": 0.88, "user_ruling": "用户认定"},
+        {"label": "Experimental", "source": "text_llm_search", "source_priority": "P0", "weight": 0.7, "confidence": 0.48, "tag_type": "subgenre"},
+        {"label": "Drone", "source": "text_llm_search", "source_priority": "P0", "weight": 0.7, "confidence": 0.48, "tag_type": "subgenre"}
+      ]
+    },
+    "AA089CC166EF4DE8AA78014AD9": {
+      "title": "How to count one to ten - windmill",
+      "ruling": "用户认定Post-Rock，Ambient低置信文件名推断不采信",
+      "labels": [
+        {"label": "Ambient", "source": "text_llm_search", "source_priority": "P0", "weight": 0.0, "confidence": 0.6, "rejected": true, "reject_reason": "低置信文件名推断，不采信；用户认定以Qwen Post-Rock为准"},
+        {"label": "Post-Rock", "source": "qwen_omni", "source_priority": "P1", "weight": 0.8, "confidence": 0.9, "user_ruling": "用户认定"},
+        {"label": "Experimental", "source": "text_llm_search", "source_priority": "P0", "weight": 0.7, "confidence": 0.48, "tag_type": "subgenre"},
+        {"label": "Drone", "source": "text_llm_search", "source_priority": "P0", "weight": 0.7, "confidence": 0.48, "tag_type": "subgenre"}
+      ]
+    },
+    "3FF351D346274F6C8DC078C78A": {
+      "title": "How to count one to ten - a siesta",
+      "ruling": "用户认定Post-Rock，Ambient低置信文件名推断不采信（与同曲另两段at the same time/windmill同样处理）",
+      "labels": [
+        {"label": "Ambient", "source": "text_llm_search", "source_priority": "P0", "weight": 0.0, "confidence": 0.6, "rejected": true, "reject_reason": "低置信文件名推断，不采信；用户认定以Qwen听音频结果为准"},
+        {"label": "Post-Rock", "source": "qwen_omni", "source_priority": "P1", "weight": 0.8, "confidence": 0.85, "user_ruling": "用户认定", "note": "Qwen subgenre，与同曲另两段一致"},
+        {"label": "Indie Rock", "source": "qwen_omni", "source_priority": "P1", "weight": 0.8, "confidence": 0.85, "note": "Qwen主genre，与Post-Rock并存"},
+        {"label": "Experimental", "source": "text_llm_search", "source_priority": "P0", "weight": 0.7, "confidence": 0.48, "tag_type": "subgenre"},
+        {"label": "Drone", "source": "text_llm_search", "source_priority": "P0", "weight": 0.7, "confidence": 0.48, "tag_type": "subgenre"}
+      ]
+    },
+    "818C48C49AE547DCBC6D3D9B43": {
+      "title": "Welcome To Paradise Vol. III (track 7)",
+      "ruling": "用户认定Dream House和Trance兼容不冲突，两者并存",
+      "labels": [
+        {"label": "Dream House", "source": "text_llm_search", "source_priority": "P0", "weight": 1.0, "confidence": 0.85, "user_ruling": "用户认定兼容不冲突"},
+        {"label": "Trance", "source": "qwen_omni", "source_priority": "P1", "weight": 0.8, "confidence": 0.85, "user_ruling": "用户认定兼容不冲突"},
+        {"label": "Italo House", "source": "text_llm_search", "source_priority": "P0", "weight": 0.7, "confidence": 0.8, "tag_type": "subgenre"},
+        {"label": "Deep House", "source": "text_llm_search", "source_priority": "P0", "weight": 0.7, "confidence": 0.8, "tag_type": "subgenre"},
+        {"label": "Progressive House", "source": "text_llm_search", "source_priority": "P0", "weight": 0.7, "confidence": 0.8, "tag_type": "subgenre"}
+      ]
+    },
+    "DC92B30BB51D42488F02AA203F": {
+      "title": "Ouverture (Don Carlos)",
+      "ruling": "用户认定Italo House和Trance兼容不冲突，两者并存",
+      "labels": [
+        {"label": "Italo House", "source": "text_llm_search", "source_priority": "P0", "weight": 1.0, "confidence": 0.85, "user_ruling": "用户认定兼容不冲突"},
+        {"label": "Trance", "source": "qwen_omni", "source_priority": "P1", "weight": 0.8, "confidence": 0.85, "user_ruling": "用户认定兼容不冲突"}
+      ]
+    }
+  }
+}

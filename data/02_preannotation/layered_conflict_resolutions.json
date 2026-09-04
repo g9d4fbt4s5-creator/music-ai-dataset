@@ -1,0 +1,169 @@
+{
+  "_comment": "12首文本LLM vs Qwen冲突的分层裁决结果（HITL/规则裁决，固化为配置）。category1=伪冲突(Qwen subgenre已含文本LLM答案)，category2=社会定义vs听觉判断，pending_human_review=真冲突(已由user_rulings最终裁定)。",
+  "resolution_notes": {
+    "category1_text_llm_primary_qwen_subgenre_merged": "伪冲突：Qwen subgenre已包含文本LLM答案，主标签用文本LLM，subgenre合并Qwen",
+    "category2_text_llm_primary_qwen_as_subgenre": "社会定义vs听觉判断：主标签用文本LLM（社会共识），Qwen标签进subgenre",
+    "pending_human_review": "真冲突：文本LLM vs Qwen，需用户听后裁决（最终结果见user_rulings.json）"
+  },
+  "resolutions": {
+    "6835D62222154FA6B0509AA881": {
+      "title": "若き日の望楼",
+      "resolution": "category1_text_llm_primary_qwen_subgenre_merged",
+      "resolution_note": "伪冲突：Qwen subgenre已包含文本LLM答案，主标签用文本LLM，subgenre合并Qwen",
+      "merged_sub_genres": [
+        "J-pop",
+        "Adult Contemporary",
+        "Jazz Fusion",
+        "Vocal Jazz",
+        "Ballad"
+      ]
+    },
+    "364CBB655E7D4A90B83A060A39": {
+      "title": "City of Stars",
+      "resolution": "category1_text_llm_primary_qwen_subgenre_merged",
+      "resolution_note": "伪冲突：Qwen subgenre已包含文本LLM答案，主标签用文本LLM，subgenre合并Qwen",
+      "merged_sub_genres": [
+        "Soundtrack",
+        "Jazz",
+        "Show Tunes",
+        "Ballad"
+      ]
+    },
+    "AA089CC166EF4DE8AA78014AD9": {
+      "title": "How to count one to ten - windmill",
+      "resolution": "pending_human_review",
+      "resolution_note": "真冲突：文本LLM=Ambient vs Qwen=Post-Rock，需用户听后裁决",
+      "merged_sub_genres": [
+        "Experimental",
+        "Drone"
+      ],
+      "candidate_labels": {
+        "text_llm": "Ambient",
+        "text_llm_sub": [
+          "Experimental",
+          "Drone"
+        ],
+        "qwen": "Post-Rock",
+        "qwen_subgenre": "Instrumental Rock"
+      }
+    },
+    "DC92B30BB51D42488F02AA203F": {
+      "title": "Ouverture",
+      "resolution": "pending_human_review",
+      "resolution_note": "真冲突：文本LLM=Italo House vs Qwen=Trance，需用户听后裁决",
+      "merged_sub_genres": [
+        "Dream House",
+        "Deep House",
+        "Trance"
+      ],
+      "candidate_labels": {
+        "text_llm": "Italo House",
+        "text_llm_sub": [
+          "Dream House",
+          "Deep House",
+          "Trance"
+        ],
+        "qwen": "Trance",
+        "qwen_subgenre": ""
+      }
+    },
+    "A0F9B5560A194DE5A25A22BD62": {
+      "title": "The Red Blouse",
+      "resolution": "category1_text_llm_primary_qwen_subgenre_merged",
+      "resolution_note": "伪冲突：Qwen subgenre已包含文本LLM答案，主标签用文本LLM，subgenre合并Qwen",
+      "merged_sub_genres": [
+        "Latin Jazz",
+        "MPB",
+        "Bossa Nova"
+      ]
+    },
+    "2996876392774F67887DA90C3E": {
+      "title": "How to count one to ten - at the same time",
+      "resolution": "pending_human_review",
+      "resolution_note": "真冲突：文本LLM=Ambient vs Qwen=Post-Rock，需用户听后裁决",
+      "merged_sub_genres": [
+        "Experimental",
+        "Drone"
+      ],
+      "candidate_labels": {
+        "text_llm": "Ambient",
+        "text_llm_sub": [
+          "Experimental",
+          "Drone"
+        ],
+        "qwen": "Post-Rock",
+        "qwen_subgenre": "Instrumental Rock"
+      }
+    },
+    "F7E5F56ECCCC479589A26A2A10": {
+      "title": "EX",
+      "resolution": "category2_text_llm_primary_qwen_as_subgenre",
+      "resolution_note": "社会定义vs听觉判断：主标签用文本LLM（社会共识），Qwen标签进subgenre",
+      "merged_sub_genres": [
+        "Pop",
+        "Contemporary R&B",
+        "R&B",
+        "Pop Ballad"
+      ]
+    },
+    "B7C8FC27F3C349B0B39EB7D55A": {
+      "title": "Welcome To Paradise Vol. III (track 5)",
+      "resolution": "category1_text_llm_primary_qwen_subgenre_merged",
+      "resolution_note": "伪冲突：Qwen subgenre已包含文本LLM答案，主标签用文本LLM，subgenre合并Qwen",
+      "merged_sub_genres": [
+        "Italo House",
+        "Deep House",
+        "Progressive House"
+      ]
+    },
+    "3DD429C6458C404A9891416635": {
+      "title": "Welcome To Paradise Vol. III (track 4)",
+      "resolution": "category1_text_llm_primary_qwen_subgenre_merged",
+      "resolution_note": "伪冲突：Qwen subgenre已包含文本LLM答案，主标签用文本LLM，subgenre合并Qwen",
+      "merged_sub_genres": [
+        "Italo House",
+        "Deep House",
+        "Progressive House"
+      ]
+    },
+    "146D04DCF3BB4D56B68F9DD25C": {
+      "title": "Love Me Tender",
+      "resolution": "category2_text_llm_primary_qwen_as_subgenre",
+      "resolution_note": "社会定义vs听觉判断：主标签用文本LLM（社会共识），Qwen标签进subgenre",
+      "merged_sub_genres": [
+        "Traditional Pop",
+        "Orchestral Ballad",
+        "Vocal",
+        "Ballad"
+      ]
+    },
+    "9C454BAFCD9A4DF7BC15CC9031": {
+      "title": "Paris in the Rain",
+      "resolution": "category1_text_llm_primary_qwen_subgenre_merged",
+      "resolution_note": "伪冲突：Qwen subgenre已包含文本LLM答案，主标签用文本LLM，subgenre合并Qwen",
+      "merged_sub_genres": [
+        "Electropop",
+        "R&B",
+        "Pop R&B"
+      ]
+    },
+    "818C48C49AE547DCBC6D3D9B43": {
+      "title": "Welcome To Paradise Vol. III (track 7)",
+      "resolution": "pending_human_review",
+      "resolution_note": "真冲突：文本LLM=Dream House vs Qwen=Trance，需用户听后裁决",
+      "merged_sub_genres": [
+        "Italo House",
+        "Deep House"
+      ],
+      "candidate_labels": {
+        "text_llm": "Dream House",
+        "text_llm_sub": [
+          "Italo House",
+          "Deep House"
+        ],
+        "qwen": "Trance",
+        "qwen_subgenre": "Progressive Trance"
+      }
+    }
+  }
+}

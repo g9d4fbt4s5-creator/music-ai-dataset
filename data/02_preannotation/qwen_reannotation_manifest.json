@@ -1,0 +1,66 @@
+{
+  "_comment": "Qwen-Omni重标样本清单（历史操作固化）。这些样本从deepseek_v4_flash旧标签改用Qwen听音频重标。segmented=是否因Base64 10MB限制做了分段标注。重标样本顶层confidence用Qwen实际值，其余原补标统一0.8。",
+  "default_supplement_confidence": 0.8,
+  "reannotated": {
+    "3FF351D346274F6C8DC078C78A": {
+      "title": "How to count one to ten - a siesta",
+      "reannotated_from": "deepseek_v4_flash",
+      "segmented": true,
+      "source": "text_llm_search"
+    },
+    "01M0ZV75FJ5XT8F2BWAWABTQ0P": {
+      "title": "unknown",
+      "reannotated_from": "deepseek_v4_flash",
+      "segmented": true,
+      "source": "qwen_omni_supplement"
+    },
+    "01M0ZV75KZ1JMS1XKVRZ326PCW": {
+      "title": "unknown",
+      "reannotated_from": "deepseek_v4_flash",
+      "segmented": false,
+      "source": "qwen_omni_supplement"
+    },
+    "01M0ZV75PYAVPDFDGZD69DE3YF": {
+      "title": "unknown",
+      "reannotated_from": "deepseek_v4_flash",
+      "segmented": false,
+      "source": "qwen_omni_supplement"
+    },
+    "01M0ZV75EF73YWR1X5V3MHVA3A": {
+      "title": "unknown",
+      "reannotated_from": "deepseek_v4_flash",
+      "segmented": true,
+      "source": "qwen_omni_supplement"
+    },
+    "01M0ZV75CA0XZA10YGA99D89XQ": {
+      "title": "unknown",
+      "reannotated_from": "deepseek_v4_flash",
+      "segmented": true,
+      "source": "qwen_omni_supplement"
+    },
+    "01M0ZV75MN54813KGGWVFJA864": {
+      "title": "unknown",
+      "reannotated_from": "deepseek_v4_flash",
+      "segmented": false,
+      "source": "qwen_omni_supplement"
+    },
+    "01M0ZV75CTPEDPQSJSDWQP40E4": {
+      "title": "unknown",
+      "reannotated_from": "deepseek_v4_flash",
+      "segmented": false,
+      "source": "qwen_omni_supplement"
+    },
+    "01M0ZV75N3CVB5WH17V4GCGDQ3": {
+      "title": "unknown",
+      "reannotated_from": "deepseek_v4_flash",
+      "segmented": true,
+      "source": "qwen_omni_supplement"
+    },
+    "01M0ZV75H12W7ATW11QWSKXC5N": {
+      "title": "unknown",
+      "reannotated_from": "deepseek_v4_flash",
+      "segmented": false,
+      "source": "qwen_omni_supplement"
+    }
+  }
+}

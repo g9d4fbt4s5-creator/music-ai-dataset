@@ -1,6 +1,4 @@
 {
-  "audio_id": "818C48C49AE547DCBC6D3D9B43",
-  "genre": "Dream House",
   "sub_genres": [
     "Italo House",
     "Deep House"
@@ -11,20 +9,6 @@
   "title": "Welcome To Paradise Vol. III (track 7)",
   "artist": "Various (Italian Dream House)",
   "reference": "Discogs",
-  "knn_propagated": false,
-  "l4_version": "unified_v3_multi_label_no_primary",
-  "deprecated_knn_note": "KNN传播已从L4移除，一致率0%，详见archive/l4_knn_legacy/DEPRECATED.md",
-  "resolution": "pending_human_review",
-  "resolution_note": "真冲突：文本LLM=Dream House vs Qwen=Trance，需用户听后裁决",
-  "candidate_labels": {
-    "text_llm": "Dream House",
-    "text_llm_sub": [
-      "Italo House",
-      "Deep House"
-    ],
-    "qwen": "Trance",
-    "qwen_subgenre": "Progressive Trance"
-  },
   "genres": [
     {
       "label": "Dream House",
@@ -68,7 +52,22 @@
     }
   ],
   "multi_label": true,
-  "label_selection": "locked",
+  "resolution": "pending_human_review",
+  "resolution_note": "真冲突：文本LLM=Dream House vs Qwen=Trance，需用户听后裁决",
+  "candidate_labels": {
+    "text_llm": "Dream House",
+    "text_llm_sub": [
+      "Italo House",
+      "Deep House"
+    ],
+    "qwen": "Trance",
+    "qwen_subgenre": "Progressive Trance"
+  },
   "user_ruling": "用户认定Dream House和Trance兼容不冲突，两者并存",
-  "ruled_by": "user"
+  "ruled_by": "user",
+  "label_selection": "locked",
+  "audio_id": "818C48C49AE547DCBC6D3D9B43",
+  "knn_propagated": false,
+  "l4_version": "unified_v3_multi_label_no_primary",
+  "deprecated_knn_note": "KNN传播已从L4移除，一致率0%，详见archive/l4_knn_legacy/DEPRECATED.md"
 }

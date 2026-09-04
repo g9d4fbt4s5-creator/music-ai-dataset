@@ -1,6 +1,4 @@
 {
-  "audio_id": "3F34DF1B2784408BA60CE8165C",
-  "genre": "Game Soundtrack",
   "sub_genres": [
     "Orchestral",
     "World Music",
@@ -12,9 +10,6 @@
   "title": "genshin_nata (Genshin Impact OST)",
   "artist": "HOYO-MiX",
   "reference": "Genshin Impact OST",
-  "knn_propagated": false,
-  "l4_version": "unified_v3_multi_label_no_primary",
-  "deprecated_knn_note": "KNN传播已从L4移除，一致率0%，详见archive/l4_knn_legacy/DEPRECATED.md",
   "genres": [
     {
       "label": "Game Soundtrack",
@@ -49,5 +44,9 @@
     }
   ],
   "multi_label": true,
-  "label_selection": "locked"
+  "label_selection": "locked",
+  "audio_id": "3F34DF1B2784408BA60CE8165C",
+  "knn_propagated": false,
+  "l4_version": "unified_v3_multi_label_no_primary",
+  "deprecated_knn_note": "KNN传播已从L4移除，一致率0%，详见archive/l4_knn_legacy/DEPRECATED.md"
 }

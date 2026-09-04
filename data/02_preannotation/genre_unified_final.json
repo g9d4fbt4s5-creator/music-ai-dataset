@@ -1,41 +1,837 @@
 {
-  "78250AD45D2842A3AA18C9071D": {
+  "01M0ZV75CA0XZA10YGA99D89XQ": {
     "sub_genres": [
-      "Post-Bop",
-      "Contemporary Jazz"
+      "Bebop"
     ],
-    "source": "text_llm_search",
-    "source_priority": "P0",
+    "source": "qwen_omni_supplement",
+    "source_priority": "P1",
+    "confidence": 0.895,
+    "title": "unknown",
+    "artist": "unknown",
+    "reference": "needs_qwen_reannotate",
+    "genres": [
+      {
+        "label": "Jazz",
+        "source": "qwen_omni",
+        "source_priority": "P1",
+        "weight": 0.8,
+        "confidence": 0.895
+      },
+      {
+        "label": "Bebop",
+        "source": "qwen_omni",
+        "source_priority": "P1",
+        "weight": 0.6,
+        "confidence": 0.7160000000000001,
+        "tag_type": "subgenre"
+      }
+    ],
+    "multi_label": true,
+    "reannotated": true,
+    "reannotated_from": "deepseek_v4_flash",
+    "segmented": true,
+    "label_selection": "locked"
+  },
+  "01M0ZV75CTPEDPQSJSDWQP40E4": {
+    "sub_genres": [
+      "Free Jazz",
+      "Avant-Garde Jazz"
+    ],
+    "source": "qwen_omni_supplement",
+    "source_priority": "P1",
     "confidence": 0.9,
-    "title": "Seeker",
-    "artist": "Hiromi",
-    "reference": "Discogs",
+    "title": "unknown",
+    "artist": "unknown",
+    "reference": "needs_qwen_reannotate",
     "genres": [
       {
         "label": "Jazz Fusion",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 1.0,
+        "source": "qwen_omni",
+        "source_priority": "P1",
+        "weight": 0.8,
         "confidence": 0.9
       },
       {
-        "label": "Post-Bop",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
+        "label": "Free Jazz",
+        "source": "qwen_omni",
+        "source_priority": "P1",
+        "weight": 0.6,
         "confidence": 0.7200000000000001,
         "tag_type": "subgenre"
       },
       {
-        "label": "Contemporary Jazz",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
+        "label": "Avant-Garde Jazz",
+        "source": "qwen_omni",
+        "source_priority": "P1",
+        "weight": 0.6,
         "confidence": 0.7200000000000001,
         "tag_type": "subgenre"
       }
     ],
     "multi_label": true,
+    "reannotated": true,
+    "reannotated_from": "deepseek_v4_flash",
+    "label_selection": "locked"
+  },
+  "01M0ZV75D7YTDKME3ZR6JXN1YH": {
+    "sub_genres": [],
+    "source": "ace_studio_generated",
+    "source_priority": "EXCLUDED",
+    "confidence": 0.0,
+    "title": "ACE generated",
+    "artist": "ACE Studio",
+    "reference": "ace_studio_exclude_list",
+    "genres": [],
+    "multi_label": true,
+    "label_selection": "locked"
+  },
+  "01M0ZV75DMQARXEX90GT35FWFK": {
+    "sub_genres": [],
+    "source": "qwen_omni_supplement",
+    "source_priority": "P1",
+    "confidence": 0.8,
+    "title": "unknown",
+    "artist": "unknown",
+    "reference": "qwen_omni_audio",
+    "genres": [
+      {
+        "label": "Latin Jazz",
+        "source": "qwen_omni",
+        "source_priority": "P1",
+        "weight": 0.8,
+        "confidence": 0.92
+      },
+      {
+        "label": "Afro-Cuban Jazz",
+        "source": "qwen_omni",
+        "source_priority": "P1",
+        "weight": 0.6,
+        "confidence": 0.7360000000000001,
+        "tag_type": "subgenre"
+      }
+    ],
+    "multi_label": true,
+    "label_selection": "locked"
+  },
+  "01M0ZV75E1JTESWENDMCDN4G3Y": {
+    "sub_genres": [],
+    "source": "qwen_omni_supplement",
+    "source_priority": "P1",
+    "confidence": 0.8,
+    "title": "unknown",
+    "artist": "unknown",
+    "reference": "qwen_omni_audio",
+    "genres": [
+      {
+        "label": "Jazz Fusion",
+        "source": "qwen_omni",
+        "source_priority": "P1",
+        "weight": 0.8,
+        "confidence": 0.92
+      },
+      {
+        "label": "Funky Jazz",
+        "source": "qwen_omni",
+        "source_priority": "P1",
+        "weight": 0.6,
+        "confidence": 0.7360000000000001,
+        "tag_type": "subgenre"
+      }
+    ],
+    "multi_label": true,
+    "label_selection": "locked"
+  },
+  "01M0ZV75EF73YWR1X5V3MHVA3A": {
+    "sub_genres": [
+      "Acid Jazz"
+    ],
+    "source": "qwen_omni_supplement",
+    "source_priority": "P1",
+    "confidence": 0.8866666666666667,
+    "title": "unknown",
+    "artist": "unknown",
+    "reference": "needs_qwen_reannotate",
+    "genres": [
+      {
+        "label": "Jazz Fusion",
+        "source": "qwen_omni",
+        "source_priority": "P1",
+        "weight": 0.8,
+        "confidence": 0.8866666666666667
+      },
+      {
+        "label": "Acid Jazz",
+        "source": "qwen_omni",
+        "source_priority": "P1",
+        "weight": 0.6,
+        "confidence": 0.7093333333333334,
+        "tag_type": "subgenre"
+      }
+    ],
+    "multi_label": true,
+    "reannotated": true,
+    "reannotated_from": "deepseek_v4_flash",
+    "segmented": true,
+    "label_selection": "locked"
+  },
+  "01M0ZV75F15BY8CTHN77XWPNWN": {
+    "sub_genres": [],
+    "source": "ace_studio_generated",
+    "source_priority": "EXCLUDED",
+    "confidence": 0.0,
+    "title": "ACE generated",
+    "artist": "ACE Studio",
+    "reference": "ace_studio_exclude_list",
+    "genres": [],
+    "multi_label": true,
+    "label_selection": "locked"
+  },
+  "01M0ZV75FJ5XT8F2BWAWABTQ0P": {
+    "sub_genres": [
+      "Post-Bop"
+    ],
+    "source": "qwen_omni_supplement",
+    "source_priority": "P1",
+    "confidence": 0.8833333333333333,
+    "title": "unknown",
+    "artist": "unknown",
+    "reference": "needs_qwen_reannotate",
+    "genres": [
+      {
+        "label": "Jazz Fusion",
+        "source": "qwen_omni",
+        "source_priority": "P1",
+        "weight": 0.8,
+        "confidence": 0.8833333333333333
+      },
+      {
+        "label": "Post-Bop",
+        "source": "qwen_omni",
+        "source_priority": "P1",
+        "weight": 0.6,
+        "confidence": 0.7066666666666667,
+        "tag_type": "subgenre"
+      }
+    ],
+    "multi_label": true,
+    "reannotated": true,
+    "reannotated_from": "deepseek_v4_flash",
+    "segmented": true,
+    "label_selection": "locked"
+  },
+  "01M0ZV75G09FTTEQQQTF6049DN": {
+    "sub_genres": [],
+    "source": "qwen_omni_supplement",
+    "source_priority": "P1",
+    "confidence": 0.8,
+    "title": "unknown",
+    "artist": "unknown",
+    "reference": "qwen_omni_audio",
+    "genres": [
+      {
+        "label": "Lounge",
+        "source": "qwen_omni",
+        "source_priority": "P1",
+        "weight": 0.8,
+        "confidence": 0.85
+      },
+      {
+        "label": "Chillout",
+        "source": "qwen_omni",
+        "source_priority": "P1",
+        "weight": 0.6,
+        "confidence": 0.68,
+        "tag_type": "subgenre"
+      }
+    ],
+    "multi_label": true,
+    "label_selection": "locked"
+  },
+  "01M0ZV75GA4AQAY1KNJ0PD68GQ": {
+    "sub_genres": [],
+    "source": "qwen_omni_supplement",
+    "source_priority": "P1",
+    "confidence": 0.8,
+    "title": "unknown",
+    "artist": "unknown",
+    "reference": "qwen_omni_audio",
+    "genres": [
+      {
+        "label": "Trip-Hop",
+        "source": "qwen_omni",
+        "source_priority": "P1",
+        "weight": 0.8,
+        "confidence": 0.9
+      },
+      {
+        "label": "Downtempo",
+        "source": "qwen_omni",
+        "source_priority": "P1",
+        "weight": 0.6,
+        "confidence": 0.7200000000000001,
+        "tag_type": "subgenre"
+      }
+    ],
+    "multi_label": true,
+    "label_selection": "locked"
+  },
+  "01M0ZV75GQPN21PZZESQBZA47M": {
+    "sub_genres": [],
+    "source": "qwen_omni_supplement",
+    "source_priority": "P1",
+    "confidence": 0.8,
+    "title": "unknown",
+    "artist": "unknown",
+    "reference": "qwen_omni_audio",
+    "genres": [
+      {
+        "label": "Jazz Hop",
+        "source": "qwen_omni",
+        "source_priority": "P1",
+        "weight": 0.8,
+        "confidence": 0.91
+      },
+      {
+        "label": "Lo-fi Hip Hop",
+        "source": "qwen_omni",
+        "source_priority": "P1",
+        "weight": 0.6,
+        "confidence": 0.7280000000000001,
+        "tag_type": "subgenre"
+      },
+      {
+        "label": "Jazz Rap",
+        "source": "qwen_omni",
+        "source_priority": "P1",
+        "weight": 0.6,
+        "confidence": 0.7280000000000001,
+        "tag_type": "subgenre"
+      }
+    ],
+    "multi_label": true,
+    "label_selection": "locked"
+  },
+  "01M0ZV75H12W7ATW11QWSKXC5N": {
+    "sub_genres": [
+      "Electric Blues"
+    ],
+    "source": "qwen_omni_supplement",
+    "source_priority": "P1",
+    "confidence": 0.9,
+    "title": "unknown",
+    "artist": "unknown",
+    "reference": "needs_qwen_reannotate",
+    "genres": [
+      {
+        "label": "Blues",
+        "source": "qwen_omni",
+        "source_priority": "P1",
+        "weight": 0.8,
+        "confidence": 0.9
+      },
+      {
+        "label": "Electric Blues",
+        "source": "qwen_omni",
+        "source_priority": "P1",
+        "weight": 0.6,
+        "confidence": 0.7200000000000001,
+        "tag_type": "subgenre"
+      }
+    ],
+    "multi_label": true,
+    "reannotated": true,
+    "reannotated_from": "deepseek_v4_flash",
+    "label_selection": "locked"
+  },
+  "01M0ZV75HFQNAS9VNCF717E4MC": {
+    "sub_genres": [],
+    "source": "qwen_omni_segmented",
+    "source_priority": "P1",
+    "confidence": 0.8,
+    "title": "unknown",
+    "artist": "unknown",
+    "reference": "qwen_omni_audio",
+    "genres": [
+      {
+        "label": "Jazz",
+        "source": "qwen_omni",
+        "source_priority": "P1",
+        "weight": 0.8,
+        "confidence": 0.85
+      }
+    ],
+    "multi_label": true,
+    "label_selection": "locked"
+  },
+  "01M0ZV75HXBGQX8HM75G0WXBPV": {
+    "sub_genres": [],
+    "source": "qwen_omni_supplement",
+    "source_priority": "P1",
+    "confidence": 0.8,
+    "title": "unknown",
+    "artist": "unknown",
+    "reference": "qwen_omni_audio",
+    "genres": [
+      {
+        "label": "Jazz",
+        "source": "qwen_omni",
+        "source_priority": "P1",
+        "weight": 0.8,
+        "confidence": 0.9
+      },
+      {
+        "label": "Fusion",
+        "source": "qwen_omni",
+        "source_priority": "P1",
+        "weight": 0.6,
+        "confidence": 0.7200000000000001,
+        "tag_type": "subgenre"
+      },
+      {
+        "label": "Latin Jazz",
+        "source": "qwen_omni",
+        "source_priority": "P1",
+        "weight": 0.6,
+        "confidence": 0.7200000000000001,
+        "tag_type": "subgenre"
+      }
+    ],
+    "multi_label": true,
+    "label_selection": "locked"
+  },
+  "01M0ZV75JBZS380KPKJWHTNXY4": {
+    "sub_genres": [],
+    "source": "qwen_omni_supplement",
+    "source_priority": "P1",
+    "confidence": 0.8,
+    "title": "unknown",
+    "artist": "unknown",
+    "reference": "qwen_omni_audio",
+    "genres": [
+      {
+        "label": "Art Pop",
+        "source": "qwen_omni",
+        "source_priority": "P1",
+        "weight": 0.8,
+        "confidence": 0.88
+      },
+      {
+        "label": "Alternative",
+        "source": "qwen_omni",
+        "source_priority": "P1",
+        "weight": 0.6,
+        "confidence": 0.7040000000000001,
+        "tag_type": "subgenre"
+      },
+      {
+        "label": "Indie",
+        "source": "qwen_omni",
+        "source_priority": "P1",
+        "weight": 0.6,
+        "confidence": 0.7040000000000001,
+        "tag_type": "subgenre"
+      }
+    ],
+    "multi_label": true,
+    "label_selection": "locked"
+  },
+  "01M0ZV75JR9WA49NP41EP3A7TT": {
+    "sub_genres": [],
+    "source": "qwen_omni_supplement",
+    "source_priority": "P1",
+    "confidence": 0.8,
+    "title": "unknown",
+    "artist": "unknown",
+    "reference": "qwen_omni_audio",
+    "genres": [
+      {
+        "label": "Trip-Hop",
+        "source": "qwen_omni",
+        "source_priority": "P1",
+        "weight": 0.8,
+        "confidence": 0.85
+      },
+      {
+        "label": "Downtempo",
+        "source": "qwen_omni",
+        "source_priority": "P1",
+        "weight": 0.6,
+        "confidence": 0.68,
+        "tag_type": "subgenre"
+      },
+      {
+        "label": "Electronic",
+        "source": "qwen_omni",
+        "source_priority": "P1",
+        "weight": 0.6,
+        "confidence": 0.68,
+        "tag_type": "subgenre"
+      }
+    ],
+    "multi_label": true,
+    "label_selection": "locked"
+  },
+  "01M0ZV75K7K5Y26V3WCRQ9QA8Z": {
+    "sub_genres": [],
+    "source": "ace_studio_generated",
+    "source_priority": "EXCLUDED",
+    "confidence": 0.0,
+    "title": "ACE generated",
+    "artist": "ACE Studio",
+    "reference": "ace_studio_exclude_list",
+    "genres": [],
+    "multi_label": true,
+    "label_selection": "locked"
+  },
+  "01M0ZV75KMG8AH943Q16ZAG4J7": {
+    "sub_genres": [],
+    "source": "qwen_omni_supplement",
+    "source_priority": "P1",
+    "confidence": 0.8,
+    "title": "unknown",
+    "artist": "unknown",
+    "reference": "qwen_omni_audio",
+    "genres": [
+      {
+        "label": "Big Band Jazz",
+        "source": "qwen_omni",
+        "source_priority": "P1",
+        "weight": 0.8,
+        "confidence": 0.9
+      },
+      {
+        "label": "Swing",
+        "source": "qwen_omni",
+        "source_priority": "P1",
+        "weight": 0.6,
+        "confidence": 0.7200000000000001,
+        "tag_type": "subgenre"
+      },
+      {
+        "label": "Jump Blues",
+        "source": "qwen_omni",
+        "source_priority": "P1",
+        "weight": 0.6,
+        "confidence": 0.7200000000000001,
+        "tag_type": "subgenre"
+      }
+    ],
+    "multi_label": true,
+    "label_selection": "locked"
+  },
+  "01M0ZV75KZ1JMS1XKVRZ326PCW": {
+    "sub_genres": [
+      "Ambient"
+    ],
+    "source": "qwen_omni_supplement",
+    "source_priority": "P1",
+    "confidence": 0.88,
+    "title": "unknown",
+    "artist": "unknown",
+    "reference": "needs_qwen_reannotate",
+    "genres": [
+      {
+        "label": "New Age",
+        "source": "qwen_omni",
+        "source_priority": "P1",
+        "weight": 0.8,
+        "confidence": 0.88
+      },
+      {
+        "label": "Ambient",
+        "source": "qwen_omni",
+        "source_priority": "P1",
+        "weight": 0.6,
+        "confidence": 0.7040000000000001,
+        "tag_type": "subgenre"
+      }
+    ],
+    "multi_label": true,
+    "reannotated": true,
+    "reannotated_from": "deepseek_v4_flash",
+    "label_selection": "locked"
+  },
+  "01M0ZV75MCZDA2T7FAXRDPVDA9": {
+    "sub_genres": [],
+    "source": "qwen_omni_supplement",
+    "source_priority": "P1",
+    "confidence": 0.8,
+    "title": "unknown",
+    "artist": "unknown",
+    "reference": "qwen_omni_audio",
+    "genres": [
+      {
+        "label": "Jazz",
+        "source": "qwen_omni",
+        "source_priority": "P1",
+        "weight": 0.8,
+        "confidence": 0.9
+      },
+      {
+        "label": "Fusion",
+        "source": "qwen_omni",
+        "source_priority": "P1",
+        "weight": 0.6,
+        "confidence": 0.7200000000000001,
+        "tag_type": "subgenre"
+      }
+    ],
+    "multi_label": true,
+    "label_selection": "locked"
+  },
+  "01M0ZV75MN54813KGGWVFJA864": {
+    "sub_genres": [
+      "Cool Jazz"
+    ],
+    "source": "qwen_omni_supplement",
+    "source_priority": "P1",
+    "confidence": 0.88,
+    "title": "unknown",
+    "artist": "unknown",
+    "reference": "needs_qwen_reannotate",
+    "genres": [
+      {
+        "label": "Jazz",
+        "source": "qwen_omni",
+        "source_priority": "P1",
+        "weight": 0.8,
+        "confidence": 0.88
+      },
+      {
+        "label": "Cool Jazz",
+        "source": "qwen_omni",
+        "source_priority": "P1",
+        "weight": 0.6,
+        "confidence": 0.7040000000000001,
+        "tag_type": "subgenre"
+      }
+    ],
+    "multi_label": true,
+    "reannotated": true,
+    "reannotated_from": "deepseek_v4_flash",
+    "label_selection": "locked"
+  },
+  "01M0ZV75N3CVB5WH17V4GCGDQ3": {
+    "sub_genres": [
+      "Post-Bop"
+    ],
+    "source": "qwen_omni_supplement",
+    "source_priority": "P1",
+    "confidence": 0.8866666666666667,
+    "title": "unknown",
+    "artist": "unknown",
+    "reference": "needs_qwen_reannotate",
+    "genres": [
+      {
+        "label": "Jazz Fusion",
+        "source": "qwen_omni",
+        "source_priority": "P1",
+        "weight": 0.8,
+        "confidence": 0.8866666666666667
+      },
+      {
+        "label": "Post-Bop",
+        "source": "qwen_omni",
+        "source_priority": "P1",
+        "weight": 0.6,
+        "confidence": 0.7093333333333334,
+        "tag_type": "subgenre"
+      }
+    ],
+    "multi_label": true,
+    "reannotated": true,
+    "reannotated_from": "deepseek_v4_flash",
+    "segmented": true,
+    "label_selection": "locked"
+  },
+  "01M0ZV75NNJ2TC50HQCKGNFFF7": {
+    "sub_genres": [],
+    "source": "ace_studio_generated",
+    "source_priority": "EXCLUDED",
+    "confidence": 0.0,
+    "title": "ACE generated",
+    "artist": "ACE Studio",
+    "reference": "ace_studio_exclude_list",
+    "genres": [],
+    "multi_label": true,
+    "label_selection": "locked"
+  },
+  "01M0ZV75P30AE55Y0VFH0J44WC": {
+    "sub_genres": [],
+    "source": "ace_studio_generated",
+    "source_priority": "EXCLUDED",
+    "confidence": 0.0,
+    "title": "ACE generated",
+    "artist": "ACE Studio",
+    "reference": "ace_studio_exclude_list",
+    "genres": [],
+    "multi_label": true,
+    "label_selection": "locked"
+  },
+  "01M0ZV75PJG0F27RP7YANG0ZGW": {
+    "sub_genres": [],
+    "source": "qwen_omni_supplement",
+    "source_priority": "P1",
+    "confidence": 0.8,
+    "title": "unknown",
+    "artist": "unknown",
+    "reference": "qwen_omni_audio",
+    "genres": [
+      {
+        "label": "Jazz",
+        "source": "qwen_omni",
+        "source_priority": "P1",
+        "weight": 0.8,
+        "confidence": 0.92
+      },
+      {
+        "label": "Latin Jazz",
+        "source": "qwen_omni",
+        "source_priority": "P1",
+        "weight": 0.6,
+        "confidence": 0.7360000000000001,
+        "tag_type": "subgenre"
+      },
+      {
+        "label": "Salsa Jazz",
+        "source": "qwen_omni",
+        "source_priority": "P1",
+        "weight": 0.6,
+        "confidence": 0.7360000000000001,
+        "tag_type": "subgenre"
+      }
+    ],
+    "multi_label": true,
+    "label_selection": "locked"
+  },
+  "01M0ZV75PYAVPDFDGZD69DE3YF": {
+    "sub_genres": [
+      "Bebop"
+    ],
+    "source": "qwen_omni_supplement",
+    "source_priority": "P1",
+    "confidence": 0.85,
+    "title": "unknown",
+    "artist": "unknown",
+    "reference": "needs_qwen_reannotate",
+    "genres": [
+      {
+        "label": "Jazz",
+        "source": "qwen_omni",
+        "source_priority": "P1",
+        "weight": 0.8,
+        "confidence": 0.85
+      },
+      {
+        "label": "Bebop",
+        "source": "qwen_omni",
+        "source_priority": "P1",
+        "weight": 0.6,
+        "confidence": 0.68,
+        "tag_type": "subgenre"
+      }
+    ],
+    "multi_label": true,
+    "reannotated": true,
+    "reannotated_from": "deepseek_v4_flash",
+    "label_selection": "locked"
+  },
+  "09E39F2B2CB84CEDAF02365CB2": {
+    "sub_genres": [
+      "Pop Ballad"
+    ],
+    "source": "text_llm_search",
+    "source_priority": "P0",
+    "confidence": 0.95,
+    "title": "富士山下",
+    "artist": "陈奕迅",
+    "reference": "Wikipedia",
+    "genres": [
+      {
+        "label": "Cantopop",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 1.0,
+        "confidence": 0.95
+      },
+      {
+        "label": "Pop Ballad",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.76,
+        "tag_type": "subgenre"
+      }
+    ],
+    "multi_label": true,
+    "label_selection": "locked"
+  },
+  "0CF65600F4474C71B19A9926EC": {
+    "sub_genres": [
+      "Pop"
+    ],
+    "source": "text_llm_search",
+    "source_priority": "P0",
+    "confidence": 0.95,
+    "title": "相依为命",
+    "artist": "陈小春",
+    "reference": "HK音乐百科",
+    "genres": [
+      {
+        "label": "Cantopop",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 1.0,
+        "confidence": 0.95
+      },
+      {
+        "label": "Pop",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.76,
+        "tag_type": "subgenre"
+      }
+    ],
+    "multi_label": true,
+    "label_selection": "locked"
+  },
+  "146D04DCF3BB4D56B68F9DD25C": {
+    "sub_genres": [
+      "Traditional Pop",
+      "Orchestral Ballad",
+      "Vocal",
+      "Ballad"
+    ],
+    "source": "text_llm_search",
+    "source_priority": "P0",
+    "confidence": 0.95,
+    "title": "Love Me Tender",
+    "artist": "Andrea Bocelli",
+    "reference": "Wikipedia/Discogs (Passione, David Foster)",
+    "genres": [
+      {
+        "label": "Classical Crossover",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 1.0,
+        "confidence": 0.95,
+        "user_ruling": "用户认定更贴切"
+      },
+      {
+        "label": "Traditional Pop",
+        "source": "qwen_omni",
+        "source_priority": "P1",
+        "weight": 0.8,
+        "confidence": 0.92,
+        "user_ruling": "用户认定也对"
+      }
+    ],
+    "multi_label": true,
+    "resolution": "category2_text_llm_primary_qwen_as_subgenre",
+    "resolution_note": "社会定义vs听觉判断：主标签用文本LLM（社会共识），Qwen标签进subgenre",
+    "user_ruling": "用户认定Classical Crossover更贴切，Traditional Pop也对，两者并存",
+    "ruled_by": "user",
     "label_selection": "locked"
   },
   "1C69AC77BB3042A4A237DF5966": {
@@ -77,119 +873,48 @@
     "multi_label": true,
     "label_selection": "locked"
   },
-  "6835D62222154FA6B0509AA881": {
+  "1C8E3363E3FF4BFBA5189ABCB7": {
     "sub_genres": [
-      "J-pop",
-      "Adult Contemporary",
-      "Jazz Fusion",
-      "Vocal Jazz",
-      "Ballad"
-    ],
-    "source": "text_llm_search",
-    "source_priority": "P0",
-    "confidence": 0.9,
-    "title": "若き日の望楼",
-    "artist": "大贯妙子 (Taeko Onuki)",
-    "reference": "Discogs/J-pop百科",
-    "resolution": "category1_text_llm_primary_qwen_subgenre_merged",
-    "resolution_note": "伪冲突：Qwen subgenre已包含文本LLM答案，主标签用文本LLM，subgenre合并Qwen",
-    "genres": [
-      {
-        "label": "City Pop",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 1.0,
-        "confidence": 0.9
-      },
-      {
-        "label": "J-pop",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.7200000000000001,
-        "tag_type": "subgenre"
-      },
-      {
-        "label": "Adult Contemporary",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.7200000000000001,
-        "tag_type": "subgenre"
-      },
-      {
-        "label": "Jazz Fusion",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.7200000000000001,
-        "tag_type": "subgenre"
-      },
-      {
-        "label": "Jazz",
-        "source": "qwen_omni",
-        "source_priority": "P1",
-        "weight": 0.8,
-        "confidence": 0.9
-      }
-    ],
-    "multi_label": true,
-    "label_selection": "locked"
-  },
-  "8E0D1A1B284746B3A1FCE15B41": {
-    "sub_genres": [
-      "Italo House",
-      "Deep House"
-    ],
-    "source": "text_llm_search",
-    "source_priority": "P0",
-    "confidence": 0.85,
-    "title": "Welcome To Paradise Vol. III (track 8)",
-    "artist": "Various (Italian Dream House)",
-    "reference": "Discogs",
-    "genres": [
-      {
-        "label": "Dream House",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 1.0,
-        "confidence": 0.85
-      },
-      {
-        "label": "Italo House",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.68,
-        "tag_type": "subgenre"
-      },
-      {
-        "label": "Deep House",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.68,
-        "tag_type": "subgenre"
-      }
-    ],
-    "multi_label": true,
-    "label_selection": "locked"
-  },
-  "364CBB655E7D4A90B83A060A39": {
-    "sub_genres": [
-      "Soundtrack",
-      "Jazz",
-      "Show Tunes",
-      "Ballad"
+      "Pop Ballad"
     ],
     "source": "text_llm_search",
     "source_priority": "P0",
     "confidence": 0.95,
-    "title": "City of Stars",
+    "title": "喜帖街",
+    "artist": "谢安琪",
+    "reference": "Wikipedia",
+    "genres": [
+      {
+        "label": "Cantopop",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 1.0,
+        "confidence": 0.95
+      },
+      {
+        "label": "Pop Ballad",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.76,
+        "tag_type": "subgenre"
+      }
+    ],
+    "multi_label": true,
+    "label_selection": "locked"
+  },
+  "1EDDB5EFB16E4A36AFFFAC2132": {
+    "sub_genres": [
+      "Soundtrack",
+      "Jazz",
+      "Show Tunes"
+    ],
+    "source": "text_llm_search",
+    "source_priority": "P0",
+    "confidence": 0.95,
+    "title": "Another Day of Sun",
     "artist": "La La Land Cast",
     "reference": "Wikipedia",
-    "resolution": "category1_text_llm_primary_qwen_subgenre_merged",
-    "resolution_note": "伪冲突：Qwen subgenre已包含文本LLM答案，主标签用文本LLM，subgenre合并Qwen",
     "genres": [
       {
         "label": "Musical Theatre",
@@ -221,442 +946,20 @@
         "weight": 0.7,
         "confidence": 0.76,
         "tag_type": "subgenre"
-      },
-      {
-        "label": "Pop",
-        "source": "qwen_omni",
-        "source_priority": "P1",
-        "weight": 0.8,
-        "confidence": 0.9
       }
     ],
     "multi_label": true,
     "label_selection": "locked"
   },
-  "AA089CC166EF4DE8AA78014AD9": {
-    "sub_genres": [
-      "Experimental",
-      "Drone"
-    ],
-    "source": "text_llm_search",
-    "source_priority": "P0",
-    "confidence": 0.6,
-    "title": "How to count one to ten - windmill",
-    "artist": "Unknown (ambient/experimental)",
-    "reference": "文件名推断",
-    "resolution": "pending_human_review",
-    "resolution_note": "真冲突：文本LLM=Ambient vs Qwen=Post-Rock，需用户听后裁决",
-    "candidate_labels": {
-      "text_llm": "Ambient",
-      "text_llm_sub": [
-        "Experimental",
-        "Drone"
-      ],
-      "qwen": "Post-Rock",
-      "qwen_subgenre": "Instrumental Rock"
-    },
-    "genres": [
-      {
-        "label": "Ambient",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.0,
-        "confidence": 0.6,
-        "rejected": true,
-        "reject_reason": "低置信文件名推断，不采信；用户认定以Qwen Post-Rock为准"
-      },
-      {
-        "label": "Post-Rock",
-        "source": "qwen_omni",
-        "source_priority": "P1",
-        "weight": 0.8,
-        "confidence": 0.9,
-        "user_ruling": "用户认定"
-      },
-      {
-        "label": "Experimental",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.48,
-        "tag_type": "subgenre"
-      },
-      {
-        "label": "Drone",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.48,
-        "tag_type": "subgenre"
-      }
-    ],
-    "multi_label": true,
-    "label_selection": "locked",
-    "user_ruling": "用户认定Post-Rock，Ambient低置信文件名推断不采信",
-    "ruled_by": "user"
-  },
-  "DC92B30BB51D42488F02AA203F": {
-    "sub_genres": [
-      "Dream House",
-      "Deep House",
-      "Trance"
-    ],
-    "source": "text_llm_search",
-    "source_priority": "P0",
-    "confidence": 0.9,
-    "title": "Ouverture",
-    "artist": "Don Carlos",
-    "reference": "Discogs",
-    "resolution": "pending_human_review",
-    "resolution_note": "真冲突：文本LLM=Italo House vs Qwen=Trance，需用户听后裁决",
-    "candidate_labels": {
-      "text_llm": "Italo House",
-      "text_llm_sub": [
-        "Dream House",
-        "Deep House",
-        "Trance"
-      ],
-      "qwen": "Trance",
-      "qwen_subgenre": ""
-    },
-    "genres": [
-      {
-        "label": "Italo House",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 1.0,
-        "confidence": 0.85,
-        "user_ruling": "用户认定兼容不冲突"
-      },
-      {
-        "label": "Trance",
-        "source": "qwen_omni",
-        "source_priority": "P1",
-        "weight": 0.8,
-        "confidence": 0.85,
-        "user_ruling": "用户认定兼容不冲突"
-      }
-    ],
-    "multi_label": true,
-    "label_selection": "locked",
-    "user_ruling": "用户认定Italo House和Trance兼容不冲突，两者并存",
-    "ruled_by": "user"
-  },
-  "49BED5E277AF40909EC0BD756D": {
-    "sub_genres": [
-      "Italo House",
-      "Deep House"
-    ],
-    "source": "text_llm_search",
-    "source_priority": "P0",
-    "confidence": 0.85,
-    "title": "Welcome To Paradise Vol. III (track 6)",
-    "artist": "Various (Italian Dream House)",
-    "reference": "Discogs",
-    "genres": [
-      {
-        "label": "Dream House",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 1.0,
-        "confidence": 0.85
-      },
-      {
-        "label": "Italo House",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.68,
-        "tag_type": "subgenre"
-      },
-      {
-        "label": "Deep House",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.68,
-        "tag_type": "subgenre"
-      }
-    ],
-    "multi_label": true,
-    "label_selection": "locked"
-  },
-  "A0F9B5560A194DE5A25A22BD62": {
-    "sub_genres": [
-      "Latin Jazz",
-      "MPB",
-      "Bossa Nova"
-    ],
-    "source": "text_llm_search",
-    "source_priority": "P0",
-    "confidence": 0.95,
-    "title": "The Red Blouse",
-    "artist": "Antonio Carlos Jobim",
-    "reference": "Discogs",
-    "resolution": "category1_text_llm_primary_qwen_subgenre_merged",
-    "resolution_note": "伪冲突：Qwen subgenre已包含文本LLM答案，主标签用文本LLM，subgenre合并Qwen",
-    "genres": [
-      {
-        "label": "Bossa Nova",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 1.0,
-        "confidence": 0.95
-      },
-      {
-        "label": "Latin Jazz",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.76,
-        "tag_type": "subgenre"
-      },
-      {
-        "label": "MPB",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.76,
-        "tag_type": "subgenre"
-      },
-      {
-        "label": "Jazz",
-        "source": "qwen_omni",
-        "source_priority": "P1",
-        "weight": 0.8,
-        "confidence": 0.9
-      }
-    ],
-    "multi_label": true,
-    "label_selection": "locked"
-  },
-  "A52E2E2FA5474C61984BCECC27": {
-    "sub_genres": [
-      "Free Jazz",
-      "Avant-Garde"
-    ],
-    "source": "text_llm_search",
-    "source_priority": "P0",
-    "confidence": 0.6,
-    "title": "Seven Marmelade",
-    "artist": "Unknown (experimental)",
-    "reference": "文件名推断",
-    "genres": [
-      {
-        "label": "Experimental",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 1.0,
-        "confidence": 0.6
-      },
-      {
-        "label": "Free Jazz",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.48,
-        "tag_type": "subgenre"
-      },
-      {
-        "label": "Avant-Garde",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.48,
-        "tag_type": "subgenre"
-      }
-    ],
-    "multi_label": true,
-    "label_selection": "locked"
-  },
-  "2996876392774F67887DA90C3E": {
-    "sub_genres": [
-      "Experimental",
-      "Drone"
-    ],
-    "source": "text_llm_search",
-    "source_priority": "P0",
-    "confidence": 0.6,
-    "title": "How to count one to ten - at the same time",
-    "artist": "Unknown (ambient/experimental)",
-    "reference": "文件名推断",
-    "resolution": "pending_human_review",
-    "resolution_note": "真冲突：文本LLM=Ambient vs Qwen=Post-Rock，需用户听后裁决",
-    "candidate_labels": {
-      "text_llm": "Ambient",
-      "text_llm_sub": [
-        "Experimental",
-        "Drone"
-      ],
-      "qwen": "Post-Rock",
-      "qwen_subgenre": "Instrumental Rock"
-    },
-    "genres": [
-      {
-        "label": "Ambient",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.0,
-        "confidence": 0.6,
-        "rejected": true,
-        "reject_reason": "低置信文件名推断，不采信；用户认定以Qwen Post-Rock为准"
-      },
-      {
-        "label": "Post-Rock",
-        "source": "qwen_omni",
-        "source_priority": "P1",
-        "weight": 0.8,
-        "confidence": 0.88,
-        "user_ruling": "用户认定"
-      },
-      {
-        "label": "Experimental",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.48,
-        "tag_type": "subgenre"
-      },
-      {
-        "label": "Drone",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.48,
-        "tag_type": "subgenre"
-      }
-    ],
-    "multi_label": true,
-    "label_selection": "locked",
-    "user_ruling": "用户认定Post-Rock，Ambient低置信文件名推断不采信",
-    "ruled_by": "user"
-  },
-  "3CC7E3DF77334AE0B1B2BC3795": {
-    "sub_genres": [
-      "Alternative R&B",
-      "Neo-Soul"
-    ],
-    "source": "text_llm_search",
-    "source_priority": "P0",
-    "confidence": 0.95,
-    "title": "Snooze",
-    "artist": "SZA",
-    "reference": "Wikipedia",
-    "genres": [
-      {
-        "label": "R&B",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 1.0,
-        "confidence": 0.95
-      },
-      {
-        "label": "Alternative R&B",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.76,
-        "tag_type": "subgenre"
-      },
-      {
-        "label": "Neo-Soul",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.76,
-        "tag_type": "subgenre"
-      }
-    ],
-    "multi_label": true,
-    "label_selection": "locked"
-  },
-  "A1CC7E194F30411980025EA378": {
-    "sub_genres": [
-      "Italo House",
-      "Deep House"
-    ],
-    "source": "text_llm_search",
-    "source_priority": "P0",
-    "confidence": 0.85,
-    "title": "Welcome To Paradise Vol. III (track 10)",
-    "artist": "Various (Italian Dream House)",
-    "reference": "Discogs",
-    "genres": [
-      {
-        "label": "Dream House",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 1.0,
-        "confidence": 0.85
-      },
-      {
-        "label": "Italo House",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.68,
-        "tag_type": "subgenre"
-      },
-      {
-        "label": "Deep House",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.68,
-        "tag_type": "subgenre"
-      }
-    ],
-    "multi_label": true,
-    "label_selection": "locked"
-  },
-  "3C6F3F3C4839423DB83F7A55CD": {
-    "sub_genres": [
-      "Adult Contemporary",
-      "Pop"
-    ],
-    "source": "text_llm_search",
-    "source_priority": "P0",
-    "confidence": 0.95,
-    "title": "(They Long To Be) Close To You",
-    "artist": "Carpenters",
-    "reference": "Wikipedia/Discogs",
-    "genres": [
-      {
-        "label": "Soft Rock",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 1.0,
-        "confidence": 0.95
-      },
-      {
-        "label": "Adult Contemporary",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.76,
-        "tag_type": "subgenre"
-      },
-      {
-        "label": "Pop",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.76,
-        "tag_type": "subgenre"
-      }
-    ],
-    "multi_label": true,
-    "label_selection": "locked"
-  },
-  "3C6219AB60A24F5B8F101AF353": {
+  "2446DC352B064D65AD61142249": {
     "sub_genres": [
       "Pop Ballad"
     ],
     "source": "text_llm_search",
     "source_priority": "P0",
     "confidence": 0.95,
-    "title": "喜欢你",
-    "artist": "G.E.M邓紫棋",
+    "title": "心淡",
+    "artist": "容祖儿",
     "reference": "Wikipedia",
     "genres": [
       {
@@ -668,692 +971,6 @@
       },
       {
         "label": "Pop Ballad",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.76,
-        "tag_type": "subgenre"
-      }
-    ],
-    "multi_label": true,
-    "label_selection": "locked"
-  },
-  "33EA926BB2D64917AF8A166779": {
-    "sub_genres": [
-      "Latin Jazz",
-      "MPB"
-    ],
-    "source": "text_llm_search",
-    "source_priority": "P0",
-    "confidence": 0.98,
-    "title": "Wave",
-    "artist": "Antonio Carlos Jobim",
-    "reference": "Wikipedia",
-    "genres": [
-      {
-        "label": "Bossa Nova",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 1.0,
-        "confidence": 0.98
-      },
-      {
-        "label": "Latin Jazz",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.784,
-        "tag_type": "subgenre"
-      },
-      {
-        "label": "MPB",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.784,
-        "tag_type": "subgenre"
-      }
-    ],
-    "multi_label": true,
-    "label_selection": "locked"
-  },
-  "4AD0681C6347477D8B1E849422": {
-    "sub_genres": [
-      "Soul",
-      "Philly Soul"
-    ],
-    "source": "text_llm_search",
-    "source_priority": "P0",
-    "confidence": 0.95,
-    "title": "Leave the Door Open",
-    "artist": "Silk Sonic (Bruno Mars & Anderson .Paak)",
-    "reference": "Wikipedia",
-    "genres": [
-      {
-        "label": "R&B",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 1.0,
-        "confidence": 0.95
-      },
-      {
-        "label": "Soul",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.76,
-        "tag_type": "subgenre"
-      },
-      {
-        "label": "Philly Soul",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.76,
-        "tag_type": "subgenre"
-      }
-    ],
-    "multi_label": true,
-    "label_selection": "locked"
-  },
-  "870491B93FD04F979A12BC7811": {
-    "sub_genres": [
-      "Italo House",
-      "Deep House",
-      "Ambient"
-    ],
-    "source": "text_llm_search",
-    "source_priority": "P0",
-    "confidence": 0.85,
-    "title": "Welcome To Paradise Vol. III (track 1)",
-    "artist": "Various (Italian Dream House)",
-    "reference": "Discogs",
-    "genres": [
-      {
-        "label": "Dream House",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 1.0,
-        "confidence": 0.85
-      },
-      {
-        "label": "Italo House",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.68,
-        "tag_type": "subgenre"
-      },
-      {
-        "label": "Deep House",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.68,
-        "tag_type": "subgenre"
-      },
-      {
-        "label": "Ambient",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.68,
-        "tag_type": "subgenre"
-      }
-    ],
-    "multi_label": true,
-    "label_selection": "locked"
-  },
-  "F7E5F56ECCCC479589A26A2A10": {
-    "sub_genres": [
-      "Pop",
-      "Contemporary R&B",
-      "R&B",
-      "Pop Ballad"
-    ],
-    "source": "text_llm_search",
-    "source_priority": "P0",
-    "confidence": 0.9,
-    "title": "EX",
-    "artist": "Kiana Ledé",
-    "reference": "Discogs/Genius",
-    "resolution": "category2_text_llm_primary_qwen_as_subgenre",
-    "resolution_note": "社会定义vs听觉判断：主标签用文本LLM（社会共识），Qwen标签进subgenre",
-    "genres": [
-      {
-        "label": "R&B",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 1.0,
-        "confidence": 0.9
-      },
-      {
-        "label": "Contemporary R&B",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.7200000000000001,
-        "tag_type": "subgenre"
-      },
-      {
-        "label": "Pop",
-        "source": "qwen_omni",
-        "source_priority": "P1",
-        "weight": 0.8,
-        "confidence": 0.95
-      }
-    ],
-    "multi_label": true,
-    "label_selection": "locked"
-  },
-  "D2098BC896D6450A8E3744528E": {
-    "sub_genres": [
-      "Latin Jazz",
-      "MPB"
-    ],
-    "source": "text_llm_search",
-    "source_priority": "P0",
-    "confidence": 0.95,
-    "title": "Look To The Sky",
-    "artist": "Antonio Carlos Jobim",
-    "reference": "Discogs",
-    "genres": [
-      {
-        "label": "Bossa Nova",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 1.0,
-        "confidence": 0.95
-      },
-      {
-        "label": "Latin Jazz",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.76,
-        "tag_type": "subgenre"
-      },
-      {
-        "label": "MPB",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.76,
-        "tag_type": "subgenre"
-      }
-    ],
-    "multi_label": true,
-    "label_selection": "locked"
-  },
-  "BEF3CF9662D841528BDB33BFAF": {
-    "sub_genres": [
-      "Idol Pop",
-      "Dance-Pop"
-    ],
-    "source": "text_llm_search",
-    "source_priority": "P0",
-    "confidence": 0.95,
-    "title": "ヘビーローテーション (Heavy Rotation)",
-    "artist": "AKB48",
-    "reference": "Wikipedia",
-    "genres": [
-      {
-        "label": "J-pop",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 1.0,
-        "confidence": 0.95
-      },
-      {
-        "label": "Idol Pop",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.76,
-        "tag_type": "subgenre"
-      },
-      {
-        "label": "Dance-Pop",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.76,
-        "tag_type": "subgenre"
-      }
-    ],
-    "multi_label": true,
-    "label_selection": "locked"
-  },
-  "3F34DF1B2784408BA60CE8165C": {
-    "sub_genres": [
-      "Orchestral",
-      "World Music",
-      "Ambient"
-    ],
-    "source": "text_llm_search",
-    "source_priority": "P0",
-    "confidence": 0.85,
-    "title": "genshin_nata (Genshin Impact OST)",
-    "artist": "HOYO-MiX",
-    "reference": "Genshin Impact OST",
-    "genres": [
-      {
-        "label": "Game Soundtrack",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 1.0,
-        "confidence": 0.85
-      },
-      {
-        "label": "Orchestral",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.68,
-        "tag_type": "subgenre"
-      },
-      {
-        "label": "World Music",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.68,
-        "tag_type": "subgenre"
-      },
-      {
-        "label": "Ambient",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.68,
-        "tag_type": "subgenre"
-      }
-    ],
-    "multi_label": true,
-    "label_selection": "locked"
-  },
-  "D0CC3C06BCC643C4AD0737115C": {
-    "sub_genres": [
-      "Post-Bop",
-      "Contemporary Jazz"
-    ],
-    "source": "text_llm_search",
-    "source_priority": "P0",
-    "confidence": 0.9,
-    "title": "Warrior",
-    "artist": "Hiromi",
-    "reference": "Discogs/AllMusic",
-    "genres": [
-      {
-        "label": "Jazz Fusion",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 1.0,
-        "confidence": 0.9
-      },
-      {
-        "label": "Post-Bop",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.7200000000000001,
-        "tag_type": "subgenre"
-      },
-      {
-        "label": "Contemporary Jazz",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.7200000000000001,
-        "tag_type": "subgenre"
-      }
-    ],
-    "multi_label": true,
-    "label_selection": "locked"
-  },
-  "B7C8FC27F3C349B0B39EB7D55A": {
-    "sub_genres": [
-      "Italo House",
-      "Deep House",
-      "Progressive House"
-    ],
-    "source": "text_llm_search",
-    "source_priority": "P0",
-    "confidence": 0.85,
-    "title": "Welcome To Paradise Vol. III (track 5)",
-    "artist": "Various (Italian Dream House)",
-    "reference": "Discogs",
-    "resolution": "category1_text_llm_primary_qwen_subgenre_merged",
-    "resolution_note": "伪冲突：Qwen subgenre已包含文本LLM答案，主标签用文本LLM，subgenre合并Qwen",
-    "genres": [
-      {
-        "label": "Dream House",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 1.0,
-        "confidence": 0.85
-      },
-      {
-        "label": "Italo House",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.68,
-        "tag_type": "subgenre"
-      },
-      {
-        "label": "Deep House",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.68,
-        "tag_type": "subgenre"
-      },
-      {
-        "label": "Deep House",
-        "source": "qwen_omni",
-        "source_priority": "P1",
-        "weight": 0.8,
-        "confidence": 0.85
-      }
-    ],
-    "multi_label": true,
-    "label_selection": "locked"
-  },
-  "3E6F4E0EC2024CCD9FE718F847": {
-    "sub_genres": [
-      "Pop Ballad",
-      "R&B"
-    ],
-    "source": "text_llm_search",
-    "source_priority": "P0",
-    "confidence": 0.9,
-    "title": "孤雏",
-    "artist": "AGA",
-    "reference": "HK音乐百科",
-    "genres": [
-      {
-        "label": "Cantopop",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 1.0,
-        "confidence": 0.9
-      },
-      {
-        "label": "Pop Ballad",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.7200000000000001,
-        "tag_type": "subgenre"
-      },
-      {
-        "label": "R&B",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.7200000000000001,
-        "tag_type": "subgenre"
-      }
-    ],
-    "multi_label": true,
-    "label_selection": "locked"
-  },
-  "7968BA9684454DD4B1B179643E": {
-    "sub_genres": [
-      "Pop Ballad"
-    ],
-    "source": "text_llm_search",
-    "source_priority": "P0",
-    "confidence": 0.95,
-    "title": "爱与诚",
-    "artist": "古巨基",
-    "reference": "HK音乐百科",
-    "genres": [
-      {
-        "label": "Cantopop",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 1.0,
-        "confidence": 0.95
-      },
-      {
-        "label": "Pop Ballad",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.76,
-        "tag_type": "subgenre"
-      }
-    ],
-    "multi_label": true,
-    "label_selection": "locked"
-  },
-  "95D0CB9A84B54582AD17E79393": {
-    "sub_genres": [
-      "Contemporary Jazz",
-      "Vocal Jazz"
-    ],
-    "source": "text_llm_search",
-    "source_priority": "P0",
-    "confidence": 0.8,
-    "title": "Illusion",
-    "artist": "Kira Linn / Linntett",
-    "reference": "Discogs",
-    "genres": [
-      {
-        "label": "Jazz",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 1.0,
-        "confidence": 0.8
-      },
-      {
-        "label": "Contemporary Jazz",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.6400000000000001,
-        "tag_type": "subgenre"
-      },
-      {
-        "label": "Vocal Jazz",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.6400000000000001,
-        "tag_type": "subgenre"
-      }
-    ],
-    "multi_label": true,
-    "label_selection": "locked"
-  },
-  "6878BDAC7CD149C6A0AFA5ADD5": {
-    "sub_genres": [
-      "Pop Ballad"
-    ],
-    "source": "text_llm_search",
-    "source_priority": "P0",
-    "confidence": 0.95,
-    "title": "七友",
-    "artist": "梁汉文",
-    "reference": "HK音乐百科",
-    "genres": [
-      {
-        "label": "Cantopop",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 1.0,
-        "confidence": 0.95
-      },
-      {
-        "label": "Pop Ballad",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.76,
-        "tag_type": "subgenre"
-      }
-    ],
-    "multi_label": true,
-    "label_selection": "locked"
-  },
-  "3DD429C6458C404A9891416635": {
-    "sub_genres": [
-      "Italo House",
-      "Deep House",
-      "Progressive House"
-    ],
-    "source": "text_llm_search",
-    "source_priority": "P0",
-    "confidence": 0.85,
-    "title": "Welcome To Paradise Vol. III (track 4)",
-    "artist": "Various (Italian Dream House)",
-    "reference": "Discogs",
-    "resolution": "category1_text_llm_primary_qwen_subgenre_merged",
-    "resolution_note": "伪冲突：Qwen subgenre已包含文本LLM答案，主标签用文本LLM，subgenre合并Qwen",
-    "genres": [
-      {
-        "label": "Dream House",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 1.0,
-        "confidence": 0.85
-      },
-      {
-        "label": "Italo House",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.68,
-        "tag_type": "subgenre"
-      },
-      {
-        "label": "Deep House",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.68,
-        "tag_type": "subgenre"
-      },
-      {
-        "label": "Deep House",
-        "source": "qwen_omni",
-        "source_priority": "P1",
-        "weight": 0.8,
-        "confidence": 0.85
-      }
-    ],
-    "multi_label": true,
-    "label_selection": "locked"
-  },
-  "5CF227BBD8FB42BDA25C4755A1": {
-    "sub_genres": [
-      "Post-Bop",
-      "Contemporary Jazz"
-    ],
-    "source": "text_llm_search",
-    "source_priority": "P0",
-    "confidence": 0.9,
-    "title": "Deamer",
-    "artist": "Hiromi",
-    "reference": "Discogs/AllMusic",
-    "genres": [
-      {
-        "label": "Jazz Fusion",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 1.0,
-        "confidence": 0.9
-      },
-      {
-        "label": "Post-Bop",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.7200000000000001,
-        "tag_type": "subgenre"
-      },
-      {
-        "label": "Contemporary Jazz",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.7200000000000001,
-        "tag_type": "subgenre"
-      }
-    ],
-    "multi_label": true,
-    "label_selection": "locked"
-  },
-  "A7E56197254D451CB98808C9BD": {
-    "sub_genres": [
-      "Soft Rock",
-      "Pop"
-    ],
-    "source": "text_llm_search",
-    "source_priority": "P0",
-    "confidence": 0.85,
-    "title": "I Just Fall In Love Again",
-    "artist": "Carpenters/Anne Murray",
-    "reference": "Discogs",
-    "genres": [
-      {
-        "label": "Adult Contemporary",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 1.0,
-        "confidence": 0.85
-      },
-      {
-        "label": "Soft Rock",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.68,
-        "tag_type": "subgenre"
-      },
-      {
-        "label": "Pop",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.68,
-        "tag_type": "subgenre"
-      }
-    ],
-    "multi_label": true,
-    "label_selection": "locked"
-  },
-  "CDF8316BBDD2488A877E675E8F": {
-    "sub_genres": [
-      "Pop Rock",
-      "Taiwanese Pop"
-    ],
-    "source": "text_llm_search",
-    "source_priority": "P0",
-    "confidence": 0.95,
-    "title": "因为你 所以我",
-    "artist": "五月天",
-    "reference": "Wikipedia",
-    "genres": [
-      {
-        "label": "Mandopop",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 1.0,
-        "confidence": 0.95
-      },
-      {
-        "label": "Pop Rock",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.76,
-        "tag_type": "subgenre"
-      },
-      {
-        "label": "Taiwanese Pop",
         "source": "text_llm_search",
         "source_priority": "P0",
         "weight": 0.7,
@@ -1397,75 +1014,6 @@
         "source_priority": "P0",
         "weight": 0.7,
         "confidence": 0.48,
-        "tag_type": "subgenre"
-      }
-    ],
-    "multi_label": true,
-    "label_selection": "locked"
-  },
-  "7AB4F0B765984F5AAADDDA584A": {
-    "sub_genres": [
-      "Italo House",
-      "Deep House"
-    ],
-    "source": "text_llm_search",
-    "source_priority": "P0",
-    "confidence": 0.85,
-    "title": "Welcome To Paradise Vol. III (track 2)",
-    "artist": "Various (Italian Dream House)",
-    "reference": "Discogs",
-    "genres": [
-      {
-        "label": "Dream House",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 1.0,
-        "confidence": 0.85
-      },
-      {
-        "label": "Italo House",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.68,
-        "tag_type": "subgenre"
-      },
-      {
-        "label": "Deep House",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.68,
-        "tag_type": "subgenre"
-      }
-    ],
-    "multi_label": true,
-    "label_selection": "locked"
-  },
-  "1C8E3363E3FF4BFBA5189ABCB7": {
-    "sub_genres": [
-      "Pop Ballad"
-    ],
-    "source": "text_llm_search",
-    "source_priority": "P0",
-    "confidence": 0.95,
-    "title": "喜帖街",
-    "artist": "谢安琪",
-    "reference": "Wikipedia",
-    "genres": [
-      {
-        "label": "Cantopop",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 1.0,
-        "confidence": 0.95
-      },
-      {
-        "label": "Pop Ballad",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.76,
         "tag_type": "subgenre"
       }
     ],
@@ -1520,210 +1068,118 @@
     "multi_label": true,
     "label_selection": "locked"
   },
-  "9B845A8E8A744BCAA50705D73D": {
+  "2996876392774F67887DA90C3E": {
     "sub_genres": [
-      "Hip Hop",
-      "Pop"
+      "Experimental",
+      "Drone"
     ],
     "source": "text_llm_search",
     "source_priority": "P0",
-    "confidence": 0.8,
-    "title": "The Girl Is Mine",
-    "artist": "Jake Miller ft. Jabbar Hakeem",
-    "reference": "Discogs",
+    "confidence": 0.6,
+    "title": "How to count one to ten - at the same time",
+    "artist": "Unknown (ambient/experimental)",
+    "reference": "文件名推断",
     "genres": [
       {
-        "label": "Pop Rap",
+        "label": "Ambient",
         "source": "text_llm_search",
         "source_priority": "P0",
-        "weight": 1.0,
-        "confidence": 0.8
+        "weight": 0.0,
+        "confidence": 0.6,
+        "rejected": true,
+        "reject_reason": "低置信文件名推断，不采信；用户认定以Qwen Post-Rock为准"
       },
       {
-        "label": "Hip Hop",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.6400000000000001,
-        "tag_type": "subgenre"
+        "label": "Post-Rock",
+        "source": "qwen_omni",
+        "source_priority": "P1",
+        "weight": 0.8,
+        "confidence": 0.88,
+        "user_ruling": "用户认定"
       },
-      {
-        "label": "Pop",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.6400000000000001,
-        "tag_type": "subgenre"
-      }
-    ],
-    "multi_label": true,
-    "label_selection": "locked"
-  },
-  "E6A98A1C67AC4D9FA1E7437524": {
-    "sub_genres": [
-      "Blue-Eyed Soul",
-      "Smooth Jazz",
-      "R&B"
-    ],
-    "source": "text_llm_search",
-    "source_priority": "P0",
-    "confidence": 0.95,
-    "title": "What You Won't Do For Love",
-    "artist": "Bobby Caldwell",
-    "reference": "Wikipedia/AllMusic",
-    "genres": [
-      {
-        "label": "Soul",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 1.0,
-        "confidence": 0.95
-      },
-      {
-        "label": "Blue-Eyed Soul",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.76,
-        "tag_type": "subgenre"
-      },
-      {
-        "label": "Smooth Jazz",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.76,
-        "tag_type": "subgenre"
-      },
-      {
-        "label": "R&B",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.76,
-        "tag_type": "subgenre"
-      }
-    ],
-    "multi_label": true,
-    "label_selection": "locked"
-  },
-  "77CB62FFAEC0446188CA3AE161": {
-    "sub_genres": [
-      "Free Improvisation",
-      "Noise"
-    ],
-    "source": "text_llm_search",
-    "source_priority": "P0",
-    "confidence": 0.55,
-    "title": "Zitterschlagzeug",
-    "artist": "Unknown (German experimental)",
-    "reference": "文件名推断(German: 颤抖鼓)",
-    "genres": [
       {
         "label": "Experimental",
         "source": "text_llm_search",
         "source_priority": "P0",
-        "weight": 1.0,
-        "confidence": 0.55
-      },
-      {
-        "label": "Free Improvisation",
-        "source": "text_llm_search",
-        "source_priority": "P0",
         "weight": 0.7,
-        "confidence": 0.44000000000000006,
+        "confidence": 0.48,
         "tag_type": "subgenre"
       },
       {
-        "label": "Noise",
+        "label": "Drone",
         "source": "text_llm_search",
         "source_priority": "P0",
         "weight": 0.7,
-        "confidence": 0.44000000000000006,
+        "confidence": 0.48,
         "tag_type": "subgenre"
       }
     ],
     "multi_label": true,
+    "resolution": "pending_human_review",
+    "resolution_note": "真冲突：文本LLM=Ambient vs Qwen=Post-Rock，需用户听后裁决",
+    "candidate_labels": {
+      "text_llm": "Ambient",
+      "text_llm_sub": [
+        "Experimental",
+        "Drone"
+      ],
+      "qwen": "Post-Rock",
+      "qwen_subgenre": "Instrumental Rock"
+    },
+    "user_ruling": "用户认定Post-Rock，Ambient低置信文件名推断不采信",
+    "ruled_by": "user",
     "label_selection": "locked"
   },
-  "2446DC352B064D65AD61142249": {
+  "33EA926BB2D64917AF8A166779": {
     "sub_genres": [
-      "Pop Ballad"
+      "Latin Jazz",
+      "MPB"
     ],
     "source": "text_llm_search",
     "source_priority": "P0",
-    "confidence": 0.95,
-    "title": "心淡",
-    "artist": "容祖儿",
+    "confidence": 0.98,
+    "title": "Wave",
+    "artist": "Antonio Carlos Jobim",
     "reference": "Wikipedia",
     "genres": [
       {
-        "label": "Cantopop",
+        "label": "Bossa Nova",
         "source": "text_llm_search",
         "source_priority": "P0",
         "weight": 1.0,
-        "confidence": 0.95
+        "confidence": 0.98
       },
       {
-        "label": "Pop Ballad",
+        "label": "Latin Jazz",
         "source": "text_llm_search",
         "source_priority": "P0",
         "weight": 0.7,
-        "confidence": 0.76,
+        "confidence": 0.784,
+        "tag_type": "subgenre"
+      },
+      {
+        "label": "MPB",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.784,
         "tag_type": "subgenre"
       }
     ],
     "multi_label": true,
     "label_selection": "locked"
   },
-  "146D04DCF3BB4D56B68F9DD25C": {
+  "364CBB655E7D4A90B83A060A39": {
     "sub_genres": [
-      "Traditional Pop",
-      "Orchestral Ballad",
-      "Vocal",
+      "Soundtrack",
+      "Jazz",
+      "Show Tunes",
       "Ballad"
     ],
     "source": "text_llm_search",
     "source_priority": "P0",
     "confidence": 0.95,
-    "title": "Love Me Tender",
-    "artist": "Andrea Bocelli",
-    "reference": "Wikipedia/Discogs (Passione, David Foster)",
-    "resolution": "category2_text_llm_primary_qwen_as_subgenre",
-    "resolution_note": "社会定义vs听觉判断：主标签用文本LLM（社会共识），Qwen标签进subgenre",
-    "genres": [
-      {
-        "label": "Classical Crossover",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 1.0,
-        "confidence": 0.95,
-        "user_ruling": "用户认定更贴切"
-      },
-      {
-        "label": "Traditional Pop",
-        "source": "qwen_omni",
-        "source_priority": "P1",
-        "weight": 0.8,
-        "confidence": 0.92,
-        "user_ruling": "用户认定也对"
-      }
-    ],
-    "multi_label": true,
-    "label_selection": "locked",
-    "user_ruling": "用户认定Classical Crossover更贴切，Traditional Pop也对，两者并存",
-    "ruled_by": "user"
-  },
-  "1EDDB5EFB16E4A36AFFFAC2132": {
-    "sub_genres": [
-      "Soundtrack",
-      "Jazz",
-      "Show Tunes"
-    ],
-    "source": "text_llm_search",
-    "source_priority": "P0",
-    "confidence": 0.95,
-    "title": "Another Day of Sun",
+    "title": "City of Stars",
     "artist": "La La Land Cast",
     "reference": "Wikipedia",
     "genres": [
@@ -1757,20 +1213,29 @@
         "weight": 0.7,
         "confidence": 0.76,
         "tag_type": "subgenre"
+      },
+      {
+        "label": "Pop",
+        "source": "qwen_omni",
+        "source_priority": "P1",
+        "weight": 0.8,
+        "confidence": 0.9
       }
     ],
     "multi_label": true,
+    "resolution": "category1_text_llm_primary_qwen_subgenre_merged",
+    "resolution_note": "伪冲突：Qwen subgenre已包含文本LLM答案，主标签用文本LLM，subgenre合并Qwen",
     "label_selection": "locked"
   },
-  "594E0C4719E34D6A98B438C503": {
+  "3C6219AB60A24F5B8F101AF353": {
     "sub_genres": [
-      "Pop"
+      "Pop Ballad"
     ],
     "source": "text_llm_search",
     "source_priority": "P0",
     "confidence": 0.95,
-    "title": "下一站天后",
-    "artist": "Twins",
+    "title": "喜欢你",
+    "artist": "G.E.M邓紫棋",
     "reference": "Wikipedia",
     "genres": [
       {
@@ -1781,7 +1246,7 @@
         "confidence": 0.95
       },
       {
-        "label": "Pop",
+        "label": "Pop Ballad",
         "source": "text_llm_search",
         "source_priority": "P0",
         "weight": 0.7,
@@ -1792,56 +1257,7 @@
     "multi_label": true,
     "label_selection": "locked"
   },
-  "9C454BAFCD9A4DF7BC15CC9031": {
-    "sub_genres": [
-      "Electropop",
-      "R&B",
-      "Pop R&B"
-    ],
-    "source": "text_llm_search",
-    "source_priority": "P0",
-    "confidence": 0.85,
-    "title": "Paris in the Rain",
-    "artist": "Lauv",
-    "reference": "Discogs",
-    "resolution": "category1_text_llm_primary_qwen_subgenre_merged",
-    "resolution_note": "伪冲突：Qwen subgenre已包含文本LLM答案，主标签用文本LLM，subgenre合并Qwen",
-    "genres": [
-      {
-        "label": "Pop",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 1.0,
-        "confidence": 0.85
-      },
-      {
-        "label": "Electropop",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.68,
-        "tag_type": "subgenre"
-      },
-      {
-        "label": "R&B",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.68,
-        "tag_type": "subgenre"
-      },
-      {
-        "label": "R&B",
-        "source": "qwen_omni",
-        "source_priority": "P1",
-        "weight": 0.8,
-        "confidence": 0.92
-      }
-    ],
-    "multi_label": true,
-    "label_selection": "locked"
-  },
-  "8DDE7F1A99A0441C9A1564A6D7": {
+  "3C6F3F3C4839423DB83F7A55CD": {
     "sub_genres": [
       "Adult Contemporary",
       "Pop"
@@ -1849,7 +1265,7 @@
     "source": "text_llm_search",
     "source_priority": "P0",
     "confidence": 0.95,
-    "title": "Yesterday Once More",
+    "title": "(They Long To Be) Close To You",
     "artist": "Carpenters",
     "reference": "Wikipedia/Discogs",
     "genres": [
@@ -1880,16 +1296,16 @@
     "multi_label": true,
     "label_selection": "locked"
   },
-  "448A140A77354AAC9458496B10": {
+  "3CC7E3DF77334AE0B1B2BC3795": {
     "sub_genres": [
-      "Pop R&B",
-      "Adult Contemporary"
+      "Alternative R&B",
+      "Neo-Soul"
     ],
     "source": "text_llm_search",
     "source_priority": "P0",
     "confidence": 0.95,
-    "title": "We Belong Together",
-    "artist": "Mariah Carey",
+    "title": "Snooze",
+    "artist": "SZA",
     "reference": "Wikipedia",
     "genres": [
       {
@@ -1900,7 +1316,7 @@
         "confidence": 0.95
       },
       {
-        "label": "Pop R&B",
+        "label": "Alternative R&B",
         "source": "text_llm_search",
         "source_priority": "P0",
         "weight": 0.7,
@@ -1908,11 +1324,186 @@
         "tag_type": "subgenre"
       },
       {
-        "label": "Adult Contemporary",
+        "label": "Neo-Soul",
         "source": "text_llm_search",
         "source_priority": "P0",
         "weight": 0.7,
         "confidence": 0.76,
+        "tag_type": "subgenre"
+      }
+    ],
+    "multi_label": true,
+    "label_selection": "locked"
+  },
+  "3D71C975F9D24E4CB5B77D85FA": {
+    "sub_genres": [
+      "Latin Jazz",
+      "MPB"
+    ],
+    "source": "text_llm_search",
+    "source_priority": "P0",
+    "confidence": 0.98,
+    "title": "Triste",
+    "artist": "Antonio Carlos Jobim",
+    "reference": "Wikipedia",
+    "genres": [
+      {
+        "label": "Bossa Nova",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 1.0,
+        "confidence": 0.98
+      },
+      {
+        "label": "Latin Jazz",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.784,
+        "tag_type": "subgenre"
+      },
+      {
+        "label": "MPB",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.784,
+        "tag_type": "subgenre"
+      }
+    ],
+    "multi_label": true,
+    "label_selection": "locked"
+  },
+  "3DD429C6458C404A9891416635": {
+    "sub_genres": [
+      "Italo House",
+      "Deep House",
+      "Progressive House"
+    ],
+    "source": "text_llm_search",
+    "source_priority": "P0",
+    "confidence": 0.85,
+    "title": "Welcome To Paradise Vol. III (track 4)",
+    "artist": "Various (Italian Dream House)",
+    "reference": "Discogs",
+    "genres": [
+      {
+        "label": "Dream House",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 1.0,
+        "confidence": 0.85
+      },
+      {
+        "label": "Italo House",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.68,
+        "tag_type": "subgenre"
+      },
+      {
+        "label": "Deep House",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.68,
+        "tag_type": "subgenre"
+      },
+      {
+        "label": "Deep House",
+        "source": "qwen_omni",
+        "source_priority": "P1",
+        "weight": 0.8,
+        "confidence": 0.85
+      }
+    ],
+    "multi_label": true,
+    "resolution": "category1_text_llm_primary_qwen_subgenre_merged",
+    "resolution_note": "伪冲突：Qwen subgenre已包含文本LLM答案，主标签用文本LLM，subgenre合并Qwen",
+    "label_selection": "locked"
+  },
+  "3E6F4E0EC2024CCD9FE718F847": {
+    "sub_genres": [
+      "Pop Ballad",
+      "R&B"
+    ],
+    "source": "text_llm_search",
+    "source_priority": "P0",
+    "confidence": 0.9,
+    "title": "孤雏",
+    "artist": "AGA",
+    "reference": "HK音乐百科",
+    "genres": [
+      {
+        "label": "Cantopop",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 1.0,
+        "confidence": 0.9
+      },
+      {
+        "label": "Pop Ballad",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.7200000000000001,
+        "tag_type": "subgenre"
+      },
+      {
+        "label": "R&B",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.7200000000000001,
+        "tag_type": "subgenre"
+      }
+    ],
+    "multi_label": true,
+    "label_selection": "locked"
+  },
+  "3F34DF1B2784408BA60CE8165C": {
+    "sub_genres": [
+      "Orchestral",
+      "World Music",
+      "Ambient"
+    ],
+    "source": "text_llm_search",
+    "source_priority": "P0",
+    "confidence": 0.85,
+    "title": "genshin_nata (Genshin Impact OST)",
+    "artist": "HOYO-MiX",
+    "reference": "Genshin Impact OST",
+    "genres": [
+      {
+        "label": "Game Soundtrack",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 1.0,
+        "confidence": 0.85
+      },
+      {
+        "label": "Orchestral",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.68,
+        "tag_type": "subgenre"
+      },
+      {
+        "label": "World Music",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.68,
+        "tag_type": "subgenre"
+      },
+      {
+        "label": "Ambient",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.68,
         "tag_type": "subgenre"
       }
     ],
@@ -1975,85 +1566,429 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "locked",
-    "user_ruling": "用户认定Post-Rock，Ambient低置信文件名推断不采信（与同曲另两段at the same time/windmill同样处理）",
-    "ruled_by": "user",
     "reannotated": true,
     "reannotated_from": "deepseek_v4_flash",
-    "segmented": true
+    "segmented": true,
+    "user_ruling": "用户认定Post-Rock，Ambient低置信文件名推断不采信（与同曲另两段at the same time/windmill同样处理）",
+    "ruled_by": "user",
+    "label_selection": "locked"
   },
-  "E1C4475B60AC4179852278CC60": {
+  "448A140A77354AAC9458496B10": {
     "sub_genres": [
-      "Contemporary Jazz",
-      "Vocal Jazz"
+      "Pop R&B",
+      "Adult Contemporary"
     ],
     "source": "text_llm_search",
     "source_priority": "P0",
-    "confidence": 0.8,
-    "title": "Rage",
-    "artist": "Kira Linn / Linntett",
-    "reference": "Discogs",
+    "confidence": 0.95,
+    "title": "We Belong Together",
+    "artist": "Mariah Carey",
+    "reference": "Wikipedia",
     "genres": [
       {
-        "label": "Jazz",
+        "label": "R&B",
         "source": "text_llm_search",
         "source_priority": "P0",
         "weight": 1.0,
-        "confidence": 0.8
+        "confidence": 0.95
       },
       {
-        "label": "Contemporary Jazz",
+        "label": "Pop R&B",
         "source": "text_llm_search",
         "source_priority": "P0",
         "weight": 0.7,
-        "confidence": 0.6400000000000001,
+        "confidence": 0.76,
         "tag_type": "subgenre"
       },
       {
-        "label": "Vocal Jazz",
+        "label": "Adult Contemporary",
         "source": "text_llm_search",
         "source_priority": "P0",
         "weight": 0.7,
-        "confidence": 0.6400000000000001,
+        "confidence": 0.76,
         "tag_type": "subgenre"
       }
     ],
     "multi_label": true,
     "label_selection": "locked"
   },
-  "3D71C975F9D24E4CB5B77D85FA": {
+  "49BED5E277AF40909EC0BD756D": {
     "sub_genres": [
-      "Latin Jazz",
-      "MPB"
+      "Italo House",
+      "Deep House"
     ],
     "source": "text_llm_search",
     "source_priority": "P0",
-    "confidence": 0.98,
-    "title": "Triste",
-    "artist": "Antonio Carlos Jobim",
-    "reference": "Wikipedia",
+    "confidence": 0.85,
+    "title": "Welcome To Paradise Vol. III (track 6)",
+    "artist": "Various (Italian Dream House)",
+    "reference": "Discogs",
     "genres": [
       {
-        "label": "Bossa Nova",
+        "label": "Dream House",
         "source": "text_llm_search",
         "source_priority": "P0",
         "weight": 1.0,
-        "confidence": 0.98
+        "confidence": 0.85
       },
       {
-        "label": "Latin Jazz",
+        "label": "Italo House",
         "source": "text_llm_search",
         "source_priority": "P0",
         "weight": 0.7,
-        "confidence": 0.784,
+        "confidence": 0.68,
         "tag_type": "subgenre"
       },
       {
-        "label": "MPB",
+        "label": "Deep House",
         "source": "text_llm_search",
         "source_priority": "P0",
         "weight": 0.7,
-        "confidence": 0.784,
+        "confidence": 0.68,
+        "tag_type": "subgenre"
+      }
+    ],
+    "multi_label": true,
+    "label_selection": "locked"
+  },
+  "4AD0681C6347477D8B1E849422": {
+    "sub_genres": [
+      "Soul",
+      "Philly Soul"
+    ],
+    "source": "text_llm_search",
+    "source_priority": "P0",
+    "confidence": 0.95,
+    "title": "Leave the Door Open",
+    "artist": "Silk Sonic (Bruno Mars & Anderson .Paak)",
+    "reference": "Wikipedia",
+    "genres": [
+      {
+        "label": "R&B",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 1.0,
+        "confidence": 0.95
+      },
+      {
+        "label": "Soul",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.76,
+        "tag_type": "subgenre"
+      },
+      {
+        "label": "Philly Soul",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.76,
+        "tag_type": "subgenre"
+      }
+    ],
+    "multi_label": true,
+    "label_selection": "locked"
+  },
+  "594E0C4719E34D6A98B438C503": {
+    "sub_genres": [
+      "Pop"
+    ],
+    "source": "text_llm_search",
+    "source_priority": "P0",
+    "confidence": 0.95,
+    "title": "下一站天后",
+    "artist": "Twins",
+    "reference": "Wikipedia",
+    "genres": [
+      {
+        "label": "Cantopop",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 1.0,
+        "confidence": 0.95
+      },
+      {
+        "label": "Pop",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.76,
+        "tag_type": "subgenre"
+      }
+    ],
+    "multi_label": true,
+    "label_selection": "locked"
+  },
+  "5CF227BBD8FB42BDA25C4755A1": {
+    "sub_genres": [
+      "Post-Bop",
+      "Contemporary Jazz"
+    ],
+    "source": "text_llm_search",
+    "source_priority": "P0",
+    "confidence": 0.9,
+    "title": "Deamer",
+    "artist": "Hiromi",
+    "reference": "Discogs/AllMusic",
+    "genres": [
+      {
+        "label": "Jazz Fusion",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 1.0,
+        "confidence": 0.9
+      },
+      {
+        "label": "Post-Bop",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.7200000000000001,
+        "tag_type": "subgenre"
+      },
+      {
+        "label": "Contemporary Jazz",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.7200000000000001,
+        "tag_type": "subgenre"
+      }
+    ],
+    "multi_label": true,
+    "label_selection": "locked"
+  },
+  "6835D62222154FA6B0509AA881": {
+    "sub_genres": [
+      "J-pop",
+      "Adult Contemporary",
+      "Jazz Fusion",
+      "Vocal Jazz",
+      "Ballad"
+    ],
+    "source": "text_llm_search",
+    "source_priority": "P0",
+    "confidence": 0.9,
+    "title": "若き日の望楼",
+    "artist": "大贯妙子 (Taeko Onuki)",
+    "reference": "Discogs/J-pop百科",
+    "genres": [
+      {
+        "label": "City Pop",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 1.0,
+        "confidence": 0.9
+      },
+      {
+        "label": "J-pop",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.7200000000000001,
+        "tag_type": "subgenre"
+      },
+      {
+        "label": "Adult Contemporary",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.7200000000000001,
+        "tag_type": "subgenre"
+      },
+      {
+        "label": "Jazz Fusion",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.7200000000000001,
+        "tag_type": "subgenre"
+      },
+      {
+        "label": "Jazz",
+        "source": "qwen_omni",
+        "source_priority": "P1",
+        "weight": 0.8,
+        "confidence": 0.9
+      }
+    ],
+    "multi_label": true,
+    "resolution": "category1_text_llm_primary_qwen_subgenre_merged",
+    "resolution_note": "伪冲突：Qwen subgenre已包含文本LLM答案，主标签用文本LLM，subgenre合并Qwen",
+    "label_selection": "locked"
+  },
+  "6878BDAC7CD149C6A0AFA5ADD5": {
+    "sub_genres": [
+      "Pop Ballad"
+    ],
+    "source": "text_llm_search",
+    "source_priority": "P0",
+    "confidence": 0.95,
+    "title": "七友",
+    "artist": "梁汉文",
+    "reference": "HK音乐百科",
+    "genres": [
+      {
+        "label": "Cantopop",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 1.0,
+        "confidence": 0.95
+      },
+      {
+        "label": "Pop Ballad",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.76,
+        "tag_type": "subgenre"
+      }
+    ],
+    "multi_label": true,
+    "label_selection": "locked"
+  },
+  "77CB62FFAEC0446188CA3AE161": {
+    "sub_genres": [
+      "Free Improvisation",
+      "Noise"
+    ],
+    "source": "text_llm_search",
+    "source_priority": "P0",
+    "confidence": 0.55,
+    "title": "Zitterschlagzeug",
+    "artist": "Unknown (German experimental)",
+    "reference": "文件名推断(German: 颤抖鼓)",
+    "genres": [
+      {
+        "label": "Experimental",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 1.0,
+        "confidence": 0.55
+      },
+      {
+        "label": "Free Improvisation",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.44000000000000006,
+        "tag_type": "subgenre"
+      },
+      {
+        "label": "Noise",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.44000000000000006,
+        "tag_type": "subgenre"
+      }
+    ],
+    "multi_label": true,
+    "label_selection": "locked"
+  },
+  "78250AD45D2842A3AA18C9071D": {
+    "sub_genres": [
+      "Post-Bop",
+      "Contemporary Jazz"
+    ],
+    "source": "text_llm_search",
+    "source_priority": "P0",
+    "confidence": 0.9,
+    "title": "Seeker",
+    "artist": "Hiromi",
+    "reference": "Discogs",
+    "genres": [
+      {
+        "label": "Jazz Fusion",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 1.0,
+        "confidence": 0.9
+      },
+      {
+        "label": "Post-Bop",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.7200000000000001,
+        "tag_type": "subgenre"
+      },
+      {
+        "label": "Contemporary Jazz",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.7200000000000001,
+        "tag_type": "subgenre"
+      }
+    ],
+    "multi_label": true,
+    "label_selection": "locked"
+  },
+  "7968BA9684454DD4B1B179643E": {
+    "sub_genres": [
+      "Pop Ballad"
+    ],
+    "source": "text_llm_search",
+    "source_priority": "P0",
+    "confidence": 0.95,
+    "title": "爱与诚",
+    "artist": "古巨基",
+    "reference": "HK音乐百科",
+    "genres": [
+      {
+        "label": "Cantopop",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 1.0,
+        "confidence": 0.95
+      },
+      {
+        "label": "Pop Ballad",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.76,
+        "tag_type": "subgenre"
+      }
+    ],
+    "multi_label": true,
+    "label_selection": "locked"
+  },
+  "7AB4F0B765984F5AAADDDA584A": {
+    "sub_genres": [
+      "Italo House",
+      "Deep House"
+    ],
+    "source": "text_llm_search",
+    "source_priority": "P0",
+    "confidence": 0.85,
+    "title": "Welcome To Paradise Vol. III (track 2)",
+    "artist": "Various (Italian Dream House)",
+    "reference": "Discogs",
+    "genres": [
+      {
+        "label": "Dream House",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 1.0,
+        "confidence": 0.85
+      },
+      {
+        "label": "Italo House",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.68,
+        "tag_type": "subgenre"
+      },
+      {
+        "label": "Deep House",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.68,
         "tag_type": "subgenre"
       }
     ],
@@ -2071,17 +2006,6 @@
     "title": "Welcome To Paradise Vol. III (track 7)",
     "artist": "Various (Italian Dream House)",
     "reference": "Discogs",
-    "resolution": "pending_human_review",
-    "resolution_note": "真冲突：文本LLM=Dream House vs Qwen=Trance，需用户听后裁决",
-    "candidate_labels": {
-      "text_llm": "Dream House",
-      "text_llm_sub": [
-        "Italo House",
-        "Deep House"
-      ],
-      "qwen": "Trance",
-      "qwen_subgenre": "Progressive Trance"
-    },
     "genres": [
       {
         "label": "Dream House",
@@ -2125,254 +2049,19 @@
       }
     ],
     "multi_label": true,
-    "label_selection": "locked",
+    "resolution": "pending_human_review",
+    "resolution_note": "真冲突：文本LLM=Dream House vs Qwen=Trance，需用户听后裁决",
+    "candidate_labels": {
+      "text_llm": "Dream House",
+      "text_llm_sub": [
+        "Italo House",
+        "Deep House"
+      ],
+      "qwen": "Trance",
+      "qwen_subgenre": "Progressive Trance"
+    },
     "user_ruling": "用户认定Dream House和Trance兼容不冲突，两者并存",
-    "ruled_by": "user"
-  },
-  "A1AD6E948D2149EC940866F9D3": {
-    "sub_genres": [
-      "R&B",
-      "Pop Rap"
-    ],
-    "source": "text_llm_search",
-    "source_priority": "P0",
-    "confidence": 0.95,
-    "title": "Dilemma",
-    "artist": "Nelly ft. Kelly Rowland",
-    "reference": "Wikipedia",
-    "genres": [
-      {
-        "label": "Hip Hop",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 1.0,
-        "confidence": 0.95
-      },
-      {
-        "label": "R&B",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.76,
-        "tag_type": "subgenre"
-      },
-      {
-        "label": "Pop Rap",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.76,
-        "tag_type": "subgenre"
-      }
-    ],
-    "multi_label": true,
-    "label_selection": "locked"
-  },
-  "924CF2535CAB4C48A485EF4845": {
-    "sub_genres": [
-      "Italo House",
-      "Deep House"
-    ],
-    "source": "text_llm_search",
-    "source_priority": "P0",
-    "confidence": 0.85,
-    "title": "Welcome To Paradise Vol. III (track 9)",
-    "artist": "Various (Italian Dream House)",
-    "reference": "Discogs",
-    "genres": [
-      {
-        "label": "Dream House",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 1.0,
-        "confidence": 0.85
-      },
-      {
-        "label": "Italo House",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.68,
-        "tag_type": "subgenre"
-      },
-      {
-        "label": "Deep House",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.68,
-        "tag_type": "subgenre"
-      }
-    ],
-    "multi_label": true,
-    "label_selection": "locked"
-  },
-  "09E39F2B2CB84CEDAF02365CB2": {
-    "sub_genres": [
-      "Pop Ballad"
-    ],
-    "source": "text_llm_search",
-    "source_priority": "P0",
-    "confidence": 0.95,
-    "title": "富士山下",
-    "artist": "陈奕迅",
-    "reference": "Wikipedia",
-    "genres": [
-      {
-        "label": "Cantopop",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 1.0,
-        "confidence": 0.95
-      },
-      {
-        "label": "Pop Ballad",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.76,
-        "tag_type": "subgenre"
-      }
-    ],
-    "multi_label": true,
-    "label_selection": "locked"
-  },
-  "87A69E31F3DC48429BEB755F06": {
-    "sub_genres": [
-      "Contemporary R&B",
-      "Pop"
-    ],
-    "source": "text_llm_search",
-    "source_priority": "P0",
-    "confidence": 0.95,
-    "title": "Call You Tonight",
-    "artist": "Whitney Houston",
-    "reference": "Discogs/AllMusic",
-    "genres": [
-      {
-        "label": "R&B",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 1.0,
-        "confidence": 0.95
-      },
-      {
-        "label": "Contemporary R&B",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.76,
-        "tag_type": "subgenre"
-      },
-      {
-        "label": "Pop",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.76,
-        "tag_type": "subgenre"
-      }
-    ],
-    "multi_label": true,
-    "label_selection": "locked"
-  },
-  "0CF65600F4474C71B19A9926EC": {
-    "sub_genres": [
-      "Pop"
-    ],
-    "source": "text_llm_search",
-    "source_priority": "P0",
-    "confidence": 0.95,
-    "title": "相依为命",
-    "artist": "陈小春",
-    "reference": "HK音乐百科",
-    "genres": [
-      {
-        "label": "Cantopop",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 1.0,
-        "confidence": 0.95
-      },
-      {
-        "label": "Pop",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.76,
-        "tag_type": "subgenre"
-      }
-    ],
-    "multi_label": true,
-    "label_selection": "locked"
-  },
-  "F905340525194A1A9D838DB885": {
-    "sub_genres": [
-      "Italo House",
-      "Deep House"
-    ],
-    "source": "text_llm_search",
-    "source_priority": "P0",
-    "confidence": 0.85,
-    "title": "Welcome To Paradise Vol. III (track 3)",
-    "artist": "Various (Italian Dream House)",
-    "reference": "Discogs",
-    "genres": [
-      {
-        "label": "Dream House",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 1.0,
-        "confidence": 0.85
-      },
-      {
-        "label": "Italo House",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.68,
-        "tag_type": "subgenre"
-      },
-      {
-        "label": "Deep House",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.68,
-        "tag_type": "subgenre"
-      }
-    ],
-    "multi_label": true,
-    "label_selection": "locked"
-  },
-  "C2AEFEEB56B0454F9AE069B899": {
-    "sub_genres": [
-      "Pop Ballad"
-    ],
-    "source": "text_llm_search",
-    "source_priority": "P0",
-    "confidence": 0.95,
-    "title": "必杀技",
-    "artist": "古巨基",
-    "reference": "HK音乐百科",
-    "genres": [
-      {
-        "label": "Cantopop",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 1.0,
-        "confidence": 0.95
-      },
-      {
-        "label": "Pop Ballad",
-        "source": "text_llm_search",
-        "source_priority": "P0",
-        "weight": 0.7,
-        "confidence": 0.76,
-        "tag_type": "subgenre"
-      }
-    ],
-    "multi_label": true,
+    "ruled_by": "user",
     "label_selection": "locked"
   },
   "8384A4DBF2B24CF98148BC9190": {
@@ -2423,168 +2112,164 @@
     "multi_label": true,
     "label_selection": "locked"
   },
-  "01M0ZV75FJ5XT8F2BWAWABTQ0P": {
+  "870491B93FD04F979A12BC7811": {
     "sub_genres": [
-      "Post-Bop"
-    ],
-    "source": "qwen_omni_supplement",
-    "source_priority": "P1",
-    "confidence": 0.8833333333333333,
-    "title": "unknown",
-    "artist": "unknown",
-    "reference": "needs_qwen_reannotate",
-    "reannotated": true,
-    "reannotated_from": "deepseek_v4_flash",
-    "segmented": true,
-    "genres": [
-      {
-        "label": "Jazz Fusion",
-        "source": "qwen_omni",
-        "source_priority": "P1",
-        "weight": 0.8,
-        "confidence": 0.8833333333333333
-      },
-      {
-        "label": "Post-Bop",
-        "source": "qwen_omni",
-        "source_priority": "P1",
-        "weight": 0.6,
-        "confidence": 0.7066666666666667,
-        "tag_type": "subgenre"
-      }
-    ],
-    "multi_label": true,
-    "label_selection": "locked"
-  },
-  "01M0ZV75JBZS380KPKJWHTNXY4": {
-    "sub_genres": [],
-    "source": "qwen_omni_supplement",
-    "source_priority": "P1",
-    "confidence": 0.8,
-    "title": "unknown",
-    "artist": "unknown",
-    "reference": "qwen_omni_audio",
-    "genres": [
-      {
-        "label": "Art Pop",
-        "source": "qwen_omni",
-        "source_priority": "P1",
-        "weight": 0.8,
-        "confidence": 0.88
-      },
-      {
-        "label": "Alternative",
-        "source": "qwen_omni",
-        "source_priority": "P1",
-        "weight": 0.6,
-        "confidence": 0.7040000000000001,
-        "tag_type": "subgenre"
-      },
-      {
-        "label": "Indie",
-        "source": "qwen_omni",
-        "source_priority": "P1",
-        "weight": 0.6,
-        "confidence": 0.7040000000000001,
-        "tag_type": "subgenre"
-      }
-    ],
-    "multi_label": true,
-    "label_selection": "locked"
-  },
-  "01M0ZV75KZ1JMS1XKVRZ326PCW": {
-    "sub_genres": [
+      "Italo House",
+      "Deep House",
       "Ambient"
     ],
-    "source": "qwen_omni_supplement",
-    "source_priority": "P1",
-    "confidence": 0.88,
-    "title": "unknown",
-    "artist": "unknown",
-    "reference": "needs_qwen_reannotate",
-    "reannotated": true,
-    "reannotated_from": "deepseek_v4_flash",
+    "source": "text_llm_search",
+    "source_priority": "P0",
+    "confidence": 0.85,
+    "title": "Welcome To Paradise Vol. III (track 1)",
+    "artist": "Various (Italian Dream House)",
+    "reference": "Discogs",
     "genres": [
       {
-        "label": "New Age",
-        "source": "qwen_omni",
-        "source_priority": "P1",
-        "weight": 0.8,
-        "confidence": 0.88
+        "label": "Dream House",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 1.0,
+        "confidence": 0.85
+      },
+      {
+        "label": "Italo House",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.68,
+        "tag_type": "subgenre"
+      },
+      {
+        "label": "Deep House",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.68,
+        "tag_type": "subgenre"
       },
       {
         "label": "Ambient",
-        "source": "qwen_omni",
-        "source_priority": "P1",
-        "weight": 0.6,
-        "confidence": 0.7040000000000001,
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.68,
         "tag_type": "subgenre"
       }
     ],
     "multi_label": true,
     "label_selection": "locked"
   },
-  "01M0ZV75KMG8AH943Q16ZAG4J7": {
-    "sub_genres": [],
-    "source": "qwen_omni_supplement",
-    "source_priority": "P1",
-    "confidence": 0.8,
-    "title": "unknown",
-    "artist": "unknown",
-    "reference": "qwen_omni_audio",
+  "87A69E31F3DC48429BEB755F06": {
+    "sub_genres": [
+      "Contemporary R&B",
+      "Pop"
+    ],
+    "source": "text_llm_search",
+    "source_priority": "P0",
+    "confidence": 0.95,
+    "title": "Call You Tonight",
+    "artist": "Whitney Houston",
+    "reference": "Discogs/AllMusic",
     "genres": [
       {
-        "label": "Big Band Jazz",
-        "source": "qwen_omni",
-        "source_priority": "P1",
-        "weight": 0.8,
-        "confidence": 0.9
+        "label": "R&B",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 1.0,
+        "confidence": 0.95
       },
       {
-        "label": "Swing",
-        "source": "qwen_omni",
-        "source_priority": "P1",
-        "weight": 0.6,
-        "confidence": 0.7200000000000001,
+        "label": "Contemporary R&B",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.76,
         "tag_type": "subgenre"
       },
       {
-        "label": "Jump Blues",
-        "source": "qwen_omni",
-        "source_priority": "P1",
-        "weight": 0.6,
-        "confidence": 0.7200000000000001,
+        "label": "Pop",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.76,
         "tag_type": "subgenre"
       }
     ],
     "multi_label": true,
     "label_selection": "locked"
   },
-  "01M0ZV75PYAVPDFDGZD69DE3YF": {
+  "8DDE7F1A99A0441C9A1564A6D7": {
     "sub_genres": [
-      "Bebop"
+      "Adult Contemporary",
+      "Pop"
     ],
-    "source": "qwen_omni_supplement",
-    "source_priority": "P1",
+    "source": "text_llm_search",
+    "source_priority": "P0",
+    "confidence": 0.95,
+    "title": "Yesterday Once More",
+    "artist": "Carpenters",
+    "reference": "Wikipedia/Discogs",
+    "genres": [
+      {
+        "label": "Soft Rock",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 1.0,
+        "confidence": 0.95
+      },
+      {
+        "label": "Adult Contemporary",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.76,
+        "tag_type": "subgenre"
+      },
+      {
+        "label": "Pop",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.76,
+        "tag_type": "subgenre"
+      }
+    ],
+    "multi_label": true,
+    "label_selection": "locked"
+  },
+  "8E0D1A1B284746B3A1FCE15B41": {
+    "sub_genres": [
+      "Italo House",
+      "Deep House"
+    ],
+    "source": "text_llm_search",
+    "source_priority": "P0",
     "confidence": 0.85,
-    "title": "unknown",
-    "artist": "unknown",
-    "reference": "needs_qwen_reannotate",
-    "reannotated": true,
-    "reannotated_from": "deepseek_v4_flash",
+    "title": "Welcome To Paradise Vol. III (track 8)",
+    "artist": "Various (Italian Dream House)",
+    "reference": "Discogs",
     "genres": [
       {
-        "label": "Jazz",
-        "source": "qwen_omni",
-        "source_priority": "P1",
-        "weight": 0.8,
+        "label": "Dream House",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 1.0,
         "confidence": 0.85
       },
       {
-        "label": "Bebop",
-        "source": "qwen_omni",
-        "source_priority": "P1",
-        "weight": 0.6,
+        "label": "Italo House",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.68,
+        "tag_type": "subgenre"
+      },
+      {
+        "label": "Deep House",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
         "confidence": 0.68,
         "tag_type": "subgenre"
       }
@@ -2592,132 +2277,38 @@
     "multi_label": true,
     "label_selection": "locked"
   },
-  "01M0ZV75JR9WA49NP41EP3A7TT": {
-    "sub_genres": [],
-    "source": "qwen_omni_supplement",
-    "source_priority": "P1",
-    "confidence": 0.8,
-    "title": "unknown",
-    "artist": "unknown",
-    "reference": "qwen_omni_audio",
-    "genres": [
-      {
-        "label": "Trip-Hop",
-        "source": "qwen_omni",
-        "source_priority": "P1",
-        "weight": 0.8,
-        "confidence": 0.85
-      },
-      {
-        "label": "Downtempo",
-        "source": "qwen_omni",
-        "source_priority": "P1",
-        "weight": 0.6,
-        "confidence": 0.68,
-        "tag_type": "subgenre"
-      },
-      {
-        "label": "Electronic",
-        "source": "qwen_omni",
-        "source_priority": "P1",
-        "weight": 0.6,
-        "confidence": 0.68,
-        "tag_type": "subgenre"
-      }
-    ],
-    "multi_label": true,
-    "label_selection": "locked"
-  },
-  "01M0ZV75HXBGQX8HM75G0WXBPV": {
-    "sub_genres": [],
-    "source": "qwen_omni_supplement",
-    "source_priority": "P1",
-    "confidence": 0.8,
-    "title": "unknown",
-    "artist": "unknown",
-    "reference": "qwen_omni_audio",
-    "genres": [
-      {
-        "label": "Jazz",
-        "source": "qwen_omni",
-        "source_priority": "P1",
-        "weight": 0.8,
-        "confidence": 0.9
-      },
-      {
-        "label": "Fusion",
-        "source": "qwen_omni",
-        "source_priority": "P1",
-        "weight": 0.6,
-        "confidence": 0.7200000000000001,
-        "tag_type": "subgenre"
-      },
-      {
-        "label": "Latin Jazz",
-        "source": "qwen_omni",
-        "source_priority": "P1",
-        "weight": 0.6,
-        "confidence": 0.7200000000000001,
-        "tag_type": "subgenre"
-      }
-    ],
-    "multi_label": true,
-    "label_selection": "locked"
-  },
-  "01M0ZV75EF73YWR1X5V3MHVA3A": {
+  "924CF2535CAB4C48A485EF4845": {
     "sub_genres": [
-      "Acid Jazz"
+      "Italo House",
+      "Deep House"
     ],
-    "source": "qwen_omni_supplement",
-    "source_priority": "P1",
-    "confidence": 0.8866666666666667,
-    "title": "unknown",
-    "artist": "unknown",
-    "reference": "needs_qwen_reannotate",
-    "reannotated": true,
-    "reannotated_from": "deepseek_v4_flash",
-    "segmented": true,
+    "source": "text_llm_search",
+    "source_priority": "P0",
+    "confidence": 0.85,
+    "title": "Welcome To Paradise Vol. III (track 9)",
+    "artist": "Various (Italian Dream House)",
+    "reference": "Discogs",
     "genres": [
       {
-        "label": "Jazz Fusion",
-        "source": "qwen_omni",
-        "source_priority": "P1",
-        "weight": 0.8,
-        "confidence": 0.8866666666666667
-      },
-      {
-        "label": "Acid Jazz",
-        "source": "qwen_omni",
-        "source_priority": "P1",
-        "weight": 0.6,
-        "confidence": 0.7093333333333334,
-        "tag_type": "subgenre"
-      }
-    ],
-    "multi_label": true,
-    "label_selection": "locked"
-  },
-  "01M0ZV75G09FTTEQQQTF6049DN": {
-    "sub_genres": [],
-    "source": "qwen_omni_supplement",
-    "source_priority": "P1",
-    "confidence": 0.8,
-    "title": "unknown",
-    "artist": "unknown",
-    "reference": "qwen_omni_audio",
-    "genres": [
-      {
-        "label": "Lounge",
-        "source": "qwen_omni",
-        "source_priority": "P1",
-        "weight": 0.8,
+        "label": "Dream House",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 1.0,
         "confidence": 0.85
       },
       {
-        "label": "Chillout",
-        "source": "qwen_omni",
-        "source_priority": "P1",
-        "weight": 0.6,
+        "label": "Italo House",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.68,
+        "tag_type": "subgenre"
+      },
+      {
+        "label": "Deep House",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
         "confidence": 0.68,
         "tag_type": "subgenre"
       }
@@ -2725,342 +2316,589 @@
     "multi_label": true,
     "label_selection": "locked"
   },
-  "01M0ZV75GQPN21PZZESQBZA47M": {
-    "sub_genres": [],
-    "source": "qwen_omni_supplement",
-    "source_priority": "P1",
-    "confidence": 0.8,
-    "title": "unknown",
-    "artist": "unknown",
-    "reference": "qwen_omni_audio",
-    "genres": [
-      {
-        "label": "Jazz Hop",
-        "source": "qwen_omni",
-        "source_priority": "P1",
-        "weight": 0.8,
-        "confidence": 0.91
-      },
-      {
-        "label": "Lo-fi Hip Hop",
-        "source": "qwen_omni",
-        "source_priority": "P1",
-        "weight": 0.6,
-        "confidence": 0.7280000000000001,
-        "tag_type": "subgenre"
-      },
-      {
-        "label": "Jazz Rap",
-        "source": "qwen_omni",
-        "source_priority": "P1",
-        "weight": 0.6,
-        "confidence": 0.7280000000000001,
-        "tag_type": "subgenre"
-      }
-    ],
-    "multi_label": true,
-    "label_selection": "locked"
-  },
-  "01M0ZV75MCZDA2T7FAXRDPVDA9": {
-    "sub_genres": [],
-    "source": "qwen_omni_supplement",
-    "source_priority": "P1",
-    "confidence": 0.8,
-    "title": "unknown",
-    "artist": "unknown",
-    "reference": "qwen_omni_audio",
-    "genres": [
-      {
-        "label": "Jazz",
-        "source": "qwen_omni",
-        "source_priority": "P1",
-        "weight": 0.8,
-        "confidence": 0.9
-      },
-      {
-        "label": "Fusion",
-        "source": "qwen_omni",
-        "source_priority": "P1",
-        "weight": 0.6,
-        "confidence": 0.7200000000000001,
-        "tag_type": "subgenre"
-      }
-    ],
-    "multi_label": true,
-    "label_selection": "locked"
-  },
-  "01M0ZV75CA0XZA10YGA99D89XQ": {
+  "95D0CB9A84B54582AD17E79393": {
     "sub_genres": [
-      "Bebop"
+      "Contemporary Jazz",
+      "Vocal Jazz"
     ],
-    "source": "qwen_omni_supplement",
-    "source_priority": "P1",
-    "confidence": 0.895,
-    "title": "unknown",
-    "artist": "unknown",
-    "reference": "needs_qwen_reannotate",
-    "reannotated": true,
-    "reannotated_from": "deepseek_v4_flash",
-    "segmented": true,
-    "genres": [
-      {
-        "label": "Jazz",
-        "source": "qwen_omni",
-        "source_priority": "P1",
-        "weight": 0.8,
-        "confidence": 0.895
-      },
-      {
-        "label": "Bebop",
-        "source": "qwen_omni",
-        "source_priority": "P1",
-        "weight": 0.6,
-        "confidence": 0.7160000000000001,
-        "tag_type": "subgenre"
-      }
-    ],
-    "multi_label": true,
-    "label_selection": "locked"
-  },
-  "01M0ZV75MN54813KGGWVFJA864": {
-    "sub_genres": [
-      "Cool Jazz"
-    ],
-    "source": "qwen_omni_supplement",
-    "source_priority": "P1",
-    "confidence": 0.88,
-    "title": "unknown",
-    "artist": "unknown",
-    "reference": "needs_qwen_reannotate",
-    "reannotated": true,
-    "reannotated_from": "deepseek_v4_flash",
-    "genres": [
-      {
-        "label": "Jazz",
-        "source": "qwen_omni",
-        "source_priority": "P1",
-        "weight": 0.8,
-        "confidence": 0.88
-      },
-      {
-        "label": "Cool Jazz",
-        "source": "qwen_omni",
-        "source_priority": "P1",
-        "weight": 0.6,
-        "confidence": 0.7040000000000001,
-        "tag_type": "subgenre"
-      }
-    ],
-    "multi_label": true,
-    "label_selection": "locked"
-  },
-  "01M0ZV75HFQNAS9VNCF717E4MC": {
-    "sub_genres": [],
-    "source": "qwen_omni_segmented",
-    "source_priority": "P1",
+    "source": "text_llm_search",
+    "source_priority": "P0",
     "confidence": 0.8,
-    "title": "unknown",
-    "artist": "unknown",
-    "reference": "qwen_omni_audio",
+    "title": "Illusion",
+    "artist": "Kira Linn / Linntett",
+    "reference": "Discogs",
     "genres": [
       {
         "label": "Jazz",
-        "source": "qwen_omni",
-        "source_priority": "P1",
-        "weight": 0.8,
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 1.0,
+        "confidence": 0.8
+      },
+      {
+        "label": "Contemporary Jazz",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.6400000000000001,
+        "tag_type": "subgenre"
+      },
+      {
+        "label": "Vocal Jazz",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.6400000000000001,
+        "tag_type": "subgenre"
+      }
+    ],
+    "multi_label": true,
+    "label_selection": "locked"
+  },
+  "9B845A8E8A744BCAA50705D73D": {
+    "sub_genres": [
+      "Hip Hop",
+      "Pop"
+    ],
+    "source": "text_llm_search",
+    "source_priority": "P0",
+    "confidence": 0.8,
+    "title": "The Girl Is Mine",
+    "artist": "Jake Miller ft. Jabbar Hakeem",
+    "reference": "Discogs",
+    "genres": [
+      {
+        "label": "Pop Rap",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 1.0,
+        "confidence": 0.8
+      },
+      {
+        "label": "Hip Hop",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.6400000000000001,
+        "tag_type": "subgenre"
+      },
+      {
+        "label": "Pop",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.6400000000000001,
+        "tag_type": "subgenre"
+      }
+    ],
+    "multi_label": true,
+    "label_selection": "locked"
+  },
+  "9C454BAFCD9A4DF7BC15CC9031": {
+    "sub_genres": [
+      "Electropop",
+      "R&B",
+      "Pop R&B"
+    ],
+    "source": "text_llm_search",
+    "source_priority": "P0",
+    "confidence": 0.85,
+    "title": "Paris in the Rain",
+    "artist": "Lauv",
+    "reference": "Discogs",
+    "genres": [
+      {
+        "label": "Pop",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 1.0,
         "confidence": 0.85
-      }
-    ],
-    "multi_label": true,
-    "label_selection": "locked"
-  },
-  "01M0ZV75PJG0F27RP7YANG0ZGW": {
-    "sub_genres": [],
-    "source": "qwen_omni_supplement",
-    "source_priority": "P1",
-    "confidence": 0.8,
-    "title": "unknown",
-    "artist": "unknown",
-    "reference": "qwen_omni_audio",
-    "genres": [
+      },
       {
-        "label": "Jazz",
+        "label": "Electropop",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.68,
+        "tag_type": "subgenre"
+      },
+      {
+        "label": "R&B",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.68,
+        "tag_type": "subgenre"
+      },
+      {
+        "label": "R&B",
         "source": "qwen_omni",
         "source_priority": "P1",
         "weight": 0.8,
         "confidence": 0.92
+      }
+    ],
+    "multi_label": true,
+    "resolution": "category1_text_llm_primary_qwen_subgenre_merged",
+    "resolution_note": "伪冲突：Qwen subgenre已包含文本LLM答案，主标签用文本LLM，subgenre合并Qwen",
+    "label_selection": "locked"
+  },
+  "A0F9B5560A194DE5A25A22BD62": {
+    "sub_genres": [
+      "Latin Jazz",
+      "MPB",
+      "Bossa Nova"
+    ],
+    "source": "text_llm_search",
+    "source_priority": "P0",
+    "confidence": 0.95,
+    "title": "The Red Blouse",
+    "artist": "Antonio Carlos Jobim",
+    "reference": "Discogs",
+    "genres": [
+      {
+        "label": "Bossa Nova",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 1.0,
+        "confidence": 0.95
       },
       {
         "label": "Latin Jazz",
-        "source": "qwen_omni",
-        "source_priority": "P1",
-        "weight": 0.6,
-        "confidence": 0.7360000000000001,
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.76,
         "tag_type": "subgenre"
       },
       {
-        "label": "Salsa Jazz",
+        "label": "MPB",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.76,
+        "tag_type": "subgenre"
+      },
+      {
+        "label": "Jazz",
         "source": "qwen_omni",
         "source_priority": "P1",
-        "weight": 0.6,
-        "confidence": 0.7360000000000001,
+        "weight": 0.8,
+        "confidence": 0.9
+      }
+    ],
+    "multi_label": true,
+    "resolution": "category1_text_llm_primary_qwen_subgenre_merged",
+    "resolution_note": "伪冲突：Qwen subgenre已包含文本LLM答案，主标签用文本LLM，subgenre合并Qwen",
+    "label_selection": "locked"
+  },
+  "A1AD6E948D2149EC940866F9D3": {
+    "sub_genres": [
+      "R&B",
+      "Pop Rap"
+    ],
+    "source": "text_llm_search",
+    "source_priority": "P0",
+    "confidence": 0.95,
+    "title": "Dilemma",
+    "artist": "Nelly ft. Kelly Rowland",
+    "reference": "Wikipedia",
+    "genres": [
+      {
+        "label": "Hip Hop",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 1.0,
+        "confidence": 0.95
+      },
+      {
+        "label": "R&B",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.76,
+        "tag_type": "subgenre"
+      },
+      {
+        "label": "Pop Rap",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.76,
         "tag_type": "subgenre"
       }
     ],
     "multi_label": true,
     "label_selection": "locked"
   },
-  "01M0ZV75CTPEDPQSJSDWQP40E4": {
+  "A1CC7E194F30411980025EA378": {
     "sub_genres": [
-      "Free Jazz",
-      "Avant-Garde Jazz"
+      "Italo House",
+      "Deep House"
     ],
-    "source": "qwen_omni_supplement",
-    "source_priority": "P1",
-    "confidence": 0.9,
-    "title": "unknown",
-    "artist": "unknown",
-    "reference": "needs_qwen_reannotate",
-    "reannotated": true,
-    "reannotated_from": "deepseek_v4_flash",
+    "source": "text_llm_search",
+    "source_priority": "P0",
+    "confidence": 0.85,
+    "title": "Welcome To Paradise Vol. III (track 10)",
+    "artist": "Various (Italian Dream House)",
+    "reference": "Discogs",
     "genres": [
       {
-        "label": "Jazz Fusion",
-        "source": "qwen_omni",
-        "source_priority": "P1",
-        "weight": 0.8,
-        "confidence": 0.9
+        "label": "Dream House",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 1.0,
+        "confidence": 0.85
+      },
+      {
+        "label": "Italo House",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.68,
+        "tag_type": "subgenre"
+      },
+      {
+        "label": "Deep House",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.68,
+        "tag_type": "subgenre"
+      }
+    ],
+    "multi_label": true,
+    "label_selection": "locked"
+  },
+  "A52E2E2FA5474C61984BCECC27": {
+    "sub_genres": [
+      "Free Jazz",
+      "Avant-Garde"
+    ],
+    "source": "text_llm_search",
+    "source_priority": "P0",
+    "confidence": 0.6,
+    "title": "Seven Marmelade",
+    "artist": "Unknown (experimental)",
+    "reference": "文件名推断",
+    "genres": [
+      {
+        "label": "Experimental",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 1.0,
+        "confidence": 0.6
       },
       {
         "label": "Free Jazz",
-        "source": "qwen_omni",
-        "source_priority": "P1",
-        "weight": 0.6,
-        "confidence": 0.7200000000000001,
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.48,
         "tag_type": "subgenre"
       },
       {
-        "label": "Avant-Garde Jazz",
-        "source": "qwen_omni",
-        "source_priority": "P1",
-        "weight": 0.6,
-        "confidence": 0.7200000000000001,
+        "label": "Avant-Garde",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.48,
         "tag_type": "subgenre"
       }
     ],
     "multi_label": true,
     "label_selection": "locked"
   },
-  "01M0ZV75DMQARXEX90GT35FWFK": {
-    "sub_genres": [],
-    "source": "qwen_omni_supplement",
-    "source_priority": "P1",
-    "confidence": 0.8,
-    "title": "unknown",
-    "artist": "unknown",
-    "reference": "qwen_omni_audio",
+  "A7E56197254D451CB98808C9BD": {
+    "sub_genres": [
+      "Soft Rock",
+      "Pop"
+    ],
+    "source": "text_llm_search",
+    "source_priority": "P0",
+    "confidence": 0.85,
+    "title": "I Just Fall In Love Again",
+    "artist": "Carpenters/Anne Murray",
+    "reference": "Discogs",
     "genres": [
       {
-        "label": "Latin Jazz",
+        "label": "Adult Contemporary",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 1.0,
+        "confidence": 0.85
+      },
+      {
+        "label": "Soft Rock",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.68,
+        "tag_type": "subgenre"
+      },
+      {
+        "label": "Pop",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.68,
+        "tag_type": "subgenre"
+      }
+    ],
+    "multi_label": true,
+    "label_selection": "locked"
+  },
+  "AA089CC166EF4DE8AA78014AD9": {
+    "sub_genres": [
+      "Experimental",
+      "Drone"
+    ],
+    "source": "text_llm_search",
+    "source_priority": "P0",
+    "confidence": 0.6,
+    "title": "How to count one to ten - windmill",
+    "artist": "Unknown (ambient/experimental)",
+    "reference": "文件名推断",
+    "genres": [
+      {
+        "label": "Ambient",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.0,
+        "confidence": 0.6,
+        "rejected": true,
+        "reject_reason": "低置信文件名推断，不采信；用户认定以Qwen Post-Rock为准"
+      },
+      {
+        "label": "Post-Rock",
         "source": "qwen_omni",
         "source_priority": "P1",
         "weight": 0.8,
-        "confidence": 0.92
+        "confidence": 0.9,
+        "user_ruling": "用户认定"
       },
       {
-        "label": "Afro-Cuban Jazz",
+        "label": "Experimental",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.48,
+        "tag_type": "subgenre"
+      },
+      {
+        "label": "Drone",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.48,
+        "tag_type": "subgenre"
+      }
+    ],
+    "multi_label": true,
+    "resolution": "pending_human_review",
+    "resolution_note": "真冲突：文本LLM=Ambient vs Qwen=Post-Rock，需用户听后裁决",
+    "candidate_labels": {
+      "text_llm": "Ambient",
+      "text_llm_sub": [
+        "Experimental",
+        "Drone"
+      ],
+      "qwen": "Post-Rock",
+      "qwen_subgenre": "Instrumental Rock"
+    },
+    "user_ruling": "用户认定Post-Rock，Ambient低置信文件名推断不采信",
+    "ruled_by": "user",
+    "label_selection": "locked"
+  },
+  "B7C8FC27F3C349B0B39EB7D55A": {
+    "sub_genres": [
+      "Italo House",
+      "Deep House",
+      "Progressive House"
+    ],
+    "source": "text_llm_search",
+    "source_priority": "P0",
+    "confidence": 0.85,
+    "title": "Welcome To Paradise Vol. III (track 5)",
+    "artist": "Various (Italian Dream House)",
+    "reference": "Discogs",
+    "genres": [
+      {
+        "label": "Dream House",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 1.0,
+        "confidence": 0.85
+      },
+      {
+        "label": "Italo House",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.68,
+        "tag_type": "subgenre"
+      },
+      {
+        "label": "Deep House",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.68,
+        "tag_type": "subgenre"
+      },
+      {
+        "label": "Deep House",
         "source": "qwen_omni",
         "source_priority": "P1",
-        "weight": 0.6,
-        "confidence": 0.7360000000000001,
+        "weight": 0.8,
+        "confidence": 0.85
+      }
+    ],
+    "multi_label": true,
+    "resolution": "category1_text_llm_primary_qwen_subgenre_merged",
+    "resolution_note": "伪冲突：Qwen subgenre已包含文本LLM答案，主标签用文本LLM，subgenre合并Qwen",
+    "label_selection": "locked"
+  },
+  "BEF3CF9662D841528BDB33BFAF": {
+    "sub_genres": [
+      "Idol Pop",
+      "Dance-Pop"
+    ],
+    "source": "text_llm_search",
+    "source_priority": "P0",
+    "confidence": 0.95,
+    "title": "ヘビーローテーション (Heavy Rotation)",
+    "artist": "AKB48",
+    "reference": "Wikipedia",
+    "genres": [
+      {
+        "label": "J-pop",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 1.0,
+        "confidence": 0.95
+      },
+      {
+        "label": "Idol Pop",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.76,
+        "tag_type": "subgenre"
+      },
+      {
+        "label": "Dance-Pop",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.76,
         "tag_type": "subgenre"
       }
     ],
     "multi_label": true,
     "label_selection": "locked"
   },
-  "01M0ZV75N3CVB5WH17V4GCGDQ3": {
+  "C2AEFEEB56B0454F9AE069B899": {
     "sub_genres": [
-      "Post-Bop"
+      "Pop Ballad"
     ],
-    "source": "qwen_omni_supplement",
-    "source_priority": "P1",
-    "confidence": 0.8866666666666667,
-    "title": "unknown",
-    "artist": "unknown",
-    "reference": "needs_qwen_reannotate",
-    "reannotated": true,
-    "reannotated_from": "deepseek_v4_flash",
-    "segmented": true,
+    "source": "text_llm_search",
+    "source_priority": "P0",
+    "confidence": 0.95,
+    "title": "必杀技",
+    "artist": "古巨基",
+    "reference": "HK音乐百科",
+    "genres": [
+      {
+        "label": "Cantopop",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 1.0,
+        "confidence": 0.95
+      },
+      {
+        "label": "Pop Ballad",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.76,
+        "tag_type": "subgenre"
+      }
+    ],
+    "multi_label": true,
+    "label_selection": "locked"
+  },
+  "CDF8316BBDD2488A877E675E8F": {
+    "sub_genres": [
+      "Pop Rock",
+      "Taiwanese Pop"
+    ],
+    "source": "text_llm_search",
+    "source_priority": "P0",
+    "confidence": 0.95,
+    "title": "因为你 所以我",
+    "artist": "五月天",
+    "reference": "Wikipedia",
+    "genres": [
+      {
+        "label": "Mandopop",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 1.0,
+        "confidence": 0.95
+      },
+      {
+        "label": "Pop Rock",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.76,
+        "tag_type": "subgenre"
+      },
+      {
+        "label": "Taiwanese Pop",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.76,
+        "tag_type": "subgenre"
+      }
+    ],
+    "multi_label": true,
+    "label_selection": "locked"
+  },
+  "D0CC3C06BCC643C4AD0737115C": {
+    "sub_genres": [
+      "Post-Bop",
+      "Contemporary Jazz"
+    ],
+    "source": "text_llm_search",
+    "source_priority": "P0",
+    "confidence": 0.9,
+    "title": "Warrior",
+    "artist": "Hiromi",
+    "reference": "Discogs/AllMusic",
     "genres": [
       {
         "label": "Jazz Fusion",
-        "source": "qwen_omni",
-        "source_priority": "P1",
-        "weight": 0.8,
-        "confidence": 0.8866666666666667
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 1.0,
+        "confidence": 0.9
       },
       {
         "label": "Post-Bop",
-        "source": "qwen_omni",
-        "source_priority": "P1",
-        "weight": 0.6,
-        "confidence": 0.7093333333333334,
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.7200000000000001,
         "tag_type": "subgenre"
-      }
-    ],
-    "multi_label": true,
-    "label_selection": "locked"
-  },
-  "01M0ZV75E1JTESWENDMCDN4G3Y": {
-    "sub_genres": [],
-    "source": "qwen_omni_supplement",
-    "source_priority": "P1",
-    "confidence": 0.8,
-    "title": "unknown",
-    "artist": "unknown",
-    "reference": "qwen_omni_audio",
-    "genres": [
-      {
-        "label": "Jazz Fusion",
-        "source": "qwen_omni",
-        "source_priority": "P1",
-        "weight": 0.8,
-        "confidence": 0.92
       },
       {
-        "label": "Funky Jazz",
-        "source": "qwen_omni",
-        "source_priority": "P1",
-        "weight": 0.6,
-        "confidence": 0.7360000000000001,
-        "tag_type": "subgenre"
-      }
-    ],
-    "multi_label": true,
-    "label_selection": "locked"
-  },
-  "01M0ZV75GA4AQAY1KNJ0PD68GQ": {
-    "sub_genres": [],
-    "source": "qwen_omni_supplement",
-    "source_priority": "P1",
-    "confidence": 0.8,
-    "title": "unknown",
-    "artist": "unknown",
-    "reference": "qwen_omni_audio",
-    "genres": [
-      {
-        "label": "Trip-Hop",
-        "source": "qwen_omni",
-        "source_priority": "P1",
-        "weight": 0.8,
-        "confidence": 0.9
-      },
-      {
-        "label": "Downtempo",
-        "source": "qwen_omni",
-        "source_priority": "P1",
-        "weight": 0.6,
+        "label": "Contemporary Jazz",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
         "confidence": 0.7200000000000001,
         "tag_type": "subgenre"
       }
@@ -3068,95 +2906,257 @@
     "multi_label": true,
     "label_selection": "locked"
   },
-  "01M0ZV75H12W7ATW11QWSKXC5N": {
+  "D2098BC896D6450A8E3744528E": {
     "sub_genres": [
-      "Electric Blues"
+      "Latin Jazz",
+      "MPB"
     ],
-    "source": "qwen_omni_supplement",
-    "source_priority": "P1",
-    "confidence": 0.9,
-    "title": "unknown",
-    "artist": "unknown",
-    "reference": "needs_qwen_reannotate",
-    "reannotated": true,
-    "reannotated_from": "deepseek_v4_flash",
+    "source": "text_llm_search",
+    "source_priority": "P0",
+    "confidence": 0.95,
+    "title": "Look To The Sky",
+    "artist": "Antonio Carlos Jobim",
+    "reference": "Discogs",
     "genres": [
       {
-        "label": "Blues",
-        "source": "qwen_omni",
-        "source_priority": "P1",
-        "weight": 0.8,
-        "confidence": 0.9
+        "label": "Bossa Nova",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 1.0,
+        "confidence": 0.95
       },
       {
-        "label": "Electric Blues",
-        "source": "qwen_omni",
-        "source_priority": "P1",
-        "weight": 0.6,
-        "confidence": 0.7200000000000001,
+        "label": "Latin Jazz",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.76,
+        "tag_type": "subgenre"
+      },
+      {
+        "label": "MPB",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.76,
         "tag_type": "subgenre"
       }
     ],
     "multi_label": true,
     "label_selection": "locked"
   },
-  "01M0ZV75D7YTDKME3ZR6JXN1YH": {
-    "sub_genres": [],
-    "source": "ace_studio_generated",
-    "source_priority": "EXCLUDED",
-    "confidence": 0.0,
-    "title": "ACE generated",
-    "artist": "ACE Studio",
-    "reference": "ace_studio_exclude_list",
-    "genres": [],
+  "DC92B30BB51D42488F02AA203F": {
+    "sub_genres": [
+      "Dream House",
+      "Deep House",
+      "Trance"
+    ],
+    "source": "text_llm_search",
+    "source_priority": "P0",
+    "confidence": 0.9,
+    "title": "Ouverture",
+    "artist": "Don Carlos",
+    "reference": "Discogs",
+    "genres": [
+      {
+        "label": "Italo House",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 1.0,
+        "confidence": 0.85,
+        "user_ruling": "用户认定兼容不冲突"
+      },
+      {
+        "label": "Trance",
+        "source": "qwen_omni",
+        "source_priority": "P1",
+        "weight": 0.8,
+        "confidence": 0.85,
+        "user_ruling": "用户认定兼容不冲突"
+      }
+    ],
+    "multi_label": true,
+    "resolution": "pending_human_review",
+    "resolution_note": "真冲突：文本LLM=Italo House vs Qwen=Trance，需用户听后裁决",
+    "candidate_labels": {
+      "text_llm": "Italo House",
+      "text_llm_sub": [
+        "Dream House",
+        "Deep House",
+        "Trance"
+      ],
+      "qwen": "Trance",
+      "qwen_subgenre": ""
+    },
+    "user_ruling": "用户认定Italo House和Trance兼容不冲突，两者并存",
+    "ruled_by": "user",
+    "label_selection": "locked"
+  },
+  "E1C4475B60AC4179852278CC60": {
+    "sub_genres": [
+      "Contemporary Jazz",
+      "Vocal Jazz"
+    ],
+    "source": "text_llm_search",
+    "source_priority": "P0",
+    "confidence": 0.8,
+    "title": "Rage",
+    "artist": "Kira Linn / Linntett",
+    "reference": "Discogs",
+    "genres": [
+      {
+        "label": "Jazz",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 1.0,
+        "confidence": 0.8
+      },
+      {
+        "label": "Contemporary Jazz",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.6400000000000001,
+        "tag_type": "subgenre"
+      },
+      {
+        "label": "Vocal Jazz",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.6400000000000001,
+        "tag_type": "subgenre"
+      }
+    ],
     "multi_label": true,
     "label_selection": "locked"
   },
-  "01M0ZV75K7K5Y26V3WCRQ9QA8Z": {
-    "sub_genres": [],
-    "source": "ace_studio_generated",
-    "source_priority": "EXCLUDED",
-    "confidence": 0.0,
-    "title": "ACE generated",
-    "artist": "ACE Studio",
-    "reference": "ace_studio_exclude_list",
-    "genres": [],
+  "E6A98A1C67AC4D9FA1E7437524": {
+    "sub_genres": [
+      "Blue-Eyed Soul",
+      "Smooth Jazz",
+      "R&B"
+    ],
+    "source": "text_llm_search",
+    "source_priority": "P0",
+    "confidence": 0.95,
+    "title": "What You Won't Do For Love",
+    "artist": "Bobby Caldwell",
+    "reference": "Wikipedia/AllMusic",
+    "genres": [
+      {
+        "label": "Soul",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 1.0,
+        "confidence": 0.95
+      },
+      {
+        "label": "Blue-Eyed Soul",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.76,
+        "tag_type": "subgenre"
+      },
+      {
+        "label": "Smooth Jazz",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.76,
+        "tag_type": "subgenre"
+      },
+      {
+        "label": "R&B",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.76,
+        "tag_type": "subgenre"
+      }
+    ],
     "multi_label": true,
     "label_selection": "locked"
   },
-  "01M0ZV75P30AE55Y0VFH0J44WC": {
-    "sub_genres": [],
-    "source": "ace_studio_generated",
-    "source_priority": "EXCLUDED",
-    "confidence": 0.0,
-    "title": "ACE generated",
-    "artist": "ACE Studio",
-    "reference": "ace_studio_exclude_list",
-    "genres": [],
+  "F7E5F56ECCCC479589A26A2A10": {
+    "sub_genres": [
+      "Pop",
+      "Contemporary R&B",
+      "R&B",
+      "Pop Ballad"
+    ],
+    "source": "text_llm_search",
+    "source_priority": "P0",
+    "confidence": 0.9,
+    "title": "EX",
+    "artist": "Kiana Ledé",
+    "reference": "Discogs/Genius",
+    "genres": [
+      {
+        "label": "R&B",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 1.0,
+        "confidence": 0.9
+      },
+      {
+        "label": "Contemporary R&B",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.7200000000000001,
+        "tag_type": "subgenre"
+      },
+      {
+        "label": "Pop",
+        "source": "qwen_omni",
+        "source_priority": "P1",
+        "weight": 0.8,
+        "confidence": 0.95
+      }
+    ],
     "multi_label": true,
+    "resolution": "category2_text_llm_primary_qwen_as_subgenre",
+    "resolution_note": "社会定义vs听觉判断：主标签用文本LLM（社会共识），Qwen标签进subgenre",
     "label_selection": "locked"
   },
-  "01M0ZV75F15BY8CTHN77XWPNWN": {
-    "sub_genres": [],
-    "source": "ace_studio_generated",
-    "source_priority": "EXCLUDED",
-    "confidence": 0.0,
-    "title": "ACE generated",
-    "artist": "ACE Studio",
-    "reference": "ace_studio_exclude_list",
-    "genres": [],
-    "multi_label": true,
-    "label_selection": "locked"
-  },
-  "01M0ZV75NNJ2TC50HQCKGNFFF7": {
-    "sub_genres": [],
-    "source": "ace_studio_generated",
-    "source_priority": "EXCLUDED",
-    "confidence": 0.0,
-    "title": "ACE generated",
-    "artist": "ACE Studio",
-    "reference": "ace_studio_exclude_list",
-    "genres": [],
+  "F905340525194A1A9D838DB885": {
+    "sub_genres": [
+      "Italo House",
+      "Deep House"
+    ],
+    "source": "text_llm_search",
+    "source_priority": "P0",
+    "confidence": 0.85,
+    "title": "Welcome To Paradise Vol. III (track 3)",
+    "artist": "Various (Italian Dream House)",
+    "reference": "Discogs",
+    "genres": [
+      {
+        "label": "Dream House",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 1.0,
+        "confidence": 0.85
+      },
+      {
+        "label": "Italo House",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.68,
+        "tag_type": "subgenre"
+      },
+      {
+        "label": "Deep House",
+        "source": "text_llm_search",
+        "source_priority": "P0",
+        "weight": 0.7,
+        "confidence": 0.68,
+        "tag_type": "subgenre"
+      }
+    ],
     "multi_label": true,
     "label_selection": "locked"
   }

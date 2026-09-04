@@ -1,6 +1,4 @@
 {
-  "audio_id": "01M0ZV75MCZDA2T7FAXRDPVDA9",
-  "genre": "Jazz",
   "sub_genres": [],
   "source": "qwen_omni_supplement",
   "source_priority": "P1",
@@ -8,9 +6,6 @@
   "title": "unknown",
   "artist": "unknown",
   "reference": "qwen_omni_audio",
-  "knn_propagated": false,
-  "l4_version": "unified_v3_multi_label_no_primary",
-  "deprecated_knn_note": "KNN传播已从L4移除，一致率0%，详见archive/l4_knn_legacy/DEPRECATED.md",
   "genres": [
     {
       "label": "Jazz",
@@ -29,5 +24,9 @@
     }
   ],
   "multi_label": true,
-  "label_selection": "locked"
+  "label_selection": "locked",
+  "audio_id": "01M0ZV75MCZDA2T7FAXRDPVDA9",
+  "knn_propagated": false,
+  "l4_version": "unified_v3_multi_label_no_primary",
+  "deprecated_knn_note": "KNN传播已从L4移除，一致率0%，详见archive/l4_knn_legacy/DEPRECATED.md"
 }

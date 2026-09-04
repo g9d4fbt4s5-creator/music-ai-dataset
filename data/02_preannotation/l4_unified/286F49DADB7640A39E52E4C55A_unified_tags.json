@@ -1,6 +1,4 @@
 {
-  "audio_id": "286F49DADB7640A39E52E4C55A",
-  "genre": "Chinese Folk",
   "sub_genres": [
     "Folk",
     "World Music",
@@ -12,9 +10,6 @@
   "title": "黄河谣",
   "artist": "中国民谣 (Yellow River Ballad)",
   "reference": "音乐百科",
-  "knn_propagated": false,
-  "l4_version": "unified_v3_multi_label_no_primary",
-  "deprecated_knn_note": "KNN传播已从L4移除，一致率0%，详见archive/l4_knn_legacy/DEPRECATED.md",
   "genres": [
     {
       "label": "Chinese Folk",
@@ -49,5 +44,9 @@
     }
   ],
   "multi_label": true,
-  "label_selection": "locked"
+  "label_selection": "locked",
+  "audio_id": "286F49DADB7640A39E52E4C55A",
+  "knn_propagated": false,
+  "l4_version": "unified_v3_multi_label_no_primary",
+  "deprecated_knn_note": "KNN传播已从L4移除，一致率0%，详见archive/l4_knn_legacy/DEPRECATED.md"
 }

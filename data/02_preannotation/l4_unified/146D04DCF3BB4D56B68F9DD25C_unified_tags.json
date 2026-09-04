@@ -1,6 +1,4 @@
 {
-  "audio_id": "146D04DCF3BB4D56B68F9DD25C",
-  "genre": "Classical Crossover",
   "sub_genres": [
     "Traditional Pop",
     "Orchestral Ballad",
@@ -13,11 +11,6 @@
   "title": "Love Me Tender",
   "artist": "Andrea Bocelli",
   "reference": "Wikipedia/Discogs (Passione, David Foster)",
-  "knn_propagated": false,
-  "l4_version": "unified_v3_multi_label_no_primary",
-  "deprecated_knn_note": "KNN传播已从L4移除，一致率0%，详见archive/l4_knn_legacy/DEPRECATED.md",
-  "resolution": "category2_text_llm_primary_qwen_as_subgenre",
-  "resolution_note": "社会定义vs听觉判断：主标签用文本LLM（社会共识），Qwen标签进subgenre",
   "genres": [
     {
       "label": "Classical Crossover",
@@ -37,7 +30,13 @@
     }
   ],
   "multi_label": true,
-  "label_selection": "locked",
+  "resolution": "category2_text_llm_primary_qwen_as_subgenre",
+  "resolution_note": "社会定义vs听觉判断：主标签用文本LLM（社会共识），Qwen标签进subgenre",
   "user_ruling": "用户认定Classical Crossover更贴切，Traditional Pop也对，两者并存",
-  "ruled_by": "user"
+  "ruled_by": "user",
+  "label_selection": "locked",
+  "audio_id": "146D04DCF3BB4D56B68F9DD25C",
+  "knn_propagated": false,
+  "l4_version": "unified_v3_multi_label_no_primary",
+  "deprecated_knn_note": "KNN传播已从L4移除，一致率0%，详见archive/l4_knn_legacy/DEPRECATED.md"
 }

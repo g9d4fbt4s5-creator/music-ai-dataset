@@ -1,6 +1,4 @@
 {
-  "audio_id": "78250AD45D2842A3AA18C9071D",
-  "genre": "Jazz Fusion",
   "sub_genres": [
     "Post-Bop",
     "Contemporary Jazz"
@@ -11,9 +9,6 @@
   "title": "Seeker",
   "artist": "Hiromi",
   "reference": "Discogs",
-  "knn_propagated": false,
-  "l4_version": "unified_v3_multi_label_no_primary",
-  "deprecated_knn_note": "KNN传播已从L4移除，一致率0%，详见archive/l4_knn_legacy/DEPRECATED.md",
   "genres": [
     {
       "label": "Jazz Fusion",
@@ -40,5 +35,9 @@
     }
   ],
   "multi_label": true,
-  "label_selection": "locked"
+  "label_selection": "locked",
+  "audio_id": "78250AD45D2842A3AA18C9071D",
+  "knn_propagated": false,
+  "l4_version": "unified_v3_multi_label_no_primary",
+  "deprecated_knn_note": "KNN传播已从L4移除，一致率0%，详见archive/l4_knn_legacy/DEPRECATED.md"
 }
