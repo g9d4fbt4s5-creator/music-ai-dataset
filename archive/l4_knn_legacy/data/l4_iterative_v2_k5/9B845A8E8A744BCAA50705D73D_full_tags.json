@@ -1,0 +1,32 @@
+{
+  "audio_id": "9B845A8E8A744BCAA50705D73D",
+  "fusion": {
+    "genre_source": "qwen_supplement",
+    "mood_source": "qwen_supplement",
+    "instrumentation_source": "qwen_supplement"
+  },
+  "propagated_from": null,
+  "propagation_similarity": null,
+  "propagation_cosine_dist": null,
+  "knn_vote_count": null,
+  "key": "A major",
+  "vocal_presence": "vocal",
+  "subgenre": "Dance-pop / Electropop",
+  "genre": "Pop",
+  "mood": [
+    "自信",
+    "时尚",
+    "热情",
+    "质问"
+  ],
+  "instrumentation": [
+    "合成器",
+    "电吉他",
+    "钢琴",
+    "贝斯",
+    "电子鼓",
+    "人声"
+  ],
+  "caption": "这是一首充满活力的流行舞曲，以明亮的合成器和动感的节拍为特色，表达了希望看到明星真实一面的情感。",
+  "segments": []
+}

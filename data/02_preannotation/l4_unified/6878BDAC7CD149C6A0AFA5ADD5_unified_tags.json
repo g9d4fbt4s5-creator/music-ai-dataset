@@ -1,0 +1,16 @@
+{
+  "audio_id": "6878BDAC7CD149C6A0AFA5ADD5",
+  "genre": "Cantopop",
+  "sub_genres": [
+    "Pop Ballad"
+  ],
+  "source": "text_llm_search",
+  "source_priority": "P0",
+  "confidence": 0.95,
+  "title": "七友",
+  "artist": "梁汉文",
+  "reference": "HK音乐百科",
+  "knn_propagated": false,
+  "l4_version": "unified_v1_text_llm_plus_qwen",
+  "deprecated_knn_note": "KNN传播已从L4移除，一致率0%，详见archive/l4_knn_legacy/DEPRECATED.md"
+}

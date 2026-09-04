@@ -1,0 +1,18 @@
+{
+  "audio_id": "3F34DF1B2784408BA60CE8165C",
+  "fusion": {
+    "genre_source": "knn(from F7E5F56ECCCC479589A26A2A10, dist=0.330)",
+    "mood_source": "unlabeled",
+    "instrumentation_source": "unlabeled",
+    "caption_source": "unlabeled"
+  },
+  "propagated_from": "F7E5F56ECCCC479589A26A2A10",
+  "propagation_similarity": 0.6698,
+  "propagation_cosine_dist": 0.3302,
+  "genre": "cool jazz",
+  "subgenre": "",
+  "mood": [],
+  "instrumentation": [],
+  "caption": "",
+  "segments": []
+}

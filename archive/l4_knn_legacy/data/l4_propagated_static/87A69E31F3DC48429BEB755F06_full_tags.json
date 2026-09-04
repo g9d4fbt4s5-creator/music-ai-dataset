@@ -1,0 +1,26 @@
+{
+  "audio_id": "87A69E31F3DC48429BEB755F06",
+  "fusion": {
+    "genre_source": "knn(from D2098BC896D6450A8E3744528E, dist=0.398)",
+    "mood_source": "qwen_supplement",
+    "instrumentation_source": "qwen_supplement",
+    "caption_source": "qwen_supplement (not_propagated)"
+  },
+  "propagated_from": "D2098BC896D6450A8E3744528E",
+  "propagation_similarity": 0.6019,
+  "propagation_cosine_dist": 0.3981,
+  "vocal_presence": "instrumental",
+  "genre": "Bossa Nova",
+  "subgenre": "",
+  "mood": [
+    "energetic",
+    "peaceful"
+  ],
+  "instrumentation": [
+    "bass",
+    "trumpet",
+    "flute"
+  ],
+  "caption": "A mid-tempo hip hop instrumental with bass, trumpet, and flute, creating an energetic yet peaceful atmosphere suitable for a party.",
+  "segments": []
+}

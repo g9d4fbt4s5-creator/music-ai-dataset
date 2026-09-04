@@ -1,0 +1,17 @@
+{
+  "audio_id": "4AD0681C6347477D8B1E849422",
+  "genre": "R&B",
+  "sub_genres": [
+    "Soul",
+    "Philly Soul"
+  ],
+  "source": "text_llm_search",
+  "source_priority": "P0",
+  "confidence": 0.95,
+  "title": "Leave the Door Open",
+  "artist": "Silk Sonic (Bruno Mars & Anderson .Paak)",
+  "reference": "Wikipedia",
+  "knn_propagated": false,
+  "l4_version": "unified_v1_text_llm_plus_qwen",
+  "deprecated_knn_note": "KNN传播已从L4移除，一致率0%，详见archive/l4_knn_legacy/DEPRECATED.md"
+}

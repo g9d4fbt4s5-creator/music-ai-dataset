@@ -1,0 +1,179 @@
+{
+  "audio_id": "DC92B30BB51D42488F02AA203F",
+  "fusion": {
+    "genre_source": "qwen_omni_golden",
+    "mood_source": "qwen_omni_golden",
+    "instrumentation_source": "qwen_omni_golden",
+    "caption_source": "qwen_omni_golden"
+  },
+  "propagated_from": "golden_set",
+  "propagation_similarity": null,
+  "propagation_cosine_dist": null,
+  "vocal_presence": "instrumental",
+  "genre": "Trance",
+  "subgenre": "",
+  "mood": [
+    "缓",
+    "n"
+  ],
+  "instrumentation": [
+    "琶音",
+    "钢琴",
+    "电子鼓",
+    "Drum Machine",
+    "合成器"
+  ],
+  "caption": "这是一首以合成器、鼓机和贝斯为主的渐进式出神舞曲，情绪从怀旧过渡到激昂。 | 这是一首充满活力的 uplifting trance 纯音乐，以明亮的合成器旋律和强劲的电子节拍为特色，营造出令人振奋的派对氛围。 | 这是一首充满活力的 uplifting trance 纯音乐，以明亮的合成器旋律和渐进的节奏营造出梦幻般的氛围。",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 35.0,
+      "label": "Intro",
+      "instruments": [
+        "Synthesizer",
+        "Piano"
+      ],
+      "mood": "Nostalgic",
+      "confidence": 0.9
+    },
+    {
+      "start": 35.0,
+      "end": 65.0,
+      "label": "Build-up",
+      "instruments": [
+        "Synthesizer",
+        "Drum Machine",
+        "Bass"
+      ],
+      "mood": "Anticipatory",
+      "confidence": 0.85
+    },
+    {
+      "start": 65.0,
+      "end": 120.0,
+      "label": "Main Theme",
+      "instruments": [
+        "Synthesizer",
+        "Drum Machine",
+        "Bass"
+      ],
+      "mood": "Energetic",
+      "confidence": 0.9
+    },
+    {
+      "start": 120.0,
+      "end": 150.0,
+      "label": "Breakdown",
+      "instruments": [
+        "Synthesizer",
+        "Piano"
+      ],
+      "mood": "Reflective",
+      "confidence": 0.8
+    },
+    {
+      "start": 150.0,
+      "end": 180.0,
+      "label": "Climax",
+      "instruments": [
+        "Synthesizer",
+        "Drum Machine",
+        "Bass"
+      ],
+      "mood": "Euphoric",
+      "confidence": 0.95
+    },
+    {
+      "start": 180.0,
+      "end": 204.5,
+      "label": "Intro",
+      "instruments": [
+        "合成器",
+        "电子鼓"
+      ],
+      "mood": "期待",
+      "confidence": 0.95
+    },
+    {
+      "start": 204.5,
+      "end": 236.0,
+      "label": "Build-up",
+      "instruments": [
+        "合成器",
+        "电子鼓",
+        "贝斯"
+      ],
+      "mood": "紧张",
+      "confidence": 0.92
+    },
+    {
+      "start": 236.0,
+      "end": 308.0,
+      "label": "Main Theme",
+      "instruments": [
+        "主音合成器",
+        "贝斯",
+        "电子鼓"
+      ],
+      "mood": "热情奔放",
+      "confidence": 0.94
+    },
+    {
+      "start": 308.0,
+      "end": 330.0,
+      "label": "Breakdown",
+      "instruments": [
+        "合成器",
+        "弦乐"
+      ],
+      "mood": "宁静舒缓",
+      "confidence": 0.9
+    },
+    {
+      "start": 330.0,
+      "end": 360.0,
+      "label": "Climax",
+      "instruments": [
+        "主音合成器",
+        "贝斯",
+        "电子鼓"
+      ],
+      "mood": "激情澎湃",
+      "confidence": 0.96
+    },
+    {
+      "start": 360.0,
+      "end": 384.5,
+      "label": "Intro",
+      "instruments": [
+        "合成器",
+        "电子鼓"
+      ],
+      "mood": "宁静",
+      "confidence": 0.95
+    },
+    {
+      "start": 384.5,
+      "end": 408.0,
+      "label": "Build-up",
+      "instruments": [
+        "合成器",
+        "电子鼓",
+        "琶音"
+      ],
+      "mood": "期待",
+      "confidence": 0.92
+    },
+    {
+      "start": 408.0,
+      "end": 420.0,
+      "label": "Breakdown",
+      "instruments": [
+        "合成器",
+        "钢琴"
+      ],
+      "mood": "忧郁",
+      "confidence": 0.88
+    }
+  ]
+}

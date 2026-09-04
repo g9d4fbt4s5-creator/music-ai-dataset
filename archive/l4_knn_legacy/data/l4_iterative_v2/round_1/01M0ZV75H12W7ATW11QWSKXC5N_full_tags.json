@@ -1,0 +1,26 @@
+{
+  "audio_id": "01M0ZV75H12W7ATW11QWSKXC5N",
+  "fusion": {
+    "genre_source": "qwen_supplement",
+    "mood_source": "qwen_supplement",
+    "instrumentation_source": "qwen_supplement"
+  },
+  "propagated_from": null,
+  "propagation_similarity": null,
+  "propagation_cosine_dist": null,
+  "knn_vote_count": null,
+  "vocal_presence": "instrumental",
+  "genre": "bebop",
+  "subgenre": "",
+  "mood": [
+    "introspective",
+    "dreamy"
+  ],
+  "instrumentation": [
+    "trumpet",
+    "violin",
+    "flute"
+  ],
+  "caption": "A mid-tempo bebop instrumental featuring trumpet, violin, and flute, with an introspective and dreamy mood, suitable for elevator music.",
+  "segments": []
+}

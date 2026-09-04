@@ -1,0 +1,26 @@
+{
+  "audio_id": "A1AD6E948D2149EC940866F9D3",
+  "fusion": {
+    "genre_source": "unlabeled (voided_by_user_decision)",
+    "mood_source": "qwen_supplement",
+    "instrumentation_source": "qwen_supplement",
+    "caption_source": "qwen_supplement (not_propagated)"
+  },
+  "propagated_from": null,
+  "propagation_similarity": null,
+  "propagation_cosine_dist": null,
+  "vocal_presence": "instrumental",
+  "genre": "",
+  "subgenre": "",
+  "mood": [
+    "energetic",
+    "peaceful"
+  ],
+  "instrumentation": [
+    "bass",
+    "acoustic guitar",
+    "violin"
+  ],
+  "caption": "A fast-paced cool jazz instrumental piece featuring bass, acoustic guitar, and violin, with an energetic yet peaceful mood, suitable for studying.",
+  "segments": []
+}

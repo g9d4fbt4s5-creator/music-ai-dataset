@@ -1,0 +1,27 @@
+{
+  "audio_id": "01M0ZV75F15BY8CTHN77XWPNWN",
+  "fusion": {
+    "genre_source": "qwen_supplement (ace_excluded_from_knn)",
+    "mood_source": "qwen_supplement",
+    "instrumentation_source": "qwen_supplement"
+  },
+  "propagated_from": null,
+  "propagation_similarity": null,
+  "propagation_cosine_dist": null,
+  "knn_vote_count": null,
+  "vocal_presence": "instrumental",
+  "genre": "latin jazz",
+  "subgenre": "",
+  "mood": [
+    "energetic",
+    "peaceful",
+    "relaxed"
+  ],
+  "instrumentation": [
+    "trumpet",
+    "harp",
+    "clarinet"
+  ],
+  "caption": "A lively latin jazz instrumental piece featuring trumpet, harp, and clarinet, with an energetic yet relaxed mood suitable for a party.",
+  "segments": []
+}

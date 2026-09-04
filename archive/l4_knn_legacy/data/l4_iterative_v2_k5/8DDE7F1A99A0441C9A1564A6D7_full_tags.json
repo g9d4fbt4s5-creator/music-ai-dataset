@@ -1,0 +1,26 @@
+{
+  "audio_id": "8DDE7F1A99A0441C9A1564A6D7",
+  "fusion": {
+    "genre_source": "unlabeled (voided_by_user_decision)",
+    "mood_source": "qwen_supplement",
+    "instrumentation_source": "qwen_supplement"
+  },
+  "propagated_from": null,
+  "propagation_similarity": null,
+  "propagation_cosine_dist": null,
+  "knn_vote_count": null,
+  "vocal_presence": "instrumental",
+  "genre": "",
+  "subgenre": "",
+  "mood": [
+    "peaceful",
+    "tense"
+  ],
+  "instrumentation": [
+    "acoustic guitar",
+    "bass",
+    "harp"
+  ],
+  "caption": "A slow, peaceful cool jazz instrumental featuring acoustic guitar, bass, and harp, suitable for study or meditation.",
+  "segments": []
+}

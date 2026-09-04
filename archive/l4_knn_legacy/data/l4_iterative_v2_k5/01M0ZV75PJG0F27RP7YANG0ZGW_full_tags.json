@@ -1,0 +1,32 @@
+{
+  "audio_id": "01M0ZV75PJG0F27RP7YANG0ZGW",
+  "fusion": {
+    "genre_source": "qwen_supplement",
+    "mood_source": "qwen_supplement",
+    "instrumentation_source": "qwen_supplement"
+  },
+  "propagated_from": null,
+  "propagation_similarity": null,
+  "propagation_cosine_dist": null,
+  "knn_vote_count": null,
+  "key": "Db minor",
+  "vocal_presence": "instrumental",
+  "subgenre": "Latin Jazz / Salsa Jazz",
+  "genre": "Jazz",
+  "mood": [
+    "热情",
+    "奔放",
+    "活力"
+  ],
+  "instrumentation": [
+    "钢琴",
+    "贝斯",
+    "爵士鼓",
+    "长号",
+    "小号",
+    "中音萨克斯",
+    "原声吉他"
+  ],
+  "caption": "这是一首充满活力的拉丁爵士乐，以热情的钢琴和贝斯为基底，搭配激昂的铜管乐器与即兴的萨克斯独奏，营造出热烈奔放的派对氛围。",
+  "segments": []
+}

@@ -1,0 +1,27 @@
+{
+  "audio_id": "BEF3CF9662D841528BDB33BFAF",
+  "fusion": {
+    "genre_source": "knn(from DC92B30BB51D42488F02AA203F, dist=0.371)",
+    "mood_source": "qwen_supplement",
+    "instrumentation_source": "qwen_supplement",
+    "caption_source": "qwen_supplement (not_propagated)"
+  },
+  "propagated_from": "DC92B30BB51D42488F02AA203F",
+  "propagation_similarity": 0.6293,
+  "propagation_cosine_dist": 0.3707,
+  "vocal_presence": "instrumental",
+  "genre": "Trance",
+  "subgenre": "",
+  "mood": [
+    "energetic",
+    "romantic",
+    "peaceful"
+  ],
+  "instrumentation": [
+    "piano",
+    "trumpet",
+    "guitar"
+  ],
+  "caption": "A cool jazz instrumental piece with piano, trumpet, and guitar, featuring an energetic yet romantic and peaceful mood at a medium tempo, suitable for studying.",
+  "segments": []
+}

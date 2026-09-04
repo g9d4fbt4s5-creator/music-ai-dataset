@@ -1,0 +1,30 @@
+{
+  "audio_id": "78250AD45D2842A3AA18C9071D",
+  "fusion": {
+    "genre_source": "knn_vote(k=3,votes=2,from 6878BDAC7CD149C6A0AF,dist=0.484)",
+    "mood_source": "knn_vote(from 6878BDAC7CD149C6A0AF)",
+    "instrumentation_source": "knn_vote(from 6878BDAC7CD149C6A0AF)"
+  },
+  "propagated_from": "6878BDAC7CD149C6A0AFA5ADD5",
+  "propagation_similarity": null,
+  "propagation_cosine_dist": 0.4837,
+  "knn_vote_count": 2,
+  "duration_sec": 444.0,
+  "genre": "Cantopop",
+  "subgenre": "Pop Ballad",
+  "mood": [
+    "sentimental",
+    "melancholic",
+    "emotional"
+  ],
+  "instrumentation": [
+    "Piano",
+    "Double Bass",
+    "Drums",
+    "原声钢琴",
+    "电贝斯",
+    "爵士鼓"
+  ],
+  "caption": "这是一首充满活力的爵士钢琴三重奏，以欢快的旋律和即兴演奏为特色。",
+  "segments": []
+}

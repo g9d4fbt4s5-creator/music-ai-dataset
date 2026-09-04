@@ -1,0 +1,27 @@
+{
+  "audio_id": "364CBB655E7D4A90B83A060A39",
+  "fusion": {
+    "genre_source": "qwen_supplement",
+    "mood_source": "qwen_supplement",
+    "instrumentation_source": "qwen_supplement"
+  },
+  "propagated_from": null,
+  "propagation_similarity": null,
+  "propagation_cosine_dist": null,
+  "knn_vote_count": null,
+  "key": "F major",
+  "vocal_presence": "vocal",
+  "subgenre": "Ballad / Soundtrack",
+  "genre": "Pop",
+  "mood": [
+    "浪漫",
+    "希望",
+    "温柔"
+  ],
+  "instrumentation": [
+    "钢琴",
+    "人声"
+  ],
+  "caption": "这是一首由钢琴伴奏的男女对唱流行抒情曲，氛围浪漫且充满希望。",
+  "segments": []
+}

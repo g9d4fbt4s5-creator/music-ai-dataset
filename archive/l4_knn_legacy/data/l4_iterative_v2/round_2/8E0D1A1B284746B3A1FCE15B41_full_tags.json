@@ -1,0 +1,31 @@
+{
+  "audio_id": "8E0D1A1B284746B3A1FCE15B41",
+  "fusion": {
+    "genre_source": "qwen_omni_golden",
+    "mood_source": "qwen_supplement",
+    "instrumentation_source": "qwen_supplement"
+  },
+  "propagated_from": "golden_set",
+  "propagation_similarity": null,
+  "propagation_cosine_dist": null,
+  "knn_vote_count": null,
+  "key": "Eb minor",
+  "vocal_presence": "instrumental",
+  "subgenre": "Tech House",
+  "genre": "House",
+  "mood": [
+    "energetic",
+    "driving",
+    "hypnotic",
+    "euphoric"
+  ],
+  "instrumentation": [
+    "Drum machine",
+    "Synth bass",
+    "Synthesizer",
+    "Percussion",
+    "Vocal samples"
+  ],
+  "caption": "这是一首充满活力的电子舞曲，融合了浩室和科技浩室元素，以强劲的节拍和重复的合成器旋律营造出令人振奋的氛围。",
+  "segments": []
+}

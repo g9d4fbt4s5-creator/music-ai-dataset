@@ -1,0 +1,26 @@
+{
+  "audio_id": "01M0ZV75K7K5Y26V3WCRQ9QA8Z",
+  "fusion": {
+    "genre_source": "qwen_supplement (ace_excluded_from_knn)",
+    "mood_source": "qwen_supplement",
+    "instrumentation_source": "qwen_supplement"
+  },
+  "propagated_from": null,
+  "propagation_similarity": null,
+  "propagation_cosine_dist": null,
+  "knn_vote_count": null,
+  "key": "C major",
+  "vocal_presence": "vocal",
+  "subgenre": "Ballad",
+  "genre": "Pop",
+  "mood": [
+    "温柔",
+    "深情",
+    "浪漫"
+  ],
+  "instrumentation": [
+    "人声"
+  ],
+  "caption": "这是一首由女声演唱的流行抒情歌曲，氛围温柔深情。",
+  "segments": []
+}

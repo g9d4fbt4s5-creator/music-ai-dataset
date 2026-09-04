@@ -1,0 +1,27 @@
+{
+  "audio_id": "09E39F2B2CB84CEDAF02365CB2",
+  "fusion": {
+    "genre_source": "unlabeled (voided_by_user_decision)",
+    "mood_source": "qwen_supplement",
+    "instrumentation_source": "qwen_supplement",
+    "caption_source": "qwen_supplement (not_propagated)"
+  },
+  "propagated_from": null,
+  "propagation_similarity": null,
+  "propagation_cosine_dist": null,
+  "vocal_presence": "instrumental",
+  "genre": "",
+  "subgenre": "",
+  "mood": [
+    "romantic",
+    "energetic"
+  ],
+  "instrumentation": [
+    "trumpet",
+    "bass",
+    "harp",
+    "violin"
+  ],
+  "caption": "A romantic latin jazz piece with trumpet, bass, harp, and violin, at a medium tempo, suitable for studying.",
+  "segments": []
+}

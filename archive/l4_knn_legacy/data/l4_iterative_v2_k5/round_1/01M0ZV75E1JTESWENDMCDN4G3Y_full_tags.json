@@ -1,0 +1,31 @@
+{
+  "audio_id": "01M0ZV75E1JTESWENDMCDN4G3Y",
+  "fusion": {
+    "genre_source": "qwen_supplement",
+    "mood_source": "qwen_supplement",
+    "instrumentation_source": "qwen_supplement"
+  },
+  "propagated_from": null,
+  "propagation_similarity": null,
+  "propagation_cosine_dist": null,
+  "knn_vote_count": null,
+  "key": "G minor",
+  "vocal_presence": "instrumental",
+  "subgenre": "Hard Bop",
+  "genre": "Jazz",
+  "mood": [
+    "energetic",
+    "lively",
+    "improvisational",
+    "funky"
+  ],
+  "instrumentation": [
+    "Saxophone",
+    "Piano",
+    "Electric Organ",
+    "Bass",
+    "Drums"
+  ],
+  "caption": "这是一首充满活力的硬波普爵士乐，以萨克斯风、电钢琴和贝斯为主奏乐器，氛围热情奔放。",
+  "segments": []
+}

@@ -1,0 +1,26 @@
+{
+  "audio_id": "286F49DADB7640A39E52E4C55A",
+  "fusion": {
+    "genre_source": "unlabeled (voided_by_user_decision)",
+    "mood_source": "qwen_supplement",
+    "instrumentation_source": "qwen_supplement",
+    "caption_source": "qwen_supplement (not_propagated)"
+  },
+  "propagated_from": null,
+  "propagation_similarity": null,
+  "propagation_cosine_dist": null,
+  "vocal_presence": "instrumental",
+  "genre": "",
+  "subgenre": "",
+  "mood": [
+    "peaceful",
+    "dreamy"
+  ],
+  "instrumentation": [
+    "violin",
+    "harp",
+    "bass"
+  ],
+  "caption": "A peaceful folk instrumental piece featuring violin and harp, with a dreamy atmosphere and a moderate tempo, suitable for meditation.",
+  "segments": []
+}

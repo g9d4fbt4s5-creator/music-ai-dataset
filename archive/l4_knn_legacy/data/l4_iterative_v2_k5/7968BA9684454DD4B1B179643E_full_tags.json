@@ -1,0 +1,26 @@
+{
+  "audio_id": "7968BA9684454DD4B1B179643E",
+  "fusion": {
+    "genre_source": "unlabeled (voided_by_user_decision)",
+    "mood_source": "qwen_supplement",
+    "instrumentation_source": "qwen_supplement"
+  },
+  "propagated_from": null,
+  "propagation_similarity": null,
+  "propagation_cosine_dist": null,
+  "knn_vote_count": null,
+  "vocal_presence": "instrumental",
+  "genre": "",
+  "subgenre": "",
+  "mood": [
+    "energetic",
+    "romantic"
+  ],
+  "instrumentation": [
+    "flute",
+    "harp",
+    "bass"
+  ],
+  "caption": "An energetic latin jazz instrumental piece featuring flute, harp, and bass, with a romantic undertone and a danceable groove.",
+  "segments": []
+}

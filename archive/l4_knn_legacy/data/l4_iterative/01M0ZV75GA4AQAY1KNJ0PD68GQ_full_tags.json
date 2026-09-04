@@ -1,0 +1,77 @@
+{
+  "audio_id": "01M0ZV75GA4AQAY1KNJ0PD68GQ",
+  "fusion": {
+    "genre_source": "qwen_omni_golden",
+    "mood_source": "qwen_omni_golden",
+    "instrumentation_source": "qwen_supplement",
+    "caption_source": "qwen_omni_golden"
+  },
+  "propagated_from": "golden_set",
+  "propagation_similarity": null,
+  "propagation_cosine_dist": null,
+  "key": "C minor",
+  "vocal_presence": "instrumental",
+  "subgenre": "Downtempo / Electronic",
+  "genre": "Trip-Hop",
+  "mood": [
+    "慵懒",
+    "忧郁",
+    "迷幻"
+  ],
+  "instrumentation": [
+    "爵士鼓",
+    "贝斯",
+    "电钢琴",
+    "合成器",
+    "采样人声"
+  ],
+  "caption": "这是一首带有爵士元素的Trip-Hop电子乐，以慵懒的节拍和迷幻的合成器音色营造出一种都市夜晚的忧郁氛围。",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 8.5,
+      "label": "Intro",
+      "instruments": [
+        "合成器低音",
+        "采样人声"
+      ],
+      "mood": "神秘",
+      "confidence": 0.9
+    },
+    {
+      "start": 8.5,
+      "end": 120.0,
+      "label": "Main Groove",
+      "instruments": [
+        "爵士鼓",
+        "贝斯",
+        "电钢琴",
+        "合成器"
+      ],
+      "mood": "慵懒",
+      "confidence": 0.95
+    },
+    {
+      "start": 120.0,
+      "end": 240.0,
+      "label": "Breakdown",
+      "instruments": [
+        "合成器",
+        "采样人声"
+      ],
+      "mood": "迷幻",
+      "confidence": 0.85
+    },
+    {
+      "start": 240.0,
+      "end": 258.0,
+      "label": "Outro",
+      "instruments": [
+        "合成器",
+        "鼓"
+      ],
+      "mood": "平静",
+      "confidence": 0.9
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "audio_id": "4AD0681C6347477D8B1E849422",
+  "fusion": {
+    "genre_source": "unlabeled (voided_by_user_decision)",
+    "mood_source": "qwen_supplement",
+    "instrumentation_source": "qwen_supplement",
+    "caption_source": "qwen_supplement (not_propagated)"
+  },
+  "propagated_from": null,
+  "propagation_similarity": null,
+  "propagation_cosine_dist": null,
+  "vocal_presence": "instrumental",
+  "genre": "",
+  "subgenre": "",
+  "mood": [
+    "energetic",
+    "excited"
+  ],
+  "instrumentation": [
+    "trumpet",
+    "flute",
+    "violin"
+  ],
+  "caption": "An energetic latin jazz instrumental piece featuring trumpet, flute, and violin, with a danceable groove at a medium-fast tempo.",
+  "segments": []
+}

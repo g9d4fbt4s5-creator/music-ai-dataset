@@ -1,0 +1,17 @@
+{
+  "audio_id": "9B845A8E8A744BCAA50705D73D",
+  "genre": "Pop Rap",
+  "sub_genres": [
+    "Hip Hop",
+    "Pop"
+  ],
+  "source": "text_llm_search",
+  "source_priority": "P0",
+  "confidence": 0.8,
+  "title": "The Girl Is Mine",
+  "artist": "Jake Miller ft. Jabbar Hakeem",
+  "reference": "Discogs",
+  "knn_propagated": false,
+  "l4_version": "unified_v1_text_llm_plus_qwen",
+  "deprecated_knn_note": "KNN传播已从L4移除，一致率0%，详见archive/l4_knn_legacy/DEPRECATED.md"
+}

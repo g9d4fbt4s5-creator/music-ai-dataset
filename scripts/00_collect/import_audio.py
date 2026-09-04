@@ -34,6 +34,8 @@ from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
+import pandas as pd
+
 # ===================== 路径配置 =====================
 PROJECT_ROOT = Path(__file__).parent.parent.parent
 
@@ -219,11 +221,16 @@ def calculate_sha256(file_path: Path) -> str:
     return sha256_hash.hexdigest()
 
 
-def import_single_audio(file_path: Path, dry_run: bool = False) -> Dict:
+def import_single_audio(file_path: Path, dry_run: bool = False, old_metadata: Optional[Dict] = None) -> Dict:
     """
     导入单个音频文件
 
-    返回：
+    Args:
+        file_path: 源音频文件路径
+        dry_run: 预览模式，不实际复制文件
+        old_metadata: 旧manifest中的元数据（用于继承sample_type等字段），可选
+
+    Returns:
         包含导入结果的字典
     """
     result = {
@@ -235,7 +242,21 @@ def import_single_audio(file_path: Path, dry_run: bool = False) -> Dict:
         "status": "pending",
         "reason": "",
         "low_quality_tags": [],
+        "sample_type": "normal",  # ADR-003: 默认sample_type，后续可手动改为golden_seed/challenge_stress_test
+        "in_train_training": True,  # ADR-004: 默认参与训练，黄金集/challenge_set需手动改为False
+        "metadata_inherited": False,  # 是否从旧manifest继承了元数据
     }
+
+    # ADR-003: 从旧manifest继承元数据（sample_type、in_train_training等）
+    if old_metadata:
+        inherited_fields = []
+        for key in ["sample_type", "in_train_training", "source_type", "artist_id", "genre_major", "genre_minor"]:
+            if key in old_metadata and old_metadata[key] is not None and not (isinstance(old_metadata[key], float) and pd.isna(old_metadata[key])):
+                result[key] = old_metadata[key]
+                inherited_fields.append(key)
+        if inherited_fields:
+            result["metadata_inherited"] = True
+            logger.debug(f"  从旧manifest继承字段: {', '.join(inherited_fields)}")
 
     # 1. 格式校验
     is_valid, reason, low_quality_tags = validate_audio_format(file_path)
@@ -317,6 +338,8 @@ def main():
     parser = argparse.ArgumentParser(description="音频采集入库：格式校验 + ULID生成 + 散列迁移")
     parser.add_argument("--src", required=True, help="源音频目录路径")
     parser.add_argument("--dry-run", action="store_true", help="预览模式，不实际复制文件")
+    parser.add_argument("--old-manifest", type=str, default=None,
+                        help="旧manifest路径（CSV），用于重新入库时继承sample_type/in_train_training等元数据。按sha256匹配。")
     args = parser.parse_args()
 
     source_dir = Path(args.src)
@@ -327,6 +350,26 @@ def main():
     logger.info(f"源目录: {source_dir}")
     logger.info(f"目标目录: {RAW_AUDIO_DIR}")
     logger.info(f"模式: {'预览(不复制)' if args.dry_run else '正式入库'}")
+
+    # ADR-003: 加载旧manifest，建立sha256→元数据映射（用于重新入库时继承）
+    old_manifest_map = {}
+    if args.old_manifest:
+        old_manifest_path = Path(args.old_manifest)
+        if old_manifest_path.exists():
+            old_df = pd.read_csv(old_manifest_path)
+            logger.info(f"加载旧manifest: {old_manifest_path} ({len(old_df)} 条记录)")
+            # 按sha256建立映射（优先），其次按original_filename
+            for _, row in old_df.iterrows():
+                sha256 = row.get("sha256") or row.get("audio_checksum")
+                if sha256 and not (isinstance(sha256, float) and pd.isna(sha256)):
+                    old_manifest_map[str(sha256)] = row.to_dict()
+                # 同时按original_filename建立映射（备用）
+                orig_name = row.get("original_filename")
+                if orig_name and not (isinstance(orig_name, float) and pd.isna(orig_name)):
+                    old_manifest_map[f"filename:{orig_name}"] = row.to_dict()
+            logger.info(f"旧manifest映射建立完成: {len(old_manifest_map)} 个条目")
+        else:
+            logger.warning(f"旧manifest不存在: {old_manifest_path}，跳过元数据继承")
 
     # 检查源目录
     if not source_dir.exists():
@@ -352,7 +395,17 @@ def main():
     for idx, file_path in enumerate(source_files):
         logger.info(f"[{idx + 1}/{len(source_files)}] 处理: {file_path.name}")
 
-        result = import_single_audio(file_path, dry_run=args.dry_run)
+        # ADR-003: 从旧manifest查找元数据（按sha256，其次按filename）
+        old_metadata = None
+        if old_manifest_map:
+            # 先计算当前文件的sha256（如果还没算）
+            file_sha256 = calculate_sha256(file_path)
+            if file_sha256 in old_manifest_map:
+                old_metadata = old_manifest_map[file_sha256]
+            elif f"filename:{file_path.name}" in old_manifest_map:
+                old_metadata = old_manifest_map[f"filename:{file_path.name}"]
+
+        result = import_single_audio(file_path, dry_run=args.dry_run, old_metadata=old_metadata)
 
         if result["status"] == "imported":
             imported.append(result)

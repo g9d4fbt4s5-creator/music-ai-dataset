@@ -1,0 +1,28 @@
+{
+  "audio_id": "49BED5E277AF40909EC0BD756D",
+  "fusion": {
+    "genre_source": "qwen_supplement",
+    "mood_source": "qwen_supplement",
+    "instrumentation_source": "qwen_supplement"
+  },
+  "propagated_from": null,
+  "propagation_similarity": null,
+  "propagation_cosine_dist": null,
+  "knn_vote_count": null,
+  "vocal_presence": "instrumental",
+  "genre": "electronic pop",
+  "subgenre": "",
+  "mood": [
+    "energetic",
+    "romantic",
+    "dreamy"
+  ],
+  "instrumentation": [
+    "piano",
+    "violin",
+    "trumpet",
+    "acoustic guitar"
+  ],
+  "caption": "An energetic electronic pop instrumental with piano, violin, trumpet, and acoustic guitar, evoking a romantic and dreamy mood at a medium tempo.",
+  "segments": []
+}

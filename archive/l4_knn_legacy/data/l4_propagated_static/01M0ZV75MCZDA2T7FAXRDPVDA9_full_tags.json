@@ -1,0 +1,29 @@
+{
+  "audio_id": "01M0ZV75MCZDA2T7FAXRDPVDA9",
+  "fusion": {
+    "genre_source": "qwen_supplement",
+    "mood_source": "qwen_supplement",
+    "instrumentation_source": "qwen_supplement",
+    "caption_source": "qwen_supplement (not_propagated)"
+  },
+  "propagated_from": null,
+  "propagation_similarity": null,
+  "propagation_cosine_dist": null,
+  "key": "A minor",
+  "vocal_presence": "instrumental",
+  "subgenre": "Fusion",
+  "genre": "Jazz",
+  "mood": [
+    "energetic",
+    "groovy",
+    "improvisational"
+  ],
+  "instrumentation": [
+    "Saxophone",
+    "Electric Piano",
+    "Bass",
+    "Drums"
+  ],
+  "caption": "这是一首充满活力的融合爵士乐，以萨克斯风、电钢琴、贝斯和鼓为主要乐器，营造出热情奔放的氛围。",
+  "segments": []
+}

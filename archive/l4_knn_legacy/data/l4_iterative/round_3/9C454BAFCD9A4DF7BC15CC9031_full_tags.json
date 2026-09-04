@@ -1,0 +1,162 @@
+{
+  "audio_id": "9C454BAFCD9A4DF7BC15CC9031",
+  "fusion": {
+    "genre_source": "qwen_omni_golden",
+    "mood_source": "qwen_omni_golden",
+    "instrumentation_source": "qwen_supplement",
+    "caption_source": "qwen_omni_golden"
+  },
+  "propagated_from": "golden_set",
+  "propagation_similarity": null,
+  "propagation_cosine_dist": null,
+  "key": "C minor",
+  "vocal_presence": "vocal",
+  "subgenre": "Pop R&B",
+  "genre": "R&B",
+  "mood": [
+    "浪漫",
+    "热情",
+    "梦幻",
+    "愉悦"
+  ],
+  "instrumentation": [
+    "人声",
+    "合成器",
+    "电子鼓",
+    "贝斯",
+    "弦乐"
+  ],
+  "caption": "这是一首充满浪漫氛围的流行R&B歌曲，以合成器和电子鼓为主要伴奏，营造出如巴黎雨中般梦幻而深情的整体氛围。",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 11.5,
+      "label": "Intro",
+      "instruments": [
+        "合成器",
+        "环境音效"
+      ],
+      "mood": "梦幻",
+      "confidence": 0.92
+    },
+    {
+      "start": 11.5,
+      "end": 36.5,
+      "label": "Verse 1",
+      "instruments": [
+        "人声",
+        "合成器",
+        "电子鼓"
+      ],
+      "mood": "浪漫",
+      "confidence": 0.95
+    },
+    {
+      "start": 36.5,
+      "end": 47.0,
+      "label": "Pre-Chorus",
+      "instruments": [
+        "人声",
+        "合成器",
+        "贝斯"
+      ],
+      "mood": "期待",
+      "confidence": 0.9
+    },
+    {
+      "start": 47.0,
+      "end": 68.5,
+      "label": "Chorus",
+      "instruments": [
+        "人声",
+        "合成器",
+        "电子鼓",
+        "贝斯"
+      ],
+      "mood": "热情奔放",
+      "confidence": 0.96
+    },
+    {
+      "start": 68.5,
+      "end": 79.0,
+      "label": "Post-Chorus",
+      "instruments": [
+        "人声",
+        "合成器"
+      ],
+      "mood": "愉悦",
+      "confidence": 0.88
+    },
+    {
+      "start": 79.0,
+      "end": 101.0,
+      "label": "Verse 2",
+      "instruments": [
+        "人声",
+        "合成器",
+        "电子鼓"
+      ],
+      "mood": "深情",
+      "confidence": 0.93
+    },
+    {
+      "start": 101.0,
+      "end": 122.5,
+      "label": "Chorus",
+      "instruments": [
+        "人声",
+        "合成器",
+        "电子鼓",
+        "贝斯"
+      ],
+      "mood": "热情奔放",
+      "confidence": 0.97
+    },
+    {
+      "start": 122.5,
+      "end": 134.0,
+      "label": "Post-Chorus",
+      "instruments": [
+        "人声",
+        "合成器"
+      ],
+      "mood": "愉悦",
+      "confidence": 0.89
+    },
+    {
+      "start": 134.0,
+      "end": 157.0,
+      "label": "Bridge",
+      "instruments": [
+        "人声",
+        "合成器",
+        "弦乐"
+      ],
+      "mood": "感性",
+      "confidence": 0.91
+    },
+    {
+      "start": 157.0,
+      "end": 178.0,
+      "label": "Bridge (Reprise)",
+      "instruments": [
+        "人声",
+        "合成器",
+        "弦乐"
+      ],
+      "mood": "感性",
+      "confidence": 0.9
+    },
+    {
+      "start": 178.0,
+      "end": 203.0,
+      "label": "Outro",
+      "instruments": [
+        "人声",
+        "合成器"
+      ],
+      "mood": "宁静",
+      "confidence": 0.94
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "audio_id": "146D04DCF3BB4D56B68F9DD25C",
+  "fusion": {
+    "genre_source": "qwen_omni_golden",
+    "mood_source": "qwen_omni_golden",
+    "instrumentation_source": "qwen_supplement",
+    "caption_source": "qwen_omni_golden"
+  },
+  "propagated_from": "golden_set",
+  "propagation_similarity": null,
+  "propagation_cosine_dist": null,
+  "vocal_presence": "instrumental",
+  "genre": "cool jazz",
+  "subgenre": "",
+  "mood": [
+    "peaceful",
+    "romantic"
+  ],
+  "instrumentation": [
+    "acoustic guitar",
+    "bass"
+  ],
+  "caption": "A cool jazz instrumental piece with acoustic guitar and bass, peaceful and romantic, at a medium tempo, suitable for elevator music.",
+  "segments": []
+}

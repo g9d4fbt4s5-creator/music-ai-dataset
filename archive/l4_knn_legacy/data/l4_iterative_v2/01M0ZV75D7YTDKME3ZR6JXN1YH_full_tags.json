@@ -1,0 +1,26 @@
+{
+  "audio_id": "01M0ZV75D7YTDKME3ZR6JXN1YH",
+  "fusion": {
+    "genre_source": "qwen_supplement (ace_excluded_from_knn)",
+    "mood_source": "qwen_supplement",
+    "instrumentation_source": "qwen_supplement"
+  },
+  "propagated_from": null,
+  "propagation_similarity": null,
+  "propagation_cosine_dist": null,
+  "knn_vote_count": null,
+  "vocal_presence": "instrumental",
+  "genre": "bebop",
+  "subgenre": "",
+  "mood": [
+    "energetic",
+    "excited"
+  ],
+  "instrumentation": [
+    "trumpet",
+    "bass",
+    "trombone"
+  ],
+  "caption": "A fast-paced bebop instrumental featuring trumpet, bass, and trombone, with an energetic and excited mood, suitable for a party atmosphere.",
+  "segments": []
+}

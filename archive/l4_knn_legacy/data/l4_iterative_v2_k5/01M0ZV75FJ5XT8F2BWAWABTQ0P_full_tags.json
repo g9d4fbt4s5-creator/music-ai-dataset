@@ -1,0 +1,28 @@
+{
+  "audio_id": "01M0ZV75FJ5XT8F2BWAWABTQ0P",
+  "fusion": {
+    "genre_source": "qwen_supplement",
+    "mood_source": "qwen_supplement",
+    "instrumentation_source": "qwen_supplement"
+  },
+  "propagated_from": null,
+  "propagation_similarity": null,
+  "propagation_cosine_dist": null,
+  "knn_vote_count": null,
+  "vocal_presence": "instrumental",
+  "genre": "latin jazz",
+  "subgenre": "",
+  "mood": [
+    "introspective",
+    "romantic"
+  ],
+  "instrumentation": [
+    "saxophone",
+    "trumpet",
+    "bass",
+    "clarinet",
+    "violin"
+  ],
+  "caption": "A slow, introspective latin jazz piece featuring saxophone and trumpet, with a romantic and meditative atmosphere.",
+  "segments": []
+}

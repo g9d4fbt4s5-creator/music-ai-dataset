@@ -1,0 +1,98 @@
+{
+  "audio_id": "924CF2535CAB4C48A485EF4845",
+  "fusion": {
+    "genre_source": "qwen_omni_golden",
+    "mood_source": "qwen_omni_golden",
+    "instrumentation_source": "qwen_supplement"
+  },
+  "propagated_from": "golden_set",
+  "propagation_similarity": null,
+  "propagation_cosine_dist": null,
+  "knn_vote_count": null,
+  "key": "C major",
+  "vocal_presence": "instrumental",
+  "subgenre": "Instrumental Rock",
+  "genre": "Post-Rock",
+  "mood": [
+    "沉思",
+    "激情",
+    "宏大"
+  ],
+  "instrumentation": [
+    "Drum machine",
+    "Synthesizer",
+    "Bass synthesizer",
+    "Piano"
+  ],
+  "caption": "这是一首充满情感张力的后摇滚器乐曲，以电吉他、贝斯和爵士鼓为主，情绪从平静的沉思逐渐推向宏大的高潮。",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 12.5,
+      "label": "前奏",
+      "instruments": [
+        "爵士鼓"
+      ],
+      "mood": "平静",
+      "confidence": 0.95
+    },
+    {
+      "start": 12.5,
+      "end": 35.0,
+      "label": "主歌",
+      "instruments": [
+        "电吉他",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "沉思",
+      "confidence": 0.9
+    },
+    {
+      "start": 35.0,
+      "end": 57.5,
+      "label": "副歌",
+      "instruments": [
+        "电吉他",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "热情奔放",
+      "confidence": 0.92
+    },
+    {
+      "start": 57.5,
+      "end": 140.0,
+      "label": "桥段",
+      "instruments": [
+        "电吉他",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "激昂",
+      "confidence": 0.88
+    },
+    {
+      "start": 140.0,
+      "end": 245.0,
+      "label": "高潮",
+      "instruments": [
+        "电吉他",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "宏大",
+      "confidence": 0.95
+    },
+    {
+      "start": 245.0,
+      "end": 265.0,
+      "label": "尾声",
+      "instruments": [
+        "电吉他"
+      ],
+      "mood": "宁静",
+      "confidence": 0.9
+    }
+  ]
+}

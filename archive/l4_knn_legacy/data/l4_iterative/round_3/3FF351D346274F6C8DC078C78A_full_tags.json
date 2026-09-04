@@ -1,0 +1,27 @@
+{
+  "audio_id": "3FF351D346274F6C8DC078C78A",
+  "fusion": {
+    "genre_source": "knn(from D2098BC896D6450A8E3744528E, dist=0.381)",
+    "mood_source": "qwen_supplement",
+    "instrumentation_source": "qwen_supplement",
+    "caption_source": "qwen_supplement (not_propagated)"
+  },
+  "propagated_from": "D2098BC896D6450A8E3744528E",
+  "propagation_similarity": 0.6185,
+  "propagation_cosine_dist": 0.3815,
+  "vocal_presence": "instrumental",
+  "genre": "latin jazz",
+  "subgenre": "",
+  "mood": [
+    "energetic",
+    "dreamy"
+  ],
+  "instrumentation": [
+    "piano",
+    "violin",
+    "flute",
+    "harp"
+  ],
+  "caption": "A medium-tempo latin jazz piece with piano, violin, flute, and harp, creating an energetic yet dreamy atmosphere, suitable for elevator music.",
+  "segments": []
+}

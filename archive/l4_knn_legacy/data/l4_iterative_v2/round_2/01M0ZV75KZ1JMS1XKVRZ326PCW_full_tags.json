@@ -1,0 +1,26 @@
+{
+  "audio_id": "01M0ZV75KZ1JMS1XKVRZ326PCW",
+  "fusion": {
+    "genre_source": "qwen_supplement",
+    "mood_source": "qwen_supplement",
+    "instrumentation_source": "qwen_supplement"
+  },
+  "propagated_from": null,
+  "propagation_similarity": null,
+  "propagation_cosine_dist": null,
+  "knn_vote_count": null,
+  "vocal_presence": "instrumental",
+  "genre": "electronic",
+  "subgenre": "",
+  "mood": [
+    "energetic",
+    "tense"
+  ],
+  "instrumentation": [
+    "piano",
+    "trumpet",
+    "violin"
+  ],
+  "caption": "An energetic electronic instrumental piece with piano, trumpet, and violin, suitable for dancing.",
+  "segments": []
+}

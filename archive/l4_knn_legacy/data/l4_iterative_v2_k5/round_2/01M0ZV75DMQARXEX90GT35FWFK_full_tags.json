@@ -1,0 +1,32 @@
+{
+  "audio_id": "01M0ZV75DMQARXEX90GT35FWFK",
+  "fusion": {
+    "genre_source": "knn_vote(k=3,votes=2,from AA089CC166EF4DE8AA78,dist=0.517)",
+    "mood_source": "knn_vote(from AA089CC166EF4DE8AA78)",
+    "instrumentation_source": "knn_vote(from AA089CC166EF4DE8AA78)"
+  },
+  "propagated_from": "AA089CC166EF4DE8AA78014AD9",
+  "propagation_similarity": null,
+  "propagation_cosine_dist": 0.5166,
+  "knn_vote_count": 2,
+  "key": "F minor",
+  "vocal_presence": "instrumental",
+  "subgenre": "Instrumental Rock",
+  "genre": "Post-Rock",
+  "mood": [
+    "沉思",
+    "激情",
+    "宏大"
+  ],
+  "instrumentation": [
+    "Tenor Saxophone",
+    "Piano",
+    "Upright Bass",
+    "Drums",
+    "Congas",
+    "Timbales",
+    "Cowbell"
+  ],
+  "caption": "这是一首充满活力的拉丁爵士乐，以萨克斯风为主奏乐器，融合了复杂的非洲古巴打击乐节奏和摇摆的贝斯线条，营造出热情奔放且极具律动感的氛围。",
+  "segments": []
+}

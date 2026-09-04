@@ -34,12 +34,34 @@ logger = logging.getLogger(__name__)
 MODEL_NAME = "m-a-p/MERT-v1-95M"
 SAMPLE_RATE = 24000
 
+# 本地模型自动检测路径（GPU和本地）
+LOCAL_MODEL_PATHS = [
+    "/root/autodl-tmp/models/MERT-v1-95M",
+    "./models/MERT-v1-95M",
+]
 
-def load_mert_model(device: str = "cuda"):
+
+def auto_detect_model_path():
+    """自动检测本地MERT模型，存在则返回路径，否则返回None（用huggingface）"""
+    for p in LOCAL_MODEL_PATHS:
+        if Path(p).exists() and (Path(p) / "config.json").exists():
+            return str(p)
+    return None
+
+
+def load_mert_model(device: str = "cuda", model_path: str = None):
     from transformers import AutoModel, AutoFeatureExtractor
-    logger.info(f"加载 MERT 模型: {MODEL_NAME}")
-    feature_extractor = AutoFeatureExtractor.from_pretrained(MODEL_NAME)
-    model = AutoModel.from_pretrained(MODEL_NAME, trust_remote_code=True)
+    # 优先用指定路径，其次自动检测本地，最后用huggingface
+    if model_path is None:
+        model_path = auto_detect_model_path()
+    if model_path:
+        logger.info(f"加载本地 MERT 模型: {model_path}")
+        feature_extractor = AutoFeatureExtractor.from_pretrained(model_path)
+        model = AutoModel.from_pretrained(model_path, trust_remote_code=True)
+    else:
+        logger.info(f"加载 MERT 模型 (huggingface): {MODEL_NAME}")
+        feature_extractor = AutoFeatureExtractor.from_pretrained(MODEL_NAME)
+        model = AutoModel.from_pretrained(MODEL_NAME, trust_remote_code=True)
     model = model.to(device)
     model.eval()
     logger.info(f"✅ MERT 模型加载完成，设备: {device}")
@@ -78,6 +100,7 @@ def main():
     parser.add_argument("--device", type=str, default="cuda", help="运行设备")
     parser.add_argument("--chunk-sec", type=int, default=30, help="分块时长")
     parser.add_argument("--limit", type=int, default=None, help="限制处理数量")
+    parser.add_argument("--model-path", type=str, default=None, help="本地模型路径（不指定则自动检测）")
     args = parser.parse_args()
 
     # 自动创建日志目录（防止 nohup 重定向失败导致进程立即退出）
@@ -105,7 +128,7 @@ def main():
         logger.error("支持的格式: .mp3 .wav .flac .ogg .m4a（递归查找子目录）")
         return
 
-    model, feature_extractor = load_mert_model(args.device)
+    model, feature_extractor = load_mert_model(args.device, args.model_path)
 
     results = []
     for idx, audio_path in enumerate(audio_files):

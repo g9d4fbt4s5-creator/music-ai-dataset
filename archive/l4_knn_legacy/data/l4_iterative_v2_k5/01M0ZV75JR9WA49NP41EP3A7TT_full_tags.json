@@ -1,0 +1,28 @@
+{
+  "audio_id": "01M0ZV75JR9WA49NP41EP3A7TT",
+  "fusion": {
+    "genre_source": "qwen_omni_golden",
+    "mood_source": "qwen_supplement",
+    "instrumentation_source": "qwen_supplement"
+  },
+  "propagated_from": "golden_set",
+  "propagation_similarity": null,
+  "propagation_cosine_dist": null,
+  "knn_vote_count": null,
+  "key": "E minor",
+  "vocal_presence": "instrumental",
+  "subgenre": "Downtempo / Electronic",
+  "genre": "Trip-Hop",
+  "mood": [
+    "忧郁",
+    "紧张",
+    "悬疑"
+  ],
+  "instrumentation": [
+    "合成器",
+    "贝斯",
+    "电鼓"
+  ],
+  "caption": "这是一首带有忧郁和悬疑氛围的Trip-Hop电子乐，以合成器和电鼓为主要乐器。",
+  "segments": []
+}

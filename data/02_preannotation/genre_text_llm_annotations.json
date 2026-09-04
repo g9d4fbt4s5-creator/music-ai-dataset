@@ -1,0 +1,640 @@
+{
+  "8DDE7F1A99A0441C9A1564A6D": {
+    "title": "Yesterday Once More",
+    "artist": "Carpenters",
+    "primary_genre": "Soft Rock",
+    "sub_genres": [
+      "Adult Contemporary",
+      "Pop"
+    ],
+    "source": "Wikipedia/Discogs",
+    "confidence": 0.95
+  },
+  "3C6F3F3C4839423DB83F7A55C": {
+    "title": "(They Long To Be) Close To You",
+    "artist": "Carpenters",
+    "primary_genre": "Soft Rock",
+    "sub_genres": [
+      "Adult Contemporary",
+      "Pop"
+    ],
+    "source": "Wikipedia/Discogs",
+    "confidence": 0.95
+  },
+  "A7E56197254D451CB98808C9B": {
+    "title": "I Just Fall In Love Again",
+    "artist": "Carpenters/Anne Murray",
+    "primary_genre": "Adult Contemporary",
+    "sub_genres": [
+      "Soft Rock",
+      "Pop"
+    ],
+    "source": "Discogs",
+    "confidence": 0.85
+  },
+  "C2AEFEEB56B0454F9AE069B89": {
+    "title": "必杀技",
+    "artist": "古巨基",
+    "primary_genre": "Cantopop",
+    "sub_genres": [
+      "Pop Ballad"
+    ],
+    "source": "HK音乐百科",
+    "confidence": 0.95
+  },
+  "1C8E3363E3FF4BFBA5189ABCB": {
+    "title": "喜帖街",
+    "artist": "谢安琪",
+    "primary_genre": "Cantopop",
+    "sub_genres": [
+      "Pop Ballad"
+    ],
+    "source": "Wikipedia",
+    "confidence": 0.95
+  },
+  "6878BDAC7CD149C6A0AFA5ADD": {
+    "title": "七友",
+    "artist": "梁汉文",
+    "primary_genre": "Cantopop",
+    "sub_genres": [
+      "Pop Ballad"
+    ],
+    "source": "HK音乐百科",
+    "confidence": 0.95
+  },
+  "2446DC352B064D65AD61142249": {
+    "title": "心淡",
+    "artist": "容祖儿",
+    "primary_genre": "Cantopop",
+    "sub_genres": [
+      "Pop Ballad"
+    ],
+    "source": "Wikipedia",
+    "confidence": 0.95
+  },
+  "0CF65600F4474C71B19A9926EC": {
+    "title": "相依为命",
+    "artist": "陈小春",
+    "primary_genre": "Cantopop",
+    "sub_genres": [
+      "Pop"
+    ],
+    "source": "HK音乐百科",
+    "confidence": 0.95
+  },
+  "594E0C4719E34D6A98B438C503": {
+    "title": "下一站天后",
+    "artist": "Twins",
+    "primary_genre": "Cantopop",
+    "sub_genres": [
+      "Pop"
+    ],
+    "source": "Wikipedia",
+    "confidence": 0.95
+  },
+  "09E39F2B2CB84CEDAF02365CB2": {
+    "title": "富士山下",
+    "artist": "陈奕迅",
+    "primary_genre": "Cantopop",
+    "sub_genres": [
+      "Pop Ballad"
+    ],
+    "source": "Wikipedia",
+    "confidence": 0.95
+  },
+  "3E6F4E0EC2024CCD9FE718F84": {
+    "title": "孤雏",
+    "artist": "AGA",
+    "primary_genre": "Cantopop",
+    "sub_genres": [
+      "Pop Ballad",
+      "R&B"
+    ],
+    "source": "HK音乐百科",
+    "confidence": 0.9
+  },
+  "7968BA9684454DD4B1B179643E": {
+    "title": "爱与诚",
+    "artist": "古巨基",
+    "primary_genre": "Cantopop",
+    "sub_genres": [
+      "Pop Ballad"
+    ],
+    "source": "HK音乐百科",
+    "confidence": 0.95
+  },
+  "3C6219AB60A24F5B8F101AF353": {
+    "title": "喜欢你",
+    "artist": "G.E.M邓紫棋",
+    "primary_genre": "Cantopop",
+    "sub_genres": [
+      "Pop Ballad"
+    ],
+    "source": "Wikipedia",
+    "confidence": 0.95
+  },
+  "CDF8316BBDD2488A877E675E8F": {
+    "title": "因为你 所以我",
+    "artist": "五月天",
+    "primary_genre": "Mandopop",
+    "sub_genres": [
+      "Pop Rock",
+      "Taiwanese Pop"
+    ],
+    "source": "Wikipedia",
+    "confidence": 0.95
+  },
+  "87A69E31F3DC48429BEB755F06": {
+    "title": "Call You Tonight",
+    "artist": "Whitney Houston",
+    "primary_genre": "R&B",
+    "sub_genres": [
+      "Contemporary R&B",
+      "Pop"
+    ],
+    "source": "Discogs/AllMusic",
+    "confidence": 0.95
+  },
+  "4AD0681C6347477D8B1E849422": {
+    "title": "Leave the Door Open",
+    "artist": "Silk Sonic (Bruno Mars & Anderson .Paak)",
+    "primary_genre": "R&B",
+    "sub_genres": [
+      "Soul",
+      "Philly Soul"
+    ],
+    "source": "Wikipedia",
+    "confidence": 0.95
+  },
+  "A1AD6E948D2149EC940866F9D3": {
+    "title": "Dilemma",
+    "artist": "Nelly ft. Kelly Rowland",
+    "primary_genre": "Hip Hop",
+    "sub_genres": [
+      "R&B",
+      "Pop Rap"
+    ],
+    "source": "Wikipedia",
+    "confidence": 0.95
+  },
+  "3CC7E3DF77334AE0B1B2BC3795": {
+    "title": "Snooze",
+    "artist": "SZA",
+    "primary_genre": "R&B",
+    "sub_genres": [
+      "Alternative R&B",
+      "Neo-Soul"
+    ],
+    "source": "Wikipedia",
+    "confidence": 0.95
+  },
+  "9C454BAFCD9A4DF7BC15CC9031": {
+    "title": "Paris in the Rain",
+    "artist": "Lauv",
+    "primary_genre": "Pop",
+    "sub_genres": [
+      "Electropop",
+      "R&B"
+    ],
+    "source": "Discogs",
+    "confidence": 0.85
+  },
+  "9B845A8E8A744BCAA50705D73D": {
+    "title": "The Girl Is Mine",
+    "artist": "Jake Miller ft. Jabbar Hakeem",
+    "primary_genre": "Pop Rap",
+    "sub_genres": [
+      "Hip Hop",
+      "Pop"
+    ],
+    "source": "Discogs",
+    "confidence": 0.8
+  },
+  "448A140A77354AAC9458496B10": {
+    "title": "We Belong Together",
+    "artist": "Mariah Carey",
+    "primary_genre": "R&B",
+    "sub_genres": [
+      "Pop R&B",
+      "Adult Contemporary"
+    ],
+    "source": "Wikipedia",
+    "confidence": 0.95
+  },
+  "F7E5F56ECCCC479589A26A2A10": {
+    "title": "EX",
+    "artist": "Kiana Ledé",
+    "primary_genre": "R&B",
+    "sub_genres": [
+      "Contemporary R&B"
+    ],
+    "source": "Discogs/Genius",
+    "confidence": 0.9
+  },
+  "E6A98A1C67AC4D9FA1E7437524": {
+    "title": "What You Won't Do For Love",
+    "artist": "Bobby Caldwell",
+    "primary_genre": "Soul",
+    "sub_genres": [
+      "Blue-Eyed Soul",
+      "Smooth Jazz",
+      "R&B"
+    ],
+    "source": "Wikipedia/AllMusic",
+    "confidence": 0.95
+  },
+  "33EA926BB2D64917AF8A166779": {
+    "title": "Wave",
+    "artist": "Antonio Carlos Jobim",
+    "primary_genre": "Bossa Nova",
+    "sub_genres": [
+      "Latin Jazz",
+      "MPB"
+    ],
+    "source": "Wikipedia",
+    "confidence": 0.98
+  },
+  "A0F9B5560A194DE5A25A22BD62": {
+    "title": "The Red Blouse",
+    "artist": "Antonio Carlos Jobim",
+    "primary_genre": "Bossa Nova",
+    "sub_genres": [
+      "Latin Jazz",
+      "MPB"
+    ],
+    "source": "Discogs",
+    "confidence": 0.95
+  },
+  "D2098BC896D6450A8E3744528E": {
+    "title": "Look To The Sky",
+    "artist": "Antonio Carlos Jobim",
+    "primary_genre": "Bossa Nova",
+    "sub_genres": [
+      "Latin Jazz",
+      "MPB"
+    ],
+    "source": "Discogs",
+    "confidence": 0.95
+  },
+  "3D71C975F9D24E4CB5B77D85FA": {
+    "title": "Triste",
+    "artist": "Antonio Carlos Jobim",
+    "primary_genre": "Bossa Nova",
+    "sub_genres": [
+      "Latin Jazz",
+      "MPB"
+    ],
+    "source": "Wikipedia",
+    "confidence": 0.98
+  },
+  "5CF227BBD8FB42BDA25C4755A1": {
+    "title": "Deamer",
+    "artist": "Hiromi",
+    "primary_genre": "Jazz Fusion",
+    "sub_genres": [
+      "Post-Bop",
+      "Contemporary Jazz"
+    ],
+    "source": "Discogs/AllMusic",
+    "confidence": 0.9
+  },
+  "78250AD45D2842A3AA18C9071D": {
+    "title": "Seeker",
+    "artist": "Hiromi",
+    "primary_genre": "Jazz Fusion",
+    "sub_genres": [
+      "Post-Bop",
+      "Contemporary Jazz"
+    ],
+    "source": "Discogs",
+    "confidence": 0.9
+  },
+  "D0CC3C06BCC643C4AD0737115": {
+    "title": "Warrior",
+    "artist": "Hiromi",
+    "primary_genre": "Jazz Fusion",
+    "sub_genres": [
+      "Post-Bop",
+      "Contemporary Jazz"
+    ],
+    "source": "Discogs/AllMusic",
+    "confidence": 0.9
+  },
+  "E1C4475B60AC4179852278CC60": {
+    "title": "Rage",
+    "artist": "Kira Linn / Linntett",
+    "primary_genre": "Jazz",
+    "sub_genres": [
+      "Contemporary Jazz",
+      "Vocal Jazz"
+    ],
+    "source": "Discogs",
+    "confidence": 0.8
+  },
+  "95D0CB9A84B54582AD17E79393": {
+    "title": "Illusion",
+    "artist": "Kira Linn / Linntett",
+    "primary_genre": "Jazz",
+    "sub_genres": [
+      "Contemporary Jazz",
+      "Vocal Jazz"
+    ],
+    "source": "Discogs",
+    "confidence": 0.8
+  },
+  "1C69AC77BB3042A4A237DF5966": {
+    "title": "Women to Women",
+    "artist": "Kira Linn / Linntett",
+    "primary_genre": "Jazz",
+    "sub_genres": [
+      "Contemporary Jazz",
+      "Vocal Jazz"
+    ],
+    "source": "Discogs",
+    "confidence": 0.8
+  },
+  "870491B93FD04F979A12BC7811": {
+    "title": "Welcome To Paradise Vol. III (track 1)",
+    "artist": "Various (Italian Dream House)",
+    "primary_genre": "Dream House",
+    "sub_genres": [
+      "Italo House",
+      "Deep House",
+      "Ambient"
+    ],
+    "source": "Discogs",
+    "confidence": 0.85
+  },
+  "7AB4F0B765984F5AAADDDA584A": {
+    "title": "Welcome To Paradise Vol. III (track 2)",
+    "artist": "Various (Italian Dream House)",
+    "primary_genre": "Dream House",
+    "sub_genres": [
+      "Italo House",
+      "Deep House"
+    ],
+    "source": "Discogs",
+    "confidence": 0.85
+  },
+  "F905340525194A1A9D838DB885": {
+    "title": "Welcome To Paradise Vol. III (track 3)",
+    "artist": "Various (Italian Dream House)",
+    "primary_genre": "Dream House",
+    "sub_genres": [
+      "Italo House",
+      "Deep House"
+    ],
+    "source": "Discogs",
+    "confidence": 0.85
+  },
+  "3DD429C6458C404A9891416635": {
+    "title": "Welcome To Paradise Vol. III (track 4)",
+    "artist": "Various (Italian Dream House)",
+    "primary_genre": "Dream House",
+    "sub_genres": [
+      "Italo House",
+      "Deep House"
+    ],
+    "source": "Discogs",
+    "confidence": 0.85
+  },
+  "B7C8FC27F3C349B0B39EB7D55A": {
+    "title": "Welcome To Paradise Vol. III (track 5)",
+    "artist": "Various (Italian Dream House)",
+    "primary_genre": "Dream House",
+    "sub_genres": [
+      "Italo House",
+      "Deep House"
+    ],
+    "source": "Discogs",
+    "confidence": 0.85
+  },
+  "49BED5E277AF40909EC0BD756D": {
+    "title": "Welcome To Paradise Vol. III (track 6)",
+    "artist": "Various (Italian Dream House)",
+    "primary_genre": "Dream House",
+    "sub_genres": [
+      "Italo House",
+      "Deep House"
+    ],
+    "source": "Discogs",
+    "confidence": 0.85
+  },
+  "818C48C49AE547DCBC6D3D9B43": {
+    "title": "Welcome To Paradise Vol. III (track 7)",
+    "artist": "Various (Italian Dream House)",
+    "primary_genre": "Dream House",
+    "sub_genres": [
+      "Italo House",
+      "Deep House"
+    ],
+    "source": "Discogs",
+    "confidence": 0.85
+  },
+  "8E0D1A1B284746B3A1FCE15B41": {
+    "title": "Welcome To Paradise Vol. III (track 8)",
+    "artist": "Various (Italian Dream House)",
+    "primary_genre": "Dream House",
+    "sub_genres": [
+      "Italo House",
+      "Deep House"
+    ],
+    "source": "Discogs",
+    "confidence": 0.85
+  },
+  "924CF2535CAB4C48A485EF4845": {
+    "title": "Welcome To Paradise Vol. III (track 9)",
+    "artist": "Various (Italian Dream House)",
+    "primary_genre": "Dream House",
+    "sub_genres": [
+      "Italo House",
+      "Deep House"
+    ],
+    "source": "Discogs",
+    "confidence": 0.85
+  },
+  "A1CC7E194F30411980025EA378": {
+    "title": "Welcome To Paradise Vol. III (track 10)",
+    "artist": "Various (Italian Dream House)",
+    "primary_genre": "Dream House",
+    "sub_genres": [
+      "Italo House",
+      "Deep House"
+    ],
+    "source": "Discogs",
+    "confidence": 0.85
+  },
+  "DC92B30BB51D42488F02AA203F": {
+    "title": "Ouverture",
+    "artist": "Don Carlos",
+    "primary_genre": "Italo House",
+    "sub_genres": [
+      "Dream House",
+      "Deep House",
+      "Trance"
+    ],
+    "source": "Discogs",
+    "confidence": 0.9
+  },
+  "1EDDB5EFB16E4A36AFFFAC2132": {
+    "title": "Another Day of Sun",
+    "artist": "La La Land Cast",
+    "primary_genre": "Musical Theatre",
+    "sub_genres": [
+      "Soundtrack",
+      "Jazz",
+      "Show Tunes"
+    ],
+    "source": "Wikipedia",
+    "confidence": 0.95
+  },
+  "364CBB655E7D4A90B83A060A39": {
+    "title": "City of Stars",
+    "artist": "La La Land Cast",
+    "primary_genre": "Musical Theatre",
+    "sub_genres": [
+      "Soundtrack",
+      "Jazz",
+      "Show Tunes"
+    ],
+    "source": "Wikipedia",
+    "confidence": 0.95
+  },
+  "146D04DCF3BB4D56B68F9DD25C": {
+    "title": "Love Me Tender",
+    "artist": "Andrea Bocelli",
+    "primary_genre": "Classical Crossover",
+    "sub_genres": [
+      "Traditional Pop",
+      "Orchestral Ballad",
+      "Vocal"
+    ],
+    "source": "Wikipedia/Discogs (Passione, David Foster)",
+    "confidence": 0.95
+  },
+  "6835D62222154FA6B0509AA881": {
+    "title": "若き日の望楼",
+    "artist": "大贯妙子 (Taeko Onuki)",
+    "primary_genre": "City Pop",
+    "sub_genres": [
+      "J-pop",
+      "Adult Contemporary",
+      "Jazz Fusion"
+    ],
+    "source": "Discogs/J-pop百科",
+    "confidence": 0.9
+  },
+  "8384A4DBF2B24CF98148BC919": {
+    "title": "The Creamy Season",
+    "artist": "椎名林檎 (Ringo Sheena)",
+    "primary_genre": "J-pop",
+    "sub_genres": [
+      "Alternative Pop",
+      "Jazz",
+      "Art Pop"
+    ],
+    "source": "Wikipedia/Discogs",
+    "confidence": 0.9
+  },
+  "BEF3CF9662D841528BDB33BFA": {
+    "title": "ヘビーローテーション (Heavy Rotation)",
+    "artist": "AKB48",
+    "primary_genre": "J-pop",
+    "sub_genres": [
+      "Idol Pop",
+      "Dance-Pop"
+    ],
+    "source": "Wikipedia",
+    "confidence": 0.95
+  },
+  "286F49DADB7640A39E52E4C55A": {
+    "title": "黄河谣",
+    "artist": "中国民谣 (Yellow River Ballad)",
+    "primary_genre": "Chinese Folk",
+    "sub_genres": [
+      "Folk",
+      "World Music",
+      "Northwest Chinese Folk"
+    ],
+    "source": "音乐百科",
+    "confidence": 0.85
+  },
+  "3F34DF1B2784408BA60CE8165C": {
+    "title": "genshin_nata (Genshin Impact OST)",
+    "artist": "HOYO-MiX",
+    "primary_genre": "Game Soundtrack",
+    "sub_genres": [
+      "Orchestral",
+      "World Music",
+      "Ambient"
+    ],
+    "source": "Genshin Impact OST",
+    "confidence": 0.85
+  },
+  "25A0003CEA50409D88B8362568": {
+    "title": "Death Pacito",
+    "artist": "Unknown (experimental)",
+    "primary_genre": "Experimental",
+    "sub_genres": [
+      "Free Jazz",
+      "Avant-Garde"
+    ],
+    "source": "文件名推断",
+    "confidence": 0.6
+  },
+  "A52E2E2FA5474C61984BCECC27": {
+    "title": "Seven Marmelade",
+    "artist": "Unknown (experimental)",
+    "primary_genre": "Experimental",
+    "sub_genres": [
+      "Free Jazz",
+      "Avant-Garde"
+    ],
+    "source": "文件名推断",
+    "confidence": 0.6
+  },
+  "77CB62FFAEC0446188CA3AE161": {
+    "title": "Zitterschlagzeug",
+    "artist": "Unknown (German experimental)",
+    "primary_genre": "Experimental",
+    "sub_genres": [
+      "Free Improvisation",
+      "Noise"
+    ],
+    "source": "文件名推断(German: 颤抖鼓)",
+    "confidence": 0.55
+  },
+  "3FF351D346274F6C8DC078C78A": {
+    "title": "How to count one to ten - a siesta",
+    "artist": "Unknown (ambient/experimental)",
+    "primary_genre": "Ambient",
+    "sub_genres": [
+      "Experimental",
+      "Drone"
+    ],
+    "source": "文件名推断",
+    "confidence": 0.6
+  },
+  "2996876392774F67887DA90C3E": {
+    "title": "How to count one to ten - at the same time",
+    "artist": "Unknown (ambient/experimental)",
+    "primary_genre": "Ambient",
+    "sub_genres": [
+      "Experimental",
+      "Drone"
+    ],
+    "source": "文件名推断",
+    "confidence": 0.6
+  },
+  "AA089CC166EF4DE8AA78014AD": {
+    "title": "How to count one to ten - windmill",
+    "artist": "Unknown (ambient/experimental)",
+    "primary_genre": "Ambient",
+    "sub_genres": [
+      "Experimental",
+      "Drone"
+    ],
+    "source": "文件名推断",
+    "confidence": 0.6
+  }
+}

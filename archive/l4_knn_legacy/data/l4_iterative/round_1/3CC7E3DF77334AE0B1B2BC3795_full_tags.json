@@ -1,0 +1,18 @@
+{
+  "audio_id": "3CC7E3DF77334AE0B1B2BC3795",
+  "fusion": {
+    "genre_source": "unlabeled",
+    "mood_source": "unlabeled",
+    "instrumentation_source": "unlabeled",
+    "caption_source": "unlabeled"
+  },
+  "propagated_from": null,
+  "propagation_similarity": null,
+  "propagation_cosine_dist": null,
+  "genre": "",
+  "subgenre": "",
+  "mood": [],
+  "instrumentation": [],
+  "caption": "",
+  "segments": []
+}

@@ -1,0 +1,16 @@
+{
+  "audio_id": "3C6219AB60A24F5B8F101AF353",
+  "genre": "Cantopop",
+  "sub_genres": [
+    "Pop Ballad"
+  ],
+  "source": "text_llm_search",
+  "source_priority": "P0",
+  "confidence": 0.95,
+  "title": "喜欢你",
+  "artist": "G.E.M邓紫棋",
+  "reference": "Wikipedia",
+  "knn_propagated": false,
+  "l4_version": "unified_v1_text_llm_plus_qwen",
+  "deprecated_knn_note": "KNN传播已从L4移除，一致率0%，详见archive/l4_knn_legacy/DEPRECATED.md"
+}

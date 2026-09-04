@@ -1,0 +1,31 @@
+{
+  "audio_id": "01M0ZV75HFQNAS9VNCF717E4MC",
+  "fusion": {
+    "genre_source": "qwen_supplement",
+    "mood_source": "unlabeled",
+    "instrumentation_source": "qwen_supplement",
+    "caption_source": "qwen_supplement (not_propagated)"
+  },
+  "propagated_from": null,
+  "propagation_similarity": null,
+  "propagation_cosine_dist": null,
+  "duration_sec": 443.794292,
+  "genre": "Jazz",
+  "subgenre": "",
+  "mood": [],
+  "instrumentation": [
+    "saxophone",
+    "organ",
+    "bass",
+    "drums",
+    "电风琴",
+    "电贝斯",
+    "爵士鼓",
+    "铜管组",
+    "萨克斯",
+    "钢琴",
+    "贝斯"
+  ],
+  "caption": "这是一首充满活力的爵士融合乐，以萨克斯风为主奏乐器，搭配 organ、贝斯和鼓，营造出热情奔放的氛围。",
+  "segments": []
+}

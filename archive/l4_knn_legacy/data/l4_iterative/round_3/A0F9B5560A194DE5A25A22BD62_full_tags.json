@@ -1,0 +1,32 @@
+{
+  "audio_id": "A0F9B5560A194DE5A25A22BD62",
+  "fusion": {
+    "genre_source": "qwen_supplement",
+    "mood_source": "qwen_supplement",
+    "instrumentation_source": "qwen_supplement",
+    "caption_source": "qwen_supplement (not_propagated)"
+  },
+  "propagated_from": null,
+  "propagation_similarity": null,
+  "propagation_cosine_dist": null,
+  "key": "A major",
+  "vocal_presence": "instrumental",
+  "subgenre": "Bossa Nova / Latin Jazz",
+  "genre": "Jazz",
+  "mood": [
+    "轻松",
+    "愉悦",
+    "浪漫",
+    "优雅"
+  ],
+  "instrumentation": [
+    "原声钢琴",
+    "贝斯",
+    "爵士鼓",
+    "尼龙弦吉他",
+    "长笛",
+    "弦乐组"
+  ],
+  "caption": "这是一首充满活力的巴西波萨诺瓦风格爵士乐曲，以原声钢琴、贝斯和鼓为核心，辅以长笛和弦乐，营造出轻松愉悦且浪漫的氛围。",
+  "segments": []
+}

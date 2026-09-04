@@ -1,0 +1,58 @@
+{
+  "version": "v2",
+  "k_neighbors": 5,
+  "vote_majority": 2,
+  "initial_golden_count": 5,
+  "final_seed_pool_count": 21,
+  "rounds": [
+    {
+      "round": 1,
+      "seed_pool_size": 5,
+      "knn_propagated": 0,
+      "qwen_supplement": 50,
+      "unlabeled": 29,
+      "coverage": 0.0595,
+      "consistency_rate": 0.0,
+      "consistency_detail": {
+        "total_knn": 0,
+        "has_qwen": 0,
+        "consistent": 0,
+        "conflict": 0
+      },
+      "conflicts": []
+    },
+    {
+      "round": 2,
+      "seed_pool_size": 21,
+      "knn_propagated": 3,
+      "qwen_supplement": 31,
+      "unlabeled": 29,
+      "coverage": 0.2857,
+      "consistency_rate": 0.0,
+      "consistency_detail": {
+        "total_knn": 3,
+        "has_qwen": 3,
+        "consistent": 0,
+        "conflict": 3
+      },
+      "conflicts": [
+        [
+          "1EDDB5EFB16E4A36AFFF",
+          "Post-Rock",
+          "electronic"
+        ],
+        [
+          "01M0ZV75DMQARXEX90GT",
+          "Post-Rock",
+          "Jazz"
+        ],
+        [
+          "78250AD45D2842A3AA18",
+          "Cantopop",
+          "Jazz"
+        ]
+      ]
+    }
+  ],
+  "conclusion": "迭代 2 轮，一致率 0.0% → 0.0%，种子池 5 → 21 首"
+}

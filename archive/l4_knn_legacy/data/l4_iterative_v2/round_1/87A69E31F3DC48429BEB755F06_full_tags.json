@@ -1,0 +1,26 @@
+{
+  "audio_id": "87A69E31F3DC48429BEB755F06",
+  "fusion": {
+    "genre_source": "qwen_supplement",
+    "mood_source": "qwen_supplement",
+    "instrumentation_source": "qwen_supplement"
+  },
+  "propagated_from": null,
+  "propagation_similarity": null,
+  "propagation_cosine_dist": null,
+  "knn_vote_count": null,
+  "vocal_presence": "instrumental",
+  "genre": "hip hop",
+  "subgenre": "",
+  "mood": [
+    "energetic",
+    "peaceful"
+  ],
+  "instrumentation": [
+    "bass",
+    "trumpet",
+    "flute"
+  ],
+  "caption": "A mid-tempo hip hop instrumental with bass, trumpet, and flute, creating an energetic yet peaceful atmosphere suitable for a party.",
+  "segments": []
+}

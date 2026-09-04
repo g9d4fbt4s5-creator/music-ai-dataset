@@ -1,0 +1,26 @@
+{
+  "audio_id": "1C8E3363E3FF4BFBA5189ABCB7",
+  "fusion": {
+    "genre_source": "qwen_supplement",
+    "mood_source": "qwen_supplement",
+    "instrumentation_source": "qwen_supplement"
+  },
+  "propagated_from": null,
+  "propagation_similarity": null,
+  "propagation_cosine_dist": null,
+  "knn_vote_count": null,
+  "vocal_presence": "instrumental",
+  "genre": "latin jazz",
+  "subgenre": "",
+  "mood": [
+    "energetic",
+    "peaceful"
+  ],
+  "instrumentation": [
+    "trumpet",
+    "harp",
+    "violin"
+  ],
+  "caption": "An energetic latin jazz piece with trumpet, harp, and violin, suitable for a party atmosphere.",
+  "segments": []
+}

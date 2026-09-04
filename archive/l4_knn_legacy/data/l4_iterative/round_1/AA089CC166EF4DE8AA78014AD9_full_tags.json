@@ -1,0 +1,28 @@
+{
+  "audio_id": "AA089CC166EF4DE8AA78014AD9",
+  "fusion": {
+    "genre_source": "qwen_supplement",
+    "mood_source": "qwen_supplement",
+    "instrumentation_source": "qwen_supplement",
+    "caption_source": "qwen_supplement (not_propagated)"
+  },
+  "propagated_from": null,
+  "propagation_similarity": null,
+  "propagation_cosine_dist": null,
+  "key": "E major",
+  "vocal_presence": "instrumental",
+  "subgenre": "Instrumental Rock",
+  "genre": "Post-Rock",
+  "mood": [
+    "沉思",
+    "激情",
+    "宏大"
+  ],
+  "instrumentation": [
+    "电吉他",
+    "贝斯",
+    "爵士鼓"
+  ],
+  "caption": "这是一首充满情感张力的后摇滚器乐曲，以电吉他、贝斯和爵士鼓为主，情绪从平静的沉思逐渐推向宏大的高潮。",
+  "segments": []
+}

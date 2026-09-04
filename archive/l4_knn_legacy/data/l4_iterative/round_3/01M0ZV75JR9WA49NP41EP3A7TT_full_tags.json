@@ -1,0 +1,121 @@
+{
+  "audio_id": "01M0ZV75JR9WA49NP41EP3A7TT",
+  "fusion": {
+    "genre_source": "qwen_omni_golden",
+    "mood_source": "qwen_omni_golden",
+    "instrumentation_source": "qwen_supplement",
+    "caption_source": "qwen_omni_golden"
+  },
+  "propagated_from": "golden_set",
+  "propagation_similarity": null,
+  "propagation_cosine_dist": null,
+  "key": "E minor",
+  "vocal_presence": "instrumental",
+  "subgenre": "Downtempo / Electronic",
+  "genre": "Trip-Hop",
+  "mood": [
+    "忧郁",
+    "紧张",
+    "悬疑"
+  ],
+  "instrumentation": [
+    "合成器",
+    "贝斯",
+    "电鼓"
+  ],
+  "caption": "这是一首带有忧郁和悬疑氛围的Trip-Hop电子乐，以合成器和电鼓为主要乐器。",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 11.5,
+      "label": "Intro",
+      "instruments": [
+        "合成器",
+        "电鼓"
+      ],
+      "mood": "神秘",
+      "confidence": 0.9
+    },
+    {
+      "start": 11.5,
+      "end": 47.0,
+      "label": "Verse",
+      "instruments": [
+        "合成器",
+        "贝斯",
+        "电鼓"
+      ],
+      "mood": "忧郁",
+      "confidence": 0.85
+    },
+    {
+      "start": 47.0,
+      "end": 60.5,
+      "label": "Chorus",
+      "instruments": [
+        "合成器",
+        "贝斯",
+        "电鼓"
+      ],
+      "mood": "紧张",
+      "confidence": 0.8
+    },
+    {
+      "start": 60.5,
+      "end": 73.5,
+      "label": "Bridge",
+      "instruments": [
+        "合成器",
+        "电鼓"
+      ],
+      "mood": "平静",
+      "confidence": 0.75
+    },
+    {
+      "start": 73.5,
+      "end": 108.0,
+      "label": "Chorus",
+      "instruments": [
+        "合成器",
+        "贝斯",
+        "电鼓"
+      ],
+      "mood": "紧张",
+      "confidence": 0.8
+    },
+    {
+      "start": 108.0,
+      "end": 121.0,
+      "label": "Breakdown",
+      "instruments": [
+        "合成器",
+        "电鼓"
+      ],
+      "mood": "悬疑",
+      "confidence": 0.7
+    },
+    {
+      "start": 121.0,
+      "end": 158.0,
+      "label": "Chorus",
+      "instruments": [
+        "合成器",
+        "贝斯",
+        "电鼓"
+      ],
+      "mood": "紧张",
+      "confidence": 0.85
+    },
+    {
+      "start": 158.0,
+      "end": 178.0,
+      "label": "Outro",
+      "instruments": [
+        "合成器",
+        "电鼓"
+      ],
+      "mood": "平静",
+      "confidence": 0.75
+    }
+  ]
+}

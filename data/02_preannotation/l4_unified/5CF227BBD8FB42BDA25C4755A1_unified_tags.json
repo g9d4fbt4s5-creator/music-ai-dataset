@@ -1,0 +1,17 @@
+{
+  "audio_id": "5CF227BBD8FB42BDA25C4755A1",
+  "genre": "Jazz Fusion",
+  "sub_genres": [
+    "Post-Bop",
+    "Contemporary Jazz"
+  ],
+  "source": "text_llm_search",
+  "source_priority": "P0",
+  "confidence": 0.9,
+  "title": "Deamer",
+  "artist": "Hiromi",
+  "reference": "Discogs/AllMusic",
+  "knn_propagated": false,
+  "l4_version": "unified_v1_text_llm_plus_qwen",
+  "deprecated_knn_note": "KNN传播已从L4移除，一致率0%，详见archive/l4_knn_legacy/DEPRECATED.md"
+}

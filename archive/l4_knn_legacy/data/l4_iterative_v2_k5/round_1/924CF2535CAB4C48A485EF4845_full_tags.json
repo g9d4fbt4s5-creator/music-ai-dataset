@@ -1,0 +1,29 @@
+{
+  "audio_id": "924CF2535CAB4C48A485EF4845",
+  "fusion": {
+    "genre_source": "qwen_supplement",
+    "mood_source": "qwen_supplement",
+    "instrumentation_source": "qwen_supplement"
+  },
+  "propagated_from": null,
+  "propagation_similarity": null,
+  "propagation_cosine_dist": null,
+  "knn_vote_count": null,
+  "key": "C major",
+  "vocal_presence": "instrumental",
+  "subgenre": "Progressive House",
+  "genre": "House",
+  "mood": [
+    "energetic",
+    "euphoric",
+    "uplifting"
+  ],
+  "instrumentation": [
+    "Drum machine",
+    "Synthesizer",
+    "Bass synthesizer",
+    "Piano"
+  ],
+  "caption": "这是一首充满活力的 progressive house 纯音乐，以明亮的合成器旋律和强劲的鼓点营造出令人振奋的舞池氛围。",
+  "segments": []
+}

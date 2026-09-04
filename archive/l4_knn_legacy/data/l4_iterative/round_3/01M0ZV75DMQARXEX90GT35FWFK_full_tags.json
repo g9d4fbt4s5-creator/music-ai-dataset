@@ -1,0 +1,34 @@
+{
+  "audio_id": "01M0ZV75DMQARXEX90GT35FWFK",
+  "fusion": {
+    "genre_source": "qwen_supplement",
+    "mood_source": "qwen_supplement",
+    "instrumentation_source": "qwen_supplement",
+    "caption_source": "qwen_supplement (not_propagated)"
+  },
+  "propagated_from": null,
+  "propagation_similarity": null,
+  "propagation_cosine_dist": null,
+  "key": "F minor",
+  "vocal_presence": "instrumental",
+  "subgenre": "Latin Jazz / Afro-Cuban Jazz",
+  "genre": "Jazz",
+  "mood": [
+    "energetic",
+    "groovy",
+    "virtuosic",
+    "upbeat",
+    "danceable"
+  ],
+  "instrumentation": [
+    "Tenor Saxophone",
+    "Piano",
+    "Upright Bass",
+    "Drums",
+    "Congas",
+    "Timbales",
+    "Cowbell"
+  ],
+  "caption": "这是一首充满活力的拉丁爵士乐，以萨克斯风为主奏乐器，融合了复杂的非洲古巴打击乐节奏和摇摆的贝斯线条，营造出热情奔放且极具律动感的氛围。",
+  "segments": []
+}

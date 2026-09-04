@@ -1,0 +1,30 @@
+{
+  "audio_id": "E6A98A1C67AC4D9FA1E7437524",
+  "fusion": {
+    "genre_source": "qwen_supplement",
+    "mood_source": "qwen_supplement",
+    "instrumentation_source": "qwen_supplement"
+  },
+  "propagated_from": null,
+  "propagation_similarity": null,
+  "propagation_cosine_dist": null,
+  "knn_vote_count": null,
+  "key": "F# major",
+  "vocal_presence": "vocal",
+  "subgenre": "Quiet Storm / R&B",
+  "genre": "Soul",
+  "mood": [
+    "浪漫",
+    "深情",
+    "热情"
+  ],
+  "instrumentation": [
+    "电钢琴",
+    "贝斯",
+    "爵士鼓",
+    "铜管组",
+    "人声"
+  ],
+  "caption": "这是一首充满深情的灵魂乐，以温暖的电钢琴、律动的贝斯和铜管组为特色，营造出浪漫而热情的氛围。",
+  "segments": []
+}

@@ -1,0 +1,26 @@
+{
+  "audio_id": "DC92B30BB51D42488F02AA203F",
+  "fusion": {
+    "genre_source": "qwen_omni_golden",
+    "mood_source": "qwen_omni_golden",
+    "instrumentation_source": "qwen_supplement",
+    "caption_source": "qwen_omni_golden"
+  },
+  "propagated_from": "golden_set",
+  "propagation_similarity": null,
+  "propagation_cosine_dist": null,
+  "vocal_presence": "instrumental",
+  "genre": "electronic",
+  "subgenre": "",
+  "mood": [
+    "energetic",
+    "dreamy"
+  ],
+  "instrumentation": [
+    "acoustic guitar",
+    "violin",
+    "bass"
+  ],
+  "caption": "An energetic electronic track with acoustic guitar, violin, and bass, featuring a dreamy atmosphere, suitable for a party.",
+  "segments": []
+}

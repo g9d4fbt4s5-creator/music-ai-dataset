@@ -1,0 +1,27 @@
+{
+  "audio_id": "C2AEFEEB56B0454F9AE069B899",
+  "fusion": {
+    "genre_source": "unlabeled (voided_by_user_decision)",
+    "mood_source": "qwen_supplement",
+    "instrumentation_source": "qwen_supplement",
+    "caption_source": "qwen_supplement (not_propagated)"
+  },
+  "propagated_from": null,
+  "propagation_similarity": null,
+  "propagation_cosine_dist": null,
+  "vocal_presence": "instrumental",
+  "genre": "",
+  "subgenre": "",
+  "mood": [
+    "energetic",
+    "romantic"
+  ],
+  "instrumentation": [
+    "bass",
+    "violin",
+    "acoustic guitar",
+    "harp"
+  ],
+  "caption": "An energetic electronic instrumental piece with bass, violin, acoustic guitar, and harp, suitable for dancing.",
+  "segments": []
+}

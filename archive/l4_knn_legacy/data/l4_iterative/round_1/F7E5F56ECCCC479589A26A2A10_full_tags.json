@@ -1,0 +1,137 @@
+{
+  "audio_id": "F7E5F56ECCCC479589A26A2A10",
+  "fusion": {
+    "genre_source": "qwen_omni_golden",
+    "mood_source": "qwen_omni_golden",
+    "instrumentation_source": "qwen_omni_golden",
+    "caption_source": "qwen_omni_golden"
+  },
+  "propagated_from": "golden_set",
+  "propagation_similarity": null,
+  "propagation_cosine_dist": null,
+  "vocal_presence": "instrumental",
+  "genre": "Pop",
+  "subgenre": "",
+  "mood": [
+    "忧郁",
+    "忧"
+  ],
+  "instrumentation": [
+    "人声",
+    "原声钢琴",
+    "合成器",
+    "鼓",
+    "贝斯"
+  ],
+  "caption": "这是一首由女声演唱的流行R&B歌曲，以钢琴和电子节拍为主要伴奏，情绪伤感且充满对前任的留恋。",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 16.5,
+      "label": "Intro",
+      "instruments": [
+        "原声钢琴",
+        "人声"
+      ],
+      "mood": "忧郁沉思",
+      "confidence": 0.95
+    },
+    {
+      "start": 16.5,
+      "end": 32.5,
+      "label": "Pre-Chorus",
+      "instruments": [
+        "原声钢琴",
+        "贝斯",
+        "鼓"
+      ],
+      "mood": "渴望",
+      "confidence": 0.9
+    },
+    {
+      "start": 32.5,
+      "end": 61.0,
+      "label": "Chorus",
+      "instruments": [
+        "原声钢琴",
+        "贝斯",
+        "爵士鼓",
+        "合成器"
+      ],
+      "mood": "伤感",
+      "confidence": 0.95
+    },
+    {
+      "start": 61.0,
+      "end": 74.5,
+      "label": "Post-Chorus",
+      "instruments": [
+        "人声",
+        "合成器"
+      ],
+      "mood": "伤感",
+      "confidence": 0.85
+    },
+    {
+      "start": 74.5,
+      "end": 100.5,
+      "label": "Verse 2",
+      "instruments": [
+        "原声钢琴",
+        "贝斯",
+        "鼓"
+      ],
+      "mood": "忧郁沉思",
+      "confidence": 0.9
+    },
+    {
+      "start": 100.5,
+      "end": 129.0,
+      "label": "Chorus",
+      "instruments": [
+        "原声钢琴",
+        "贝斯",
+        "爵士鼓",
+        "合成器"
+      ],
+      "mood": "伤感",
+      "confidence": 0.95
+    },
+    {
+      "start": 129.0,
+      "end": 142.5,
+      "label": "Post-Chorus",
+      "instruments": [
+        "人声",
+        "合成器"
+      ],
+      "mood": "伤感",
+      "confidence": 0.85
+    },
+    {
+      "start": 142.5,
+      "end": 165.5,
+      "label": "Bridge",
+      "instruments": [
+        "原声钢琴",
+        "贝斯",
+        "鼓"
+      ],
+      "mood": "恳切",
+      "confidence": 0.9
+    },
+    {
+      "start": 165.5,
+      "end": 194.0,
+      "label": "Final Chorus & Outro",
+      "instruments": [
+        "原声钢琴",
+        "贝斯",
+        "爵士鼓",
+        "合成器"
+      ],
+      "mood": "伤感",
+      "confidence": 0.95
+    }
+  ]
+}

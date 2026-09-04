@@ -1,0 +1,26 @@
+{
+  "audio_id": "01M0ZV75CA0XZA10YGA99D89XQ",
+  "fusion": {
+    "genre_source": "knn(from D2098BC896D6450A8E3744528E, dist=0.392)",
+    "mood_source": "qwen_supplement",
+    "instrumentation_source": "qwen_supplement",
+    "caption_source": "qwen_supplement (not_propagated)"
+  },
+  "propagated_from": "D2098BC896D6450A8E3744528E",
+  "propagation_similarity": 0.6084,
+  "propagation_cosine_dist": 0.3916,
+  "vocal_presence": "instrumental",
+  "genre": "Bossa Nova",
+  "subgenre": "",
+  "mood": [
+    "energetic",
+    "romantic"
+  ],
+  "instrumentation": [
+    "trumpet",
+    "saxophone",
+    "double bass"
+  ],
+  "caption": "An energetic latin jazz instrumental with trumpet and saxophone melodies over a driving double bass, perfect for dancing.",
+  "segments": []
+}

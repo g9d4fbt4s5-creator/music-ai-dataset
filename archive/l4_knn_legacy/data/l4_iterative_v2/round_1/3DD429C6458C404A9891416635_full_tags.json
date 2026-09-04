@@ -1,0 +1,29 @@
+{
+  "audio_id": "3DD429C6458C404A9891416635",
+  "fusion": {
+    "genre_source": "qwen_supplement",
+    "mood_source": "qwen_supplement",
+    "instrumentation_source": "qwen_supplement"
+  },
+  "propagated_from": null,
+  "propagation_similarity": null,
+  "propagation_cosine_dist": null,
+  "knn_vote_count": null,
+  "key": "C minor",
+  "vocal_presence": "instrumental",
+  "subgenre": "Progressive House",
+  "genre": "Deep House",
+  "mood": [
+    "热情",
+    "忧郁",
+    "沉思"
+  ],
+  "instrumentation": [
+    "合成器",
+    "电子鼓",
+    "贝斯",
+    "人声采样"
+  ],
+  "caption": "这是一首深浩室风格的电子舞曲，以合成器和电子鼓为主，情绪从宁静逐渐过渡到热情奔放，整体氛围充满律动感。",
+  "segments": []
+}

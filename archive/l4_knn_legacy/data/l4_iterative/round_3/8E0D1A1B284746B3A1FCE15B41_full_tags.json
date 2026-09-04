@@ -1,0 +1,116 @@
+{
+  "audio_id": "8E0D1A1B284746B3A1FCE15B41",
+  "fusion": {
+    "genre_source": "qwen_omni_golden",
+    "mood_source": "qwen_omni_golden",
+    "instrumentation_source": "qwen_supplement",
+    "caption_source": "qwen_omni_golden"
+  },
+  "propagated_from": "golden_set",
+  "propagation_similarity": null,
+  "propagation_cosine_dist": null,
+  "key": "Eb minor",
+  "vocal_presence": "instrumental",
+  "subgenre": "Tech House",
+  "genre": "House",
+  "mood": [
+    "energetic",
+    "driving",
+    "hypnotic",
+    "euphoric"
+  ],
+  "instrumentation": [
+    "Drum machine",
+    "Synth bass",
+    "Synthesizer",
+    "Percussion",
+    "Vocal samples"
+  ],
+  "caption": "这是一首充满活力的电子舞曲，融合了浩室和科技浩室元素，以强劲的节拍和重复的合成器旋律营造出令人振奋的氛围。",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 32.5,
+      "label": "Intro",
+      "instruments": [
+        "Drum machine",
+        "Synth bass",
+        "Synthesizer"
+      ],
+      "mood": "Energetic",
+      "confidence": 0.9
+    },
+    {
+      "start": 32.5,
+      "end": 60.0,
+      "label": "Build-up",
+      "instruments": [
+        "Drum machine",
+        "Synth bass",
+        "Synthesizer",
+        "Percussion"
+      ],
+      "mood": "Anticipatory",
+      "confidence": 0.85
+    },
+    {
+      "start": 60.0,
+      "end": 120.0,
+      "label": "Main Groove",
+      "instruments": [
+        "Drum machine",
+        "Synth bass",
+        "Synthesizer"
+      ],
+      "mood": "Driving",
+      "confidence": 0.9
+    },
+    {
+      "start": 120.0,
+      "end": 180.0,
+      "label": "Breakdown",
+      "instruments": [
+        "Synthesizer",
+        "Pads"
+      ],
+      "mood": "Atmospheric",
+      "confidence": 0.8
+    },
+    {
+      "start": 180.0,
+      "end": 240.0,
+      "label": "Drop",
+      "instruments": [
+        "Drum machine",
+        "Synth bass",
+        "Synthesizer"
+      ],
+      "mood": "Euphoric",
+      "confidence": 0.9
+    },
+    {
+      "start": 240.0,
+      "end": 300.0,
+      "label": "Variation",
+      "instruments": [
+        "Drum machine",
+        "Synth bass",
+        "Synthesizer",
+        "Vocal samples"
+      ],
+      "mood": "Hypnotic",
+      "confidence": 0.85
+    },
+    {
+      "start": 300.0,
+      "end": 352.7,
+      "label": "Outro",
+      "instruments": [
+        "Synthesizer",
+        "Pads"
+      ],
+      "mood": "Relaxing",
+      "confidence": 0.8
+    }
+  ]
+}

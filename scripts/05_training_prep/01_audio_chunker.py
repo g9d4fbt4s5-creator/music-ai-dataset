@@ -381,6 +381,15 @@ if __name__ == "__main__":
             skipped += 1
             continue
 
+        # ADR-004: 排除不参与训练的样本（黄金集、challenge_set、val）
+        # in_train_training=False 的样本只做KNN种子/真值/压力测试，不切成训练样本
+        in_train = row.get("in_train_training", True)
+        if in_train is False or (isinstance(in_train, str) and in_train.lower() == "false"):
+            sample_type = row.get("sample_type", "unknown")
+            logger.debug(f"跳过非训练样本: {audio_id} (sample_type={sample_type}, in_train_training=False)")
+            skipped += 1
+            continue
+
         # 优先从 file_relative_path 读取
         rel_path = row.get("file_relative_path", "")
         if rel_path and isinstance(rel_path, str):

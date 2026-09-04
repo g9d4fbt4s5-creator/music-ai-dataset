@@ -1,0 +1,96 @@
+{
+  "audio_id": "D2098BC896D6450A8E3744528E",
+  "fusion": {
+    "genre_source": "qwen_omni_golden",
+    "mood_source": "qwen_omni_golden",
+    "instrumentation_source": "qwen_omni_golden",
+    "caption_source": "qwen_omni_golden"
+  },
+  "propagated_from": "golden_set",
+  "propagation_similarity": null,
+  "propagation_cosine_dist": null,
+  "vocal_presence": "instrumental",
+  "genre": "Bossa Nova",
+  "subgenre": "",
+  "mood": [
+    "优雅",
+    "静"
+  ],
+  "instrumentation": [
+    "爵士鼓",
+    "贝斯",
+    "弦乐",
+    "原声钢琴",
+    "长号"
+  ],
+  "caption": "这是一首由原声钢琴、贝斯、爵士鼓、长号和弦乐演奏的Bossa Nova风格器乐曲，整体氛围浪漫而优雅。",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 32.5,
+      "label": "前奏",
+      "instruments": [
+        "原声钢琴",
+        "贝斯",
+        "爵士鼓",
+        "长号"
+      ],
+      "mood": "宁静舒缓",
+      "confidence": 0.9
+    },
+    {
+      "start": 32.5,
+      "end": 65.0,
+      "label": "主歌",
+      "instruments": [
+        "原声钢琴",
+        "贝斯",
+        "爵士鼓",
+        "长号",
+        "弦乐"
+      ],
+      "mood": "浪漫抒情",
+      "confidence": 0.85
+    },
+    {
+      "start": 65.0,
+      "end": 97.5,
+      "label": "间奏",
+      "instruments": [
+        "原声钢琴",
+        "贝斯",
+        "爵士鼓"
+      ],
+      "mood": "轻松愉悦",
+      "confidence": 0.8
+    },
+    {
+      "start": 97.5,
+      "end": 124.0,
+      "label": "副歌",
+      "instruments": [
+        "原声钢琴",
+        "贝斯",
+        "爵士鼓",
+        "长号",
+        "弦乐"
+      ],
+      "mood": "热情奔放",
+      "confidence": 0.85
+    },
+    {
+      "start": 124.0,
+      "end": 144.0,
+      "label": "尾奏",
+      "instruments": [
+        "原声钢琴",
+        "贝斯",
+        "爵士鼓",
+        "长号",
+        "弦乐"
+      ],
+      "mood": "宁静舒缓",
+      "confidence": 0.9
+    }
+  ]
+}

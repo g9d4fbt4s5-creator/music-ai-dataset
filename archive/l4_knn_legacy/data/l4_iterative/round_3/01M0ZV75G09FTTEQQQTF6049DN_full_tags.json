@@ -1,0 +1,113 @@
+{
+  "audio_id": "01M0ZV75G09FTTEQQQTF6049DN",
+  "fusion": {
+    "genre_source": "qwen_omni_golden",
+    "mood_source": "qwen_omni_golden",
+    "instrumentation_source": "qwen_supplement",
+    "caption_source": "qwen_omni_golden"
+  },
+  "propagated_from": "golden_set",
+  "propagation_similarity": null,
+  "propagation_cosine_dist": null,
+  "key": "A minor",
+  "vocal_presence": "instrumental",
+  "subgenre": "World Fusion / Ambient",
+  "genre": "New Age",
+  "mood": [
+    "神秘",
+    "热情",
+    "沉思",
+    "宁静"
+  ],
+  "instrumentation": [
+    "合成器",
+    "电子鼓",
+    "木管乐器",
+    "人声采样",
+    "环境音"
+  ],
+  "caption": "这是一首融合了世界音乐元素的新世纪风格电子乐，以木管乐器和合成器为主，营造出神秘而热情的氛围。",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 12.5,
+      "label": "自然音效前奏",
+      "instruments": [
+        "环境音（虫鸣）"
+      ],
+      "mood": "宁静",
+      "confidence": 0.95
+    },
+    {
+      "start": 12.5,
+      "end": 38.0,
+      "label": "主题引入",
+      "instruments": [
+        "合成器",
+        "电子鼓",
+        "木管乐器"
+      ],
+      "mood": "神秘",
+      "confidence": 0.9
+    },
+    {
+      "start": 38.0,
+      "end": 75.0,
+      "label": "主歌段落",
+      "instruments": [
+        "合成器",
+        "电子鼓",
+        "木管乐器",
+        "人声采样"
+      ],
+      "mood": "热情奔放",
+      "confidence": 0.88
+    },
+    {
+      "start": 75.0,
+      "end": 115.0,
+      "label": "间奏",
+      "instruments": [
+        "合成器",
+        "电子鼓"
+      ],
+      "mood": "沉思",
+      "confidence": 0.85
+    },
+    {
+      "start": 115.0,
+      "end": 160.0,
+      "label": "高潮段落",
+      "instruments": [
+        "合成器",
+        "电子鼓",
+        "木管乐器",
+        "人声采样"
+      ],
+      "mood": "热情奔放",
+      "confidence": 0.92
+    },
+    {
+      "start": 160.0,
+      "end": 205.0,
+      "label": "独奏段落",
+      "instruments": [
+        "合成器",
+        "木管乐器"
+      ],
+      "mood": "忧郁沉思",
+      "confidence": 0.87
+    },
+    {
+      "start": 205.0,
+      "end": 240.0,
+      "label": "尾声",
+      "instruments": [
+        "合成器",
+        "环境音（虫鸣）"
+      ],
+      "mood": "宁静",
+      "confidence": 0.9
+    }
+  ]
+}

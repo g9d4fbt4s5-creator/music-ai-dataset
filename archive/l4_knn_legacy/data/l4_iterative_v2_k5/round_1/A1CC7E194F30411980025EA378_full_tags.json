@@ -1,0 +1,27 @@
+{
+  "audio_id": "A1CC7E194F30411980025EA378",
+  "fusion": {
+    "genre_source": "unlabeled (voided_by_user_decision)",
+    "mood_source": "qwen_supplement",
+    "instrumentation_source": "qwen_supplement"
+  },
+  "propagated_from": null,
+  "propagation_similarity": null,
+  "propagation_cosine_dist": null,
+  "knn_vote_count": null,
+  "vocal_presence": "instrumental",
+  "genre": "",
+  "subgenre": "",
+  "mood": [
+    "energetic",
+    "introspective"
+  ],
+  "instrumentation": [
+    "drums",
+    "bass",
+    "organ",
+    "acoustic guitar"
+  ],
+  "caption": "A cool jazz instrumental piece with energetic and introspective moods, featuring drums, bass, organ, and acoustic guitar at a medium tempo.",
+  "segments": []
+}

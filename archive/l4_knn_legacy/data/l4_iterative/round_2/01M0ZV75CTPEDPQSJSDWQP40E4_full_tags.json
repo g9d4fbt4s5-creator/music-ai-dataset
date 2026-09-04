@@ -1,0 +1,26 @@
+{
+  "audio_id": "01M0ZV75CTPEDPQSJSDWQP40E4",
+  "fusion": {
+    "genre_source": "knn(from 3C6219AB60A24F5B8F101AF353, dist=0.335)",
+    "mood_source": "qwen_supplement",
+    "instrumentation_source": "qwen_supplement",
+    "caption_source": "qwen_supplement (not_propagated)"
+  },
+  "propagated_from": "3C6219AB60A24F5B8F101AF353",
+  "propagation_similarity": 0.6654,
+  "propagation_cosine_dist": 0.3346,
+  "vocal_presence": "instrumental",
+  "genre": "cool jazz",
+  "subgenre": "",
+  "mood": [
+    "energetic",
+    "excited"
+  ],
+  "instrumentation": [
+    "trumpet",
+    "saxophone",
+    "trombone"
+  ],
+  "caption": "An energetic latin jazz instrumental piece featuring trumpet, saxophone, and trombone, suitable for a party atmosphere.",
+  "segments": []
+}

@@ -1,0 +1,28 @@
+{
+  "audio_id": "33EA926BB2D64917AF8A166779",
+  "fusion": {
+    "genre_source": "unlabeled (voided_by_user_decision)",
+    "mood_source": "qwen_supplement",
+    "instrumentation_source": "qwen_supplement"
+  },
+  "propagated_from": null,
+  "propagation_similarity": null,
+  "propagation_cosine_dist": null,
+  "knn_vote_count": null,
+  "vocal_presence": "instrumental",
+  "genre": "",
+  "subgenre": "",
+  "mood": [
+    "energetic",
+    "introspective"
+  ],
+  "instrumentation": [
+    "violin",
+    "trumpet",
+    "clarinet",
+    "harp",
+    "flute"
+  ],
+  "caption": "An energetic electronic instrumental piece with a moderate-fast tempo, featuring violin, trumpet, clarinet, harp, and flute, suitable for dancing.",
+  "segments": []
+}

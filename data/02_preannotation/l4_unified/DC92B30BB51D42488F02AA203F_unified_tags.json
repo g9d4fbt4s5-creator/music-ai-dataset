@@ -1,0 +1,18 @@
+{
+  "audio_id": "DC92B30BB51D42488F02AA203F",
+  "genre": "Italo House",
+  "sub_genres": [
+    "Dream House",
+    "Deep House",
+    "Trance"
+  ],
+  "source": "text_llm_search",
+  "source_priority": "P0",
+  "confidence": 0.9,
+  "title": "Ouverture",
+  "artist": "Don Carlos",
+  "reference": "Discogs",
+  "knn_propagated": false,
+  "l4_version": "unified_v1_text_llm_plus_qwen",
+  "deprecated_knn_note": "KNN传播已从L4移除，一致率0%，详见archive/l4_knn_legacy/DEPRECATED.md"
+}

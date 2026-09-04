@@ -1,0 +1,17 @@
+{
+  "audio_id": "A7E56197254D451CB98808C9BD",
+  "genre": "Adult Contemporary",
+  "sub_genres": [
+    "Soft Rock",
+    "Pop"
+  ],
+  "source": "text_llm_search",
+  "source_priority": "P0",
+  "confidence": 0.85,
+  "title": "I Just Fall In Love Again",
+  "artist": "Carpenters/Anne Murray",
+  "reference": "Discogs",
+  "knn_propagated": false,
+  "l4_version": "unified_v1_text_llm_plus_qwen",
+  "deprecated_knn_note": "KNN传播已从L4移除，一致率0%，详见archive/l4_knn_legacy/DEPRECATED.md"
+}

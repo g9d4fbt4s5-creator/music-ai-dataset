@@ -1,0 +1,17 @@
+{
+  "audio_id": "3E6F4E0EC2024CCD9FE718F847",
+  "genre": "Cantopop",
+  "sub_genres": [
+    "Pop Ballad",
+    "R&B"
+  ],
+  "source": "text_llm_search",
+  "source_priority": "P0",
+  "confidence": 0.9,
+  "title": "孤雏",
+  "artist": "AGA",
+  "reference": "HK音乐百科",
+  "knn_propagated": false,
+  "l4_version": "unified_v1_text_llm_plus_qwen",
+  "deprecated_knn_note": "KNN传播已从L4移除，一致率0%，详见archive/l4_knn_legacy/DEPRECATED.md"
+}

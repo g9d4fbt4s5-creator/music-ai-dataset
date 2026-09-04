@@ -1,0 +1,30 @@
+{
+  "audio_id": "01M0ZV75HXBGQX8HM75G0WXBPV",
+  "fusion": {
+    "genre_source": "qwen_supplement",
+    "mood_source": "qwen_supplement",
+    "instrumentation_source": "qwen_supplement"
+  },
+  "propagated_from": null,
+  "propagation_similarity": null,
+  "propagation_cosine_dist": null,
+  "knn_vote_count": null,
+  "key": "G minor",
+  "vocal_presence": "instrumental",
+  "subgenre": "Fusion / Latin Jazz",
+  "genre": "Jazz",
+  "mood": [
+    "热情",
+    "活泼",
+    "自由",
+    "激情"
+  ],
+  "instrumentation": [
+    "中音萨克斯",
+    "原声钢琴",
+    "电贝斯",
+    "爵士鼓"
+  ],
+  "caption": "这是一首充满活力的拉丁融合爵士乐，以热情的中音萨克斯为主导，搭配流畅的钢琴、律动的贝斯和复杂的鼓点，营造出一种自由奔放且富有感染力的氛围。",
+  "segments": []
+}

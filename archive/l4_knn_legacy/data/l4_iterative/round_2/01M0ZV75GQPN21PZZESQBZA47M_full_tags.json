@@ -1,0 +1,108 @@
+{
+  "audio_id": "01M0ZV75GQPN21PZZESQBZA47M",
+  "fusion": {
+    "genre_source": "qwen_omni_golden",
+    "mood_source": "qwen_omni_golden",
+    "instrumentation_source": "qwen_supplement",
+    "caption_source": "qwen_omni_golden"
+  },
+  "propagated_from": "golden_set",
+  "propagation_similarity": null,
+  "propagation_cosine_dist": null,
+  "key": "F minor",
+  "vocal_presence": "instrumental",
+  "subgenre": "Lo-fi Hip Hop / Jazz Rap",
+  "genre": "Jazz Hop",
+  "mood": [
+    "慵懒",
+    "放松",
+    "忧郁",
+    "怀旧",
+    "都市"
+  ],
+  "instrumentation": [
+    "原声钢琴",
+    "电贝斯",
+    "爵士鼓",
+    "合成器",
+    "弦乐组",
+    "人声采样"
+  ],
+  "caption": "这是一首融合了爵士乐元素的嘻哈音乐，以原声钢琴和慵懒的鼓点为核心，营造出一种适合深夜独处的都市怀旧氛围。",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 18.5,
+      "label": "环境音效前奏",
+      "instruments": [
+        "脚步声",
+        "关门声",
+        "纸张翻动声"
+      ],
+      "mood": "宁静日常",
+      "confidence": 0.95
+    },
+    {
+      "start": 18.5,
+      "end": 68.0,
+      "label": "主律动段落",
+      "instruments": [
+        "原声钢琴",
+        "电贝斯",
+        "爵士鼓",
+        "合成器铺底"
+      ],
+      "mood": "慵懒放松",
+      "confidence": 0.92
+    },
+    {
+      "start": 68.0,
+      "end": 108.0,
+      "label": "氛围过渡段",
+      "instruments": [
+        "弦乐组",
+        "人声采样",
+        "合成器"
+      ],
+      "mood": "忧郁沉思",
+      "confidence": 0.88
+    },
+    {
+      "start": 108.0,
+      "end": 138.0,
+      "label": "人声采样段落",
+      "instruments": [
+        "人声采样",
+        "鼓点",
+        "贝斯"
+      ],
+      "mood": "迷幻怀旧",
+      "confidence": 0.9
+    },
+    {
+      "start": 138.0,
+      "end": 278.0,
+      "label": "循环律动与变奏",
+      "instruments": [
+        "原声钢琴",
+        "电贝斯",
+        "爵士鼓",
+        "合成器"
+      ],
+      "mood": "流畅随性",
+      "confidence": 0.94
+    },
+    {
+      "start": 278.0,
+      "end": 313.0,
+      "label": "结尾环境音效",
+      "instruments": [
+        "脚步声",
+        "关门声",
+        "纸张翻动声"
+      ],
+      "mood": "宁静日常",
+      "confidence": 0.95
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "audio_id": "01M0ZV75H12W7ATW11QWSKXC5N",
+  "fusion": {
+    "genre_source": "knn(from 3C6219AB60A24F5B8F101AF353, dist=0.370)",
+    "mood_source": "qwen_supplement",
+    "instrumentation_source": "qwen_supplement",
+    "caption_source": "qwen_supplement (not_propagated)"
+  },
+  "propagated_from": "3C6219AB60A24F5B8F101AF353",
+  "propagation_similarity": 0.6297,
+  "propagation_cosine_dist": 0.3703,
+  "vocal_presence": "instrumental",
+  "genre": "cool jazz",
+  "subgenre": "",
+  "mood": [
+    "introspective",
+    "dreamy"
+  ],
+  "instrumentation": [
+    "trumpet",
+    "violin",
+    "flute"
+  ],
+  "caption": "A mid-tempo bebop instrumental featuring trumpet, violin, and flute, with an introspective and dreamy mood, suitable for elevator music.",
+  "segments": []
+}

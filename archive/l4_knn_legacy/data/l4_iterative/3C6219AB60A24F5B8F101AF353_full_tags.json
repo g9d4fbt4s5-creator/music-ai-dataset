@@ -1,0 +1,26 @@
+{
+  "audio_id": "3C6219AB60A24F5B8F101AF353",
+  "fusion": {
+    "genre_source": "qwen_omni_golden",
+    "mood_source": "qwen_omni_golden",
+    "instrumentation_source": "qwen_supplement",
+    "caption_source": "qwen_omni_golden"
+  },
+  "propagated_from": "golden_set",
+  "propagation_similarity": null,
+  "propagation_cosine_dist": null,
+  "vocal_presence": "instrumental",
+  "genre": "cool jazz",
+  "subgenre": "",
+  "mood": [
+    "peaceful",
+    "romantic"
+  ],
+  "instrumentation": [
+    "trumpet",
+    "bass",
+    "violin"
+  ],
+  "caption": "A slow, peaceful cool jazz instrumental piece featuring trumpet, bass, and violin, suitable for study or relaxation.",
+  "segments": []
+}

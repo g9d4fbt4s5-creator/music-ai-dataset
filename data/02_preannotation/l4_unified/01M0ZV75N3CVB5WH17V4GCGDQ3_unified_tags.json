@@ -1,0 +1,16 @@
+{
+  "audio_id": "01M0ZV75N3CVB5WH17V4GCGDQ3",
+  "genre": "",
+  "sub_genres": [],
+  "source": "deepseek_v4_flash_invalid",
+  "source_priority": "P1_needs_reannotate",
+  "confidence": 0.0,
+  "title": "unknown",
+  "artist": "unknown",
+  "reference": "needs_qwen_reannotate",
+  "knn_propagated": false,
+  "l4_version": "unified_v1_text_llm_plus_qwen",
+  "deprecated_knn_note": "KNN传播已从L4移除，一致率0%，详见archive/l4_knn_legacy/DEPRECATED.md",
+  "needs_reannotate": true,
+  "reannotate_reason": "deepseek_v4_flash残留，已判定质量差，需Qwen重标"
+}

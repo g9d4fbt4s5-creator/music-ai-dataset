@@ -1,0 +1,105 @@
+{
+  "audio_id": "3DD429C6458C404A9891416635",
+  "fusion": {
+    "genre_source": "qwen_omni_golden",
+    "mood_source": "qwen_omni_golden",
+    "instrumentation_source": "qwen_supplement",
+    "caption_source": "qwen_omni_golden"
+  },
+  "propagated_from": "golden_set",
+  "propagation_similarity": null,
+  "propagation_cosine_dist": null,
+  "key": "C minor",
+  "vocal_presence": "instrumental",
+  "subgenre": "Progressive House",
+  "genre": "Deep House",
+  "mood": [
+    "热情",
+    "忧郁",
+    "沉思"
+  ],
+  "instrumentation": [
+    "合成器",
+    "电子鼓",
+    "贝斯",
+    "人声采样"
+  ],
+  "caption": "这是一首深浩室风格的电子舞曲，以合成器和电子鼓为主，情绪从宁静逐渐过渡到热情奔放，整体氛围充满律动感。",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 56.0,
+      "label": "Intro",
+      "instruments": [
+        "合成器",
+        "电子鼓",
+        "贝斯"
+      ],
+      "mood": "宁静",
+      "confidence": 0.9
+    },
+    {
+      "start": 56.0,
+      "end": 118.0,
+      "label": "Build-up",
+      "instruments": [
+        "合成器",
+        "电子鼓",
+        "贝斯",
+        "人声采样"
+      ],
+      "mood": "期待",
+      "confidence": 0.85
+    },
+    {
+      "start": 118.0,
+      "end": 178.0,
+      "label": "Chorus",
+      "instruments": [
+        "合成器",
+        "电子鼓",
+        "贝斯",
+        "人声采样"
+      ],
+      "mood": "热情奔放",
+      "confidence": 0.9
+    },
+    {
+      "start": 178.0,
+      "end": 238.0,
+      "label": "Breakdown",
+      "instruments": [
+        "合成器",
+        "电子鼓",
+        "贝斯"
+      ],
+      "mood": "忧郁沉思",
+      "confidence": 0.8
+    },
+    {
+      "start": 238.0,
+      "end": 298.0,
+      "label": "Build-up",
+      "instruments": [
+        "合成器",
+        "电子鼓",
+        "贝斯",
+        "人声采样"
+      ],
+      "mood": "期待",
+      "confidence": 0.85
+    },
+    {
+      "start": 298.0,
+      "end": 330.0,
+      "label": "Outro",
+      "instruments": [
+        "合成器",
+        "电子鼓",
+        "贝斯"
+      ],
+      "mood": "平静",
+      "confidence": 0.9
+    }
+  ]
+}

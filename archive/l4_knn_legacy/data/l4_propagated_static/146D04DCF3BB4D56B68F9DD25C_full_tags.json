@@ -1,0 +1,131 @@
+{
+  "audio_id": "146D04DCF3BB4D56B68F9DD25C",
+  "fusion": {
+    "genre_source": "qwen_omni_golden",
+    "mood_source": "qwen_omni_golden",
+    "instrumentation_source": "qwen_omni_golden",
+    "caption_source": "qwen_omni_golden"
+  },
+  "propagated_from": "golden_set",
+  "propagation_similarity": null,
+  "propagation_cosine_dist": null,
+  "vocal_presence": "instrumental",
+  "genre": "Traditional Pop",
+  "subgenre": "",
+  "mood": [
+    "馨",
+    "感人"
+  ],
+  "instrumentation": [
+    "鼓",
+    "钢琴",
+    "人声",
+    "贝斯",
+    "弦乐"
+  ],
+  "caption": "这是一首经典的流行抒情歌曲，以深情的男声演唱和温暖的钢琴、弦乐伴奏为特色，营造出浪漫感人的氛围。",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 16.5,
+      "label": "Intro",
+      "instruments": [
+        "合成器",
+        "弦乐"
+      ],
+      "mood": "浪漫",
+      "confidence": 0.95
+    },
+    {
+      "start": 16.5,
+      "end": 41.5,
+      "label": "Verse 1",
+      "instruments": [
+        "钢琴",
+        "贝斯",
+        "鼓",
+        "人声"
+      ],
+      "mood": "深情",
+      "confidence": 0.92
+    },
+    {
+      "start": 41.5,
+      "end": 65.0,
+      "label": "Chorus",
+      "instruments": [
+        "钢琴",
+        "贝斯",
+        "鼓",
+        "弦乐",
+        "人声"
+      ],
+      "mood": "温馨",
+      "confidence": 0.94
+    },
+    {
+      "start": 65.0,
+      "end": 88.5,
+      "label": "Verse 2",
+      "instruments": [
+        "钢琴",
+        "贝斯",
+        "鼓",
+        "人声"
+      ],
+      "mood": "温柔",
+      "confidence": 0.91
+    },
+    {
+      "start": 88.5,
+      "end": 112.0,
+      "label": "Chorus",
+      "instruments": [
+        "钢琴",
+        "贝斯",
+        "鼓",
+        "弦乐",
+        "人声"
+      ],
+      "mood": "深情",
+      "confidence": 0.93
+    },
+    {
+      "start": 112.0,
+      "end": 135.5,
+      "label": "Bridge",
+      "instruments": [
+        "钢琴",
+        "弦乐",
+        "人声"
+      ],
+      "mood": "感人",
+      "confidence": 0.89
+    },
+    {
+      "start": 135.5,
+      "end": 159.0,
+      "label": "Chorus",
+      "instruments": [
+        "钢琴",
+        "贝斯",
+        "鼓",
+        "弦乐",
+        "人声"
+      ],
+      "mood": "热情",
+      "confidence": 0.95
+    },
+    {
+      "start": 159.0,
+      "end": 182.0,
+      "label": "Outro",
+      "instruments": [
+        "钢琴",
+        "弦乐"
+      ],
+      "mood": "宁静",
+      "confidence": 0.9
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "audio_id": "448A140A77354AAC9458496B10",
+  "genre": "R&B",
+  "sub_genres": [
+    "Pop R&B",
+    "Adult Contemporary"
+  ],
+  "source": "text_llm_search",
+  "source_priority": "P0",
+  "confidence": 0.95,
+  "title": "We Belong Together",
+  "artist": "Mariah Carey",
+  "reference": "Wikipedia",
+  "knn_propagated": false,
+  "l4_version": "unified_v1_text_llm_plus_qwen",
+  "deprecated_knn_note": "KNN传播已从L4移除，一致率0%，详见archive/l4_knn_legacy/DEPRECATED.md"
+}

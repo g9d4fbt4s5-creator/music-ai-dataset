@@ -1,0 +1,17 @@
+{
+  "audio_id": "AA089CC166EF4DE8AA78014AD9",
+  "genre": "Ambient",
+  "sub_genres": [
+    "Experimental",
+    "Drone"
+  ],
+  "source": "text_llm_search",
+  "source_priority": "P0",
+  "confidence": 0.6,
+  "title": "How to count one to ten - windmill",
+  "artist": "Unknown (ambient/experimental)",
+  "reference": "文件名推断",
+  "knn_propagated": false,
+  "l4_version": "unified_v1_text_llm_plus_qwen",
+  "deprecated_knn_note": "KNN传播已从L4移除，一致率0%，详见archive/l4_knn_legacy/DEPRECATED.md"
+}

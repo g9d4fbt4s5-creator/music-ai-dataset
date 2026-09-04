@@ -1,0 +1,29 @@
+{
+  "audio_id": "95D0CB9A84B54582AD17E79393",
+  "fusion": {
+    "genre_source": "unlabeled (voided_by_user_decision)",
+    "mood_source": "qwen_supplement",
+    "instrumentation_source": "qwen_supplement"
+  },
+  "propagated_from": null,
+  "propagation_similarity": null,
+  "propagation_cosine_dist": null,
+  "knn_vote_count": null,
+  "vocal_presence": "instrumental",
+  "genre": "",
+  "subgenre": "",
+  "mood": [
+    "introspective",
+    "melancholic",
+    "romantic"
+  ],
+  "instrumentation": [
+    "violin",
+    "clarinet",
+    "trumpet",
+    "bass",
+    "harp"
+  ],
+  "caption": "A melancholic electronic instrumental piece with violin, clarinet, trumpet, bass, and harp, at a moderate tempo, suitable for study.",
+  "segments": []
+}

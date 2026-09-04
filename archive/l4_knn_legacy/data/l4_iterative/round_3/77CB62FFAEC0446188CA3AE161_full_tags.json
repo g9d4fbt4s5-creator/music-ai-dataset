@@ -1,0 +1,27 @@
+{
+  "audio_id": "77CB62FFAEC0446188CA3AE161",
+  "fusion": {
+    "genre_source": "knn(from D2098BC896D6450A8E3744528E, dist=0.297)",
+    "mood_source": "qwen_supplement",
+    "instrumentation_source": "qwen_supplement",
+    "caption_source": "qwen_supplement (not_propagated)"
+  },
+  "propagated_from": "D2098BC896D6450A8E3744528E",
+  "propagation_similarity": 0.7033,
+  "propagation_cosine_dist": 0.2967,
+  "vocal_presence": "instrumental",
+  "genre": "latin jazz",
+  "subgenre": "",
+  "mood": [
+    "energetic",
+    "romantic"
+  ],
+  "instrumentation": [
+    "saxophone",
+    "drums",
+    "acoustic guitar",
+    "violin"
+  ],
+  "caption": "An energetic latin jazz instrumental piece featuring saxophone, drums, acoustic guitar, and violin, with a romantic and danceable groove at a medium-fast tempo.",
+  "segments": []
+}

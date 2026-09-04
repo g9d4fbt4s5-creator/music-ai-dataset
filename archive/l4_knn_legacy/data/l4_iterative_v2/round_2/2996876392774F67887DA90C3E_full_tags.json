@@ -1,0 +1,30 @@
+{
+  "audio_id": "2996876392774F67887DA90C3E",
+  "fusion": {
+    "genre_source": "qwen_omni_golden",
+    "mood_source": "qwen_supplement",
+    "instrumentation_source": "qwen_supplement"
+  },
+  "propagated_from": "golden_set",
+  "propagation_similarity": null,
+  "propagation_cosine_dist": null,
+  "knn_vote_count": null,
+  "key": "D major",
+  "vocal_presence": "instrumental",
+  "subgenre": "Instrumental Rock",
+  "genre": "Post-Rock",
+  "mood": [
+    "宁静",
+    "热情",
+    "激昂",
+    "宏大"
+  ],
+  "instrumentation": [
+    "电吉他",
+    "贝斯",
+    "鼓",
+    "合成器"
+  ],
+  "caption": "这是一首后摇滚风格的纯音乐，以电吉他、贝斯和鼓为主要乐器，情绪从宁静逐渐过渡到激昂和宏大。",
+  "segments": []
+}

@@ -1,0 +1,27 @@
+{
+  "audio_id": "870491B93FD04F979A12BC7811",
+  "fusion": {
+    "genre_source": "unlabeled (voided_by_user_decision)",
+    "mood_source": "qwen_supplement",
+    "instrumentation_source": "qwen_supplement",
+    "caption_source": "qwen_supplement (not_propagated)"
+  },
+  "propagated_from": null,
+  "propagation_similarity": null,
+  "propagation_cosine_dist": null,
+  "vocal_presence": "instrumental",
+  "genre": "",
+  "subgenre": "",
+  "mood": [
+    "energetic",
+    "introspective"
+  ],
+  "instrumentation": [
+    "drums",
+    "violin",
+    "acoustic guitar",
+    "flute"
+  ],
+  "caption": "An energetic electronic instrumental piece with drums, violin, acoustic guitar, and flute, suitable for dancing.",
+  "segments": []
+}

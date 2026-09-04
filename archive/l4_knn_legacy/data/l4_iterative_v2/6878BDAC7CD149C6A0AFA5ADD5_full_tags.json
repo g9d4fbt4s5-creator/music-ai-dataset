@@ -1,0 +1,30 @@
+{
+  "audio_id": "6878BDAC7CD149C6A0AFA5ADD5",
+  "fusion": {
+    "genre_source": "qwen_omni_golden",
+    "mood_source": "qwen_supplement",
+    "instrumentation_source": "qwen_supplement"
+  },
+  "propagated_from": "golden_set",
+  "propagation_similarity": null,
+  "propagation_cosine_dist": null,
+  "knn_vote_count": null,
+  "key": "Bb major",
+  "vocal_presence": "vocal",
+  "subgenre": "Pop Ballad",
+  "genre": "Cantopop",
+  "mood": [
+    "sentimental",
+    "melancholic",
+    "emotional"
+  ],
+  "instrumentation": [
+    "piano",
+    "acoustic guitar",
+    "drums",
+    "strings",
+    "male vocals"
+  ],
+  "caption": "这是一首由男声演唱的伤感流行歌曲，以钢琴和弦乐为主要伴奏。",
+  "segments": []
+}

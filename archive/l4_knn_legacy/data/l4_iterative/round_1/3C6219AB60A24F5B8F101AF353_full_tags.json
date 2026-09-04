@@ -1,0 +1,160 @@
+{
+  "audio_id": "3C6219AB60A24F5B8F101AF353",
+  "fusion": {
+    "genre_source": "qwen_omni_golden",
+    "mood_source": "qwen_omni_golden",
+    "instrumentation_source": "qwen_omni_golden",
+    "caption_source": "qwen_omni_golden"
+  },
+  "propagated_from": "golden_set",
+  "propagation_similarity": null,
+  "propagation_cosine_dist": null,
+  "vocal_presence": "instrumental",
+  "genre": "Cantopop",
+  "subgenre": "",
+  "mood": [
+    "有",
+    "深情"
+  ],
+  "instrumentation": [
+    "原声钢琴",
+    "鼓",
+    "贝斯",
+    "爵士鼓",
+    "弦乐组"
+  ],
+  "caption": "这是一首充满情感的粤语流行抒情摇滚，以钢琴和弦乐开场，逐渐加入电吉他和强劲的鼓点，营造出从忧郁到激昂的宏大氛围。",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 12.5,
+      "label": "前奏",
+      "instruments": [
+        "原声钢琴"
+      ],
+      "mood": "宁静舒缓",
+      "confidence": 0.95
+    },
+    {
+      "start": 12.5,
+      "end": 36.4,
+      "label": "主歌",
+      "instruments": [
+        "原声钢琴",
+        "女声"
+      ],
+      "mood": "忧郁沉思",
+      "confidence": 0.92
+    },
+    {
+      "start": 36.4,
+      "end": 56.4,
+      "label": "预副歌",
+      "instruments": [
+        "原声钢琴",
+        "贝斯",
+        "鼓",
+        "女声"
+      ],
+      "mood": "情感递进",
+      "confidence": 0.9
+    },
+    {
+      "start": 56.4,
+      "end": 86.4,
+      "label": "副歌",
+      "instruments": [
+        "电吉他",
+        "贝斯",
+        "爵士鼓",
+        "弦乐组",
+        "女声"
+      ],
+      "mood": "热情奔放",
+      "confidence": 0.95
+    },
+    {
+      "start": 86.4,
+      "end": 106.4,
+      "label": "桥段",
+      "instruments": [
+        "电吉他",
+        "贝斯",
+        "爵士鼓",
+        "弦乐组",
+        "女声"
+      ],
+      "mood": "激昂坚定",
+      "confidence": 0.88
+    },
+    {
+      "start": 106.4,
+      "end": 126.4,
+      "label": "副歌",
+      "instruments": [
+        "电吉他",
+        "贝斯",
+        "爵士鼓",
+        "弦乐组",
+        "女声"
+      ],
+      "mood": "热情奔放",
+      "confidence": 0.95
+    },
+    {
+      "start": 126.4,
+      "end": 153.6,
+      "label": "器乐间奏",
+      "instruments": [
+        "电吉他",
+        "贝斯",
+        "爵士鼓",
+        "弦乐组"
+      ],
+      "mood": "激昂有力",
+      "confidence": 0.9
+    },
+    {
+      "start": 153.6,
+      "end": 174.4,
+      "label": "桥段",
+      "instruments": [
+        "电吉他",
+        "贝斯",
+        "爵士鼓",
+        "弦乐组",
+        "女声"
+      ],
+      "mood": "情感爆发",
+      "confidence": 0.92
+    },
+    {
+      "start": 174.4,
+      "end": 200.8,
+      "label": "副歌",
+      "instruments": [
+        "电吉他",
+        "贝斯",
+        "爵士鼓",
+        "弦乐组",
+        "女声"
+      ],
+      "mood": "热情奔放",
+      "confidence": 0.96
+    },
+    {
+      "start": 200.8,
+      "end": 238.0,
+      "label": "尾声",
+      "instruments": [
+        "电吉他",
+        "贝斯",
+        "爵士鼓",
+        "弦乐组",
+        "女声"
+      ],
+      "mood": "激情渐弱",
+      "confidence": 0.85
+    }
+  ]
+}

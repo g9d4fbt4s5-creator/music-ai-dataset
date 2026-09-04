@@ -1,0 +1,30 @@
+{
+  "audio_id": "6835D62222154FA6B0509AA881",
+  "fusion": {
+    "genre_source": "qwen_supplement",
+    "mood_source": "qwen_supplement",
+    "instrumentation_source": "qwen_supplement",
+    "caption_source": "qwen_supplement (not_propagated)"
+  },
+  "propagated_from": null,
+  "propagation_similarity": null,
+  "propagation_cosine_dist": null,
+  "key": "C major",
+  "vocal_presence": "vocal",
+  "subgenre": "Vocal Jazz / Ballad",
+  "genre": "Jazz",
+  "mood": [
+    "怀旧",
+    "抒情",
+    "感伤",
+    "宁静"
+  ],
+  "instrumentation": [
+    "原声钢琴",
+    "贝斯",
+    "爵士鼓",
+    "人声"
+  ],
+  "caption": "这是一首由女歌手演唱的日语爵士抒情曲，以钢琴为主导，营造出怀旧而感伤的氛围。",
+  "segments": []
+}

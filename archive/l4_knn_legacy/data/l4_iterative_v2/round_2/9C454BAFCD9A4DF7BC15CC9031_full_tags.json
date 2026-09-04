@@ -1,0 +1,31 @@
+{
+  "audio_id": "9C454BAFCD9A4DF7BC15CC9031",
+  "fusion": {
+    "genre_source": "qwen_omni_golden",
+    "mood_source": "qwen_supplement",
+    "instrumentation_source": "qwen_supplement"
+  },
+  "propagated_from": "golden_set",
+  "propagation_similarity": null,
+  "propagation_cosine_dist": null,
+  "knn_vote_count": null,
+  "key": "C minor",
+  "vocal_presence": "vocal",
+  "subgenre": "Pop R&B",
+  "genre": "R&B",
+  "mood": [
+    "浪漫",
+    "热情",
+    "梦幻",
+    "愉悦"
+  ],
+  "instrumentation": [
+    "人声",
+    "合成器",
+    "电子鼓",
+    "贝斯",
+    "弦乐"
+  ],
+  "caption": "这是一首充满浪漫氛围的流行R&B歌曲，以合成器和电子鼓为主要伴奏，营造出如巴黎雨中般梦幻而深情的整体氛围。",
+  "segments": []
+}

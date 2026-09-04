@@ -423,6 +423,15 @@ def main():
     for idx, row in manifest_df.iterrows():
         audio_id = row["audio_id"]
 
+        # ADR-004: 排除不参与训练的样本（黄金集、challenge_set、val）
+        # in_train_training=False 的样本只做KNN种子/真值/压力测试，不提取训练特征
+        in_train = row.get("in_train_training", True)
+        if in_train is False or (isinstance(in_train, str) and in_train.lower() == "false"):
+            sample_type = row.get("sample_type", "unknown")
+            logger.info(f"[{idx + 1}/{len(manifest_df)}] 跳过非训练样本: {audio_id} (sample_type={sample_type}, in_train_training=False)")
+            skip_count += 1
+            continue
+
         # 跳过已处理的
         if audio_id in processed_ids and not args.force:
             logger.info(f"[{idx + 1}/{len(manifest_df)}] 跳过（已处理）: {audio_id}")

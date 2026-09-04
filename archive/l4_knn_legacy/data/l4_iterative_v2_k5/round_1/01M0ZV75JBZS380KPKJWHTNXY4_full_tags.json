@@ -1,0 +1,29 @@
+{
+  "audio_id": "01M0ZV75JBZS380KPKJWHTNXY4",
+  "fusion": {
+    "genre_source": "qwen_supplement",
+    "mood_source": "qwen_supplement",
+    "instrumentation_source": "qwen_supplement"
+  },
+  "propagated_from": null,
+  "propagation_similarity": null,
+  "propagation_cosine_dist": null,
+  "knn_vote_count": null,
+  "key": "E minor",
+  "vocal_presence": "vocal",
+  "subgenre": "Alternative / Indie",
+  "genre": "Art Pop",
+  "mood": [
+    "压抑",
+    "戏剧化",
+    "黑暗",
+    "张力"
+  ],
+  "instrumentation": [
+    "原声钢琴",
+    "贝斯",
+    "爵士鼓"
+  ],
+  "caption": "这是一首充满戏剧张力的艺术流行歌曲，以钢琴、贝斯和鼓为伴奏，女歌手用极具表现力的嗓音演绎了关于死亡与囚禁的黑暗叙事。",
+  "segments": []
+}

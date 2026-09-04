@@ -1,0 +1,30 @@
+{
+  "audio_id": "818C48C49AE547DCBC6D3D9B43",
+  "fusion": {
+    "genre_source": "qwen_supplement",
+    "mood_source": "qwen_supplement",
+    "instrumentation_source": "qwen_supplement"
+  },
+  "propagated_from": null,
+  "propagation_similarity": null,
+  "propagation_cosine_dist": null,
+  "knn_vote_count": null,
+  "key": "Bb minor",
+  "vocal_presence": "instrumental",
+  "subgenre": "Progressive Trance",
+  "genre": "Trance",
+  "mood": [
+    "energetic",
+    "euphoric",
+    "driving",
+    "atmospheric"
+  ],
+  "instrumentation": [
+    "Synthesizer",
+    "Drum Machine",
+    "Arpeggiator",
+    "Synth Bass"
+  ],
+  "caption": "这是一首渐进式出神舞曲，以合成器、鼓机和琶音器为主，营造出充满活力和令人振奋的氛围。",
+  "segments": []
+}

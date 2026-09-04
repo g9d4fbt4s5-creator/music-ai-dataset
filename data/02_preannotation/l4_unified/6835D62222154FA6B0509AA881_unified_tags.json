@@ -1,0 +1,18 @@
+{
+  "audio_id": "6835D62222154FA6B0509AA881",
+  "genre": "City Pop",
+  "sub_genres": [
+    "J-pop",
+    "Adult Contemporary",
+    "Jazz Fusion"
+  ],
+  "source": "text_llm_search",
+  "source_priority": "P0",
+  "confidence": 0.9,
+  "title": "若き日の望楼",
+  "artist": "大贯妙子 (Taeko Onuki)",
+  "reference": "Discogs/J-pop百科",
+  "knn_propagated": false,
+  "l4_version": "unified_v1_text_llm_plus_qwen",
+  "deprecated_knn_note": "KNN传播已从L4移除，一致率0%，详见archive/l4_knn_legacy/DEPRECATED.md"
+}

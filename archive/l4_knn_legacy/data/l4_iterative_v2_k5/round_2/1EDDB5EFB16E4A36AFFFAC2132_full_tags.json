@@ -1,0 +1,27 @@
+{
+  "audio_id": "1EDDB5EFB16E4A36AFFFAC2132",
+  "fusion": {
+    "genre_source": "knn_vote(k=3,votes=2,from AA089CC166EF4DE8AA78,dist=0.388)",
+    "mood_source": "knn_vote(from AA089CC166EF4DE8AA78)",
+    "instrumentation_source": "knn_vote(from AA089CC166EF4DE8AA78)"
+  },
+  "propagated_from": "AA089CC166EF4DE8AA78014AD9",
+  "propagation_similarity": null,
+  "propagation_cosine_dist": 0.3875,
+  "knn_vote_count": 2,
+  "vocal_presence": "instrumental",
+  "genre": "Post-Rock",
+  "subgenre": "Instrumental Rock",
+  "mood": [
+    "沉思",
+    "激情",
+    "宏大"
+  ],
+  "instrumentation": [
+    "acoustic guitar",
+    "violin",
+    "harp"
+  ],
+  "caption": "An energetic electronic instrumental piece with acoustic guitar, violin, and harp, suitable for studying.",
+  "segments": []
+}

@@ -1,0 +1,26 @@
+{
+  "audio_id": "01M0ZV75CA0XZA10YGA99D89XQ",
+  "fusion": {
+    "genre_source": "qwen_supplement",
+    "mood_source": "qwen_supplement",
+    "instrumentation_source": "qwen_supplement"
+  },
+  "propagated_from": null,
+  "propagation_similarity": null,
+  "propagation_cosine_dist": null,
+  "knn_vote_count": null,
+  "vocal_presence": "instrumental",
+  "genre": "latin jazz",
+  "subgenre": "",
+  "mood": [
+    "energetic",
+    "romantic"
+  ],
+  "instrumentation": [
+    "trumpet",
+    "saxophone",
+    "double bass"
+  ],
+  "caption": "An energetic latin jazz instrumental with trumpet and saxophone melodies over a driving double bass, perfect for dancing.",
+  "segments": []
+}

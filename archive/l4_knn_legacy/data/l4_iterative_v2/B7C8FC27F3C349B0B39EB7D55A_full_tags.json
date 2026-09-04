@@ -1,0 +1,28 @@
+{
+  "audio_id": "B7C8FC27F3C349B0B39EB7D55A",
+  "fusion": {
+    "genre_source": "qwen_omni_golden",
+    "mood_source": "qwen_supplement",
+    "instrumentation_source": "qwen_supplement"
+  },
+  "propagated_from": "golden_set",
+  "propagation_similarity": null,
+  "propagation_cosine_dist": null,
+  "knn_vote_count": null,
+  "key": "A minor",
+  "vocal_presence": "instrumental",
+  "subgenre": "Progressive House",
+  "genre": "Deep House",
+  "mood": [
+    "热情",
+    "忧郁",
+    "平静"
+  ],
+  "instrumentation": [
+    "合成器",
+    "电子鼓",
+    "贝斯"
+  ],
+  "caption": "这是一首深浩室风格的纯音乐，以合成器和电子鼓为主要乐器，营造出热情奔放又略带忧郁的氛围。",
+  "segments": []
+}

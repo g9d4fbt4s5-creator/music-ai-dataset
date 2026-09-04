@@ -1,0 +1,32 @@
+{
+  "audio_id": "01M0ZV75KMG8AH943Q16ZAG4J7",
+  "fusion": {
+    "genre_source": "qwen_omni_golden",
+    "mood_source": "qwen_supplement",
+    "instrumentation_source": "qwen_supplement"
+  },
+  "propagated_from": "golden_set",
+  "propagation_similarity": null,
+  "propagation_cosine_dist": null,
+  "knn_vote_count": null,
+  "key": "A minor",
+  "vocal_presence": "instrumental",
+  "subgenre": "Swing / Jump Blues",
+  "genre": "Big Band Jazz",
+  "mood": [
+    "活泼",
+    "热情",
+    "欢快",
+    "俏皮"
+  ],
+  "instrumentation": [
+    "小号",
+    "长号",
+    "萨克斯管",
+    "钢琴",
+    "低音提琴",
+    "爵士鼓"
+  ],
+  "caption": "这是一首充满活力的摇摆乐，以铜管乐器和节奏组为主，营造出一种复古而欢快的氛围。",
+  "segments": []
+}

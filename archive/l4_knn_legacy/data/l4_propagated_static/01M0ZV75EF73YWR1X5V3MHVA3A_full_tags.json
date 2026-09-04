@@ -1,0 +1,28 @@
+{
+  "audio_id": "01M0ZV75EF73YWR1X5V3MHVA3A",
+  "fusion": {
+    "genre_source": "knn(from D2098BC896D6450A8E3744528E, dist=0.304)",
+    "mood_source": "qwen_supplement",
+    "instrumentation_source": "qwen_supplement",
+    "caption_source": "qwen_supplement (not_propagated)"
+  },
+  "propagated_from": "D2098BC896D6450A8E3744528E",
+  "propagation_similarity": 0.6956,
+  "propagation_cosine_dist": 0.3044,
+  "vocal_presence": "instrumental",
+  "genre": "Bossa Nova",
+  "subgenre": "",
+  "mood": [
+    "energetic",
+    "romantic"
+  ],
+  "instrumentation": [
+    "violin",
+    "flute",
+    "trumpet",
+    "double bass",
+    "bass"
+  ],
+  "caption": "An energetic electronic pop instrumental with violin, flute, trumpet, and bass, featuring a romantic undertone and a driving tempo.",
+  "segments": []
+}

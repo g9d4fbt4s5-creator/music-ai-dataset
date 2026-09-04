@@ -1,0 +1,17 @@
+{
+  "audio_id": "87A69E31F3DC48429BEB755F06",
+  "genre": "R&B",
+  "sub_genres": [
+    "Contemporary R&B",
+    "Pop"
+  ],
+  "source": "text_llm_search",
+  "source_priority": "P0",
+  "confidence": 0.95,
+  "title": "Call You Tonight",
+  "artist": "Whitney Houston",
+  "reference": "Discogs/AllMusic",
+  "knn_propagated": false,
+  "l4_version": "unified_v1_text_llm_plus_qwen",
+  "deprecated_knn_note": "KNN传播已从L4移除，一致率0%，详见archive/l4_knn_legacy/DEPRECATED.md"
+}

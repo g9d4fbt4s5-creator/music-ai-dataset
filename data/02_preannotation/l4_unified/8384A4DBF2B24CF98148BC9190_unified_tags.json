@@ -1,0 +1,18 @@
+{
+  "audio_id": "8384A4DBF2B24CF98148BC9190",
+  "genre": "J-pop",
+  "sub_genres": [
+    "Alternative Pop",
+    "Jazz",
+    "Art Pop"
+  ],
+  "source": "text_llm_search",
+  "source_priority": "P0",
+  "confidence": 0.9,
+  "title": "The Creamy Season",
+  "artist": "椎名林檎 (Ringo Sheena)",
+  "reference": "Wikipedia/Discogs",
+  "knn_propagated": false,
+  "l4_version": "unified_v1_text_llm_plus_qwen",
+  "deprecated_knn_note": "KNN传播已从L4移除，一致率0%，详见archive/l4_knn_legacy/DEPRECATED.md"
+}

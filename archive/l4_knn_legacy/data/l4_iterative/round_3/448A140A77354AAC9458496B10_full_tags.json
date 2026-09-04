@@ -1,0 +1,27 @@
+{
+  "audio_id": "448A140A77354AAC9458496B10",
+  "fusion": {
+    "genre_source": "knn(from D2098BC896D6450A8E3744528E, dist=0.361)",
+    "mood_source": "qwen_supplement",
+    "instrumentation_source": "qwen_supplement",
+    "caption_source": "qwen_supplement (not_propagated)"
+  },
+  "propagated_from": "D2098BC896D6450A8E3744528E",
+  "propagation_similarity": 0.6389,
+  "propagation_cosine_dist": 0.3611,
+  "vocal_presence": "instrumental",
+  "genre": "latin jazz",
+  "subgenre": "",
+  "mood": [
+    "energetic",
+    "happy"
+  ],
+  "instrumentation": [
+    "harp",
+    "trumpet",
+    "clarinet",
+    "bass"
+  ],
+  "caption": "An energetic electronic instrumental piece with harp, trumpet, clarinet, and bass, suitable for a party atmosphere.",
+  "segments": []
+}

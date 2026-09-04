@@ -1,0 +1,26 @@
+{
+  "audio_id": "78250AD45D2842A3AA18C9071D",
+  "fusion": {
+    "genre_source": "qwen_supplement",
+    "mood_source": "unlabeled",
+    "instrumentation_source": "qwen_supplement",
+    "caption_source": "qwen_supplement (not_propagated)"
+  },
+  "propagated_from": null,
+  "propagation_similarity": null,
+  "propagation_cosine_dist": null,
+  "duration_sec": 444.0,
+  "genre": "Jazz",
+  "subgenre": "",
+  "mood": [],
+  "instrumentation": [
+    "Piano",
+    "Double Bass",
+    "Drums",
+    "原声钢琴",
+    "电贝斯",
+    "爵士鼓"
+  ],
+  "caption": "这是一首充满活力的爵士钢琴三重奏，以欢快的旋律和即兴演奏为特色。",
+  "segments": []
+}
