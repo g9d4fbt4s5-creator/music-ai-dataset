@@ -173,8 +173,14 @@ reports/manual/**/*.html
 data/02_preannotation/l1_physical/
 # L2 MERT嵌入（可从母版重新提取）
 data/02_preannotation/l2_embedding/
+# L2 CLAP嵌入（注意实际落盘目录是 l2_embedding_clap/，与MERT的 l2_embedding/ 不同名，勿错位）
+data/02_preannotation/l2_embedding_clap/
+# 全局兜底：任何 .npy 嵌入/特征张量均为可再生产物，不入Git
+*.npy
 # L2 CLAP语义（可从母版重新提取）
 data/02_preannotation/l2_semantic/
+# Qwen/外部API调用缓存（可重新请求生成）
+data/02_preannotation/api_cache/
 # L4 KNN传播标签（可从L2+黄金集重新生成）
 data/02_preannotation/l4_propagated/
 # Stage6 训练特征（可从切片重新提取）

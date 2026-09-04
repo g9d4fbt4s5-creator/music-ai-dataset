@@ -1,4 +1,9 @@
 """
+【实验特征链暂停 · T3 终审计 2026-09-04 用户拍板】
+KNN 传播因一致率 0% 退役，且实测 CLAP top-1 vs Qwen 一致率仅 28.6%，不作 genre 最终标签。
+genre 标注改走「文本LLM(P0)+Qwen听音频(P1)+人工裁决」多标签分层。本 CLAP zero-shot 脚本
+作为历史资产保留原地、不归档不删除，CLAP 结果仅作 debug 候选；扩到 500 首时可重启评估。
+
 l2_clap_zero_shot.py
 L2 语义候选层：CLAP 嵌入提取 + zero-shot 分类
 

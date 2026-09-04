@@ -1,4 +1,10 @@
 """
+【实验特征链暂停 · T3 终审计 2026-09-04 用户拍板】
+KNN 传播因一致率 0% 已退役（见 archive/l4_knn_legacy/DEPRECATED.md），genre 标注改走
+「文本LLM(P0)+Qwen听音频(P1)+人工裁决」多标签分层。本 MERT 嵌入提取脚本作为历史资产
+保留原地、不归档不删除（.npy 已加入 .gitignore），但不再进入当前 L4 生产流程；扩到
+500 首或训练用途时可重启。
+
 extract_mert_embedding.py
 提取 MERT 音乐理解模型的嵌入向量
 

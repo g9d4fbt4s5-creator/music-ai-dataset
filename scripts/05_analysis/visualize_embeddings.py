@@ -1,4 +1,10 @@
-"""MERT vs CLAP 嵌入聚类可视化（t-SNE 2D + plotly）"""
+"""
+【实验特征链暂停 · T3 终审计 2026-09-04 用户拍板】
+MERT/CLAP 嵌入聚类可视化属 KNN/聚类实验链（KNN 一致率 0% 已证伪、声学相似≠风格相似）。
+作为诊断资产保留原地、不归档不删除，但不再服务当前 L4 生产；写报告/复盘时仍可运行。
+
+MERT vs CLAP 嵌入聚类可视化（t-SNE 2D + plotly）
+"""
 import json
 import numpy as np
 import pandas as pd
