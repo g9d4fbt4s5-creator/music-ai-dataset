@@ -216,6 +216,13 @@ if VOIDED_IDS_FILE.exists():
     with open(VOIDED_IDS_FILE) as f:
         VOIDED_GENRE_IDS = set(line.strip() for line in f if line.strip())
 
+# ACE Studio生成音乐排除清单（ADR-003：不参与KNN传播，独立eval）
+ACE_EXCLUDE_IDS = set()
+ACE_IDS_FILE = Path(__file__).resolve().parent.parent.parent.parent / "configs" / "eval_exclude" / "ace_studio_exclude.txt"
+if ACE_IDS_FILE.exists():
+    with open(ACE_IDS_FILE) as f:
+        ACE_EXCLUDE_IDS = set(line.strip() for line in f if line.strip() and not line.startswith('#'))
+
 
 def is_generic_genre(genre: str) -> bool:
     """判断genre是否为泛类（区分度不足）"""
@@ -248,17 +255,15 @@ def fuse_single_sample(audio_id: str, is_golden: bool,
 
     # 22首裁定：genre真清空（不管来源，直接unlabeled）
     is_voided = audio_id in VOIDED_GENRE_IDS
+    # ACE样本：不参与KNN传播，只用Qwen补充标签
+    is_ace = audio_id in ACE_EXCLUDE_IDS
 
     if is_golden:
         # 黄金集: 用 Qwen-Omni 结果覆盖 DeepSeek
+        # 种子自身保留标签（即使是泛类），不置空——泛类只影响传播，不影响种子本身
         golden_genre = golden_label.get("genre", "")
-        # 黄金集如果是泛类，也直接置空（不传播泛类）
-        if is_generic_genre(golden_genre):
-            result["genre"] = ""
-            genre_source = "unlabeled (generic_golden)"
-        else:
-            result["genre"] = golden_genre or deepseek_label.get("genre", "")
-            genre_source = "qwen_omni_golden" if golden_label.get("genre") else ("qwen_supplement" if has_ds_genre else "unlabeled")
+        result["genre"] = golden_genre or deepseek_label.get("genre", "")
+        genre_source = "qwen_omni_golden" if golden_label.get("genre") else ("qwen_supplement" if has_ds_genre else "unlabeled")
         result["subgenre"] = golden_label.get("subgenre", deepseek_label.get("subgenre", ""))
         result["mood"] = golden_label.get("mood", deepseek_label.get("mood", []))
         result["instrumentation"] = golden_label.get("instruments", deepseek_label.get("instrumentation", []))
@@ -289,34 +294,38 @@ def fuse_single_sample(audio_id: str, is_golden: bool,
 
         propagated_any = False
 
-        # genre 传播（泛类直接置unlabeled，不用subgenre硬塞）
-        if golden_label and should_propagate("genre", cosine_dist, golden_label.get("confidence", "high")):
-            golden_genre = golden_label.get("genre", "")
-            if is_generic_genre(golden_genre):
-                # 泛类：不传播，保持原标签或unlabeled
-                pass
-            else:
-                result["genre"] = golden_genre
-                result["subgenre"] = golden_label.get("subgenre", result.get("subgenre", ""))
-                propagated_any = True
-                fusion["genre_source"] = f"knn(from {nearest_golden_id}, dist={cosine_dist:.3f})"
-
+        # ACE样本：不参与KNN传播（ADR-003），只用Qwen补充标签
         # 22首裁定：genre真清空（覆盖所有传播结果）
         if is_voided:
             result["genre"] = ""
             fusion["genre_source"] = "unlabeled (voided_by_user_decision)"
 
-        # mood 传播
-        if golden_label and should_propagate("mood", cosine_dist, golden_label.get("confidence", "high")):
-            result["mood"] = golden_label.get("mood", result["mood"])
-            fusion["mood_source"] = f"knn(from {nearest_golden_id}, dist={cosine_dist:.3f})"
-            propagated_any = True
+        if not is_ace and not is_voided:
+            # genre 传播（泛类种子不传播genre，不用subgenre硬塞）
+            if golden_label and should_propagate("genre", cosine_dist, golden_label.get("confidence", "high")):
+                golden_genre = golden_label.get("genre", "")
+                if is_generic_genre(golden_genre):
+                    # 泛类种子：不传播genre，保持原标签或unlabeled
+                    pass
+                else:
+                    result["genre"] = golden_genre
+                    result["subgenre"] = golden_label.get("subgenre", result.get("subgenre", ""))
+                    propagated_any = True
+                    fusion["genre_source"] = f"knn(from {nearest_golden_id}, dist={cosine_dist:.3f})"
 
-        # instruments 传播
-        if golden_label and should_propagate("instruments", cosine_dist, golden_label.get("confidence", "high")):
-            result["instrumentation"] = golden_label.get("instruments", result["instrumentation"])
-            fusion["instrumentation_source"] = f"knn(from {nearest_golden_id}, dist={cosine_dist:.3f})"
-            propagated_any = True
+            # mood 传播
+            if golden_label and should_propagate("mood", cosine_dist, golden_label.get("confidence", "high")):
+                result["mood"] = golden_label.get("mood", result["mood"])
+                fusion["mood_source"] = f"knn(from {nearest_golden_id}, dist={cosine_dist:.3f})"
+                propagated_any = True
+
+            # instruments 传播
+            if golden_label and should_propagate("instruments", cosine_dist, golden_label.get("confidence", "high")):
+                result["instrumentation"] = golden_label.get("instruments", result["instrumentation"])
+                fusion["instrumentation_source"] = f"knn(from {nearest_golden_id}, dist={cosine_dist:.3f})"
+                propagated_any = True
+        elif is_ace:
+            fusion["genre_source"] = fusion.get("genre_source", "unlabeled") + " (ace_excluded_from_knn)"
 
         if propagated_any:
             result["propagated_from"] = nearest_golden_id
